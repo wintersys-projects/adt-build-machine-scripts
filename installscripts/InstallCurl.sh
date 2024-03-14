@@ -38,15 +38,3 @@ then
     fi
 fi
 
-if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "nala" ] )
-then
-    if ( [ "${buildos}" = "ubuntu" ] )
-    then
-        /usr/bin/yes | /usr/bin/nala install curl
-    fi
-
-    if ( [ "${buildos}" = "debian" ] )
-    then
-        /usr/bin/yes | /usr/bin/nala install curl
-    fi
-fi
