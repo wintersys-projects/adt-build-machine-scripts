@@ -53,7 +53,6 @@ then
         status "Installing Linode toolkit..."
         status  "Press <enter> key to continue"
         ${BUILD_HOME}/installscripts/Update.sh "${BUILDOS}"
-      #  ${BUILD_HOME}/installscripts/InstallPythonPIP.sh "${BUILDOS}"
         ${BUILD_HOME}/installscripts/InstallLinodeCLI.sh "${BUILDOS}"
     fi
 fi
