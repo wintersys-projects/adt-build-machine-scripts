@@ -39,18 +39,6 @@ then
     fi
 fi
 
-if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "nala" ] )
-then
-    if ( [ "${buildos}" = "ubuntu" ] )
-    then
-        /usr/bin/yes | /usr/bin/nala install git
-    fi
-
-    if ( [ "${buildos}" = "debian" ] )
-    then
-        /usr/bin/yes | /usr/bin/nala install git
-    fi
-fi
 
 /usr/bin/git config --global init.defaultBranch main
 /usr/bin/git config --global pull.rebase false 
