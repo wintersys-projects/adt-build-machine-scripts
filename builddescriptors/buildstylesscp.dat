@@ -46,6 +46,8 @@
 # BUILDCHAINTYPE:standard|webserver|database
 # The tool used for datastore access is an abstraction and you can use other tools rclone, s4cmd and to implement the interface if you want
 # DATASTORETOOL:s3cmd 
+# You can choose which package manager you want to use the current choices are apt and nala
+# PACKAGEMANAGER:apt|nala
 ###############################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -87,4 +89,5 @@ MARIADB:11.3
 POSTGRES:16.1
 BUILDCHAINTYPE:standard
 DATASTORETOOL:s3cmd
+PACKAGEMANAGER:nala
 
