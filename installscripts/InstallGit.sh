@@ -25,16 +25,32 @@ then
     buildos="${1}"
 fi
 
-if ( [ "${buildos}" = "ubuntu" ] )
+
+if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 then
-    DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq install git
-    /usr/bin/git config --global init.defaultBranch master
-    /usr/bin/git config --global pull.rebase false 
+    if ( [ "${buildos}" = "ubuntu" ] )
+    then
+        DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install git
+    fi
+
+    if ( [ "${buildos}" = "debian" ] )
+    then
+        DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install git
+    fi
 fi
 
-if ( [ "${buildos}" = "debian" ] )
+if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "nala" ] )
 then
-    DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq install git
-    /usr/bin/git config --global init.defaultBranch master
-    /usr/bin/git config --global pull.rebase false 
+    if ( [ "${buildos}" = "ubuntu" ] )
+    then
+        /usr/bin/yes | /usr/bin/nala install git
+    fi
+
+    if ( [ "${buildos}" = "debian" ] )
+    then
+        /usr/bin/yes | /usr/bin/nala install git
+    fi
 fi
+
+/usr/bin/git config --global init.defaultBranch main
+/usr/bin/git config --global pull.rebase false 
