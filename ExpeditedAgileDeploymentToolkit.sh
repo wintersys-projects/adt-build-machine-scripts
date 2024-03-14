@@ -85,7 +85,6 @@ status ""
 . ${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh
 . ${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh
 . ${BUILD_HOME}/providerscripts/datastore/ObtainSnapshotData.sh
-. ${BUILD_HOME}/helperscripts/BackupBuildMachine.sh
 . ${BUILD_HOME}/initscripts/PreFlightChecks.sh
 . ${BUILD_HOME}/providerscripts/datastore/PersistBuildClientIP.sh
 
