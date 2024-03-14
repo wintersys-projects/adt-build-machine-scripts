@@ -326,8 +326,6 @@ do
                 status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
                 read response
 
-                exit
-
                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP} ${CLOUDHOST}
             
                 if ( [ "${DBaaS_DBSECURITYGROUP}" != "" ] )
