@@ -1,0 +1,25 @@
+The Authorisation server is a zero trust solution which works with the Agile Deployment Toolkit.
+
+To set up an authorisation server you have to do the following:
+
+Develop and baseline an application for collecting IP addresses of client machines using the agile deployment toolkit according to your liking. There's a lot of different ways you could develop this but I suggest using Joomla and Convert Forms from [Tassos](https://www.tassos.gr)
+
+In another (separate) user account within your cloudhost deploy your main application as normal but with "AUTHORISATION_SERVER" set to "1" in the template or when prompted.
+
+Whenever you are not deploying an authorisation server solution, "AUTHROISATION_SERVER" should be set to "0" but when this is the case you willmost likely not be using cloudflare for your DNS provider. 
+
+Require your users to authenticate to the authorisation server (and provide their IP address) before access is granted to the main application by the system. It is assumed (mandated) that you are using the naked DNS services of your cloudhost for your application servers and cloudflare DNS for your authentication server.
+
+This is my own solution to zero trust you may want to use "Cloudflare access" as another way to protect your web property but that costs $ per user after more than 50 users and so might break the bank a bit.
+
+There are sample repos for a (very minimal) bare bones authorisation server at: [db](https://github.com/adt-apps/authorisation-db-baseline) and [webroot](https://github.com/adt-apps/authorisation-webroot-sourcecode-baseline)
+
+It does require users to be savvy to what is going on. Remember the main website is totally firewalled off until the user autheticates to the separate authorisation server. Once the user authenticates to the authorisation server and directly provides their current IP address to the authentication server through its GUI interface the authentication server then securely commmunicates with the main application servers and the authentication server then punches holes for their particular IP address in the firewalls of any and all active webservers. If the user goes directly to the main website and their IP address changes (because IP addresses are dynamic) they will be timedout from the main website and they will have to know that they need to re-authenticate back and supply their new IP address to the authentication server. Using an appraoch such as this is considerably more secure (it stops bots getting at your application at all) but I don't know of a way to communicate upon a timeout because of an IP block to the user that they need to re-authenticate with the authorisation server. The system currently uses ufw to control user level access to the webproperty but the code could be extended to support the current cloudhost's native firewalling system but this is a bit more a challenge than just using ufw and might be more error prone because you might have many ip addresses that require access and each firewall usually has limits on the number of ip's it can have in its rules and this varies by provider. Using the native firewalling system (which isn't currently possible) has some advantages such as removing processing load from your webserver and possibly the native firewalls are more secure than ufw. 
+
+At a periodicity suitable to you at at a limited usage time (at night), daily, weekly, monthly, addresses from the system through the authenticaion server's application (in the administration area) so that you don't get a build up of IP addresses that are allowed that shouldn't be where people have logged in (from an Internet cafe) as a one off and allowed access to that IP address through the authorisation server. You can of course do this by writing a simple cron script to clean things up. If you don't clear out your list of allowed IP addresses through the application server you might end up with many IP addresses that are being allowed but that are not actively being used. Obviously when you delete all allowed IP addresses, all of your users will have to reauthenticate with the authentication server the next time they want to use the application. 
+
+The authentication server and application server will need to have distinct DNS names if you are using the authentication server.
+
+So, if I am building a social network application called "nuocial" I might have my authentication server as www.nuocialauth.org.uk and my main application or social network as community.nuocial.org.uk. The user will have to go to www.nuocialauth.org.uk first and then to community.nuocial.org.uk.
+
+If anyone knows how to develop a (joomla) application that could be used as an "authorisation server" where all the user has to do is select the website URL that they are authenticaing for and click "authorise my ip" and the application automatically obtains their current ip address that would be more user friendly. It would also be cool if each user is only allowed to authorise one or maybe two ip addresses at a time and any more than that get deleted and that would stop us having to clean up any extraneous IP addresses as I described above. 

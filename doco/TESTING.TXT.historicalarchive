@@ -1,0 +1,588 @@
+These are a set of tests and results that I have run against the Agile Deployment Toolkit, these tests were early in the development of the toolkit 
+and so, do not reflect the toolkit as it is in its up to date state. 
+
+1) Choose a cloudhost and deploy a fresh virgin ubuntu (64 bit only) instance. 
+   Use ssh to connect to your instance and making sure you have read access to the repository agile-infrastructure-build-client issue the commands:
+   
+   /usr/bin/sudo su
+   /usr/bin/apt-get install git
+   /usr/bin/git clone https://agile-developer@bitbucket.org/agile-developer/agile-infrastructure-build-client.git
+   Check that the Agile Deployment Toolkit is installed in your current working directory
+
+   EXPECTED RESULT : Sourcecode for the build client of the Agile Deployment Toolkit will be on the build server
+
+   RESULT: The build client sourcecode for the Agile Deployment Toolkit was pulled down from the git repository onto the build server
+
+2) This test will check the input validation of a deployment, nothing more - 
+
+   1) Enter a fake continent when prompted for timezone continent and see how the script responds
+
+      EXPECTED RESULT: An Error message saying invalid input and a second chance to enter a correct one
+
+      RESULT: Error message saying invalid input and a chance to enter a second one or until valid and correct
+
+   2) Enter a fake city when prompted for timezone city and see how the script responds
+
+      EXPECTED RESULT: An Error message saying invalid input and a second chance to enter a correct one
+
+      RESULT: Error message saying invalid input and a chance to enter a second one or until valid and correct
+
+   3) When prompted:
+
+      Which version of GNU/linux ...
+
+      Enter a number which isn't listed and see how the script responds
+
+      EXPECTED RESULT: An Error message saying invalid input and a second chance to enter a correct one
+
+      RESULT: Error message saying invalid input and a chance to enter a second one or until valid and correct
+
+   4) When prompted:
+
+      Enter 1: for Digital Ocean 2: For Exoscale 3: for Linode 4: for Vultr
+
+      Enter a number which isn't listed and see how the script responds
+
+      EXPECTED RESULT: A second chance to enter a valid input
+
+      RESULT: A second chance was given to enter a valid input until a valid input was given
+
+   5) When prompted:
+
+      The currently installed applications are 0) None and 1) Basic Social Network
+
+      Enter a number which isn't listed and see how the script responds
+
+      EXPECTED RESULT: A second chance to enter a valid input
+
+      RESULT: A second chance was given to enter a valid input until a valid input was given
+
+    6) When prompted: 
+
+      What language is the application written in? Currently we support:
+
+      Enter a number which isn't listed and see how the script responds
+
+      EXPECTED RESULT: A second chance to enter a valid input
+
+      RESULT: A second chance was given to enter a valid input until a valid input was given
+
+    7) When prompted:
+
+       Enter Website URL:
+
+      Enter an invalid URL and see how the script responds
+
+      EXPECTED RESULT: An Error message saying invalid input and a second chance to enter a new one until a valid URL is given
+
+      RESULT: Error message was given when invalid and a second chance to enter a valid URL
+
+    8) When prompted:
+
+       PLEASE MAKE YOU CHOICE FOR IN-MEMORY CACHING(0|1|2|3)
+
+       Enter a number which isn't listed and see how the script responds
+
+       EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+       RESULT: Error message was given when invalid and a second chance to enter a valid number
+
+    9) When prompted:
+
+       PLEASE MAKE A WEBSERVER CHOICE(1|2|3)
+
+       Enter a number which isn't listed and see how the script responds
+
+       EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+       RESULT: Error message was given when invalid and a second chance to enter a valid number
+  
+    10) When prompted:
+
+        PLEASE SELECT A DNS PROVIDER (1|2)
+       
+        Enter a number which isn't listed and see how the script responds
+
+        EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+        RESULT: Error message was given when invalid and a second chance to enter a valid number
+
+     11) Following on from test 10, enter false credentials for each provider and see what happens
+
+         EXPECTED RESULT: If credentials are invalid, the user will be prompted again
+
+         RESULT: Currently, we have rackspace and cloudflare implemented as DNS providers. For rackspace, validity checks are done and if invalid credentials are given, then the user is prompted to imput valid ones. Cloudflare has no checks at present, so that needs to be implemented. 
+
+     12)  When prompted:
+
+          1)BITBUCKET 2)GITHUB 3)GITLAB
+          PLEASE SELECT: (1|2|3)
+
+          Enter a number which isn't listed and see how the script responds
+
+          EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+          RESULT: Error message was given when invalid and a second chance to enter a valid number
+
+      13) Following on from test 12, Enter false credentials for each git respository provider and see how the script responds
+        
+          EXPECTED RESULT: An Error message saying invalid credentials - something like:
+
+          fatal: repository 'https://s:s@bitbucket.org/s/adt-autoscaler-scripts.git/' not found
+          Cannot access repository: adt-autoscaler-scripts, please take action to rectify
+
+          RESULT: Error message and exit, saying invalid credentials
+
+      14)  When prompted:
+
+           Would you like to install a 1) single database instance?
+           Please Enter 1 or 2
+
+           Enter a number which isn't listed and see how the script responds
+
+           EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+           RESULT: Error message was given when invalid and a second chance to enter a number
+
+      15)  When prompted:
+
+           Which database type would you like to install?
+
+           At the moment, we support 1) MYSQL (Maria DB) 2) PostgreSQL
+           
+           Enter a number which isn't listed and see how the script responds
+
+           EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+           RESULT: Error message was given when invalid and a second chance to enter a valid number
+
+       16) When prompted (the exact format will depend which cloudhost you are deploying to):
+
+           PLEASE SELECT FROM THE FOLLOWING LIST OF REGIONS TO DEPLOY. SELECT A REGION BY TYPING ITs SLUG
+           singapore shinagawa1 frankfurt atlanta london dallas newark tokyo fremont
+
+           Enter an  invalid region and see how the script responds
+
+           EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+           RESULT: Error message was given when invalid and a second chance to enter a valid region
+
+       17) When prompted (the exact format will depend which cloudhost you are deploying to):
+
+           PLEASE SELECT FROM THE FOLLOWING LIST OF SIZES TO DEPLOY FOR YOUR DATABASE. SELECT A SIZE BY TYPING ITs SLUG
+           1024 2048 4096 8192 12288 16384 24576 32768 49152 61440 65536 81920 102400 204800
+
+           Enter an  invalid size and see how the script responds
+
+           EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+           RESULT: Error message was given when invalid and a second chance to enter a valid size
+
+       18) When prompted (the exact format will depend which cloudhost you are deploying to):
+
+           PLEASE SELECT FROM THE FOLLOWING LIST OF SIZES TO DEPLOY FOR YOUR WEBSERVER. SELECT A SIZE BY TYPING ITs SLUG
+           1024 2048 4096 8192 12288 16384 24576 32768 49152 61440 65536 81920 102400 204800
+
+           Enter an  invalid size and see how the script responds
+
+           EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+           RESULT: Error message was given when invalid and a second chance to enter a valid size
+
+
+        21) When prompted (the exact format will depend which cloudhost you are deploying to):
+
+           PLEASE SELECT FROM THE FOLLOWING LIST OF SIZES TO DEPLOY FOR YOUR AUTOSCALER. SELECT A SIZE BY TYPING ITs SLUG
+           1024 2048 4096 8192 12288 16384 24576 32768 49152 61440 65536 81920 102400 204800
+
+           Enter an  invalid size and see how the script responds
+
+           EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+           RESULT: Error message was given when invalid and a second chance to enter a valid size
+
+        22) When prompted (the exact format will depend which cloudhost you are deploying to):
+
+           ************************************************
+           * MAIL SERVER MUST HAVE AT LEAST 2gb OF MEMORY *
+           ************************************************
+           1024 2048 4096 8192 12288 16384 24576 32768 49152 61440 65536 81920 102400 204800
+
+           Enter an  invalid size (including less than 2gb) and see how the script responds
+
+           EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+           RESULT: Error message was given when invalid and a second chance to enter a valid size
+
+        23) When prompted:
+
+            PLEASE MAKE YOU CHOICE OF DATASTORE (1),(2)
+
+            Enter an invalid number and see how the script responds
+
+            EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+            RESULT: Error message was given when invalid and a second chance to enter a valid number
+
+         24) When prompted:
+
+            Do you wish to have super safe backups of your webroot to your datastore of choice?
+
+            Enter an answer other than Y|N and see how the script responds
+
+            EXPECTED RESULT: An Error message and another chance to enter a choice
+
+            RESULT: No error message was given, but a second chance was given to enter an valid input
+
+         25) When prompted:
+
+             Are you deploying for 1)Development or 2)Production?
+             Please enter: 1 or 2
+
+            Enter an unlisted number and see how the scipt responds
+
+            EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+            RESULT: Error message was given when invalid and a second chance to enter a valid number
+
+         26) When prompted:
+
+             Please select, would you like to build from a :
+
+             0) Virgin Build (If you want a fresh (virgin) install of an Application, select this option)
+
+             1) Baseline Build (The application developer should provide a baseline of his application. You can install it by selecting this option)
+
+             2) Hourly  (Build the website based on the daily backup. These backups are taken once and hour and will be the most recent to build from
+
+             3) Daily  (Build the website based on the daily backup. Daily backups occur overnight (GMT)
+
+             4) Weekly (Build the website based on the weekly backup. Useful if you had a problem on the site and you need to roll back to a previous version)
+
+             5) Monthly (Build the website based on the monthly backup)
+
+             6) Bi-Monthly (Build the website based on the bi-monthly backup)
+
+            Enter a choice which is not a listed number and see how the script responds
+
+            EXPECTED RESULT: An Error message and another chance to enter a choice
+
+            RESULT: No error message was given, but a second chance was given to enter an valid input
+
+        27) When building from a baseline, when prompted to enter a fake repository name, for example:
+
+            socialnetwork-webroot-sourceXXXXcode-baseline
+
+            So, when prompted:
+
+            You can find this by navigate to your repository and copying and pasting the repository name from the URL
+            For example: socialnetwork-webroot-sourcecode-baseline
+
+            EXPECTED RESULT: If the repository can't be found, the user is prompted again to enter one that can be found
+
+            RESULT: If the repository can't be found, the user is prompted again to input a valid one
+
+        28) When building from a db baseline, when prompted to enter a fake db repository name, for example:
+
+            socialXXXXnetwork-db-baseline
+
+            So, when prompted:
+
+            You can find this by navigate to your repository and copying and pasting the repository name from the URL
+            For example: socialXXXXnetwork-db-baseline
+
+            EXPECTED RESULT: If the repository can't be found, the user is prompted again to enter one that can be found
+
+            RESULT: If the repository can't be found, the user is prompted again to input a valid one
+
+
+        30) For smtp mail, when prompted:
+
+            So, please enter the email address where you wish system messages to be sent
+
+            Enter an invalid email address
+
+            EXPECTED RESULT: An Error message and a second attempt to enter a valid email address
+
+            RESULT: A message is given to say the email address is invalid and a chance to enter another one is given
+
+        31) When prompted:
+
+            Which SMTP provider are you registered with?
+            Currently, we support 1) SMTP Pulse (www.sendpulse.com) 2) Google (gmail)
+
+            Enter an invalid number
+
+            EXPECTED RESULT: An Error message saying invalid input and a second chance to enter another selection until valid
+
+            RESULT: Error message was given when invalid and a second chance to enter a valid number
+
+
+        32) When prompted:
+
+            Please enter 1) The Address you would like system emails to be sent from
+
+            Enter an invalid email address
+
+            EXPECTED RESULT: An Error message and a second attempt to enter a valid email address
+
+            RESULT: A message is given to say the email address is invalid and a chance to enter another one is given
+
+        33) When prompted:
+
+            Please enter your email address for your SMTP provider
+
+            Enter an invalid email address
+
+            EXPECTED RESULT: An Error message and a second attempt to enter a valid email address
+
+            RESULT: A message is given to say the email address is invalid and a chance to enter another one is given
+
+3) Initiate the script using its full path. So, for example, /bin/sh /home/fred/agile-infrastructure-build-client/AgileDeploymentToolkit.sh
+
+   EXPECTED RESULT: An Error Message should be given
+
+   RESULT:  "This script is expected to run from the same directory as the AgileDeploymentToolkit.sh script"
+
+   POSTPROCESSING: cd ${HOME}/agile-infrastructure-build-client and /bin/sh AgileDeploymentToolkit.sh
+
+
+4) Make a build of the BASIC SOCIAL NETWORK application from a fresh deployment and in any configuration for each of the supported cloudhosts, currently, Digial Ocean, Exoscale, Linode and Vultr. Navigate to the website in your browser to check the successful operation of the deployment.
+
+   EXPECTED RESULT: The servers should deploy for each cloudhost and you should be able to navigate to your website
+
+   RESULT: Linode: successfully deployed the application  Exoscale: Successfully deployed the application Digital Ocean: Successfully deployed the application Vultr: Successfully deployed the application
+
+   POST PROCESSING: 
+   Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+5) Run the deployment script again. This time when the script prompts for you to use the previous configuration settings as a default, say yes.
+So, when prompted:
+#####################################################################################################
+#####YOU HAVE 3 CHOICES                                                                         #####
+##### 1: YOU CAN USE THE SETTINGS AS THEY WERE PREVIOUSLY SET - ENTER Y BELOW                   #####
+##### 2: YOU CAN MODIFY SOME OF THE SETTINGS IN THE FILE:                                       #####
+#####     /root/agile-infrastructure-build-client/buildconfiguration/linode/slough                     #####
+#####     AND THEN ENTER Y                                                                      #####
+##### 3: REJECT THE PREVIOUS SETTINGS AND ENTER NEW ONES - ENTER N BELOW                        #####
+#####################################################################################################
+PLEASE REVIEW THE LISTED SETTINGS AND ENTER (Y|y) TO USE THE SETTINGS STORED IN
+Enter 'Y'
+Having entered 'Y', Leave the build process to complete
+
+   EXPECTED RESULT: The servers should deploy and you should be able to navigate to your website
+
+   RESULT: All the servers deployed with the previous build configuration and it was possible to navigate to the site
+
+   POSTPROCESSING:
+   None - leave the servers running for use in the next test
+
+6) Having left the servers running from test 3, try to make a second deployment (to the same cloudhost as in test 3).
+
+   EXPECTED RESULT: You should get an error message saying servers are already running please close them down and try again.
+
+   RESULT: Message was given: "It seems like the webserver is already running please close it down". When the machines were closed down, a successful build was possible.
+
+   POST PROCESSING:
+
+   Shutdown the servers you have started ( in test 3 ) using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+7)  Make a deployment of the BASIC SOCIAL NETWORK application for each of the supported webserver types - currently NGINX, APACHE and LIGHTTPD
+
+    EXPECTED RESULT : The application should deploy and you should be able to navigate in your browser to the BASIC SOCIAL NETWORK application for each webserver type
+
+    RESULT: NGINX - Application deployed and was accessible in development configuration. 
+    RESULT: APACHE - Application deployed and was accessible in development configuration. 
+    RESULT: LIGHTTPD - Application deployed and was accessible in development configuration. 
+
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+7)  Make a deployment of the BASIC SOCIAL NETWORK application for each of the supported DNS provider types - currently CLOUDFLARE and RACKSPACE DNS. Please remember 
+to alter the Nameserver definitions with your authoritative DNS provider. Your authoritative DNS provider is the place where you bought the domain name you are using. When you change a nameserver it can take up to 72 hours for it to take affect. Also, with cloudflare you have to manually add your site (root domain) using the web interface for it to work correctly.
+
+    EXPECTED RESULT : The application should deploy and you should be able to navigate in your browser to the BASIC SOCIAL NETWORK application for each DNS Provider type
+
+    RESULT: Cloudflare - the application deployed correctly and was accessible. Rackspace - the application deployed correctly and was accessible.
+
+    POST PROCESSING:
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+8)  By default the reference application is stored in bitbucket. Get the baseline of the BASIC SOCIAL NETWORK application from bitbucket and put it in both of gitlab and github. Make a deployment of the reference application from gitlab and github as we already know that it works from bitbucket. 
+
+    EXPECTED RESULT : It should be possible to deploy an application from both gitlab and github as well as bitbucket.
+
+    RESULT: XXXX
+
+    POST PROCESSING: 
+    On the hour, a backup should be made to your chosen application repository. Check that backups are successfully made for each of the repository types (gitlab and hithub). We know that it already works for bitbucket. Then deploy from a backup from both gitlab and github
+
+*** CLUSTERING HAS BEEN STRIPPED OUT, IT WAS MAKING THE CODEBASE OVERLY COMPLEX SO, THIS TEST IS NO LONGER REQUIRED****
+9)  Make a full deployment of the BASIC SOCIAL NETWORK application to a high availability database cluster. We know that we are already functioning as a single database, but we need to check that our database cluster is working
+
+    EXPECTED RESULT : The application should deploy and function
+
+    RESULT : The application deployed and ran as expected. It is still necessary to see how it would function in full deployment/usage.
+ 
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+10)  Make a full deployment of the BASIC SOCIAL NETWORK application to a single percona database.
+
+    EXPECTED RESULT : The application should deploy and function
+
+    RESULT : The application was successfully deployed.
+ 
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+11) Make a deployment of the BASIC SOCIAL NETWORK application to a different region than you have been using by default for each of the cloudhost providers
+
+    EXPECTED RESULT : The application should deploy and function
+
+    RESULT : Digital Ocean : Successful deployment Linode: Successful deployment Exoscale : Successful Deployment  Vultr : Successful deployment
+ 
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+
+13) Switch on super safe backups and make sure that there is a backup stored on the  hour, at least, to the datastore of choice
+
+    EXPECTED RESULT : There should be a super safe backup of your sourcecode and database in your datastore, on the hour
+
+    RESULT : Backups are stored correctly at all defined time intervals to the datastore of choice
+ 
+    POST PROCESSING: 
+
+14) Remove the currently hourly backup of your application from your chosen repository, but leave a super safe backup in your datastore. Deploy the application from the super safe backup.
+
+    EXPECTED RESULT : The application deplys works and functions from an hourly backup
+
+    RESULT : The application deployed correctly
+ 
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+15) Deploy a fresh iredmail mailserver.
+
+    EXPECTED RESULT : A mailserver should be up and running and you can navigate to it and authenticate via <domain_name>/mail and <domain_name>/iredadmin
+
+    RESULT :  XXXX
+ 
+    POST PROCESSING: 
+
+16) Following on from test 16, send some emails so that the inboxes have some new content. Allow the daily backup to be made. Create a new, fresh, mailserver and restore the inboxes from the backup on the new server.
+
+    EXPECTED RESULTS: A new mailserver can be restored from a backup and the old emails appear in the fresh mail server's inbox
+
+    RESULT: XXXX
+
+    POST PROCESSING:
+
+    Shutdown the mail server
+
+
+17) For each of the supported SMTP providers, deploy using them and test that system emails and application emails are sent and received correctly. 
+
+    EXPECTED RESULT : A mailserver should be up and running and populated with data from a backup
+
+    RESULT :  The System emails were sent correctly to the specified email address using the default SMTP providers, Sendpulse and Gmail.
+ 
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+
+18) For each of the installed appliction types, Joomla, Moodle, Drupal, Wordpress, deploy a virgin copy and check that it works correctly
+
+    EXPECTED RESULT : Each application type shoud work as expected
+
+    RESULT : Each application type installed correctly and was accessible from a browser
+ 
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+19) We need to check that our SSL certificates are being issued in all situations. 
+ 
+    1) Make sure there are no cerificates in ${BUILD_HOME}/ssl and build a mail server and then a webserver and check that the certificates are successfully installed
+    2) Using the certificates created in 1 - stored in ${BUILD_HOME}/ssl, make a deployment of the mailserver and the webserver (full production, multi webserver deployment)
+    3) Artificially make it so that the certificated we have installed have expired. You can do this by temporarily modifying the script
+
+       ${BUILD_HOME}/buildscripts/BuildWebserver.sh               
+
+       by changing the value of
+
+       # The remaining life on our certificate below which we should renew (7 days).
+       RENEW=604800
+
+       When a build is made, then it will see that the current certificate is expired and will issue a new one
+
+      EXPECTED RESULT: In all these circumstances, the certificate should be successfully installed and used
+
+      RESULT: 1) Certificate was installed correctly and the application deployed for the webserver
+              2) The previously generated certificate was used and the application deployed
+              3) When the certificates were 'expired', new ones were generated and the application deployed successfully.
+
+      POST PROCESSING: 
+
+      Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+20) Deploy a full production ready version of the BASIC SOCIAL NETWORK application. Make sure that there are more than 2 webservers running.
+    Temporarily modify the script
+
+    ${HOME}/security/InstallSSLCertificate.sh
+
+    by changing the value of
+
+    # The remaining life on our certificate below which we should renew (7 days).
+    RENEW=604800
+
+    Leave the machines running over night 
+
+
+    EXPECTED RESULT: A nightly cron script should run and renew the certificates. You can check the timestamp of the certificates on each webserver to see that it 
+                     has been renewed
+
+    RESULT : New certificate generated and installed on all active webservers and a copy placed on the autoscaler for use when building new webservers as a result of an autoscaling event   XXXXXXXXXX repeat this test
+
+    POST PROCESSING: 
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.shS
+
+
+22) Some cloudhosting providers allow for snapshots to be taken of machines. This is important because by taking a snapshot it is possible to decrease the time it takes to scale up due to an autoscaling event. It is necessary,then to check for the cloud providers that facilitate snapshots that the snapshotting process is working correctly. So, make a deployment setting snapshotting to true and ensure that the autoscaling is working.
+
+    EXPECTED RESULT: Correct operation of the autoscaling mechanism from snapshots
+
+    RESULT: XXXX
+
+    POST PROCESSING:
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.shS
+
+23) Perform some tests using the 'stress' linux utility. Stress can be used to simulated overloaded machines. In this situation, if the webservers are overloaded, then the autoscaling, assuming it is a 'production' deployment', should kick in and that will mean that autoscaling events are triggered. So, deploy several webservers in production mode and then run stress on each webserver and check that the autoscaling performs as expected. Also, set the MIN number of webservers to 5 and check that the required number of webservers are deployed and that the ip addresses are written to the DNS provider. Set the MIN number of websevers back down to 1 and check that scale down also works. Check that the ip addresses are removed from the DNS provider.
+
+    EXPECTED RESULTS: The autoscaling system should work as expected and additional webservers should be deployed
+
+    RESULT: XXXX
+
+    POST PROCESSING:
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.sh
+
+24) Test that the inter webserver file sync tunnel is working correctly. Deploy a full version of the toolkit and add/modify a file or two on one of the webserver webroots. Check that the file is replicated to the other webservers.
+
+    EXPECTED RESULTS: Any modified or new files on any webservers are replicated to the other webservers 
+
+    RESULT: The files are distributed correctly to the webservers
+
+    POST PROCESSING:
+
+    Shutdown the servers you have started using the shutdown script : ${BUILD_HOME}/helperscripts/ShutdownInfrastructure.shS
