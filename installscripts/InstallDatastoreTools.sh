@@ -22,7 +22,7 @@
 
 if ( [ "$2" != "" ] )
 then
-    BUILDOS="${2}"
+    buildos="${2}"
 fi
 
 if ( [ "$1" = "S3CMD" ] )
