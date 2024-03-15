@@ -42,3 +42,34 @@ then
     fi
 fi
 
+if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-fast" ] )
+then
+    if ( [ "${buildos}" = "ubuntu" ] )
+    then
+        /usr/bin/yes | /usr/bin/dpkg --configure -a
+        DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils 2&1>/dev/null
+        DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages  
+        /usr/bin/git clone https://github.com/ilikenwf/apt-fast.git
+        /bin/cp apt-fast/apt-fast /usr/sbin/
+        /bin/chmod +x /usr/sbin/apt-fast
+        /bin/cp apt-fast/apt-fast.conf /etc
+        /bin/chown root:root /etc/apt-fast.conf
+        /bin/chown root:root /usr/sbin/apt-fast
+        /usr/bin/apt-get -y -qq install aria2
+    fi
+    
+    if ( [ "${buildos}" = "debian" ] )
+    then
+        /usr/bin/yes | /usr/bin/dpkg --configure -a
+        DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils 2&1>/dev/null
+        DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages  
+        /usr/bin/git clone https://github.com/ilikenwf/apt-fast.git
+        /bin/cp apt-fast/apt-fast /usr/sbin/
+        /bin/chmod +x /usr/sbin/apt-fast
+        /bin/cp apt-fast/apt-fast.conf /etc
+        /bin/chown root:root /etc/apt-fast.conf
+        /bin/chown root:root /usr/sbin/apt-fast
+        /usr/bin/apt-get -y -qq install aria2
+    fi   
+fi
+
