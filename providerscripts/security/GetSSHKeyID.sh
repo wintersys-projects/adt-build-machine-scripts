@@ -45,8 +45,5 @@ then
     /bin/sleep 1
     /usr/bin/vultr ssh-key list | /bin/grep "${public_key_name}" | /usr/bin/awk '{print $1}'
 fi
-if ( [ "${cloudhost}" = "aws" ] )
-then
-    /bin/echo ${public_key_name}
-fi
+
 
