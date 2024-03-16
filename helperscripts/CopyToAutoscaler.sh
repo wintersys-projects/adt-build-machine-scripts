@@ -64,10 +64,6 @@ elif ( [ "${response}" = "4" ] )
 then
     CLOUDHOST="vultr"
     token_to_match="*autoscaler*"
-elif ( [ "${response}" = "5" ] )
-then
-    CLOUDHOST="aws"
-    token_to_match="*autoscaler*"
 fi
 
 /bin/echo "What is the build identifier you want to connect to?"
