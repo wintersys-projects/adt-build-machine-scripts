@@ -68,17 +68,3 @@ then
     fi
 fi
 
-if ( [ "${CLOUDHOST}" = "aws" ] )
-then
-    if ( [ ! -f /usr/bin/aws ] )
-    then
-        status "Installing awscli....."
-        status "#######################################################"
-        status "(it is essential that you set the output style to json)"
-        status "#######################################################"
-        status  "Press <enter> key to continue"
-        ${BUILD_HOME}/installscripts/InstallSudo.sh "${BUILDOS}"
-        ${BUILD_HOME}/installscripts/InstallJQ.sh "${BUILDOS}"
-        ${BUILD_HOME}/installscripts/InstallAWSCLI.sh "${BUILDOS}"
-    fi
-fi
