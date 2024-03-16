@@ -43,11 +43,11 @@ A DMS, like this one, is a powertool for helping you deploy your servers using w
 
 #### THE CORE:
 
-With the core of the Agile Deployment Toolkit, it will make use of a set of services and providers. I elected to use Digital Ocean, Exoscale, Linode, Vultr and AWS to deploy on or as deployment options, but, the toolkit is designed to be forked and extended to support other providers. The system is fully configurable by you and if you wish to change default configurations that are provided for, for example, Apache, NGINX or MariaDB, then you will need to fork the respoitories, alter your copy of the scripts and have them deploy according to your configuration requirements. A useful thing to be aware of if you are changing these scripts is you can check them syntactically with using "**/bin/bash -n <script.sh>**" before you redeploy only to find you had a syntax error during deployment. 
+With the core of the Agile Deployment Toolkit, it will make use of a set of services and providers. I elected to use Digital Ocean, Exoscale, Linode and Vultr to deploy on or as deployment options, but, the toolkit is designed to be forked and extended to support other providers. The system is fully configurable by you and if you wish to change default configurations that are provided for, for example, Apache, NGINX or MariaDB, then you will need to fork the respoitories, alter your copy of the scripts and have them deploy according to your configuration requirements. A useful thing to be aware of if you are changing these scripts is you can check them syntactically with using "**/bin/bash -n <script.sh>**" before you redeploy only to find you had a syntax error during deployment. 
 
 The full set of services that are supported by the core of the toolkit and which you can extend in your forks is:
 
-1. For VPS services, one of - Digital Ocean, Linode, Exoscale, Vultr, AWS
+1. For VPS services, one of - Digital Ocean, Linode, Exoscale or Vultr
 2. For Email services, one of - Amazon SES, Mailjet or Sendpulse
 3. For Git based services, one of - Bitbucket, Github or Gitlab
 4. For DNS services, one of - Cloudflare, Digital Ocean, Exoscale, Linode, Vultr (note, Cloudflare has additional security features which are absent from naked dns services which is why it is probably best practice to use Cloudflare even if there is some extra hassle to set it up which you can find out about here: [Cloudflare DNS](https://community.cloudflare.com/t/step-1-adding-your-domain-to-cloudflare/64309))
