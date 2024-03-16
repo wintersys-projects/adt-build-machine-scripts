@@ -40,7 +40,7 @@ fi
 
 
 /bin/echo "Which Cloudhost are you using for this server?"
-/bin/echo "(1) Digital Ocean (2) Exoscale (3) Linode (4) Vultr (5) AWS"
+/bin/echo "(1) Digital Ocean (2) Exoscale (3) Linode (4) Vultr"
 read response
 
 if ( [ "${response}" = "1" ] )
