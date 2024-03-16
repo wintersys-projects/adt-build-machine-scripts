@@ -310,7 +310,7 @@ then
 fi
 
 #########################################################################################################
-#If you are deploying to aws provide a setting with the following format in your template
+#If you are deploying to vultr provide a setting with the following format in your template
 #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:8:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase
 #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:14:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase
 #########################################################################################################
