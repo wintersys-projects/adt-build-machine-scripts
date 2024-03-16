@@ -47,8 +47,6 @@ then
             ${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
             status "Installing/Updating the Exo tool so that you are ready if you are deploying to Exoscale"
             ${BUILD_HOME}/installscripts/InstallExo.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
-            status "Installing/Updating the AWS cli tool so that you are ready if you are deploying to AWS"
-            ${BUILD_HOME}/installscripts/InstallAWSCLI.sh "debian" >>${UPGRADE_LOG} 2>&1
             status "Installing/Updating the Doctl tool so that you are ready if you are deploying to Digital Ocean"
             ${BUILD_HOME}/installscripts/InstallDoctl.sh "debian" >>${UPGRADE_LOG} 2>&1
             status "Installing/Updating the Linode cli tool so that you are ready if you are deploying to Linode"
@@ -86,8 +84,6 @@ then
             ${BUILD_HOME}/installscripts/InstallGo.sh "debian" >>${UPGRADE_LOG} 2>&1
             status "Installing/Updating the Exo tool so that you are ready if you are deploying to Exoscale"
             ${BUILD_HOME}/installscripts/InstallExo.sh "debian" >>${UPGRADE_LOG} 2>&1
-            status "Installing/Updating the AWS cli tool so that you are ready if you are deploying to AWS"
-            ${BUILD_HOME}/installscripts/InstallAWSCLI.sh "debian" >>${UPGRADE_LOG} 2>&1
             status "Installing/Updating the Doctl tool so that you are ready if you are deploying to Digital Ocean"
             ${BUILD_HOME}/installscripts/InstallDoctl.sh "debian" >>${UPGRADE_LOG} 2>&1
             status "Installing/Updating the Linode cli tool so that you are ready if you are deploying to Linode"
