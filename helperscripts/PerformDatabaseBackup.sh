@@ -46,10 +46,6 @@ elif ( [ "${response}" = "4" ] )
 then
     CLOUDHOST="vultr"
     token_to_match="database"
-elif ( [ "${response}" = "5" ] )
-then
-    CLOUDHOST="aws"
-    token_to_match="*database*"
 else
     /bin/echo "Unrecognised  cloudhost. Exiting ...."
     exit
