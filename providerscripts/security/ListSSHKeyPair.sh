@@ -45,8 +45,4 @@ then
     /usr/bin/vultr ssh-key list | /bin/grep "${key_name}" | /usr/bin/awk '{print $NF}'
 fi
 
-if ( [ "${cloudhost}" = "aws" ] )
-then
-    :
-fi
 
