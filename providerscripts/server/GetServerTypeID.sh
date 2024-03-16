@@ -49,8 +49,3 @@ then
     /usr/bin/vultr plans list | /bin/grep "${server_size}" | /usr/bin/awk '{print $1}'
 fi
 
-if ( [ "${cloudhost}" = "aws" ] )
-then
-    /bin/echo ${server_size}
-fi
-
