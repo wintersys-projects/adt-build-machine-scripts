@@ -43,9 +43,5 @@ then
     /usr/bin/vultr instance list | /bin/grep "${instance_type}"
 fi
 
-if ( [ "${cloudhost}" = "aws" ] )
-then
-    /usr/bin/aws ec2 describe-instances --filters "Name=tag:descriptiveName,Values=*${instance_type}*" "Name=instance-state-name,Values=running" | /usr/bin/jq '.Reservations[].Instances[] | .InstanceId'
-fi
 
 
