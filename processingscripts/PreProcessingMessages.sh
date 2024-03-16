@@ -24,7 +24,7 @@
 status ""
 status ""
 status "#########################################"
-status "You are deploying to region: ${REGION_ID}"
+status "You are deploying to region: ${REGION}"
 status "#########################################"
 status ""
 
