@@ -327,19 +327,6 @@ do
                 read response
 
                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP} ${CLOUDHOST}
-            
-                if ( [ "${DBaaS_DBSECURITYGROUP}" != "" ] )
-                then
-                    IP_TO_DENY="${WSIP}"
-                    . ${BUILD_HOME}/providerscripts/server/DenyDBAccess.sh
-                fi
-            
-                if ( [ "${IN_MEMORY_SECURITY_GROUP}" != "" ] )
-                then
-                    IP_TO_DENY="${WSIP}"
-                    . ${BUILD_HOME}/providerscripts/server/DenyCachingAccess.sh
-                fi
-
 
                 #Wait until we are sure that the image server(s) are destroyed because of a faulty build
                 while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "webserver" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
