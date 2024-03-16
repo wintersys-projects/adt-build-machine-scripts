@@ -27,10 +27,9 @@ status " 1. Digital Ocean (www.digitalocean.com)"
 status " 2. Exoscale (www.exoscale.com)"
 status " 3. Linode (www.linode.com)"
 status " 4. Vultr (www.vultr.com)"
-status " 5. AWS (aws.amazon.com)"
 status " Any value you give here will override and overwrite whatever you have set in your template"
 status "####################################################################################"
-status "You can indicate your choice by entering a number between 1 and 5"
+status "You can indicate your choice by entering a number between 1 and 4"
 read response
 
 valid="0"
@@ -41,7 +40,7 @@ do
     then 
         if ( [ ${response} ] && [ ${response} -eq ${response} 2>/dev/null ] )
         then
-            if ( [ "${response}" -lt "1" ] || [ "${response}" -gt "5" ] )
+            if ( [ "${response}" -lt "1" ] || [ "${response}" -gt "4" ] )
             then
                 valid="0"
             else
@@ -59,7 +58,6 @@ do
                 1)       
                     CLOUDHOST="digitalocean"
                     ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-		   # . ${BUILD_HOME}/providerscripts/cloudhost/SetupAdditionalCloudhostTools.sh
                      if ( [ "${BUILDOS}" = "ubuntu" ] )
                      then
                          DEFAULT_USER="root"
@@ -71,7 +69,6 @@ do
                 2)
                     CLOUDHOST="exoscale"
                     ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-		   # . ${BUILD_HOME}/providerscripts/cloudhost/SetupAdditionalCloudhostTools.sh
                     if ( [ "${BUILDOS}" = "ubuntu" ] )
                     then
                          DEFAULT_USER="ubuntu"
@@ -83,7 +80,6 @@ do
                 3)       
                     CLOUDHOST="linode"
 		    ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-		   # . ${BUILD_HOME}/providerscripts/cloudhost/SetupAdditionalCloudhostTools.sh
                     if ( [ "${BUILDOS}" = "ubuntu" ] )
                     then
                         DEFAULT_USER="root"
@@ -95,25 +91,12 @@ do
                 4)       
                     CLOUDHOST="vultr"
 		    ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-		   # . ${BUILD_HOME}/providerscripts/cloudhost/SetupAdditionalCloudhostTools.sh
                      if ( [ "${BUILDOS}" = "ubuntu" ] )
                      then
                          DEFAULT_USER="root"
                      elif ( [ "${BUILDOS}" = "debian" ] )
                      then
                          DEFAULT_USER="root"
-                     fi
-                     ;;
-                5)       
-                    CLOUDHOST="aws"
-		    ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-		   # . ${BUILD_HOME}/providerscripts/cloudhost/SetupAdditionalCloudhostTools.sh
-                     if ( [ "${BUILDOS}" = "ubuntu" ] )
-                     then
-                          DEFAULT_USER="ubuntu"
-                     elif ( [ "${BUILDOS}" = "debian" ] )
-                     then
-                          DEFAULT_USER="admin"
                      fi
                      ;;
                 *)
