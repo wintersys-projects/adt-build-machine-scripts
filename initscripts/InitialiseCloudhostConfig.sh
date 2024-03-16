@@ -167,9 +167,9 @@ then
         exit
     fi
 
-    if ( [ "${REGION_ID}" != "" ] )
+    if ( [ "${REGION}" != "" ] )
     then
-        /bin/sed -i "s/XXXXREGIONXXXX/${REGION_ID}/" ${BUILD_HOME}/.linode-cli
+        /bin/sed -i "s/XXXXREGIONXXXX/${REGION}/" ${BUILD_HOME}/.linode-cli
     else 
         status "Couldn't find your region id in your template, will have to exit"
         exit
