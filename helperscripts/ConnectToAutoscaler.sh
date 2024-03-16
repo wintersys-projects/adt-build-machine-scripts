@@ -46,10 +46,6 @@ elif ( [ "${response}" = "4" ] )
 then
     CLOUDHOST="vultr"
     token_to_match="*autoscaler*"
-elif ( [ "${response}" = "5" ] )
-then
-    CLOUDHOST="aws"
-    token_to_match="*autoscaler*"
 else
     /bin/echo "Unrecognised  cloudhost. Exiting ...."
     exit
