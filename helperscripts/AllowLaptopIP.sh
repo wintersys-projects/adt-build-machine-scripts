@@ -37,7 +37,7 @@ fi
 
 BUILD_HOME="`/usr/bin/pwd | /usr/bin/awk -F'/' 'BEGIN {OFS = FS} {$NF=""}1' | /bin/sed 's/.$//'`"
 
-/bin/echo "Which datastore provider are you using? 1) Digital Ocean 2) Exoscale 3) Linode 4) Vultr 5)AWS. Please Enter the number for your cloudhost"
+/bin/echo "Which datastore provider are you using? 1) Digital Ocean 2) Exoscale 3) Linode 4) Vultr. Please Enter the number for your cloudhost"
 read response
 if ( [ "${response}" = "1" ] )
 then
