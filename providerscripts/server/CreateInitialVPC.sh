@@ -26,7 +26,7 @@ then
     build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
     build_machine_id="`/usr/local/bin/doctl compute droplet list | grep ${build_machine_ip} | /usr/bin/awk '{print $1}'`"
 
-    vpc_id="`/usr/local/bin/doctl vpcs list  | /bin/grep "adt-vpc" | /bin/grep "${REGION_ID}" | /usr/bin/awk '{print $1}'`"
+    vpc_id="`/usr/local/bin/doctl vpcs list  | /bin/grep "adt-vpc" | /bin/grep "${REGION}" | /usr/bin/awk '{print $1}'`"
 
     if ( [ "`/usr/local/bin/doctl compute droplet get ${build_machine_id} | /bin/grep ${vpc_id}`" = "" ] )
     then
@@ -38,16 +38,16 @@ fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
-    if ( [ "`/usr/bin/exo compute private-network list -O text | /bin/grep adt_private_net_${REGION_ID}`" = "" ] )
+    if ( [ "`/usr/bin/exo compute private-network list -O text | /bin/grep adt_private_net_${REGION}`" = "" ] )
     then
-        /usr/bin/exo compute private-network create adt_private_net_${REGION_ID} --zone ${REGION_ID} --start-ip 10.0.0.20 --end-ip 10.0.0.200 --netmask 255.255.255.0
+        /usr/bin/exo compute private-network create adt_private_net_${REGION} --zone ${REGION} --start-ip 10.0.0.20 --end-ip 10.0.0.200 --netmask 255.255.255.0
     fi
 
     #build_machine_ip="`/usr/bin/wget http://ipinfo.io/ip -qO -`"
     build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
-    build_machine_id="`/usr/bin/exo compute instance list --zone ${REGION_ID} -O text | /bin/grep -w "${build_machine_ip}" | /usr/bin/awk '{print $1}'`"
+    build_machine_id="`/usr/bin/exo compute instance list --zone ${REGION} -O text | /bin/grep -w "${build_machine_ip}" | /usr/bin/awk '{print $1}'`"
 
-    if ( [ "`/usr/bin/exo compute instance show  ${build_machine_id} | /bin/grep adt_private_net_${REGION_ID}`" = "" ] )
+    if ( [ "`/usr/bin/exo compute instance show  ${build_machine_id} | /bin/grep adt_private_net_${REGION}`" = "" ] )
     then
         status "#################################################################################"
         status "Attempting to attach your build machine to the VPC because it wasn't created"
@@ -60,11 +60,11 @@ then
         status "Press <enter> to continue"
         read x
         count="0" 
-        while ( [ "`/usr/bin/exo compute instance show  ${build_machine_id} | /bin/grep adt_private_net_${REGION_ID}`" = "" ] && [ "${count}" -lt "5" ] )
+        while ( [ "`/usr/bin/exo compute instance show  ${build_machine_id} | /bin/grep adt_private_net_${REGION}`" = "" ] && [ "${count}" -lt "5" ] )
         do
             /bin/sleep 5
             count="`/usr/bin/expr ${count} + 1`"
-            /usr/bin/exo compute instance private-network attach  ${build_machine_id} adt_private_net_${REGION_ID} --zone ${REGION_ID} 
+            /usr/bin/exo compute instance private-network attach  ${build_machine_id} adt_private_net_${REGION} --zone ${REGION} 
         done
         if ( [ "${count}" = "5" ] )
         then
@@ -106,7 +106,7 @@ then
 
     if ( [ "${vpc_id}" = "" ] )
     then
-        /usr/bin/vultr vpc2 create --region="${REGION_ID}" --description="adt-vpc" --ip-type="v4" --ip-block="192.168.0.0" --prefix-length="16"
+        /usr/bin/vultr vpc2 create --region="${REGION}" --description="adt-vpc" --ip-type="v4" --ip-block="192.168.0.0" --prefix-length="16"
     fi
 
     if ( [ "`/usr/bin/vultr vpc2 nodes list ${vpc_id} | /bin/grep ${build_machine_id}`" = "" ] )
