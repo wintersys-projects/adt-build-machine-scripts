@@ -169,11 +169,6 @@ then
     ${log_command} "Your value for the variable DATABASE_INSTALLATION_TYPE (${DATABASE_INSTALLATION_TYPE}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^DISABLE_HOURLY " ${quick_specification} | /bin/grep -w "${DISABLE_HOURLY}"  2>/dev/null `" = "" ] )
-then
-    ${log_command} "Your value for the variable DISABLE_HOURLY (${DISABLE_HOURLY}) doesn't appear to be valid please review"
-fi
-
 if ( [ "`/bin/grep "^PERSIST_ASSETS_TO_CLOUD " ${quick_specification} | /bin/grep -w "${PERSIST_ASSETS_TO_CLOUD}"  2>/dev/null `" = "" ] )
 then
     ${log_command} "Your value for the variable PERSIST_ASSETS_TO_CLOUD (${PERSIST_ASSETS_TO_CLOUD}) doesn't appear to be valid please review"
@@ -231,15 +226,6 @@ then
         then
             ${log_command} "Your value for the variable REGION (${REGION}) doesn't appear to be valid please review"
         fi
-    fi
-fi
-
-if ( [ "`/bin/grep "^REGION_ID " ${quick_specification} | /bin/grep -w "${REGION_ID}"  2>/dev/null `" = "" ] )
-then
-    cloudhost="`/bin/echo ${CLOUDHOST} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
-    if ( [ "`/bin/grep "^REGION_ID " ${quick_specification} | /bin/grep -w "${REGION_ID}" | /bin/grep ${cloudhost} 2>/dev/null `" = "" ] )
-    then
-        ${log_command} "Your value for the variable REGION_ID (${REGION_ID}) doesn't appear to be valid please review"
     fi
 fi
 
@@ -335,11 +321,6 @@ fi
 if ( [ "`/bin/grep "^SSL_LIVE_CERT " ${quick_specification} | /bin/grep -w "${SSL_LIVE_CERT}"  2>/dev/null `" = "" ] )
 then
     ${log_command} "Your value for the variable SSL_LIVE_CERT (${SSL_LIVE_CERT}) doesn't appear to be valid please review"
-fi
-
-if ( [ "`/bin/grep "^ENABLE_EFS " ${quick_specification} | /bin/grep -w "${ENABLE_EFS}"  2>/dev/null `" = "" ] )
-then
-    ${log_command} "Your value for the variable ENABLE_EFS (${ENABLE_EFS}) doesn't appear to be valid please review"
 fi
 
 if ( [ "`/bin/grep "^AUTOSCALE_FROM_SNAPSHOTS " ${quick_specification} | /bin/grep -w "${AUTOSCALE_FROM_SNAPSHOTS}"  2>/dev/null `" = "" ] )
