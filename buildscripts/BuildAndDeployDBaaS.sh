@@ -399,8 +399,6 @@ then
         status "Please enter the port number that your database is running on"
         read response
         export DB_PORT="${response}"
-
-
         export DBaaS_DBNAME="${db_name}"
 
         status ""
@@ -422,111 +420,5 @@ then
         status "WHEN this is done, please press <enter>"
         read x
    #        /usr/bin/vultr database update ${database_id} --trusted-ips "0.0.0.0" #This doesn't work, if you know how to make it work, please tell me 0.0.0.0/0 is not accepted
-    fi
-fi
-
-#########################################################################################################
-#If you are deploying to aws provide a setting with the following format in your template
-#DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:eu-west-1b:db.t3.micro:TestDatabase:testdb:20:testdatabaseuser:ghdbRtjh=g"
-#DATABASE_DBaaS_INSTALLATION_TYPE="Maria:DBAAS:mariadb:eu-west-1b:db.t3.micro:TestDatabase:testdb:20:testdatabaseuser:ghdbRtjh=g"
-#DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:postgres:eu-west-1b:db.t3.micro:TestDatabase:testdb:20:testdatabaseuser:ghdbRtjh=g"
-#########################################################################################################
-
-if ( [ "${CLOUDHOST}" = "aws" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
-then
-    if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
-    then
-        database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
-        database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
-        database_engine="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
-        database_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
-        database_size="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
-        database_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
-        database_identifier="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $5}'`"
-        allocated_storage="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
-        database_username="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $7}'`"
-        database_password="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $8}'`"
-
-
-        vpc_id="`/usr/bin/aws ec2 describe-subnets | /usr/bin/jq '.Subnets[] | .SubnetId + " " + .VpcId' | /bin/sed 's/\"//g' | /bin/grep ${SUBNET_ID}  | /usr/bin/awk '{print $2}'`"
-        security_group_id="`/usr/bin/aws ec2 describe-security-groups | /usr/bin/jq '.SecurityGroups[] | .GroupName + " " + .GroupId' | /bin/grep AgileDeploymentToolkitSecurityGroup | /bin/sed 's/\"//g' | /usr/bin/awk '{print $NF}'`"
-
-        if ( [ "${security_group_id}" != "" ] )
-        then
-            /usr/bin/aws ec2 revoke-security-group-ingress --group-id ${security_group_id}  --ip-permissions  "`/usr/bin/aws ec2 describe-security-groups --output json --group-ids ${security_group_id} --query "SecurityGroups[0].IpPermissions"`"    
-        else
-            /usr/bin/aws ec2 create-security-group --description "This is the security group for your agile deployment toolkit" --group-name "AgileDeploymentToolkitSecurityGroup" --vpc-id=${vpc_id}
-        fi
-
-        security_group_id="`/usr/bin/aws ec2 describe-security-groups | /usr/bin/jq '.SecurityGroups[] | .GroupName + " " + .GroupId' | /bin/grep AgileDeploymentToolkitSecurityGroup | /bin/sed 's/\"//g' | /usr/bin/awk '{print $NF}'`"
-        security_group_id1="`/usr/bin/aws ec2 describe-security-groups | /usr/bin/jq '.SecurityGroups[] | .GroupName + " " + .GroupId' | /bin/grep AgileDeploymentToolkitWebserversSecurityGroup | /bin/sed 's/\"//g' | /usr/bin/awk '{print $NF}'`"
-
-
-        if ( [ "${security_group_id1}" != "" ] )
-        then
-            /usr/bin/aws ec2 revoke-security-group-ingress --group-id ${security_group_id1}  --ip-permissions  "`/usr/bin/aws ec2 describe-security-groups --output json --group-ids ${security_group_id1} --query "SecurityGroups[0].IpPermissions"`"    
-        else
-            /usr/bin/aws ec2 create-security-group --description "This is the security group for your agile deployment toolkit" --group-name "AgileDeploymentToolkitWebserversSecurityGroup" --vpc-id=${vpc_id}
-        fi
-
-        security_group_id1="`/usr/bin/aws ec2 describe-security-groups | /usr/bin/jq '.SecurityGroups[] | .GroupName + " " + .GroupId' | /bin/grep AgileDeploymentToolkitWebserversSecurityGroup | /bin/sed 's/\"//g' | /usr/bin/awk '{print $NF}'`"
-
-        /usr/bin/aws ec2 authorize-security-group-ingress --group-id ${security_group_id} --ip-permissions IpProtocol=tcp,FromPort=0,ToPort=65535,IpRanges='[{CidrIp=0.0.0.0/0}]'
-        /usr/bin/aws ec2 authorize-security-group-ingress --group-id ${security_group_id} --ip-permissions IpProtocol=icmp,FromPort=-1,ToPort=-1,IpRanges='[{CidrIp=0.0.0.0/0}]'
-    
-        /usr/bin/aws rds delete-db-subnet-group --db-subnet-group-name "AgileDeploymentToolkitSubnetGroup" 
-        /usr/bin/aws rds create-db-subnet-group --db-subnet-group-name "AgileDeploymentToolkitSubnetGroup" --db-subnet-group-description "Agile Deployment DB subnet group" --subnet-ids "${SUBNET_ID}" "${SUBNET_ID1}"
-
-        if ( [ "`/usr/bin/aws rds create-db-instance --db-name "${database_name}" --db-instance-identifier "${database_identifier}" --allocated-storage "${allocated_storage}" --db-instance-class "${database_size}" --engine "${database_engine}" --master-username "${database_username}"  --master-user-password "${database_password}" --availability-zone "${database_region}" --db-subnet-group-name agiledeploymentdbsubnetgroup --port ${DB_PORT} --no-publicly-accessible  --storage-encrypted --vpc-security-group-ids ${security_group_id} ${security_group_id1} --db-subnet-group-name \"AgileDeploymentToolkitSubnetGroup\" 2>&1 | /bin/grep "instance already exists"`" != "" ] )
-        then
-             status "Using existing database ${database_name}"
-        fi
-        
-        if ( [ "$?" = "0" ] )
-        then
-            db_name=""
-            while ( [ "${db_name}" = "" ] )
-            do
-                endpoints="`/usr/bin/aws rds describe-db-instances | /usr/bin/jq '.DBInstances[] | .Endpoint | .Address' | /bin/sed 's/\"//g' | /usr/bin/tr '\n' ' '`"
-                for endpoint in ${endpoints}
-                do
-                    db_name="`/bin/echo ${endpoint} | /usr/bin/awk -F'.' '{print $1}'`"
-                    if ( [ "${db_name}" = "null" ] )
-                    then
-                        db_name=""
-                    fi
-                    if ( [ "${db_name}" = "${database_identifier}" ] )
-                    then
-                        export DBaaS_HOSTNAME="${endpoint}"
-                        export DATABASE_DBaaS_INSTALLATION_TYPE="${database_type}"
-                        export DBaaS_USERNAME="${database_username}"
-                        export DBaaS_PASSWORD="${database_password}"
-                        export DBaaS_DBNAME="${db_name}"
-                        export DATABASE_INSTALLATION_TYPE="DBaaS"
-                   fi
-               done
-               status "Setting up and configuring your database, waiting for database endpoint to become available. Will try again in 30 seconds"
-               status "It may take 5 minutes or more for your database to come online"
-               status "#########################################################################################################################"
-               /bin/sleep 30
-           done
-           status ""
-           status "******************************************************************"
-           status "DATABASE SUCCESSFULLY PROVISIONED WITH AN ENDPOINT OF: ${endpoint}"
-           status "******************************************************************"
-           status ""
-           status "The rest of the settings for your database are as follows:"
-           status "##########################################################"
-           status "USERNAME:${DBaaS_USERNAME}"
-           status "PASSWORD:${DBaaS_PASSWORD}"
-           status "PORT:${DB_PORT}"
-           status "DB NAME:${db_name}"
-           status "##########################################################"
-           status "If these settings look OK to you, press <enter>"
-           read response
-       else
-           status "Couldn't create your RDS database, please investigate your log files to find out why"
-           exit
-       fi
     fi
 fi
