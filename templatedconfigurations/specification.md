@@ -84,8 +84,6 @@ You can get your S3_ACCESS_KEY and S3_SECRET KEY as follows:
 
 ##### vultr - You need to subscribe to S3 Object Storage and this will grant you a pair of S3 access keys which you can copy and paste into your template. 
 
-##### AWS - Under your IAM user, create a pair of keys which have S3 manipulation capabilities and paste them into your template as S3_ACCESS_KEY and S3_SECRET_KEY
-
 -----
 
 ### S3_HOST_BASE 
@@ -99,8 +97,6 @@ This parameter is the S3 endpoint for your deployment. It should be located as n
 ##### linode - Available endpoints to choose from (2024) - nl-ams-1.linodeobjects.com us-southeast-1.linodeobjects.com in-maa-1.linodeobjects.com us-ord-1.linodeobjects.com eu-central-1.linodeobjects.com id-cgk-1.linodeobjects.com us-lax-1.linodeobjects.com us-mia-1.linodeobjects.com it-mil-1.linodeobjects.com us-east-1.linodeobjects.com jp-osa-1.linodeobjects.com fr-par-1.linodeobjects.com br-gru-1.linodeobjects.com us-sea-1.linodeobjects.com ap-south-1.linodeobjects.com se-sto-1.linodeobjects.com us-iad-1.linodeobjects.com  
 
 ##### vultr - Available endpints to choose from (2024) - ewr1.vultrobjects.com, ams1.vultrobjects.com, sjc1.vultrobjects.com, sgp1.vultrobjects.com
-
-##### Amazon - There are lots of S3 endpoints to choose from for Amazon. Your S3 endpoint should be region specific. For example if you are in eu-west-1 in would be, s3.eu-west-1.amazonaws.com
 
 You can set your ${S3_HOST_BASE} parameter in your template to one of these listed endpoints depending on who your object storage is hosted with (which will likely be the ssame provider as your VPS systems). 
 
@@ -116,7 +112,6 @@ You can set your ${S3_HOST_BASE} parameter in your template to one of these list
 
 ##### vultr - the location should always be set to one of ams atl cdg dfw ewr fra icn lax lhr mex mia nrt ord sea sgp sjc sto syd yto  
 
-##### amazon - the location should always be set to one of eu-north-1 ap-south-1 eu-west-3 eu-west-2 eu-west-1 ap-northeast-2 ap-northeast-1 sa-east-1 ca-central-1 ap-southeast-1 ap-southeast-2 eu-central-1 us-east-1 us-east-2 us-west-1 us-west-2  
 
 -----
 
@@ -132,7 +127,6 @@ Some providers use personal access tokens rather than access keys and secret key
 
 ##### Vultr - Login to your vultr account and go to your account on the top right. Then enable your personal access token and you can set it here.
 
-##### AWS - aws does not need this, see ACCESS_KEY and SECRET_KEY
 
 -----
 
@@ -149,7 +143,6 @@ Some providers use an access key and a secret key to control access to their com
 
 ##### Vultr - Does not use access keys and secret keys, see TOKEN
 
-##### AWS - You can generate access keys and secret keys to control access to your compute resources. Note, this is distinct from the object storage access keys
 
 -----
 
@@ -533,7 +526,6 @@ Exoscale: Available region you can set for exoscale are:  REGION MUST CORRELATE 
 
  Linode: not needed  
  Vultr: not needed  
- AWS: not needed  
 
 -------------
 
@@ -550,8 +542,6 @@ Exoscale: Available region IDs you can set for exoscale are:  "ch-gva-2", "ch-dk
 Linode: Available regions you can set for linode are: "ap-west","ca-central","ap-southeast","us-iad","us-ord","fr-par","us-sea","br-gru","nl-ams","se-sto","in-maa","jp-osa","it-mil","us-mia","id-cgk","us-lax","us-central","us-west","us-southeast","us-east","eu-west","ap-south","eu-central", "ap-northeast" 
 
 Vultr: Available regions you can set for vultr are:  "ams","atl","cdg","dfw","ewr","fra","icn","lax","lhr","mex","mia","nrt","ord","sea","sgp","sjc","sto","syd","yto"  
-
-AWS: one of: eu-north-1, ap-south-1, eu-west-3, eu-west-2, eu-west-1, ap-northeast-2, ap-northeast-1, sa-east-1, ca-central-1, ap-southeast-1, ap-southeast-2, eu-central-1, us-east-1, us-east-2, us-west-1, us-west-2  
 
 
 ----------
@@ -572,7 +562,6 @@ Linode: g6-nanode-1,g6-standard-1,g6-standard-2,g6-standard-4,g6-standard-6,g6-s
 
 Vultr: Available sizes you can set for your machines on vultr are: vc2-1c-1gb, vc2-1c-2gb, vc2-2c-4gb, vc2-4c-8gb, vc2-6c-16gb, vc2-8c-32gb
 
-AWS: t2.micro t2.small t2.medium t2.large t2.xlarge t2.2xlarge
 
 
 -------
@@ -591,7 +580,6 @@ Linode: g6-nanode-1,g6-standard-1,g6-standard-2,g6-standard-4,g6-standard-6,g6-s
 
 Vultr:  SERVER_TYPE values for each machine size on vultr  vc2-1c-1gb, vc2-1c-2gb, vc2-2c-4gb, vc2-4c-8gb, vc2-6c-16gb, vc2-8c-32gb
 
-AWS  :  t2.micro t2.small t2.medium t2.large t2.xlarge t2.2xlarge
 
 
 ### CLOUDHOST
@@ -608,7 +596,7 @@ You can set the cloudhost to Digital Ocean, for example by setting the CLOUDHOST
 
 This is just an identifier which we can check for on our servers. It can be set to
 
-"DROPLET", "EXOSCALE", "LINODE", "VULTR", "AWS"
+"DROPLET", "EXOSCALE", "LINODE", "VULTR"
 
 ------------
 
@@ -701,9 +689,7 @@ INFRASTRUCTURE_REPOSITORY_PASSWORD="none"
 
 This value determines who your object store provider will be (very likely the same as your compute services provider, but, doesn't have to be)
 DATASTORE_CHOICE should be set to one of the following values:
- 
- For Amazon S3: "amazonS3"  
- 
+  
  For DigitalOcean spaces: "digitalocean"  
  
  For Exoscale Object Store: "exoscale"  
@@ -743,11 +729,6 @@ If you are using a managed database, this will be the name that you set for your
 
 Please review [this](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/master/doco/AgileToolkitDeployment/DeployingDBaaS.md) for how to set this value for your DBaaS provider.
 
-------
-
-### DBaaSDBSECURITYGROUP
-
-If you are using an AWS managed database then the database will have a security group of the format: "sg-0fad5hf744c044361". You need to find the security group of your managed database and paste the sg- value here. It will not build with
 
 -----
 
@@ -796,36 +777,6 @@ if SSL_LIV£_CERT="1" then this says "generate a live (production ready) certifi
 if SSL_LIVE_CERT="0" then this says "generate a staging (development mode) certificate
 
 The templating system is set up to use live certificates by default in all cases
-
-------
- 
-### IN_MEMORY_CACHING
-### IN_MEMORY_CACHING_PORT
-### IN_MEMORY_CACHING_HOST
-### IN_MEMORY_CACHING_SECURITY_GROUP
-
-If you are using an IN-MEMORY caching solution such as Elasticache on AWS, then, you can set your caching relevant settings here.
-
-IN_MEMORY_CACHING can be set to "redis", or "memcache"  
-
-IN_MEMORY_CACHING_PORT is the port that the caching service is running on  
-
-IN_MEMORY_CACHING_HOST is the host that the caching service is running on  
-
-IN_MEMORY_CACHING_SECURITY_GROUP is the (where appropriate) security group that the caching service is running in.  
-
-
------
-
-### ENABLE_EFS
-
-If you are using AWS EFS, then, you can set this to "1" in all other cases, this should be "0"
-
-------
-
-### SUBNET_ID
-
-If you are using AWS, you must set this to the subnet ID of your servers. In all other cases it should be blank. 
 
 -----
 
