@@ -188,9 +188,6 @@ do
             ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP} ${CLOUDHOST}
         else
             status "Successfully scanned remote database ${database_name} for ssh-keys"
-        
-            IP_TO_ALLOW="${DBIP}"
-            . ${BUILD_HOME}/providerscripts/server/AllowDBAccess.sh
 
             #We don't want to pass in our private keys to our remote commands every time from the command line as it will look unwieldy.
             #So, we previously setup unique key files with out ssh private keys in them and now that we know the ip address of our autoscaler,
