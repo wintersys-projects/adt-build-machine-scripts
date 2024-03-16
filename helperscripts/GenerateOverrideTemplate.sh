@@ -55,9 +55,6 @@ then
 elif ( [ "${response}" = "4" ] )
 then
     CLOUDHOST="vultr"
-elif ( [ "${response}" = "5" ] )
-then
-    CLOUDHOST="aws"
 else
     /bin/echo "Unrecognised  cloudhost. Exiting ...."
     exit
