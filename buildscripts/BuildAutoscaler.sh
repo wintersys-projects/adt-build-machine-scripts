@@ -328,12 +328,6 @@ do
                 read response
 
                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP} ${CLOUDHOST}
-            
-                if ( [ "${DBaaS_DBSECURITYGROUP}" != "" ] )
-                then
-                    IP_TO_DENY="${ASIP}"
-                    . ${BUILD_HOME}/providerscripts/server/DenyDBAccess.sh
-                fi
 
                 #Wait until we are sure that the image server(s) are destroyed because of a faulty build
                 while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "autoscaler" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
