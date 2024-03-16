@@ -160,17 +160,6 @@ then
     read x
 fi
 
-if ( [ "${CLOUDHOST}" = "aws" ] && [ "${DISABLE_HOURLY}" != "1" ] )
-then
-    /usr/bin/banner "WARNING" >&3
-    status "############################################################################################################################################"
-    status "Please be aware that you have hourly backups enabled which are counted as \"dataout\" by AWS. This can rack up quite some costs as such transfers"
-    status "Are billable under AWS. It is recommended therefore that you switch off hourly backups and only rely on daily, weekly, monthly and bi-monthly"
-    status "I recommend making very sure of your cost profile when using the AWS system because it can surprise bill you if you are not careful. I think its great"
-    status "and all that, but, you know, we don't want to end up brassic"
-    status "############################################################################################################################################"
-fi
-
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
     PRODUCTION="0"
