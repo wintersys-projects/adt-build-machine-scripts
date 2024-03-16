@@ -81,15 +81,3 @@ then
     fi
 fi
 
-if ( [ "${cloudhost}" = "aws" ] || [ "${all}" = "1" ] )
-then
-    if ( [ -f ~/.aws/config ] )
-    then
-        server_name="`/usr/bin/aws ec2 describe-instances | /usr/bin/jq '.Reservations[].Instances[] | .PublicIpAddress + " " + .Tags[].Key + " " + .Tags[].Value' | /bin/sed 's/\"//g' | /bin/grep -w "${server_ip}" | /usr/bin/awk '{print $NF}'`"
-        if ( [ "${server_name}" != "" ] )
-        then
-            /bin/echo "aws" > ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST
-            /bin/echo ${server_name}
-        fi
-    fi
-fi
