@@ -68,13 +68,5 @@ then
     /bin/touch ${HOME}/.ssh/SNAPSHOT:${SUBID}
     
 fi
-if ( [ "${CLOUDHOST}" = "aws" ] )
-then 
-    status ""
-    status "########################SNAPSHOTING YOUR WEBSERVER IN THE BACKGROUND####################################"
-    status ""
-    
-    instance_id="`/usr/bin/aws ec2 describe-instances --filter "Name=tag:descriptiveName,Values=webserver*" "Name=instance-state-name,Values=running" | /usr/bin/jq ".Reservations[].Instances[].InstanceId" | /bin/sed 's/\"//g' | /usr/bin/head -1`"
-    /usr/bin/aws ec2 create-image --instance-id ${instance_id} --name "webserver-${SERVER_USER}"
-fi
+
 
