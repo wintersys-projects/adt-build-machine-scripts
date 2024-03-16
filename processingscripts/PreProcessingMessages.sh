@@ -235,17 +235,3 @@ then
     read x
 fi
 
-if ( [ "${APPLICATION}" = "moodle" ] && ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] || [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "MySQL" ] ) )
-then
-    status "###################################################################################################################################"
-    status "Hi, it's me again... I am going to try and set some parameters for your database. Some providers, for example, AWS, don't"
-    status "allow this to be done directly via scripts and so, with AWS, for example, I can't do this for you and you need to create "
-    status "a parameter group and apply it to your database when you deploy iti through the AWS console. Other providers will vary."
-    status ""
-    status "The settings you need to have for moodle  in your parameter group (ref AWS documentation) are as follows:"
-    status
-    status "innodb_file_format=Barracuda , innodb_file_per_table=ON , innodb_large_prefix=1 , binlog_format = 'MIXED'"
-    status
-    status "###################################################################################################################################"
-    read x
-fi
