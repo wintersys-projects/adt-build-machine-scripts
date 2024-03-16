@@ -68,8 +68,4 @@ then
     done
 fi
 
-if ( [ "${cloudhost}" = "aws" ] )
-then
-    /usr/bin/aws ec2 delete-key-pair --key-name ${key_name}
-fi
 
