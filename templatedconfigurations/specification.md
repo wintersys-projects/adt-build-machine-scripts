@@ -412,12 +412,6 @@ You have a choice of webserver that you want to deploy to. You can set this to "
 
 If you are installing a database on a VPS system, you have three types of database you can choose from by default. Obviously, your choice here has to be supported by your CMS system. The choices are: "Maria", "MySQL", and "Postgres" and if you are installing a managed darabase you will want to set this to DBaaS
 
-----
-
-### DISABLE_HOURLY
-
-This is just a flag to disable hourly backups which you might want to do, if your backups were incurring you costs in some way. When this is set to "1", no hourly backups are made. When it is set to "0", hourly backups are made as usual. 
-
 -----
 
 ### SERVER_TIMEZONE_CONTINENT
