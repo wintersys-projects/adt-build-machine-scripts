@@ -144,9 +144,6 @@ then
     read x
 fi
 
-. ${BUILD_HOME}/providerscripts/server/ObtainSubnetID.sh
-. ${BUILD_HOME}/providerscripts/server/ProvisionElasticFS.sh
-
 # I think the usual phrase is, 'we are all set'. So, tell the user we are starting the build proper.
 status ""
 status ""
