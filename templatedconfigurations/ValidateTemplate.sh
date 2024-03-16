@@ -513,16 +513,6 @@ then
 
 fi
 
-if ( [ "${CLOUDHOST}" = "aws" ] && [ "${BUILDOS}" = "ubuntu" ] && [ "${DEFAULT_USER}" != "ubuntu" ] )
-then
-    ${log_command} "It looks like your DEFAULT_USER is set to ${DEFAULT_USER} when it should be ubuntu"
-fi
-
-if ( [ "${CLOUDHOST}" = "aws" ]  && [ "${BUILDOS}" = "debian" ] && [ "${DEFAULT_USER}" != "admin" ] )
-then
-    ${log_command} "It looks like your DEFAULT_USER is set to ${DEFAULT_USER} when it should be admin"
-fi
-
 if ( ( [ "${CLOUDHOST}" = "linode" ] || [ "${CLOUDHOST}" = "exoscale" ] ) && [ "${CLOUDHOST_ACCOUNT_ID}" = "" ] )
 then
     ${log_command} "It looks like CLOUDHOST_ACCOUNT_ID is blank this should definitely not be the case for ${CLOUDHOST}"
