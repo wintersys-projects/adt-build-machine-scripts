@@ -97,14 +97,14 @@ do
         do
             count="0"
             #Actually start the server machine. Following this, there will be an active machine instance running on your cloud provider
-            ${BUILD_HOME}/providerscripts/server/CreateServer.sh "'${OS_TYPE}'" "${REGION_ID}" "${WS_SERVER_TYPE}" "${webserver_name}" "${PUBLIC_KEY_ID}" ${CLOUDHOST} ${CLOUDHOST_USERNAME} ${CLOUDHOST_PASSWORD} ${SUBNET_ID} ${WEBSERVER_IMAGE_ID} ${ENABLE_DDOS_PROTECION}
+            ${BUILD_HOME}/providerscripts/server/CreateServer.sh "'${OS_TYPE}'" "${REGION}" "${WS_SERVER_TYPE}" "${webserver_name}" "${PUBLIC_KEY_ID}" ${CLOUDHOST} ${CLOUDHOST_USERNAME} ${CLOUDHOST_PASSWORD} ${SUBNET_ID} ${WEBSERVER_IMAGE_ID} ${ENABLE_DDOS_PROTECION}
 
             #Keep trying if the first time wasn't successful
             while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
             do
                 count="`/usr/bin/expr ${count} + 1`"
                 /bin/sleep 10
-                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${OS_TYPE}" "${REGION_ID}" "${WS_SERVER_TYPE}" "${webserver_name}" "${PUBLIC_KEY_ID}" ${CLOUDHOST} ${CLOUDHOST_USERNAME} ${CLOUDHOST_PASSWORD} ${SUBNET_ID} ${WEBSERVER_IMAGE_ID}  ${ENABLE_DDOS_PROTECION}
+                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${OS_TYPE}" "${REGION}" "${WS_SERVER_TYPE}" "${webserver_name}" "${PUBLIC_KEY_ID}" ${CLOUDHOST} ${CLOUDHOST_USERNAME} ${CLOUDHOST_PASSWORD} ${SUBNET_ID} ${WEBSERVER_IMAGE_ID}  ${ENABLE_DDOS_PROTECION}
             done
             
             if ( [ "${count}" = "10" ] )
