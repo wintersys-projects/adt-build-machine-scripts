@@ -54,12 +54,6 @@ then
     autoscaler_token_to_match="*autoscaler*"
     webserver_token_to_match="*webserver*"
     database_token_to_match="*database*"
-elif ( [ "${response}" = "5" ] )
-then
-    CLOUDHOST="aws"
-    autoscaler_token_to_match="*autoscaler*"
-    webserver_token_to_match="*webserver*"
-    database_token_to_match="*database*"
 else
     /bin/echo "Unrecognised  cloudhost. Exiting ...."
     exit
