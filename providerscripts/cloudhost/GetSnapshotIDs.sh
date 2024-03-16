@@ -58,12 +58,5 @@ fi
         WEBSERVER_IMAGE_ID="`/usr/bin/vultr snapshots | /bin/grep webserver | /bin/grep ${SNAPSHOT_ID}  | /usr/bin/awk '{print $1}'`"
         AUTOSCALER_IMAGE_ID="`/usr/bin/vultr snapshots | /bin/grep autoscaler | /bin/grep ${SNAPSHOT_ID}  | /usr/bin/awk '{print $1}'`"
         DATABASE_IMAGE_ID="`/usr/bin/vultr snapshots | /bin/grep database | /bin/grep ${SNAPSHOT_ID}  | /usr/bin/awk '{print $1}'`"
-    fi
-
-    if ( [ "${CLOUDHOST}" = "aws" ] )
-    then
-        WEBSERVER_IMAGE_ID="`/usr/bin/aws ec2 describe-images --owners self --filters \"Name=name,Values=webserver-${SNAPSHOT_ID}*\"  | /usr/bin/jq \".Images[].ImageId\" | /bin/sed 's/\"//g'`"
-        AUTOSCALER_IMAGE_ID="`/usr/bin/aws ec2 describe-images --owners self --filters \"Name=name,Values=autoscaler-${SNAPSHOT_ID}*\"  | /usr/bin/jq \".Images[].ImageId\" | /bin/sed 's/\"//g'`"
-        DATABASE_IMAGE_ID="`/usr/bin/aws ec2 describe-images --owners self --filters \"Name=name,Values=database-${SNAPSHOT_ID}*\"  | /usr/bin/jq \".Images[].ImageId\" | /bin/sed 's/\"//g'`"
-    fi        
+    fi       
 fi
