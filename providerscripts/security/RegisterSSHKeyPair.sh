@@ -91,8 +91,4 @@ then
     /usr/bin/vultr ssh-key create -n "${key_name}" -k "${key_substance}"
 fi
 
-if ( [ "${cloudhost}" = "aws" ] )
-then
-   /usr/bin/aws ec2 import-key-pair --key-name "${key_name}" --public-key-material "${key_substance}"
-fi
 
