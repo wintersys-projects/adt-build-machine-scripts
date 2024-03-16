@@ -516,20 +516,9 @@ You can set this to "HTML" or "PHP" based on the language you are deploying for.
 If you are deploying PHP, then you can set which version of PHP you are deploying here. Ordinarily, it should be the latest available version (currently 7.4).
 So, to use 7.4 you would set PHP_VERSION="7.4"
 
----------
-
-### REGION
-
-Digital Ocean: Not needed  
-
-Exoscale: Available region you can set for exoscale are:  REGION MUST CORRELATE WITH REGION_ID : "ch-gva-2", "ch-dk-2", "at-vie-1", "de-fra-1", "bg-sof-1", "de-muc-1"  
-
- Linode: not needed  
- Vultr: not needed  
-
 -------------
 
-### REGION_ID
+### REGION
 
 This is the region id where you wish to deploy the servers to.
 
