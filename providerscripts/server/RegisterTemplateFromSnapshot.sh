@@ -42,7 +42,3 @@ then
      :
 fi
 
-if ( [ "${CLOUDHOST}" = "aws" ] )
-then
-     :
-fi
