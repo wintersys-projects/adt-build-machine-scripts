@@ -59,10 +59,6 @@ elif ( [ "${response}" = "4" ] )
 then
     CLOUDHOST="vultr"
     token_to_match="webserver*"
-elif ( [ "${response}" = "5" ] )
-then
-    CLOUDHOST="aws"
-    token_to_match="webserver*"
 fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/ips/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
