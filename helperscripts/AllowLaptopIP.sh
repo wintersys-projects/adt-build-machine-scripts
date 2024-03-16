@@ -55,10 +55,6 @@ elif ( [ "${response}" = "4" ] )
 then
     DATASTORE_PROVIDER="vultr"
     token_to_match="*autoscaler*"
-elif ( [ "${response}" = "5" ] )
-then
-    DATASTORE_PROVIDER="aws"
-    token_to_match="*autoscaler*"
 else
     /bin/echo "Unrecognised  cloudhost. Exiting ...."
     exit
