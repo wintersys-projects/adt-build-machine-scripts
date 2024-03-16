@@ -334,12 +334,6 @@ do
                 read response
 
                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP} ${CLOUDHOST}
-            
-                if ( [ "${DBaaS_DBSECURITYGROUP}" != "" ] )
-                then
-                    IP_TO_DENY="${DBIP}"
-                    . ${BUILD_HOME}/providerscripts/server/DenyDBAccess.sh
-                fi
 
                 /bin/rm ${BUILD_HOME}/runtimedata/ips/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBIP:${DBIP}
                 /bin/rm ${BUILD_HOME}/runtimedata/ips/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBPRIVATEIP:${DBIP_PRIVATE}
