@@ -85,7 +85,7 @@ distribution="${1}"
 location="${2}"
 server_size="${3}"
 server_name="`/bin/echo ${4} | /usr/bin/cut -c -32`"
-key="${5}"
+key_id="${5}"
 cloudhost="${6}"
 username="${7}"
 password="${8}"
@@ -93,41 +93,40 @@ snapshot_id="${10}"
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
+    key="`/usr/local/bin/linode-cli --text sshkeys view ${key_id} | /usr/bin/awk '{print $3,$4,$5}' | /usr/bin/tail -n-1`"
+    emergency_password="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-30`"
+    BUILD_HOME="`/usr/bin/pwd`"
+    /bin/echo "${emergency_password}" > ${BUILD_HOME}/runtimedata/${cloudhost}/EMERGENCY_PASSWORD
     
-    if ( [ "${password}" = "" ] )
-    then
-        password="156432wdfpdaiI"
-    fi
-
     if ( [ "${snapshot_id}" != "" ] )
     then
-            /usr/local/bin/linode-cli linodes create --root_pass ${password} --region ${location} --image "private/${snapshot_id}" --type ${server_size} --label "${server_name}" --no-defaults  
+            /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}"--region ${location} --image "private/${snapshot_id}" --type ${server_size} --label "${server_name}" --no-defaults  
             server_id="`/usr/local/bin/linode-cli linodes list --text --label ${server_name} | /bin/grep -v 'id' | /usr/bin/awk '{print $1}'`"
             /usr/local/bin/linode-cli linodes ip-add ${server_id} --type ipv4 --public false
     else
         if ( [ "`/bin/echo ${distribution} | /bin/grep 'Ubuntu 20.04'`" != "" ] )
         then
-            /usr/local/bin/linode-cli linodes create --root_pass ${password} --region ${location} --image linode/ubuntu20.04 --type ${server_size} --label "${server_name}" --no-defaults 
+            /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${location} --image linode/ubuntu20.04 --type ${server_size} --label "${server_name}" --no-defaults 
             server_id="`/usr/local/bin/linode-cli linodes list --text --label ${server_name} | /bin/grep -v 'id' | /usr/bin/awk '{print $1}'`"
             /usr/local/bin/linode-cli linodes ip-add ${server_id} --type ipv4 --public false
         elif ( [ "`/bin/echo ${distribution} | /bin/grep 'Ubuntu 22.04'`" != "" ] )
         then
-            /usr/local/bin/linode-cli linodes create --root_pass ${password} --region ${location} --image linode/ubuntu22.04 --type ${server_size} --label "${server_name}" --no-defaults 
+            /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${location} --image linode/ubuntu22.04 --type ${server_size} --label "${server_name}" --no-defaults 
             server_id="`/usr/local/bin/linode-cli linodes list --text --label ${server_name} | /bin/grep -v 'id' | /usr/bin/awk '{print $1}'`"
             /usr/local/bin/linode-cli linodes ip-add ${server_id} --type ipv4 --public false
         elif ( [ "`/bin/echo ${distribution} | /bin/grep 'Debian 10'`" != "" ] )
         then
-            /usr/local/bin/linode-cli linodes create --root_pass ${password} --region ${location} --image linode/debian10 --type ${server_size} --label "${server_name}" --no-defaults  
+            /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${location} --image linode/debian10 --type ${server_size} --label "${server_name}" --no-defaults  
             server_id="`/usr/local/bin/linode-cli linodes list --text --label ${server_name} | /bin/grep -v 'id' | /usr/bin/awk '{print $1}'`"
             /usr/local/bin/linode-cli linodes ip-add ${server_id} --type ipv4 --public false
         elif ( [ "`/bin/echo ${distribution} | /bin/grep 'Debian 11'`" != "" ] )
         then
-            /usr/local/bin/linode-cli linodes create --root_pass ${password} --region ${location} --image linode/debian11 --type ${server_size} --label "${server_name}" --no-defaults  
+            /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${location} --image linode/debian11 --type ${server_size} --label "${server_name}" --no-defaults  
             server_id="`/usr/local/bin/linode-cli linodes list --text --label ${server_name} | /bin/grep -v 'id' | /usr/bin/awk '{print $1}'`"
             /usr/local/bin/linode-cli linodes ip-add ${server_id} --type ipv4 --public false
         elif ( [ "`/bin/echo ${distribution} | /bin/grep 'Debian 12'`" != "" ] )
         then
-            /usr/local/bin/linode-cli linodes create --root_pass ${password} --region ${location} --image linode/debian12 --type ${server_size} --label "${server_name}" --no-defaults  
+            /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${location} --image linode/debian12 --type ${server_size} --label "${server_name}" --no-defaults  
             server_id="`/usr/local/bin/linode-cli linodes list --text --label ${server_name} | /bin/grep -v 'id' | /usr/bin/awk '{print $1}'`"
             /usr/local/bin/linode-cli linodes ip-add ${server_id} --type ipv4 --public false
         fi
