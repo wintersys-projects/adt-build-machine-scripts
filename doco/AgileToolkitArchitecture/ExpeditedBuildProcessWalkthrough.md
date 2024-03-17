@@ -24,7 +24,7 @@
 
        ${BUILD_HOME}/templatedconfiguration/templates/<provider>
 
-10. Each default template has some fields marked **MANDATORY** these fields are the minimum set of fields which you must provide values to for your build process to have any chance of succeeding. If you don't provide a suffficient set of values, then, you should be warned about it as you try to start the build
+10. Each default template has some fields marked **MANDATORY** these fields are the minimum set of fields which you must provide values to for your build process to have any chance of succeeding. If you don't provide a suffficient set of **valid** values, then, you should be warned about it as you try to start the build
 
 12. Once you are happy that your template is configured correctly you can start the build by running the following script:
 
