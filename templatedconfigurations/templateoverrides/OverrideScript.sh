@@ -97,13 +97,6 @@ fi
 #/usr/sbin/ufw allow from ${LAPTOP_IP}
 /usr/sbin/ufw allow from ${LAPTOP_IP} to any port ${BUILDMACHINE_SSH_PORT}
 /bin/echo "y" | /usr/sbin/ufw enable
-####################################################################################################################################################
-#It is possible to lock down ssh connections to only from a specific ip address which is more secure, but, if the IP address of your machine changes,
-#for example, if you connect your laptop to a different network, then, you will have to connect to the build client machine through the console of
-#your VPS system provider and allow your new IP address through the firewall. This might be more of a hassle than you think its worth if this is the
-#case for you, then allow ssh access from anywhwhere by uncommenting this line but by default we will be as tight as possible
-#####################################################################################################################################################
-#/usr/sbin/ufw allow ${BUILDMACHINE_SSH_PORT}/tcp 
 
 cd /home/${BUILDMACHINE_USER}
 
