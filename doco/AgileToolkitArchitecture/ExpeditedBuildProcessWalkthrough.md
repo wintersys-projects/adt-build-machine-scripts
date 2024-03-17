@@ -1,6 +1,6 @@
 1. To perform an expedited build you need to grab a copy of the script [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/templatedconfigurations/templateoverrides/OverrideScript.sh)
 
-2. You can keep your copy of this script on your laptop (the first build you do is much more longwinded than subsequent onces where you can just copy and paste configurations you have already set up) and you need to set the following settings in it before the build can proceed:
+2. You can keep your copy of this script on your laptop (the first build you do is much more longwinded than subsequent ones where you can just copy and paste configurations you have already set up) and you need to set the following settings in it before the build can proceed:
 
    BUILDMACHINE_USER="agile-user"
    BUILDMACHINE_PASSWORD="Hjdhfb34hd£"
