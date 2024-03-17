@@ -2,21 +2,21 @@
 
 2. You can keep your copy of this script on your laptop (the first build you do is much more longwinded than subsequent ones where you can just copy and paste configurations you have already set up) and you need to set the following settings in it before the build can proceed:
 
-   BUILDMACHINE_USER="agile-deployer"
-   BUILDMACHINE_PASSWORD="Hjdhfb34hd£"
-   BUILDMACHINE_SSH_PORT="1035"
-   LAPTOP_IP="111.111.111.111"
-   SSH="<your ssh public key here>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already
+   BUILDMACHINE_USER="agile-deployer"<br>
+   BUILDMACHINE_PASSWORD="Hjdhfb34hd£"<br>
+   BUILDMACHINE_SSH_PORT="1035"<br>
+   LAPTOP_IP="111.111.111.111"<br>
+   SSH="<your ssh public key here>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already<br>
 
 4. Now paste the modified script into the cloud-init portion of a new machine VPS machine of your chosen VPS provider
 
 6. In a couple of minutes your machine should be online and you can ssh into it, something like:
 
-   ssh -p 1035 agile-user@<machine_ip_address>
+   ssh -p 1035 agile-user@<machine_ip_address><br>
 
    and you will see a directory
 
-   adt-build-machine-scripts
+   adt-build-machine-scripts<br>
 
    and this means that this toolkit is available on the machine
 
