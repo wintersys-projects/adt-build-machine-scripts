@@ -95,12 +95,20 @@ then
             
     if ( [ "${no_autoscalers}" = "1" ] )
     then
+        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/EMERGENCY_PASSWORD ] )
+        then
+            /usr/bin/scp ${OPTIONS_AS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD
+        fi
         /usr/bin/scp ${OPTIONS_AS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1        
         /usr/bin/scp ${OPTIONS_AS} -P ${SSH_PORT} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1  
     elif ( [ "${no_autoscalers}" != "0" ] )
     then
         for as_active_ip in ${as_active_ips}
         do
+             if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/EMERGENCY_PASSWORD ] )
+             then
+                /usr/bin/scp ${OPTIONS_AS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD
+             fi
              /usr/bin/scp ${OPTIONS_AS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1        
              /usr/bin/scp ${OPTIONS_AS} -P ${SSH_PORT} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1    
         done
