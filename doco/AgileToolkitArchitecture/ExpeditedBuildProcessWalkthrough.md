@@ -2,33 +2,33 @@
 
 2. You can keep your copy of this script on your laptop (the first build you do is much more longwinded than subsequent ones where you can just copy and paste configurations you have already set up) and you need to set the following settings in it before the build can proceed:
 
-   BUILDMACHINE_USER="agile-deployer"<br>
-   BUILDMACHINE_PASSWORD="Hjdhfb34hd£"<br>
-   BUILDMACHINE_SSH_PORT="1035"<br>
-   LAPTOP_IP="111.111.111.111"<br>
-   SSH="<your ssh public key here>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already<br>
+        BUILDMACHINE_USER="agile-deployer"<br>
+        BUILDMACHINE_PASSWORD="Hjdhfb34hd£"<br>
+        BUILDMACHINE_SSH_PORT="1035"<br>
+        LAPTOP_IP="111.111.111.111"<br>
+        SSH="<your ssh public key here>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already<br>
 
 4. Now paste the modified script into the cloud-init portion of a new machine VPS machine of your chosen VPS provider
 
 6. In a couple of minutes your machine should be online and you can ssh into it, something like:
 
-   ssh -p 1035 agile-user@<machine_ip_address><br>
+        ssh -p 1035 agile-user@<machine_ip_address><br>
 
    and you will see a directory
 
-   adt-build-machine-scripts<br>
+       adt-build-machine-scripts<br>
 
    and this means that this toolkit is available on the machine
 
 8. What you now need to so is setup your template for which you must pick the appropriate one from here on your new machine:
 
-   ${BUILD_HOME}/templatedconfiguration/templates/provider
+       ${BUILD_HOME}/templatedconfiguration/templates/provider
 
 10. Each default template has some fields marked mandatory these fields are the minimum set of fields which you must provide values for your build process to have any chance of succeeding. If you don't provide a suffficient set of values, then, you should be warned about it as you try to start the build
 
 12. Once you are happy that your template is configured correctly you can start the build by running the following script:
 
-   ${BUILD_HOME}/ExpeditedAgileDeploymentToolkit.sh  
+        ${BUILD_HOME}/ExpeditedAgileDeploymentToolkit.sh  
 
 11. When you run this toolkit it will follow several prebuild steps to make sure that it has everything that the build process needs in order. The main steps that it needs to complete successfully before the build can begin are:
 
@@ -46,13 +46,13 @@
    
 11. When you begin a build with this buildkit it will expect you to have selected a build chain in the file by setting a value for BUILDCHAINTYPE:
 
-   ${BUILD_HOME}/builddescriptors/buildstylesscp.dat  
+        ${BUILD_HOME}/builddescriptors/buildstylesscp.dat  
 
    If you have selected the "standard" build chain time which you most probabaly have then for production mode the build process will build autoscaler(s), webserver and database machines by calling the files  
 
-   ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh  
-   ${BUILD_HOME}/buildscripts/BuildWebserver.sh  
-   ${BUILD_HOME}/buildscripts/BuildDatabase.sh  
+       ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh  
+       ${BUILD_HOME}/buildscripts/BuildWebserver.sh  
+       ${BUILD_HOME}/buildscripts/BuildDatabase.sh  
 
    If you are building for DEVELOPMENT rather than production only a webserver and a database will be built  
 
@@ -60,24 +60,24 @@
 
 13. Once the machines have built, you will get a message saying that tbe build was successful together with, possibly, some pertinent information that you might need to interact with your application. Once the build is complete you can interact with each of your machines using the scripts in the
 
-   ${BUILD_HOME}/helperscripts  
+        ${BUILD_HOME}/helperscripts  
 
    directory. You can login to your machines and have a nose around to see what is going on.  
 
    Once you are on a machine (you have authenticated to it using the correct SSH Key as obtained by the helperscript you have used, you can become root as follows:  
 
-   cd ${HOME}/super/  
-   sh ./Super.sh  
+       cd ${HOME}/super/  
+       sh ./Super.sh  
 
    You will then be root because having the correct key to login to the machine is considered strong authentication. root user logins are disabled and password based logins are disabled also.  
 
    12. The machines work by having scripts run from cron on a regular basis to either initiate a scaling process on an autoscaler a backup process on a webserver or database processes to do with the firewall and application configuration and so on. If you want to find out what the machines are doing the advice is to studu what is configured in cron which you can do by tying
   
-   crontab -e  
+     crontab -e  
 
    13. The configuration files that are representations of the values that you either entered into your template or added interactively during an expedited build process are stored in the directory:
   
-   ${HOME}/.ssh  
+     ${HOME}/.ssh  
 
    I chose this directory because these configuration files were copied here using SSH so it reminds us that they have come from the build-machine  
 
@@ -85,17 +85,17 @@
 
    14. Another interesting directory on each of the machines is
 
-         ${HOME}/runtime
+           ${HOME}/runtime
 
-         This directory basically contains information that the scripts are generating as they go about their business.
+   This directory basically contains information that the scripts are generating as they go about their business.
 
-   16. You can find and examine the rest of the sourcecode for this toolkit by looking in the ${HOME} directory
+   15. You can find and examine the rest of the sourcecode for this toolkit by looking in the ${HOME} directory
      
-   18. A webserver may be configured to mount its "dynamic assets" directory (the images folder for example in joomla) from a bucket in your datastore. This gives a very large amount of "space" for dynamic assets to be stored but by default the bucket they are stored in is the only source of truth for those assets so you might want to set up a process that makes backups of that bucket because if you have a problem and can't access that bucket for some reason (failures do happen) it might hose your whole application. The tool I use by default for mounting the assets directory to all of the n webservers that I am running is s3fs but other tools are available.
+   16. A webserver may be configured to mount its "dynamic assets" directory (the images folder for example in joomla) from a bucket in your datastore. This gives a very large amount of "space" for dynamic assets to be stored but by default the bucket they are stored in is the only source of truth for those assets so you might want to set up a process that makes backups of that bucket because if you have a problem and can't access that bucket for some reason (failures do happen) it might hose your whole application. The tool I use by default for mounting the assets directory to all of the n webservers that I am running is s3fs but other tools are available.
      
-   20. On the autoscaler(s) machines are scaled according to scaling requirements which can be set by running:
+   17. On the autoscaler(s) machines are scaled according to scaling requirements which can be set by running:
      
-   ${BUILD_HOME}/helperscripts/AdjustScaling.sh  
+     ${BUILD_HOME}/helperscripts/AdjustScaling.sh  
 
    When a machine is built in response to a scaling requiremtn it can be built as a regular build, a build from snasphot build, or a build from backup build  
 
