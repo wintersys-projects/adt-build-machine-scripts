@@ -2,11 +2,11 @@
 
 2. You can keep your copy of this script on your laptop (the first build you do is much more longwinded than subsequent ones where you can just copy and paste configurations you have already set up) and you need to set the following settings in it before the build can proceed:
 
-        BUILDMACHINE_USER="agile-deployer"<br>
-        BUILDMACHINE_PASSWORD="Hjdhfb34hd£"<br>
-        BUILDMACHINE_SSH_PORT="1035"<br>
-        LAPTOP_IP="111.111.111.111"<br>
-        SSH="<your ssh public key here>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already<br>
+   BUILDMACHINE_USER="agile-deployer"<br>
+   BUILDMACHINE_PASSWORD="Hjdhfb34hd£"<br>
+   BUILDMACHINE_SSH_PORT="1035"<br>
+   LAPTOP_IP="111.111.111.111"<br>
+   SSH="<your ssh public key here>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already<br>
 
 4. Now paste the modified script into the cloud-init portion of a new machine VPS machine of your chosen VPS provider
 
