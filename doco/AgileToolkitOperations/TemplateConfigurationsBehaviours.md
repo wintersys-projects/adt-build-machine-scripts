@@ -3,7 +3,7 @@ The heart of this toolkit is the templating system. You set the configurations y
 What I want to do here is simply show you how you might go about configuring your template values for some different scenarious you might like to configure a deployment to support.   
 
 Any valid configuration will undoubtably have some combination of these scenarios for the deployment to be successful, for example, its no use configuring this toolkit make a  
-Postgres database deployment if you are deploying Wordpress because as far as I know Wordpress doesn't support postgres and so such a configuration would result in a failed build.   
+Postgres database deployment if you are deploying Wordpress because as far as I know Wordpress doesn't support postgres out of the box and so such a configuration would result in a failed build with the way that I do things. Its not impossible for wordpress using postrgres to be supported here, but, I chose not to.   
 
 If you look  
 
