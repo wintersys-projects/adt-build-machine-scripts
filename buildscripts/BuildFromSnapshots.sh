@@ -292,6 +292,11 @@ then
 
         status "Connected to the autoscaler (${as_ip}) , now initialising it..."
 
+        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/EMERGENCY_PASSWORD ] )
+        then
+            /usr/bin/scp -i ${BUILD_KEY} -o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/EMERGENCY_PASSWORD ${FULL_SNAPSHOT_ID}@${as_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 
+        fi
+
         #There might be some stuff on the autoscaler which is from the build when the snapshots were generated, like IP addresses and so on, so
         #clear them out as they have now been changed/renewed
         /usr/bin/ssh -i ${BUILD_KEY} -o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} ${FULL_SNAPSHOT_ID}@${as_ip} "${SUDO} /bin/rm -rf /home/${FULL_SNAPSHOT_ID}/runtime/INITIALCONFIGSET /home/${FULL_SNAPSHOT_ID}/runtime/NETCONFIGURED /home/${FULL_SNAPSHOT_ID}/runtime/*lock* /home/${FULL_SNAPSHOT_ID}/runtime/CONFIG-PRIMED"     
