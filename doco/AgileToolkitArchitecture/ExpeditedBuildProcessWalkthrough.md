@@ -30,7 +30,7 @@
 
         ${BUILD_HOME}/ExpeditedAgileDeploymentToolkit.sh  
 
-11. When you run this toolkit it will follow several prebuild steps to make sure that it has everything that the build process needs in order. The main steps that it needs to complete successfully before the build can begin are:
+11. When you run this toolkit it will follow several prebuild steps to make sure that it has everything that the build process needs in order to proceed. The main steps that it needs to complete successfully before the build can begin are:
 
      - Make sure software the needed software is up to date and installed  
      - Select the cloudhost that you are deploying to (this overrides any values you set in the template when you deploy using the Expedited method)  
