@@ -75,7 +75,10 @@ fi
 overridescript="${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/${CLOUDHOST}${template}.tmpl"
 
 newoverridescript="/tmp/${CLOUDHOST}${template}"
-/bin/rm ${newoverridescript}
+if ( [ -f ${newoverridescript} ] )
+then
+    /bin/rm ${newoverridescript}
+fi
 
 /bin/echo "# <UDF name=\"SELECTED_TEMPLATE\" label=\"The number of the template you are using\" />" >> ${newoverridescript}.stack
 
