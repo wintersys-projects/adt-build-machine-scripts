@@ -30,12 +30,15 @@
 
         ${BUILD_HOME}/ExpeditedAgileDeploymentToolkit.sh  
 
-11. When you run this toolkit it will follow several prebuild steps to make sure that it has everything that the build process needs in order to proceed. The main steps that it needs to complete successfully before the build can begin are:
+11. When you run this toolkit it will follow several prebuild steps to make sure that it has everything that the build process needs in order to proceed. The main steps that the script needs to run through needs to complete successfully before the build can begin are:
 
      - Make sure software the needed software is up to date and installed  
      - Select the cloudhost that you are deploying to (this overrides any values you set in the template when you deploy using the Expedited method)  
-     - Load the values you have set in your template into memory for use in the build process (including soft errors you can act on if the template is values are considered erroneous)  
-     - Configure the cloudhost CLI tools that you will be using for the build this involves reading a template file and replacing placeholders with template values  
+     - Load the values you have set in your template into memory for use in the build process (including soft errors you can act on if the template has values are considered erroneous)  
+     - Configure the cloudhost CLI tools that you will be using for the build this involves reading a cloudhost cli template file stored at:<br><br>
+         ${BUILD_HOME}/initscripts/configfiles<br><br> 
+
+    and replacing placeholders in the clouhost cli config file for your provider with template values<br>
      - Checking if you want to set SMTP settings for system emails if the values aren't set in your template  
      - Initialise the configuration file for the CLI tool you are using to access your S3 datastore  
      - Find out what type of application you are deploying by interrogating the application sourcecode and looking for indicators based on file structure as to which application type it it  
@@ -44,7 +47,7 @@
      - If we believe that the build machine is in the same VPC as our new servers will be check that it is and if it isn't add it to the VPC to be sure  
      - Generate the SSL certificate for your webserver and securely copy it to the S3 datastore where it can be obtained by any of our main server machines (webservers basically)  
    
-11. When you begin a build with this buildkit it will expect you to have selected a build chain in the file by setting a value for BUILDCHAINTYPE:
+11. When you begin a build with this buildkit it will expect you to have selected a build chain in the file by setting a value for BUILDCHAINTYPE: <br> <br>
 
         ${BUILD_HOME}/builddescriptors/buildstylesscp.dat  
 
