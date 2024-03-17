@@ -35,14 +35,6 @@ do
     if ( [ "$?" = "0" ] )
     then
         connected="1"
-    elif ( [ "${CLOUDHOST_PASSWORD}" != "" ] )
-    then
-        /usr/bin/sshpass -p ${CLOUDHOST_PASSWORD} /usr/bin/ssh ${OPTIONS} ${CLOUDHOST_USERNAME}@${initiation_ip} '/bin/touch /tmp/alive.$$' 2>/dev/null
-        if ( [ "$?" = "0" ] )
-        then
-            connected="1"
-            sshpass="1"
-        fi
     fi
     /bin/sleep 10
     loop="`/usr/bin/expr ${loop} + 1`"
@@ -52,11 +44,6 @@ if ( [ "${connected}" != "1" ] )
 then
     status "Sorry could not connect to the ${machine_type}. Is it possible that your CLOUDHOST_PASSWORD hasn't been set?"
     exit
-fi
-
-if ( [ "${sshpass}" = "1" ] )
-then
-    /usr/bin/sshpass -p ${CLOUDHOST_PASSWORD} /usr/bin/scp ${OPTIONS} ${BUILD_KEY}.pub ${CLOUDHOST_USERNAME}@${initiation_ip}:/root/.ssh/authorized_keys
 fi
 
 /usr/bin/ssh ${OPTIONS} ${DEFAULT_USER}@${initiation_ip} "${SUDO} /usr/sbin/useradd ${SERVER_USER} 2>&1 >/dev/null ; /bin/echo ${SERVER_USER}:${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E /usr/sbin/chpasswd ; ${SUDO} /usr/bin/gpasswd -a ${SERVER_USER} sudo"
