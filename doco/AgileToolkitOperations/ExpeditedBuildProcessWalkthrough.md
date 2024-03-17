@@ -8,7 +8,7 @@
    LAPTOP_IP="111.111.111.111"<br>
    SSH="<your ssh public key here>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already<br>
 
-4. Now paste the modified script into the cloud-init portion of a new machine VPS machine of your chosen VPS provider
+4. Now paste the modified script into the cloud-init portion of a new VPS machine of your chosen cloudhost provider and this machine will become your new build machine so you might want to name it accordingly through the GUI system
 
 6. In a couple of minutes your machine should be online and you can ssh into it, something like:
 
