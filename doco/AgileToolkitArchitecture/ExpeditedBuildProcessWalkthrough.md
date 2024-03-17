@@ -22,7 +22,7 @@
 
 8. What you now need to so is setup your template for which you must pick the appropriate one from here on your new machine:
 
-       ${BUILD_HOME}/templatedconfiguration/templates/provider
+       ${BUILD_HOME}/templatedconfiguration/templates/<provider>
 
 10. Each default template has some fields marked mandatory these fields are the minimum set of fields which you must provide values for your build process to have any chance of succeeding. If you don't provide a suffficient set of values, then, you should be warned about it as you try to start the build
 
