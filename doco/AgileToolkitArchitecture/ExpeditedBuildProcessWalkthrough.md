@@ -12,7 +12,7 @@
 
 6. In a couple of minutes your machine should be online and you can ssh into it, something like:
 
-        ssh -p 1035 agile-user@<machine_ip_address><br>
+        ssh -p 1035 agile-deployer@<machine_ip_address><br>
 
    and you will see a directory
 
