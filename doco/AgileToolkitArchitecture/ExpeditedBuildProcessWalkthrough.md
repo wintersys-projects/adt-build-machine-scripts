@@ -73,15 +73,15 @@
 
    12. The machines work by having scripts run from cron on a regular basis to either initiate a scaling process on an autoscaler a backup process on a webserver or database processes to do with the firewall and application configuration and so on. If you want to find out what the machines are doing the advice is to studu what is configured in cron which you can do by tying
   
-    crontab -e  
+   crontab -e  
 
    13. The configuration files that are representations of the values that you either entered into your template or added interactively during an expedited build process are stored in the directory:
   
-      ${HOME}/.ssh  
+   ${HOME}/.ssh  
 
-      I chose this directory because these configuration files were copied here using SSH so it reminds us that they have come from the build-machine  
+   I chose this directory because these configuration files were copied here using SSH so it reminds us that they have come from the build-machine  
 
-      The scripts regularly interrogate these configuration files to see what they need to be doing in order to go about their business. For example, if a backup script is making a backup to your (definitely should be private) github application repository then the script will look in this ssh directory for the username and authentication token for your github account which you will have set in your template. Obviously your template has to contain accurate and valid information for the toolkit to be able to work properly.  
+   The scripts regularly interrogate these configuration files to see what they need to be doing in order to go about their business. For example, if a backup script is making a backup to your (definitely should be private) github application repository then the script will look in this ssh directory for the username and authentication token for your github account which you will have set in your template. Obviously your template has to contain accurate and valid information for the toolkit to be able to work properly.  
 
    14. Another interesting directory on each of the machines is
 
@@ -95,9 +95,9 @@
      
    20. On the autoscaler(s) machines are scaled according to scaling requirements which can be set by running:
      
-      ${BUILD_HOME}/helperscripts/AdjustScaling.sh  
+   ${BUILD_HOME}/helperscripts/AdjustScaling.sh  
 
-      When a machine is built in response to a scaling requiremtn it can be built as a regular build, a build from snasphot build, or a build from backup build  
+   When a machine is built in response to a scaling requiremtn it can be built as a regular build, a build from snasphot build, or a build from backup build  
 
    18. With the database machine the database can either we run locally on this machine (only recommended during development) or you can run a DBaaS instance remotely (most probably with the same VPC) in which case the database machine won't be accessed by the webservers but rather will be used to perform backups and installation to the DBaaS database by performing the functions it would usually perform for its own locally running database but for the remote DBaaS database instead.
 
