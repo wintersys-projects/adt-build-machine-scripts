@@ -50,7 +50,7 @@ When you are ready press \<enter\> to review the values that you have set for yo
 
    You can reiiew this script.
 
-8. What you will then need to do is follow the exact same steps as for the Expedited Build Process described [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitOperations/ExpeditedBuildProcessWalkthrough.md) except that you paste the script that you generated in step7 (${BUILD_HOME}/userdata/testuserdatascript) into the cloud-init of the build-machine. What this will do will automatically run the build.
+8. What you will then need to do is follow the exact same steps as for the Expedited Build Process described [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitOperations/ExpeditedBuildProcessWalkthrough.md) except for step 1 you paste the script that you generated in step7 (${BUILD_HOME}/userdata/testuserdatascript) into the cloud-init of the build-machine rather than the override script that those instructions suggest. What this will do will automatically run the full build without any interaction. You can follow the build on the build-machine by looking in ${BUILD_HOME}/logs
 
 NOTE1: I called this the hardcore method (or really the 'confidence in your template method') because its a pain in the arse to use this method if you find there is some sort of misconfiguration in your template because you have to go start the whole process of spinning up the build machine again. With the expedited method you can run multiple builds on the same machine. You could use the expedited method to build up your confidence that a particular template is correct and then switch over to hardcore if you want to.  
 
