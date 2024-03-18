@@ -44,10 +44,12 @@ export DNS_USERNAME=""  #MANDATORY
 export DNS_SECURITY_KEY=""   #MANDATORY
 export DNS_CHOICE="cloudflare" #you will need to set your DNS nameservers according to this choice
 
-#####Website Settings########
+#####Webserver Settings########
 export WEBSITE_DISPLAY_NAME="" #MANDATORY
 export WEBSITE_NAME="" #MANDATORY
 export WEBSITE_URL=""  #MANDATORY
+export WEBSERVER_CHOICE="APACHE"
+export NUMBER_WS="1"
 
 #####Git settings#####
 export GIT_USER="Templated User" 
@@ -95,14 +97,8 @@ export AS_SERVER_TYPE="vc2-1c-1gb"
 export CLOUDHOST="vultr"
 export MACHINE_TYPE="VULTR"
 export SSH_PORT="1035"
-export WEBSERVER_CHOICE="APACHE"
-export NO_AUTOSCALERS="0"
-export NUMBER_WS="1"
 export SERVER_TIMEZONE_CONTINENT="Europe"
 export SERVER_TIMEZONE_CITY="London"
-export BUILD_MACHINE_VPC="0"
-export AUTHORISATION_SERVER="0"
-export ALGORITHM="rsa"
 export USER="root"
 
 #####Backup Setttings######
@@ -114,6 +110,8 @@ export GENERATE_STATIC="0"
 export PRODUCTION="0"
 export DEVELOPMENT="1"
 export BUILD_IDENTIFIER="" #MANDATORY
+export AUTHORISATION_SERVER="0"
+export NO_AUTOSCALERS="0"
 
 #####Security Settings#####
 export GATEWAY_GUARDIAN="0"
@@ -122,6 +120,8 @@ export PUBLIC_KEY_NAME="AGILE_TOOLKIT_PUBLIC_KEY"
 export SSL_GENERATION_METHOD="AUTOMATIC"
 export SSL_GENERATION_SERVICE="LETSENCRYPT"
 export SSL_LIVE_CERT="1"
+export BUILD_MACHINE_VPC="0"
+export ALGORITHM="rsa"
 
 #####Build Styles#####
 export AUTOSCALE_FROM_SNAPSHOTS="0"
