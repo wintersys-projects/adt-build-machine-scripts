@@ -21,6 +21,8 @@
 
    and this means that this toolkit is available on the machine
 
+7. You should then use the firewalling system of your cloudhost provider to disallow access to your new build machine to all IP addresses and all ports except the IP address of your laptop and the SSH port you are using (in this case 1035). If your latop IP address changes you will need to allow access to the new IP address through the native firewalling system of your cloudhost provider. You could bypass this step because UFW will still be setup on your buildmachine but to be very tight about things you should have your native firewall setup as well because this build-machine will have some goodies on it that you don't want to give away to easily.
+
 8. What you now need to so is setup your template for which you must pick the appropriate one from here on your new machine:
 
        ${BUILD_HOME}/templatedconfiguration/templates/<provider>
