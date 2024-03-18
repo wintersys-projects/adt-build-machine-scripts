@@ -25,7 +25,7 @@ This will put a flag into the datastore which the autoscalers will pick up on an
 5. Switch maintenance mode off from the build machine
 
 >      cd ${BUILD_HOME}/helperscripts  
->      /bin/sh ./ExecuteOnAutoscaler.sh MAINTENANCE_MODE_OFF**  
+>      /bin/sh ./ExecuteOnAutoscaler.sh MAINTENANCE_MODE_OFF 
 
 6. Your website will then scale up to the number of webservers it is set to scale to when in full operation using your new temporal backup to build from
 
