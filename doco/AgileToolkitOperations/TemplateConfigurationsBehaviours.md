@@ -19,58 +19,58 @@ If you are deploying a virgin application you should make modifications to templ
 
 To deploy a virgin Joomla application you need to set the following values in your template:
 
-export APPLICATION="joomla" #MANDATORY
-export APPLICATION_IDENTIFIER="1" #MANDATORY
-export JOOMLA_VERSION="5.0.3" #MANDATORY (depending on the above settings - a joomla deployment)
-export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="JOOMLA:5.0.3" #MANDATORY
-export BASELINE_DB_REPOSITORY="VIRGIN"
-export BUILD_ARCHIVE_CHOICE="virgin"
-export BUILD_CHOICE="0"
+export APPLICATION="joomla"<br>
+export APPLICATION_IDENTIFIER="1"<br>
+export JOOMLA_VERSION="5.0.3"<br>
+export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="JOOMLA:5.0.3"<br>
+export BASELINE_DB_REPOSITORY="VIRGIN"<br>
+export BUILD_ARCHIVE_CHOICE="virgin"<br>
+export BUILD_CHOICE="0"<br>
 
 #### Objective 2
 
 To deploy a virgin Wordpress application you need to set the following values in your template:
 
-export APPLICATION="wordpress" #MANDATORY
-export APPLICATION_IDENTIFIER="2" #MANDATORY
-export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="WORDPRESS" #MANDATORY
-export BASELINE_DB_REPOSITORY="VIRGIN"
-export BUILD_ARCHIVE_CHOICE="virgin"
-export BUILD_CHOICE="0"
+export APPLICATION="wordpress"<br>
+export APPLICATION_IDENTIFIER="2"<br>
+export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="WORDPRESS"<br>
+export BASELINE_DB_REPOSITORY="VIRGIN"<br>
+export BUILD_ARCHIVE_CHOICE="virgin"<br>
+export BUILD_CHOICE="0"<br>
 
 
 #### Objective 3
 
 To deploy a virgin Drupal application you need to set the following values in your template:
 
-export APPLICATION="drupal" #MANDATORY
-export APPLICATION_IDENTIFIER="3" #MANDATORY
-export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="DRUPAL:10.2.4" #MANDATORY
-export BASELINE_DB_REPOSITORY="VIRGIN"
-export BUILD_ARCHIVE_CHOICE="virgin"
-export BUILD_CHOICE="0"
+export APPLICATION="drupal" <br>
+export APPLICATION_IDENTIFIER="3"<br>
+export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="DRUPAL:10.2.4"<br>
+export BASELINE_DB_REPOSITORY="VIRGIN"<br>
+export BUILD_ARCHIVE_CHOICE="virgin"<br>
+export BUILD_CHOICE="0"<br>
 
 #### Objective 4
 
 To deploy a virgin Moodle application you need to set the following values in your template:
 
-export APPLICATION="moodle" #MANDATORY
-export APPLICATION_IDENTIFIER="4" #MANDATORY
-export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="MOODLE" #MANDATORY
-export BASELINE_DB_REPOSITORY="VIRGIN"
-export BUILD_ARCHIVE_CHOICE="virgin"
-export BUILD_CHOICE="0"
+export APPLICATION="moodle"<br>
+export APPLICATION_IDENTIFIER="4"<br>
+export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="MOODLE"<br>
+export BASELINE_DB_REPOSITORY="VIRGIN"<br>
+export BUILD_ARCHIVE_CHOICE="virgin"<br>
+export BUILD_CHOICE="0"<br>
 
 #### Objective 5
 
 To deploy a virgin Opensocial application you need to set the following values in your template:
 
-export APPLICATION="drupal" #MANDATORY
-export APPLICATION_IDENTIFIER="3" #MANDATORY
-export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="DRUPAL:social" #MANDATORY
-export BASELINE_DB_REPOSITORY="VIRGIN"
-export BUILD_ARCHIVE_CHOICE="virgin"
-export BUILD_CHOICE="0"
+export APPLICATION="drupal"<br>
+export APPLICATION_IDENTIFIER="3"<br>
+export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="DRUPAL:social"<br>
+export BASELINE_DB_REPOSITORY="VIRGIN"<br>
+export BUILD_ARCHIVE_CHOICE="virgin"<br>
+export BUILD_CHOICE="0"<br>
 
 --------------------------------------------------------------
 
