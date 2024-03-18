@@ -31,44 +31,45 @@ cloudhost="${4}"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-    /usr/bin/curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"name":"'"${key_name}"'","public_key":"'"${key_substance}"'"}' "https://api.digitalocean.com/v2/account/keys"
+    /usr/local/bin/doctl compute ssh-key create ${key_name} --public-key "${key_substance}"
+ #   /usr/bin/curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"name":"'"${key_name}"'","public_key":"'"${key_substance}"'"}' "https://api.digitalocean.com/v2/account/keys"#
 
-    if ( [ "$?" != "0" ] )
-    then
-        status "Invalid token mate, try again"
-        exit
-    fi
+#    if ( [ "$?" != "0" ] )
+#    then
+#        status "Invalid token mate, try again"
+#        exit
+#    fi
 
-    active_keys="`/usr/bin/curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "https://api.digitalocean.com/v2/account/keys"`"
-    active_keys_names="`/bin/echo ${active_keys} | /usr/bin/jq ".ssh_keys[].name"`"
+ #   active_keys="`/usr/bin/curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "https://api.digitalocean.com/v2/account/keys"`"
+ #   active_keys_names="`/bin/echo ${active_keys} | /usr/bin/jq ".ssh_keys[].name"`"#
 
-    count=0
-    while ( [ "${active_keys_names}" = "" ] && [ "${count}" -lt "10" ] )
-    do
-        /bin/sleep 5
-        count="`/usr/bin/expr ${count} + 1`"
-        active_keys="`/usr/bin/curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "https://api.digitalocean.com/v2/account/keys"`"
-        active_keys_names="`/bin/echo ${active_keys} | /usr/bin/jq ".ssh_keys[].name"`"
-    done
+ #   count=0
+ #   while ( [ "${active_keys_names}" = "" ] && [ "${count}" -lt "10" ] )
+ #   do
+ #       /bin/sleep 5
+ #       count="`/usr/bin/expr ${count} + 1`"
+ #       active_keys="`/usr/bin/curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "https://api.digitalocean.com/v2/account/keys"`"
+ #       active_keys_names="`/bin/echo ${active_keys} | /usr/bin/jq ".ssh_keys[].name"`"
+ #   done
 
-    if ( [ "`/bin/echo ${active_keys_names} | /usr/bin/wc -l`" -gt "1" ] )
-    then
-        status ""
-        status "There's more than one key with the name ${key_name} in the digital ocean account you are using please remove them all manually"
-        status "Please press the Return key to continue once you have navigated to www.digitalocean.com - > settings -> security and removed the key(s) called ${key_name}"
-        read response
-    fi
+  #  if ( [ "`/bin/echo ${active_keys_names} | /usr/bin/wc -l`" -gt "1" ] )
+  #  then
+  #      status ""
+  #      status "There's more than one key with the name ${key_name} in the digital ocean account you are using please remove them all manually"
+  #      status "Please press the Return key to continue once you have navigated to www.digitalocean.com - > settings -> security and removed the key(s) called ${key_name}"
+  #      read response
+  #  fi
 
-    if ( [ "`/bin/echo ${active_keys_names} | /usr/bin/wc -l`" = "0" ] )
-    then
-        /usr/bin/curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"name":"'"${key_name}"'","public_key":"'"${key_substance}"'"}' "https://api.digitalocean.com/v2/account/keys"
-
-        if ( [ "$?" != "0" ] )
-        then
-            status "Invalid token mate, try again"
-            exit
-        fi
-    fi
+  #  if ( [ "`/bin/echo ${active_keys_names} | /usr/bin/wc -l`" = "0" ] )
+  #  then
+  #      /usr/bin/curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" -d '{"name":"'"${key_name}"'","public_key":"'"${key_substance}"'"}' "https://api.digitalocean.com/v2/account/keys"#
+  # 
+  #      if ( [ "$?" != "0" ] )
+  #      then
+  #          status "Invalid token mate, try again"
+  #          exit
+  #      fi
+  #  fi
 fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
