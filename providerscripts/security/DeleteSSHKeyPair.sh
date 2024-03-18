@@ -30,7 +30,7 @@ then
 
     for key_id in ${key_ids}
     do
-        /usr/local/bin/doctl compute ssh-key delete ${key_id}
+        /usr/local/bin/doctl compute ssh-key --force delete ${key_id}
     done
 fi
 if ( [ "${cloudhost}" = "exoscale" ] )
