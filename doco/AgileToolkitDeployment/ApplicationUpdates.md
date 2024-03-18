@@ -1,32 +1,28 @@
-OFFLINE UPDATING 
+No doubt the CMS system you have deployed as well as the components, plugins and modules that you have installed will require updating and this is the way to do it.  
+Most likely at a time when your website is least busy, follow these steps:  
 
 **BEFORE DOING ANYTHING MAKE SURE YOU HAVE GOT WORKING BACKUPS OF YOUR WEBSITE. YOU MIGHT WANT TO SIMPLY RENAME YOUR HOURLY BACKUPS WITH A .orig or .working DIRECTLY USING YOUR GIT PROVIDER'S GUI SO THAT THEY ARE NOT OVERWRITTEN BY THIS PROCESS AND YOU CAN ROLL BACK TO THEM IF SOMETHING GOES WRONG**
 
 1. Put your website into maintenance mode through the CMS administration panel. Your visitors should then see "Maintenance mode - come back later"
-2. Switch your deployment infrastucture into maintenance mode
+3. Switch your deployment infrastucture into maintenance mode
 
-if You have multiple autoscalers running **MAKE SURE** that you run this script one time for **each autoscaler** to switch them all to maintenance mode  
+>      cd ${BUILD_HOME}/helperscripts  
+>      /bin/sh ./ExecuteOnAutoscaler.sh MAINTENANCE_MODE_ON
 
-**cd ${BUILD_HOME}/helperscripts  
-/bin/sh ./ExecuteOnAutoscaler.sh MAINTENANCE_MODE_ON**  
+This will put a flag into the datastore which the autoscalers will pick up on and scale down to 1 machine. Be aware of the time when you are making updates with the knowledge that backups are made on or around the hour with a gap of minutes between when the database is backed up and when the webroot is backed up which could lead to incosnistencies when you are making upgrades such as an upgraded sourcecode and an older database schema. You can either disable backups whilst you are upgrading your website or be mindful of them. To disable backups on the one webserver and the one database that you now have running, go to your webserver and your database and comment out the appropriate backup script call in cron. 
 
-3. Switching into maintenance mode will scale down your infrastructure so that only one webserver is running and hence no other webroots to sync to. Be aware that if any backups are made whilst you are in maintenance mode they might be inconsistent if they are made midway through your CMS plugin/modules update/upgrade. You can then make updates as you desire including full CMS version updates whilst in maintenance mode.
+4. Once you have made your maintence updates to your website, thoroughly test your website is operating as expected and then either manually generate temporal backups of your application webroot using "PerformWebsiteBackup.sh" (there is a parameter for making manual backups) or wait for hourly backups to be made by the system. If you are going to scaleup again after you have done the maintenance, then you must have an appropriate (and updated) temporal backup for your new webservers to build off which you can now do by running:
 
-4. Thoroughly test your website is operating as expected and then either manually generate temporal backups of your application webroot using "PerformWebsiteBackup.sh" or wait for hourly backups to be made by the system. **NOTE IF YOU DIDN'T DO THE PRELIMINARY RENAME, THEN, GENERATING NEW HOURLY BACKUPS WILL OVERWRITE YOUR ORIGINAL HOURLY BACKUPS WHICH COULD BE BAD**  
-    #### IMPORTANT NOTE: If you deployed your website from backup periodicities other than hourly, such as daily, weekly and so on, you will need to make backups of your updated webroot and database for those periodicities. For a daily backup periodicity you can do that with the following commands on your one running webserver and database:
-    
     run ${HOME}/providerscripts/backupscripts/Backup.sh HOURLY <build_identifier>
 
 5. Check the integrity of the backups. CheckApplicationRepositoryIntegrity.sh
 
-6. Switch maintenance mode off
+6. Switch maintenance mode off from the build machine
 
-if You have multiple autoscalers running **MAKE SURE** that you run this script one time for each autoscaler to switch off maintenance mode for them all
+>      cd ${BUILD_HOME}/helperscripts  
+>      /bin/sh ./ExecuteOnAutoscaler.sh MAINTENANCE_MODE_OFF**  
 
-**cd ${BUILD_HOME}/helperscripts  
-/bin/sh ./ExecuteOnAutoscaler.sh MAINTENANCE_MODE_OFF**  
-
-7. Your website will then scale up to the number of webservers it is set to scale to when in full operation
+7. Your website will then scale up to the number of webservers it is set to scale to when in full operation using your new temporal backup to build from
 
 8. Take your CMS out of maintenance mode using the administration panel of the CMS itself. 
 
