@@ -40,10 +40,10 @@ then
 
     if ( [ "${CLOUDHOST}" = "exoscale" ] )
     then
-        WEBSERVER_SNAPSHOT_NAME="`/usr/bin/exo -O json vm template list --mine --zone ${REGION_ID} | /usr/bin/jq --arg tmp_instance_name "${webserver_name}" '(.[] | select (.name | contains("webserver")  and  contains($tmp_instance_name)) | .name)' | /bin/sed 's/"//g'`"
-        AUTOSCALER_IMAGE_ID="`/usr/bin/exo -O json vm template list --mine --zone ${REGION_ID} | /usr/bin/jq --arg tmp_instance_name "${autoscaler_name}" '(.[] | select (.name | contains("autoscaler")  and  contains($tmp_instance_name)) | .id)' | /bin/sed 's/"//g'`"
-        WEBSERVER_IMAGE_ID="`/usr/bin/exo -O json vm template list --mine --zone ${REGION_ID} | /usr/bin/jq --arg tmp_instance_name "${webserver_name}" '(.[] | select (.name | contains("webserver")  and  contains($tmp_instance_name)) | .id)' | /bin/sed 's/"//g'`"
-        DATABASE_IMAGE_ID="`/usr/bin/exo -O json vm template list --mine --zone ${REGION_ID} | /usr/bin/jq --arg tmp_instance_name "${database_name}" '(.[] | select (.name | contains("database")  and  contains($tmp_instance_name)) | .id)' | /bin/sed 's/"//g'`"
+        WEBSERVER_SNAPSHOT_NAME="`/usr/bin/exo -O json vm template list --mine --zone ${REGION} | /usr/bin/jq --arg tmp_instance_name "${webserver_name}" '(.[] | select (.name | contains("webserver")  and  contains($tmp_instance_name)) | .name)' | /bin/sed 's/"//g'`"
+        AUTOSCALER_IMAGE_ID="`/usr/bin/exo -O json vm template list --mine --zone ${REGION} | /usr/bin/jq --arg tmp_instance_name "${autoscaler_name}" '(.[] | select (.name | contains("autoscaler")  and  contains($tmp_instance_name)) | .id)' | /bin/sed 's/"//g'`"
+        WEBSERVER_IMAGE_ID="`/usr/bin/exo -O json vm template list --mine --zone ${REGION} | /usr/bin/jq --arg tmp_instance_name "${webserver_name}" '(.[] | select (.name | contains("webserver")  and  contains($tmp_instance_name)) | .id)' | /bin/sed 's/"//g'`"
+        DATABASE_IMAGE_ID="`/usr/bin/exo -O json vm template list --mine --zone ${REGION} | /usr/bin/jq --arg tmp_instance_name "${database_name}" '(.[] | select (.name | contains("database")  and  contains($tmp_instance_name)) | .id)' | /bin/sed 's/"//g'`"
 fi
 
     if ( [ "${CLOUDHOST}" = "linode" ] )
