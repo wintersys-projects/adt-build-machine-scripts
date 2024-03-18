@@ -39,16 +39,16 @@
      
   >       ${BUILD_HOME}/initscripts/configfiles<br><br>
 
-     - Checking if you want to set SMTP settings for system emails if the values aren't set in your template  
-     - Initialise the configuration file for the CLI tool you are using to access your S3 datastore (currently only s3cmd). This config file is also located at
+- Checking if you want to set SMTP settings for system emails if the values aren't set in your template  
+- Initialise the configuration file for the CLI tool you are using to access your S3 datastore (currently only s3cmd). This config file is also located at
      
   >       ${BUILD_HOME}/initscripts/configfiles<br><br> 
      
-     - Find out what type of application you are deploying by interrogating the application sourcecode and looking for indicators based on file structure as to which application type it it  
-     - Setup/create the native firewalls but don't add any rules or machines to them machines to them.  
-     - Insitialise the SSH security keys so that we can SSH onto our machines using a known BUILD_KEY public/private pair  
-     - If we believe that the build machine is in the same VPC as our new servers will be check that it is and if it isn't add it to the VPC to be sure  
-     - Generate the SSL certificate for your webserver and securely copy it to the S3 datastore where it can be obtained by any of our main server machines (webservers basically)  
+- Find out what type of application you are deploying by interrogating the application sourcecode and looking for indicators based on file structure as to which application type it it  
+- Setup/create the native firewalls but don't add any rules or machines to them machines to them.  
+- Insitialise the SSH security keys so that we can SSH onto our machines using a known BUILD_KEY public/private pair  
+- If we believe that the build machine is in the same VPC as our new servers will be check that it is and if it isn't add it to the VPC to be sure  
+- Generate the SSL certificate for your webserver and securely copy it to the S3 datastore where it can be obtained by any of our main server machines (webservers basically)  
    
 12. When you begin a build with this buildkit it will expect you to have selected a build chain in the file by setting a value for BUILDCHAINTYPE: <br> <br>
 
