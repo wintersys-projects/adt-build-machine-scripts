@@ -78,15 +78,15 @@ export BUILD_CHOICE="0"<br>
 
 To deploy PHP version 8.1 you set the following values in the appropriate template
 
-export APPLICATION_LANGUAGE="PHP" 
-export PHP_VERSION="8.1" 
+export APPLICATION_LANGUAGE="PHP"<br>
+export PHP_VERSION="8.1"<br>
 
 #### Objective 7
 
 To deploy PHP version 8.3 you set the following values in the appropriate template
 
-export APPLICATION_LANGUAGE="PHP" 
-export PHP_VERSION="8.3" 
+export APPLICATION_LANGUAGE="PHP"<br>
+export PHP_VERSION="8.3"<br>
 
 -----------------------------------------------------------------
 
