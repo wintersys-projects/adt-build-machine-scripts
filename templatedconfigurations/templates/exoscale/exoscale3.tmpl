@@ -46,10 +46,12 @@ export DNS_SECURITY_KEY=""   #MANDATORY
 export DNS_CHOICE="cloudflare" #you will need to set your DNS nameservers according to this choice
 
 
-#####Website Settings########
+#####Webserver Settings########
 export WEBSITE_DISPLAY_NAME="" #MANDATORY
 export WEBSITE_NAME="" #MANDATORY
 export WEBSITE_URL=""  #MANDATORY
+export WEBSERVER_CHOICE="LIGHTTPD"
+export NUMBER_WS="2"
 
 #####Git settings#####
 export GIT_USER="Templated User" 
@@ -97,14 +99,9 @@ export AS_SERVER_TYPE="tiny"
 export CLOUDHOST="exoscale"
 export MACHINE_TYPE="EXOSCALE"
 export SSH_PORT="1035"
-export WEBSERVER_CHOICE="LIGHTTPD"
-export NO_AUTOSCALERS="1"
-export NUMBER_WS="2"
 export SERVER_TIMEZONE_CONTINENT="Europe"
 export SERVER_TIMEZONE_CITY="London"
-export BUILD_MACHINE_VPC="0"
-export AUTHORISATION_SERVER="0"
-export ALGORITHM="rsa"
+
 export USER="root"
 
 #####Backup Setttings######
@@ -116,6 +113,8 @@ export GENERATE_STATIC="0"
 export PRODUCTION="1"
 export DEVELOPMENT="0"
 export BUILD_IDENTIFIER="" #MANDATORY
+export NO_AUTOSCALERS="1"
+
 
 #####Security Settings#####
 export GATEWAY_GUARDIAN="0"
@@ -124,6 +123,8 @@ export PUBLIC_KEY_NAME="AGILE_TOOLKIT_PUBLIC_KEY"
 export SSL_GENERATION_METHOD="AUTOMATIC"
 export SSL_GENERATION_SERVICE="LETSENCRYPT"
 export SSL_LIVE_CERT="1"
+export BUILD_MACHINE_VPC="0"
+export ALGORITHM="rsa"
 
 #####Build Styles#####
 export AUTOSCALE_FROM_SNAPSHOTS="0"
@@ -134,6 +135,7 @@ export AUTOSCALER_IMAGE_ID=""
 export DATABASE_IMAGE_ID=""
 export AUTOSCALE_FROM_BACKUP="0"
 export INPARALLEL="0"
+export AUTHORISATION_SERVER="0"
 
 #####Monitoring######
 export INSTALL_MONITORING_GEAR="0"
