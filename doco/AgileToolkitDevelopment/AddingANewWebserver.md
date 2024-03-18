@@ -1,7 +1,7 @@
-1) To add a new webserver type, modify ${HOME}/providerscripts/websever/InstallWebserver.sh in the WEBSERVER scripts
+To add a new webserver type (for example, litespeed) you will need to add or modify the following files:
 
-2) Modify ${HOME}/providerscripts/websever/RestartWebserver.sh  for your new webserver type 
-
-3) Add an option for your new webserver on the BUILD CLIENT script, ${BUILD_HOME}/selectionscripts/SelectWebserver.sh
-
-Do some tests to make sure it installs and runs correctly. 
+>     adt-webserver-scripts/providerscripts/webserver/configuration/wordpress
+>     adt-webserver-scripts/providerscripts/webserver
+>     adt-webserver-scripts/providerscripts/dns/TrustRemoteProxy.sh
+>     adt-webserver-scripts/installscripts
+>     adt-webserver-scripts/installscripts
