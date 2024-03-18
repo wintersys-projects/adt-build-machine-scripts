@@ -1,25 +1,34 @@
-You can add a new cloudhost provider relatively easily although you will need to do this in fork. You might want to add a cloudhost provider if there is a particular provider you prefer that isn't supported yet. Possible suitable additional cloudhosts might be Rackspace or Google Cloud, for example.  Each provider may have its own quirks as such, but, it should be possible to make most providers, as long as they provide and API and an access toolkit fit into this framework. You shouldn't need to worry about any of the other files in the framework when you are adding a new service provider, the only files you need to worry about are listed here. Also, the changes you make to the BUILD CLIENT should be similar in most cases to the changes you make on the autoscaler. In fact, the build client and the autoscaler do more or less the same job, launch servers, interrogate and query servers.
+To support another cloudhost provider (for example, AWS, google cloud, OVH cloud and so on) you should be able to get it going by modfying the following files:
 
-1) Add the cloud provider to the ${BUILD_HOME}/selectionscripts/SelectCloudhost.sh and ${BUILD_HOME}/selectionscripts/SelectCloudhostExpedited.sh
+>     adt-webserver-scripts/security/SetupFirewall.sh
+>     adt-webserver-scripts/security/SetupDNSFirewall.sh
+>     adt-webserver-scripts/security/ObtainSSLCertificate.sh
+>     adt-webserver-scripts/installscripts/InstallMonitoringGear.sh
 
-2) On the BUILD CLIENT update all the files in these directories for your new cloudhost following the examples which are already there.
-       
-        ${BUILD_HOME}/providerscripts/security/*.sh
-        ${BUILD_HOME}/providerscripts/security/firewall/*.sh
-        ${BUILD_HOME}/providerscripts/cloudhost/*.sh
-        ${BUILD_HOME}/providerscripts/server/*.sh
+>     adt-database-scripts/applicationdb/maria/InstallMariaDB.sh
+>     adt-database-scripts/installscripts/InstallMonitoringGear.sh
+>     adt-database-scripts/applicationdb/maria/InstallMariaDB.sh
 
-3) On the AUTOSCALER update all the files in these directories for your new cloudhost following the examples which are already there.
-       
-        ${HOME}/providerscripts/security/*.sh
-        ${HOME}/providerscripts/security/firewall/*.sh
-        ${HOME}/providerscripts/cloudhost/*.sh
-        ${HOME}/providerscripts/server/*.sh
+>     adt-build-machine-scripts/selectionscripts/SelectCloudhost.sh
+>     adt-build-machine-scripts/providerscripts/server/
+>     adt-build-machine-scripts/providerscripts/security/
+>     adt-build-machine-scripts/providerscripts/dns
+>     adt-build-machine-scripts/providerscripts/datastore/configwrapper/DisplayCredentials.sh
+>     adt-build-machine-scripts/providerscripts/cloudhost/
+>     adt-build-machine-scripts/installscripts/InstallCloudhostTools.sh
+>     adt-build-machine-scripts/helperscripts
 
-4) On the AUTOSCALER, add your provider to ${HOME}/providerscripts/cloudhost/InstallCloudhostTools.sh
+>     adt-autoscaler-scripts/security/SetupFirewall.sh
+>     adt-autoscaler-scripts/providerscripts/server/
+>     adt-autoscaler-scripts/providerscripts/security/
+>     adt-autoscaler-scripts/providerscripts/dns
+>     adt-autoscaler-scripts/providerscripts/cloudhost
+>     adt-autoscaler-scripts/installscripts/InstallMonitoringGear.sh
+>     adt-autoscaler-scripts/installscripts/InstallCloudhostTools.sh
 
-5) On the AUTOSCALER, WEBSERVER, DATABASE update the utility scripts, GetIP.sh and GetPublicIP.sh for your provider.
+NOTE: originally the core supported AWS but I found I had to make various AWS specific customisations so I stripped AWS out of the core to keep the core as simple and consistent as possible. If you want to put the work in to add support for AWS, then, you might get some clues from my archived repositories which you can find below:  
 
-6) Update the scripts in ${BUILD_HOME}/helperscripts for your new cloudprovider.
-
-Once you have updated your scripts, do some test deployments to see if it is working correctly.
+[build-machine-with-aws](https://github.com/wintersys-projects/adt-build-machine-scripts-withaws)  
+[autoscaler-with-aws](https://github.com/wintersys-projects/adt-autoscaler-scripts-withaws)  
+[webserver-with-aws](https://github.com/wintersys-projects/adt-webserver-scripts-withaws)  
+[database-with-aws](https://github.com/wintersys-projects/adt-database-scripts-withaws)  
