@@ -1,38 +1,20 @@
-In the Webserver scripts, update:
+To add a new datastore manipulation tool such as rclone or s4cmd in addition to the s3cmd that the core supports you will need to modify or add to the following files:
 
-providerscripts/datastore/DeleteFromDatastore.sh  
-providerscripts/datastore/GetFromDatastore.sh	  
-providerscripts/datastore/InstallDatastoreProvider.sh  
-providerscripts/datastore/InstallDatastoreTools.sh  
-providerscripts/datastore/ListFromDatastore.sh  
-providerscripts/datastore/MountDatastore.sh  
-providerscripts/datastore/MoveDatastore.sh	  
-providerscripts/datastore/PutToDatastore.sh	  
-providerscripts/datastore/SyncFromDatastore.sh  
-providerscripts/datastore/SyncToDatastore.sh  
+>     adt-webserver-scripts/providerscripts/datastore/configwrapper
+>     adt-webserver-scripts/providerscripts/datastore
+>     adt-webserver-scripts/installscripts/InstallDatastoreTools.sh
 
-In the Database scripts, update   
+>     adt-database-scripts/providerscripts/datastore
+>     adt-database-scripts/installscripts/InstallDatastoreTools.sh
 
-providerscripts/datastore/DeleteFromDatastore.sh  
-providerscripts/datastore/GetFromDatastore.sh	  
-providerscripts/datastore/InstallDatastoreTools.sh  
-providerscripts/datastore/MountDatastore.sh	  
-providerscripts/datastore/MoveDatastore.sh	  
-providerscripts/datastore/PutToDatastore.sh  
+>     adt-build-machine-scripts/providerscripts/datastore
+>     adt-build-machine-scripts/installscripts/InstallDatastoreTools.sh
+>     adt-build-machine-scripts/initscripts/InitialiseDatastoreConfig.sh
 
-
-In the Autoscaler scripts, update  
-
-providerscripts/datastore/ConfigureDatastoreProvider.sh  
-providerscripts/datastore/InstallDatastoreTools.sh   
-
-In the Build Client scripts, update  
-
-providerscripts/datastore/ConfigureDatastoreProvider.sh  
-providerscripts/datastore/GetBucketNames.sh	  
-providerscripts/datastore/GetFromDatastore.sh	  
-providerscripts/datastore/GetObjectSize.sh	  
-providerscripts/datastore/InstallDatastoreTools.sh  
-providerscripts/datastore/ListFromDatastore.sh	  
+>     adt-autoscaler-scripts/providerscripts/datastore
+>     adt-autoscaler-scripts/providerscripts/datastore/ObtainBuildClientIP.sh
+>     adt-autoscaler-scripts/providerscripts/datastore/InitialiseDatastoreConfig.sh
+>     adt-autoscaler-scripts/providerscripts/datastore/configwrapper/CheckConfigDatastore.sh
+>     adt-build-machine-scripts/installscripts/InstallDatastoreTools.sh
 
 
