@@ -322,6 +322,116 @@ export SUPERSAFE_DB="0"<br>
 
 #### Objective 31
 
+To switch "GENERATE_STATIC" on and off:
+
+export GENERATE_STATIC="1"<br>
+
+and 
+
+export GENERATE_STATIC="0"<br>
+
+
+-------------------------------------------------------------------------------
+
+#### Objective 32
+
+To switch to development mode:
+
+export PRODUCTION="0"<br>
+export DEVELOPMENT="1"<br>
+
+
+#### Objective 33
+
+To switch to production mode:
+
+export PRODUCTION="1"<br>
+export DEVELOPMENT="0"<br>
+
+------------------------------------------------------------------------------
+
+#### Objective 34
+
+To switch "GATEWAY_GUARDIAN" on and off:
+
+export GATEWAY_GUARDIAN="1"<br>
+
+and
+
+export GATEWAY_GUARDIAN="0"<br>
+
+------------------------------------------------------------------------------
+
+#### Objective 35
+
+To modify which firewalls are active for example for native and ufw to be enabled in any template set like this:
+
+export ACTIVE_FIREWALLS="3"
+
+------------------------------------------------------------------------------
+
+#### Objective 36
+
+To switch "SSL_LIVE_CERT" on and off:
+
+export SSL_LIVE_CERTN="1"<br>
+
+and
+
+export SSL_LIVE_CERT="0"<br>
+
+------------------------------------------------------------------------------
+
+#### Objective 37
+
+To generate snapshots in during a build for future use in template 3 put:
+
+export GENERATE_SNAPSHOTS="1"<br>
+
+#### Objective 38
+
+To deploy from snasphots generated previously in template 3 put:
+
+export AUTOSCALE_FROM_SNAPSHOTS="1"<br>
+export GENERATE_SNAPSHOTS="0"<br>
+export SNAPSHOT_ID="xxxx"<br>
+export WEBSERVER_IMAGE_ID="yyyy"<br>
+export AUTOSCALER_IMAGE_ID="zzzz"<br>
+export DATABASE_IMAGE_ID="xxxx"<br>
+
+--------------------------------------------------------------------------------
+
+#### Objective 39
+
+To autoscale webservers from webserver machine backups in template 3 put:
+
+export AUTOSCALE_FROM_BACKUP="0"<br>
+
+--------------------------------------------------------------------------------
+
+#### Objective 40
+
+To make the machines build in parrallel rather than sequentially, put:
+
+export INPARALLEL="1"<br>
+
+--------------------------------------------------------------------------------
+
+#### Objective 41
+
+To install monitoring gear put in any template:
+
+export INSTALL_MONITORING_GEAR="1"<br>
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
 
