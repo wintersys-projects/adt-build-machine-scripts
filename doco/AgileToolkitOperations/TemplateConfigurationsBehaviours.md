@@ -17,7 +17,7 @@ If you are deploying a virgin application you should make modifications to templ
 
 #### Objective 1
 
-To deploy a virgin Joomla application you need to set the following values in your template:
+To deploy a virgin Joomla application you need to set the following values in template 1:
 
 export APPLICATION="joomla"<br>
 export APPLICATION_IDENTIFIER="1"<br>
@@ -29,7 +29,7 @@ export BUILD_CHOICE="0"<br>
 
 #### Objective 2
 
-To deploy a virgin Wordpress application you need to set the following values in your template:
+To deploy a virgin Wordpress application you need to set the following values in template 1:
 
 export APPLICATION="wordpress"<br>
 export APPLICATION_IDENTIFIER="2"<br>
@@ -41,7 +41,7 @@ export BUILD_CHOICE="0"<br>
 
 #### Objective 3
 
-To deploy a virgin Drupal application you need to set the following values in your template:
+To deploy a virgin Drupal application you need to set the following values in template 1:
 
 export APPLICATION="drupal" <br>
 export APPLICATION_IDENTIFIER="3"<br>
@@ -52,7 +52,7 @@ export BUILD_CHOICE="0"<br>
 
 #### Objective 4
 
-To deploy a virgin Moodle application you need to set the following values in your template:
+To deploy a virgin Moodle application you need to set the following values in template 1:
 
 export APPLICATION="moodle"<br>
 export APPLICATION_IDENTIFIER="4"<br>
@@ -63,7 +63,7 @@ export BUILD_CHOICE="0"<br>
 
 #### Objective 5
 
-To deploy a virgin Opensocial application you need to set the following values in your template:
+To deploy a virgin Opensocial application you need to set the following values in template 1:
 
 export APPLICATION="drupal"<br>
 export APPLICATION_IDENTIFIER="3"<br>
@@ -73,5 +73,22 @@ export BUILD_ARCHIVE_CHOICE="virgin"<br>
 export BUILD_CHOICE="0"<br>
 
 --------------------------------------------------------------
+
+#### Objective 6
+
+To deploy PHP version 8.1 you set the following values in the appropriate template
+
+export APPLICATION_LANGUAGE="PHP" 
+export PHP_VERSION="8.1" 
+
+#### Objective 7
+
+To deploy PHP version 8.3 you set the following values in the appropriate template
+
+export APPLICATION_LANGUAGE="PHP" 
+export PHP_VERSION="8.3" 
+
+-----------------------------------------------------------------
+
 
 
