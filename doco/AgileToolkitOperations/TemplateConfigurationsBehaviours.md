@@ -76,6 +76,35 @@ export BUILD_CHOICE="0"<br>
 
 #### Objective 6
 
+To deploy a baselined application in template 2, you modify as in the following example for a joomla application
+
+export APPLICATION="joomla"<br>
+export APPLICATION_IDENTIFIER="1"<br>
+export APPLICATION_BASELINE_SOURCECODE_REPOSITORY="examplewebsite-webroot-sourcecode-baseline"<br>
+export BASELINE_DB_REPOSITORY="examplewebsite-db-baseline"<br>
+export BUILD_ARCHIVE_CHOICE="baseline"<br>
+export BUILD_CHOICE="1"<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### Objective 6
+
 To deploy PHP version 8.1 you set the following values in the appropriate template
 
 export APPLICATION_LANGUAGE="PHP"<br>
@@ -89,6 +118,7 @@ export APPLICATION_LANGUAGE="PHP"<br>
 export PHP_VERSION="8.3"<br>
 
 -----------------------------------------------------------------
+
 
 
 
