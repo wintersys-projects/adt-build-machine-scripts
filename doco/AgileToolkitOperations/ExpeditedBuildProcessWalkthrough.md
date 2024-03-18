@@ -108,7 +108,7 @@ To generate a new keypair you can follow: [keygen](https://www.ssh.com/academy/s
      
 >     ${BUILD_HOME}/helperscripts/AdjustScaling.sh  
 
-   When a machine is built in response to a scaling requiremtn it can be built as a regular build, a build from snasphot build, or a build from backup build  
+   When a machine is built in response to a scaling requirement it can be built as a regular build, a build from snasphot build, or a build from backup build  
 
    21. With the database machine the database can either we run locally on this machine (only recommended during development) or you can run a DBaaS instance remotely (most probably with the same VPC) in which case the database machine won't be accessed by the webservers but rather will be used to perform backups and installation to the DBaaS database by performing the functions it would usually perform for its own locally running database but for the remote DBaaS database instead.
 
