@@ -10,7 +10,7 @@ If you look
 
 then about line 170 you will see that this suggested scenario of misconfiguration is checked for but its not clear that all such misconfigurations can be checked for and  therefore, the onus is on you, as a deployer to know what configurations are appropriate for what you are trying to achieve.  
 
-If you are deploying a virgin application you should make modifications to template 1 for your current cloudhoat provier. If you are deploying a baselined application you should modify template 2 for your current cloudhost provider and if you are deploying from a temporal backup you should modify template 2 for the appropriate cloudhost
+If you are deploying a virgin application you should make modifications to template 1 for your current cloudhost provier. If you are deploying a baselined application you should modify template 2 for your current cloudhost provider and if you are deploying from a temporal backup you should modify template 3 for the appropriate cloudhost.
 
 ---------------------------------
 
