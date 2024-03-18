@@ -178,7 +178,6 @@ export INFRASTRUCTURE_REPOSITORY_OWNER="wintersys-projects"<br>
 export INFRASTRUCTURE_REPOSITORY_USERNAME="wintersys-projects"<br>
 export INFRASTRUCTURE_REPOSITORY_PASSWORD="none"<br>
 
--------------------------------------------------------------------
 
 #### Objective 17
 
@@ -202,6 +201,127 @@ export SYSTEM_FROMEMAIL_ADDRESS="testemail@testemail.com"<br>
 export SYSTEM_EMAIL_USERNAME="xxxx"<br>
 export SYSTEM_EMAIL_PASSWORD="yyyy"<br>
 export EMAIL_NOTIFICATION_LEVEL="ERROR"<br>
+
+------------------------------------------------------------------------
+
+#### Objective 19
+
+Set the system to use MariaDB "locally" in any template
+
+export DB_PORT="2035"<br>
+export DATABASE_INSTALLATION_TYPE="Maria"<br>
+
+
+#### Objective 20
+
+Set the system to use MySQL "locally" in any template
+
+export DB_PORT="2035"<br>
+export DATABASE_INSTALLATION_TYPE="MySQL"<br>
+
+
+#### Objective 21
+
+Set the system to use Postgres "locally" in any template
+
+export DB_PORT="2035"<br>
+export DATABASE_INSTALLATION_TYPE="Postgres"<br>
+
+------------------------------------------------------------------------
+
+#### Objective 22
+
+Set the system to use the MariaDB as "DBaaS" that you have deployed from the GUI in template 3 for your currrent provider
+
+export DB_PORT="2035"<br>
+export DATABASE_INSTALLATION_TYPE="DBaaS"<br>
+export DBaaS_HOSTNAME="xxxx"<br>
+export DBaaS_USERNAME="yyyy"<br>
+export DBaaS_PASSWORD="zzzz"<br>
+export DBaaS_DBNAME="ccccc"<br>
+export DATABASE_DBaaS_INSTALLATION_TYPE="Maria"<br>
+
+
+#### Objective 23
+
+Set the system to use the MariaDB as an automatically deployed "DBaaS" in template 3 for your currrent provider
+
+export DB_PORT="2035"<br>
+export DATABASE_INSTALLATION_TYPE="DBaaS"<br>
+export DATABASE_DBaaS_INSTALLATION_TYPE="xxxx"<br> (please see [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitDeployment/DeployingDBaaS.md) for explanation
+
+-------------------------------------------------------------------------
+
+#### Objective 24
+
+To Set the deployment details for your server machines use the following settings in any template (here I use digital ocean as an example):
+
+export REGION="lon1"<br>
+export DB_SIZE="s-1vcpu-1gb"<br>
+export DB_SERVER_TYPE="s-1vcpu-1gb"<br>
+export WS_SIZE="s-1vcpu-1gb"<br>
+export WS_SERVER_TYPE="s-1vcpu-1gb"<br>
+export AS_SIZE="s-1vcpu-1gb"<br>
+export AS_SERVER_TYPE="s-1vcpu-1gb"<br>
+export CLOUDHOST="digitalocean"<br>
+export MACHINE_TYPE="DROPLET"<br>
+
+----------------------------------------------------------------------------
+
+#### Objective 25
+
+Set the default number of webservers and autoscalers by manipulating the following settings in your templates, for example:
+
+export NO_AUTOSCALERS="0"<br>
+export NUMBER_WS="1"<br>
+
+------------------------------------------------------------------------------
+
+#### Objective 26
+
+Set the webserver type in any of your templates to APACHE
+
+export WEBSERVER_CHOICE="APACHE"<br>
+
+#### Objective 27
+
+Set the webserver type in any of your templates to NGINX
+
+export WEBSERVER_CHOICE="NGINX"<br>
+
+#### Objective 28
+
+Set the webserver type in any of your templates to LIGHTTPD
+
+export WEBSERVER_CHOICE="LIGHTTPD"<br>
+
+----------------------------------------------------------------------------
+
+#### Objective 29
+
+Set the timezone for your servers in any of your templates:
+
+export SERVER_TIMEZONE_CONTINENT="Europe"<br>
+export SERVER_TIMEZONE_CITY="London"<br>
+
+------------------------------------------------------------------------------
+
+#### Objective 30
+
+Set SUPERSAFE on and off for backups to switch it on in any of your templates:
+
+export SUPERSAFE_WEBROOT="1"<br>
+export SUPERSAFE_DB="1"<br>
+
+to switch it off:
+
+export SUPERSAFE_WEBROOT="0"<br>
+export SUPERSAFE_DB="0"<br>
+
+------------------------------------------------------------------------------
+
+#### Objective 31
+
 
 
 
