@@ -8,6 +8,7 @@
 ##### DETAILED USAGE TUTORIALS: [TUTORIALS](https://github.com/wintersys-projects/adt-build-machine-scripts/wiki/Tutorials)
 ##### DETAILED DOCUMENTATION FOR DEPLOYERS: [DEPLOYMENT DOCO](./doco/AgileToolkitDeployment)
 ##### DETAILED DOCUMENTATION FOR DEVELOPERS: [DEVELOPMENT DOCO](./doco/AgileToolkitDevelopment)
+##### OPERATIONS DOCUMENTATION FOR DEPLOYERS: [OPERATIONS DOCO](./doco/AgileToolkitOperations)
 ##### THE SPECIFICATION: [SPECIFICATION](./templatedconfigurations/specification.md)
 ##### QUICK START DEMOS: [QUICK START DEMOS](https://github.com/wintersys-projects/adt-build-machine-scripts/wiki/Quick-Start-Demo)
 
