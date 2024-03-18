@@ -14,7 +14,7 @@ To use this toolkit productively its necessary to understand the intended workfl
 
 5. If your intention is to use your new application in a production scenario for yourself then you will need to generate temporal backups of your application to preferably to both git repositories and your datastore as well. The way you generate your temporal backups is to run the following scripts on your build machine:
 
->     for the website temooral backup:  ${BUILD_HOME}/helperscripts/PerformWebsiteBackup.sh
+>     for the website temporal backup:  ${BUILD_HOME}/helperscripts/PerformWebsiteBackup.sh
 >     for the database temporal backup: ${BUILD_HOME}/helperscripts/PerformDatabaseBackup.sh
 
 6. You can then take your development servers offline and deploy in production mode by customising a template 3 to your needs complete with autoscaler provisioning and so on.
