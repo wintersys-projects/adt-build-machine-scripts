@@ -1,7 +1,7 @@
 No doubt the CMS system you have deployed as well as the components, plugins and modules that you have installed will require updating and this is the way to do it.  
-Most likely at a time when your website is least busy, follow these steps:  
+Most likely at a time when your website is least busy. This can seem a bit round the houses but once you have it nailed, its not to much of a song and dance. So, to perform application updates on a live site, follow these steps:  
 
-**BEFORE DOING ANYTHING MAKE SURE YOU HAVE GOT WORKING BACKUPS OF YOUR WEBSITE. YOU MIGHT WANT TO SIMPLY RENAME YOUR HOURLY BACKUPS WITH A .orig or .working DIRECTLY USING YOUR GIT PROVIDER'S GUI SO THAT THEY ARE NOT OVERWRITTEN BY THIS PROCESS AND YOU CAN ROLL BACK TO THEM IF SOMETHING GOES WRONG**
+>      BEFORE DOING ANYTHING MAKE SURE YOU HAVE GOT WORKING BACKUPS OF YOUR WEBSITE. YOU MIGHT WANT TO SIMPLY RENAME YOUR HOURLY BACKUPS FOR YOUR WEBROOT AND DATABASE WITH A .orig or .working DIRECTLY USING YOUR GIT PROVIDER'S GUI SO THAT THEY ARE NOT OVERWRITTEN BY THIS PROCESS AND YOU CAN ROLL BACK TO THEM IF SOMETHING GOES WRONG**
 
 1. Put your website into maintenance mode following [this](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitDeployment/ApplicationConfigurationUpdate.md) process to update configurations. Your visitors should then see "Maintenance mode - come back later"
 
@@ -14,7 +14,11 @@ This will put a flag into the datastore which the autoscalers will pick up on an
 
 3. Once you have made your maintence updates to your website, thoroughly test your website is operating as expected and then either manually generate temporal backups of your application webroot using "PerformWebsiteBackup.sh" (there is a parameter for making manual backups) or wait for hourly backups to be made by the system. If you are going to scaleup again after you have done the maintenance, then you must have an appropriate (and updated) temporal backup for your new webservers to build off which you can now do by running:
 
-    run ${HOME}/providerscripts/backupscripts/Backup.sh HOURLY <build_identifier>
+>      cd ${BUILD_HOME}/helperscripts  
+>      /bin/sh ./PerformWebsiteBackup.sh
+
+>      cd ${BUILD_HOME}/helperscripts  
+>      /bin/sh ./PerformDatabaseBackup.sh
 
 4. Check the integrity of the backups. CheckApplicationRepositoryIntegrity.sh
 
