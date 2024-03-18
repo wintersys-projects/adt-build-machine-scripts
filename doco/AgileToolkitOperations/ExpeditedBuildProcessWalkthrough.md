@@ -36,10 +36,10 @@
      - Select the cloudhost that you are deploying to (this overrides any values you set in the template when you deploy using the Expedited method)  
      - Load the values you have set in your template into memory for use in the build process (including soft errors you can act on if the template has values are considered erroneous)  
      - Configure the cloudhost CLI tools that you will be using for the build this involves reading a cloudhost cli template file and replacing placeholder values with live values from the tample. The cloudhost cli template file is stored at:<br><br>
-         ${BUILD_HOME}/initscripts/configfiles<br><br> 
+  >       ${BUILD_HOME}/initscripts/configfiles<br><br> 
      - Checking if you want to set SMTP settings for system emails if the values aren't set in your template  
      - Initialise the configuration file for the CLI tool you are using to access your S3 datastore (currently only s3cmd). This config file is also located at <br><br>
-         ${BUILD_HOME}/initscripts/configfiles<br><br> 
+  >       ${BUILD_HOME}/initscripts/configfiles<br><br> 
      - Find out what type of application you are deploying by interrogating the application sourcecode and looking for indicators based on file structure as to which application type it it  
      - Setup/create the native firewalls but don't add any rules or machines to them machines to them.  
      - Insitialise the SSH security keys so that we can SSH onto our machines using a known BUILD_KEY public/private pair  
