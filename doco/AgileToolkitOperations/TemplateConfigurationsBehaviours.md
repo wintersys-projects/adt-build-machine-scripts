@@ -85,6 +85,75 @@ export BASELINE_DB_REPOSITORY="examplewebsite-db-baseline"<br>
 export BUILD_ARCHIVE_CHOICE="baseline"<br>
 export BUILD_CHOICE="1"<br>
 
+#### Objective 7
+
+To deploy a temporal application with hourly peridicity in template 3, you modify as in the following example for a joomla application
+
+export APPLICATION="joomla"<br>
+export APPLICATION_IDENTIFIER="1"<br>
+export BUILD_ARCHIVE_CHOICE="hourly"<br>
+export BUILD_CHOICE="2"<br>
+
+----------------------------------------------------------------------
+
+#### Objective 8
+
+To enable the datastore you can set the following values appropriately in any of the templates - you can refer to the specification [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/templatedconfigurations/specification.md) to see what the HOST_BASE value should be for your datastore and you need to generate the access_key and secret_key for yourself
+
+export S3_ACCESS_KEY="xxxxx"<br>
+export S3_SECRET_KEY="yyyyy"<br>
+export S3_HOST_BASE="ams3.digitaloceanspaces.com"<br>
+export S3_LOCATION="US"<br>
+export DATASTORE_CHOICE="digitalocean"<br>
+
+--------------------------------------------------------------
+
+#### Objective 9
+
+To mount an application's asseta directory set the following values appropriately in template 3. In this example I use joomla where the assets directory is the images subdirectory
+
+export DIRECTORIES_TO_MOUNT="images"<br>
+export PERSIST_ASSETS_TO_CLOUD="1"<br>
+
+--------------------------------------------------------------
+
+#### Objective 10
+
+To deploy to Debian 12 machines, set these values in any of your templates
+
+export BUILDOS="debian"<br>
+export BUILDOS_VERSION="12"<br>
+
+#### Objective 11
+
+To deploy to Ubuntu 24.04 machines, set these values in any of your templates
+
+export BUILDOS="ubuntu"<br>
+export BUILDOS_VERSION="22.04"<br>
+
+--------------------------------------------------------------
+
+#### Objective 12
+
+To set your DNS provider, set the following values in your templates
+
+export DNS_USERNAME="dns_provider_email/Username"<br>
+export DNS_SECURITY_KEY="xxxx"<br>
+export DNS_CHOICE="cloudflare"<br>
+
+-----------------------------------------------------------------
+
+#### Objective 13
+
+To set your website characteristics set the following values in any template:
+
+export WEBSITE_DISPLAY_NAME="My Example Website"<br>
+export WEBSITE_NAME="testwebsite"<br>
+export WEBSITE_URL="www.testwebsite.uk"<br>
+
+
+
+
 
 
 
