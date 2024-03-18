@@ -1,18 +1,19 @@
 1. On your latop clone the main repository:  
 
-git clone https://github.com/wintersys-projects/adt-build-machine-scripts.git
+>     /usr/bin/git clone https://github.com/wintersys-projects/adt-build-machine-scripts.git
 
 2. Setup the approrpiate template with live values for the build that you want:
 
-   ${BUILD_HOME{/templstedconfigurations/templates/\<provider\>
+>     ${BUILD_HOME{/templstedconfigurations/templates/\<provider\>
 
-3. cd ./adt-build-machine-scripts/helperscripts
+3.
+>     cd ./adt-build-machine-scripts/helperscripts
 
 4. run the script GenerateOverrideScript.sh
 
-   /bin/sh ./GenerateOverrideScript.sh
+>     /bin/sh ./GenerateOverrideScript.sh
 
- 5. When you run the script answer the initial questions which would look like this if you were deploying a temporal build template for linode:
+5. When you run the script answer the initial questions which would look like this if you were deploying a temporal build template for linode:
 
 >      root@localhost:/home/agile-deployer/adt-build-machine-scripts/helperscripts# sh GenerateOverride.sh
 >      ############################################################################################################
@@ -43,8 +44,8 @@ When you are ready press \<enter\> to review the values that you have set for yo
 
 7. Once this script has finished running, you will need to run a second script
 
-   cd ${BUILD_HOME}/helperscripts
-   /bin/sh GenerateHardcoreUserdata.sh
+>     cd ${BUILD_HOME}/helperscripts
+>     /bin/sh GenerateHardcoreUserdata.sh
 
    This will generate a script of a name that you choose in for example ${BUILD_HOME}/userdata/testuserdatascript
 
@@ -52,8 +53,8 @@ When you are ready press \<enter\> to review the values that you have set for yo
 
 8. What you will then need to do is follow the exact same steps as for the Expedited Build Process described [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitOperations/ExpeditedBuildProcessWalkthrough.md) except for step 1 you paste the script that you generated in step7 (${BUILD_HOME}/userdata/testuserdatascript) into the cloud-init of the build-machine rather than the override script that those instructions suggest. What this will do will automatically run the full build without any interaction. You can follow the build on the build-machine by looking in ${BUILD_HOME}/logs
 
-NOTE1: I called this the hardcore method (or really the 'confidence in your template method') because its a pain in the arse to use this method if you find there is some sort of misconfiguration in your template because you have to go start the whole process of spinning up the build machine again. With the expedited method you can run multiple builds on the same machine. You could use the expedited method to build up your confidence that a particular template is correct and then switch over to hardcore if you want to.  
+**NOTE1:** I called this the hardcore method (or really the 'confidence in your template method') because its a pain in the arse to use this method if you find there is some sort of misconfiguration in your template because you have to go start the whole process of spinning up the build machine again. With the expedited method you can run multiple builds on the same machine. You could use the expedited method to build up your confidence that a particular template is correct and then switch over to hardcore if you want to.  
 
-NOTE2: It is expected that you will have a set of templates for different deployment situations on your laptop. For example you might have templates configured for deploying virgin joomla, virgin wordpress, a baseline of a particular application with both small machines and large machines and a whole bunch of other configurations that you might want for your server. Having a library of templates means you are ready to go with for a whole bunch of different deployment scenarios and you could even have a library of scripts like the one generated in step 7 above for different deployment configuration such that, for example, getting a virgin joomla configuration up and running might be as simple (provided that all your DNS systems are setup) as selecting the correct template from your library, perhaps updating it to the latest version of joomla, maybe changing the PHP version and so on and pasting it into the cloud-init of the build machine you are spinning up.  
+**NOTE2:** It is expected that you will have a set of templates for different deployment situations on your laptop. For example you might have templates configured for deploying virgin joomla, virgin wordpress, a baseline of a particular application with both small machines and large machines and a whole bunch of other configurations that you might want for your server. Having a library of templates means you are ready to go with for a whole bunch of different deployment scenarios and you could even have a library of scripts like the one generated in step 7 above for different deployment configuration such that, for example, getting a virgin joomla configuration up and running might be as simple (provided that all your DNS systems are setup) as selecting the correct template from your library, perhaps updating it to the latest version of joomla, maybe changing the PHP version and so on and pasting it into the cloud-init of the build machine you are spinning up.  
 
-NOTE3: My point is that this is a powertool and if you invest the effort into learning it its likely you will reap the rewards.   
+**NOTE3:** My point is that this is a powertool and if you invest the effort into learning it its likely you will reap the rewards.   
