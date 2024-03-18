@@ -1,4 +1,6 @@
-**IMPORTANT: If you fork these repositories, and have them as public repositories, do not enter and commit sensitive parameters into the templating configruation files. Either make sure you are not committing sensitive information or override them using the user data init script and the hardcore build method of your build server. 
+**IMPORTANT:**
+
+If you fork these repositories, and have them as public repositories, do not enter and commit sensitive parameters into the templating configruation files. Either make sure you are not committing sensitive information or override them using the user data init script and the hardcore build method of your build server. 
 
 I keep a copy of the override script I am using on my laptop setup for the provider I am using and use it for userdata on my build client as required. It is important to keep your bespoke override script secure because it will have access credentials to your infrastrucuture within it. Similarly, the VM which you are using as your build machine must also be kept secured because it also will have sensitive data on it. 
 
