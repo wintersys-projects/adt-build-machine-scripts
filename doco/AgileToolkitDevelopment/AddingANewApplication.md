@@ -1,32 +1,22 @@
-Adding a new application is a fairly involved process, but it's not too difficult in most cases. There's a procedure that you need to follow and as long as the application itself isn't too quirky, it should work OK. Here are the steps:  
+#### Adding a new application to the toolkit
 
-The BUILD MACHINE scripts need to be updated as follows to cater for a newly supported application:
+The core supports joomla,wordpress,drupal and moodle. If you want to support further applications such as "NextCloud" and a whole host of other potential applications I believe you should be able to integrate support for any (php) application which follows a similar pattern by updating and modifying files in these directories or in the case of specific files particular files themselves.
 
-1) In the BUILD CLIENT scripts, you need to update 
+adt-webserver-scripts/security/GatewayGuardian.sh
+adt-webserver-scripts/providerscripts/webserver/configuration
+adt-webserver-scripts/providerscripts/application/processing
+adt-webserver-scripts/providerscripts/application/monitoring
+adt-webserver-scripts/providerscripts/application/email
+adt-webserver-scripts/providerscripts/application/configuration
 
-&#0036;BUILD_HOME/providerscripts/application/WhichApplicationByGitAndBackup.sh  
-&#0036;BUILD_HOME/providerscripts/application/WhichApplicationByGitAndBaseline.sh  
-&#0036;BUILD_HOME/providerscripts/application/WhichApplicationByDatastoreAndBaseline.sh  
-&#0036;BUILD_HOME/providerscripts/application/WhichApplicationByDatastoreAndBackup.sh  
+adt-database-scripts/security/GatewayGuardian.sh
 
-&#0036;BUILD_HOME/processingscripts/PreProcessingMessaages.sh  
-&#0036;BUILD_HOME/processingscripts/PostProcessingMessaages.sh 
+adt-build-machine-scripts/providerscripts/application
+adt-build-machine-scripts/processingscripts
 
-2) On the webserver you will need to add code according to the pattern of the default supported applications in the following places:
+adt-autoscaler-scripts/autoscaler/SelectHeadFile.sh
 
-   &#0036;HOME/providerscripts/webserver/configuration/
-     
-   &#0036;HOME/providerscripts/application
-   
-   &#0036;HOME/security/GatewayGuardian.sh
-   
-3) on the database machine you need to modify the following for your application 
-
-   &#0036;HOMEproviderscripts/application
-
-4) on the autoscaler you need to provide:
-
-   &#0036;HOMEautoscaler/SelectHeadFile.sh
+The most major part of the integration is likely to be adt-webserver-scripts/providerscripts/webserver/configuration and will most likely take the majority of your effort
 
 
 
