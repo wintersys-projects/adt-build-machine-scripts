@@ -26,7 +26,7 @@ cloudhost="${3}"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-    key_ids="`/usr/local/bin/doctl compute ssh-key list | /bin/grep "${key_name}"`"
+    key_ids="`/usr/local/bin/doctl compute ssh-key list | /bin/grep "${key_name}" | /usr/bin/awk '{print $1}'`"
 
     if ( [ "${key_ids}" != "" ] )
     then
