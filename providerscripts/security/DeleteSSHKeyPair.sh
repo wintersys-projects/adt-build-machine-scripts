@@ -26,21 +26,11 @@ cloudhost="${3}"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-    /usr/bin/curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "https://api.digitalocean.com/v2/account/keys" | /usr/bin/jq ".ssh_keys[].name" > runtimedata/names
-    /usr/bin/curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "https://api.digitalocean.com/v2/account/keys" | /usr/bin/jq ".ssh_keys[].id" > runtimedata/ids
-    key_ids=""
-    id_indexes="`/bin/cat -n runtimedata/names | /bin/grep ${key_name} | /usr/bin/awk '{print $1}'`"
-    for id_index in ${id_indexes}
-    do
-        key_ids="${key_ids} `/bin/sed "${id_index}q;d" runtimedata/ids`"
-    done
-    /bin/echo "KEY IDS="${key_ids}
+    key_ids="`/usr/local/bin/doctl compute ssh-key list | /bin/grep "${key_name}"`"
 
-    #Delete the keys we had from 'old' builds so that our fresh keys are used instead
-
-    for id in ${key_ids}
+    for key_id in ${key_ids}
     do
-        /usr/bin/curl -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "https://api.digitalocean.com/v2/account/keys/${id}"
+        /usr/local/bin/doctl compute ssh-key delete ${key_id}
     done
 fi
 if ( [ "${cloudhost}" = "exoscale" ] )
