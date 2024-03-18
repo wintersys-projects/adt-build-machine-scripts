@@ -248,7 +248,7 @@ Set the system to use the MariaDB as an automatically deployed "DBaaS" in templa
 
 export DB_PORT="2035"<br>
 export DATABASE_INSTALLATION_TYPE="DBaaS"<br>
-export DATABASE_DBaaS_INSTALLATION_TYPE="xxxx"<br> (please see [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitDeployment/DeployingDBaaS.md) for explanation
+export DATABASE_DBaaS_INSTALLATION_TYPE="xxxx" (please see [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitDeployment/DeployingDBaaS.md) for explanation) <br>
 
 -------------------------------------------------------------------------
 
