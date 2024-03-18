@@ -167,6 +167,32 @@ export WEBSITE_DISPLAY_NAME="My Example Website"<br>
 export WEBSITE_NAME="testwebsite"<br>
 export WEBSITE_URL="www.testwebsite.uk"<br>
 
+-------------------------------------------------------------------
+
+#### Objective 16
+
+Set the repositories which hold your infrastructure sourcecode (the adt that holds this file) in any template, for example:
+
+export INFRASTRUCTURE_REPOSITORY_PROVIDER="github"<br>
+export INFRASTRUCTURE_REPOSITORY_OWNER="wintersys-projects"<br>
+export INFRASTRUCTURE_REPOSITORY_USERNAME="wintersys-projects"<br>
+export INFRASTRUCTURE_REPOSITORY_PASSWORD="none"<br>
+
+-------------------------------------------------------------------
+
+#### Objective 17
+
+Set the repositories which hold your application sourcecode in any template, for example:
+
+export APPLICATION_REPOSITORY_PROVIDER="github"<br>
+export APPLICATION_REPOSITORY_OWNER="adt-demos"<br>
+export APPLICATION_REPOSITORY_USERNAME="adt-demos"<br>
+export APPLICATION_REPOSITORY_PASSWORD="none"<br>
+export APPLICATION_REPOSITORY_TOKEN="xxxxx"<br>
+
+
+
+
 
 
 
