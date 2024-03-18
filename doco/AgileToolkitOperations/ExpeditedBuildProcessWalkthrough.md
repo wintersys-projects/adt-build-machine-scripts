@@ -2,22 +2,24 @@
 
 2. You can keep your copy of this script on your laptop (the first build you do is much more longwinded than subsequent ones where you can just copy and paste configurations you have already set up) and you need to set the following settings in it before the build can proceed:
 
-   BUILDMACHINE_USER="agile-deployer"<br>
-   BUILDMACHINE_PASSWORD="Hjdhfb34hd£"<br>
-   BUILDMACHINE_SSH_PORT="1035"<br>
-   LAPTOP_IP="111.111.111.111"<br>
-   SSH="\<your ssh public key here\>"- generate a new keypair according to [keygen](https://www.ssh.com/academy/ssh/keygen) if you haven't got a keypair already<br>
-   SELECTED_TEMPLATE="3" - only need to set this if you are following this as part of a "hardcore" build process<br>
-   
+>     BUILDMACHINE_USER="agile-deployer"
+>     BUILDMACHINE_PASSWORD="Hjdhfb34hd£"
+>     BUILDMACHINE_SSH_PORT="1035"
+>     LAPTOP_IP="111.111.111.111"
+>     SSH="\<your ssh public key here\>"- generate a new keypair according to if you haven't got a keypair already
+>     SELECTED_TEMPLATE="3" - only need to set this if you are following this as part of a "hardcore" build process
+
+To generate a new keypair you can follow: [keygen](https://www.ssh.com/academy/ssh/keygen)  
+
 4. Now paste the modified script into the cloud-init portion of a new VPS machine of your chosen cloudhost provider and this machine will become your new build machine so you might want to name it accordingly through the GUI system
 
 6. In a couple of minutes your machine should be online and you can ssh into it, something like:
 
-        ssh -p 1035 agile-deployer@<machine_ip_address><br>
+>     ssh -p 1035 agile-deployer@<machine_ip_address><br>
 
    and you will see a directory
 
-       adt-build-machine-scripts<br>
+>     adt-build-machine-scripts<br>
 
    and this means that this toolkit is available on the machine
 
@@ -25,13 +27,13 @@
 
 8. What you now need to so is setup your template for which you must pick the appropriate one from here on your new machine:
 
-       ${BUILD_HOME}/templatedconfiguration/templates/<provider>
+>     ${BUILD_HOME}/templatedconfiguration/templates/<provider>
 
 9. Each default template has some fields marked **MANDATORY** these fields are the minimum set of fields which you must provide values to for your build process to have any chance of succeeding. If you don't provide a suffficient set of **valid** values, then, you should be warned about it as you try to start the build
 
 10. Once you are happy that your template is configured correctly you can start the build by running the following script:
 
-        ${BUILD_HOME}/ExpeditedAgileDeploymentToolkit.sh  
+>     ${BUILD_HOME}/ExpeditedAgileDeploymentToolkit.sh  
 
 11. When you run this toolkit it will follow several prebuild steps to make sure that it has everything that the build process needs in order to proceed. The main steps that the script needs to run through needs to complete successfully before the build can begin are:
 
@@ -40,12 +42,12 @@
 - Load the values you have set in your template into memory for use in the build process (including soft errors you can act on if the template has values are considered erroneous)
 - Configure the cloudhost CLI tools that you will be using for the build this involves reading a cloudhost cli template file and replacing placeholder values with live values from the tample. The cloudhost cli template file is stored at:
      
-  >       ${BUILD_HOME}/initscripts/configfiles<br><br>
+>     ${BUILD_HOME}/initscripts/configfiles<br><br>
 
 - Checking if you want to set SMTP settings for system emails if the values aren't set in your template  
 - Initialise the configuration file for the CLI tool you are using to access your S3 datastore (currently only s3cmd). This config file is also located at
      
-  >       ${BUILD_HOME}/initscripts/configfiles<br><br> 
+>     ${BUILD_HOME}/initscripts/configfiles<br><br> 
      
 - Find out what type of application you are deploying by interrogating the application sourcecode and looking for indicators based on file structure as to which application type it it  
 - Setup/create the native firewalls but don't add any rules or machines to them machines to them.  
@@ -55,13 +57,13 @@
    
 12. When you begin a build with this buildkit it will expect you to have selected a build chain in the file by setting a value for BUILDCHAINTYPE: <br> <br>
 
-        ${BUILD_HOME}/builddescriptors/buildstylesscp.dat  
+>     ${BUILD_HOME}/builddescriptors/buildstylesscp.dat  
 
    If you have selected the "standard" build chain time which you most probabaly have then for production mode the build process will build autoscaler(s), webserver and database machines by calling the files  
 
-       ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh  
-       ${BUILD_HOME}/buildscripts/BuildWebserver.sh  
-       ${BUILD_HOME}/buildscripts/BuildDatabase.sh  
+>     ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh  
+>     ${BUILD_HOME}/buildscripts/BuildWebserver.sh  
+>     ${BUILD_HOME}/buildscripts/BuildDatabase.sh  
 
    If you are building for DEVELOPMENT rather than production only a webserver and a database will be built  
 
@@ -69,24 +71,24 @@
 
 14. Once the machines have built, you will get a message saying that tbe build was successful together with, possibly, some pertinent information that you might need to interact with your application. Once the build is complete you can interact with each of your machines using the scripts in the
 
-        ${BUILD_HOME}/helperscripts  
+>     ${BUILD_HOME}/helperscripts  
 
    directory. You can login to your machines and have a nose around to see what is going on.  
 
    Once you are on a machine (you have authenticated to it using the correct SSH Key as obtained by the helperscript you have used, you can become root as follows:  
 
-       cd ${HOME}/super/  
-       sh ./Super.sh  
+>     cd ${HOME}/super/  
+>     /bin/sh ./Super.sh  
 
    You will then be root because having the correct key to login to the machine is considered strong authentication. root user logins are disabled and password based logins are disabled also.  
 
    15. The machines work by having scripts run from cron on a regular basis to either initiate a scaling process on an autoscaler a backup process on a webserver or database processes to do with the firewall and application configuration and so on. If you want to find out what the machines are doing the advice is to studu what is configured in cron which you can do by tying
   
-     crontab -e  
+>     crontab -e  
 
    16. The configuration files that are representations of the values that you either entered into your template or added interactively during an expedited build process are stored in the directory:
   
-     ${HOME}/.ssh  
+>     ${HOME}/.ssh  
 
    I chose this directory because these configuration files were copied here using SSH so it reminds us that they have come from the build-machine  
 
@@ -94,7 +96,7 @@
 
    17. Another interesting directory on each of the machines is
 
-           ${HOME}/runtime
+>     ${HOME}/runtime
 
    This directory basically contains information that the scripts are generating as they go about their business.
 
@@ -104,7 +106,7 @@
      
    20. On the autoscaler(s) machines are scaled according to scaling requirements which can be set by running:
      
-     ${BUILD_HOME}/helperscripts/AdjustScaling.sh  
+>     ${BUILD_HOME}/helperscripts/AdjustScaling.sh  
 
    When a machine is built in response to a scaling requiremtn it can be built as a regular build, a build from snasphot build, or a build from backup build  
 
