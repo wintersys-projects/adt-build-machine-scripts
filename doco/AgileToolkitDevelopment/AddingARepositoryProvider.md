@@ -1,12 +1,8 @@
-1) Update ${HOME}/initscripts/InitialiseSourcecodeRepository.sh on the BUILD CLIENT for your new repository provider 
+To support an additional repsoitory provider you will need to modify files in the following directories:
 
-2) Update ${HOME}/providerscripts/git/* for your new repository provider
+adt-webserver-scripts/providerscripts/git
 
-3) Update ${HOME}/helperscripts/* for your new repository provider
+adt-database-scripts/providerscripts/git
 
-4) On the Autoscaler codebase update ${HOME}/providerscripts/git/*
-
-5) On the Webserver codebase update ${HOME}/providerscripts/git/*
-
-6) On the Database codebase update ${HOME}/providerscripts/git/*
+adt-autoscaler-scripts/providerscripts/git
 
