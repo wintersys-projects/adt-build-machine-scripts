@@ -28,10 +28,13 @@ if ( [ "${cloudhost}" = "digitalocean" ] )
 then
     key_ids="`/usr/local/bin/doctl compute ssh-key list | /bin/grep "${key_name}"`"
 
-    for key_id in ${key_ids}
-    do
-        /usr/local/bin/doctl compute ssh-key --force delete ${key_id}
-    done
+    if ( [ "${key_ids}" != "" ] )
+    then
+       for key_id in ${key_ids}
+       do
+           /usr/local/bin/doctl compute ssh-key --force delete ${key_id}
+       done
+    fi
 fi
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
@@ -40,22 +43,30 @@ fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
-    keyids="`/usr/local/bin/linode-cli --text sshkeys list | /bin/grep ${key_name} | /usr/bin/awk '{print $1}'`"
+    key_ids="`/usr/local/bin/linode-cli --text sshkeys list | /bin/grep ${key_name} | /usr/bin/awk '{print $1}'`"
 
-    for keyid in ${keyids}
-    do
-        /usr/local/bin/linode-cli sshkeys delete ${keyid}
-    done
+    if ( [ "${key_ids}" != "" ] )
+    then
+        for key_id in ${key_ids}
+        do
+            /usr/local/bin/linode-cli sshkeys delete ${key_id}
+        done
+    fi
 fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
 then
     export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/TOKEN`"
     /bin/sleep 1
-    for key_id in `/usr/bin/vultr ssh-key list | /bin/grep ".*-.*-" | /usr/bin/awk '{print $1}' | /usr/bin/head -n -1`
-    do
-        /usr/bin/vultr ssh-key delete ${key_id}
-    done
+    key_ids="`/usr/bin/vultr ssh-key list | /bin/grep ".*-.*-" | /usr/bin/awk '{print $1}' | /usr/bin/head -n -1`"
+
+    if ( [ "${key_ids}" != "" ] )
+    then
+       for key_id in ${key_ids}
+       do
+           /usr/bin/vultr ssh-key delete ${key_id}
+       done
+    fi
 fi
 
 
