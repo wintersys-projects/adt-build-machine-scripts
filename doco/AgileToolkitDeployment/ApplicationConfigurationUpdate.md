@@ -22,7 +22,7 @@ The longer way to update the application configurations on your server fleet is 
 1. Login to one of your webservers
 2. Go to &#0036;HOME/runtime/joomla_configuration.php and edit the file (MAKING VERY SURE THAT THE CONFIGURATION IS CORRECT AS INCORRECT CONFIG WILL CRASH ALL YOUR SERVERS ONCE YOU PERFORM STEP 3)
 3.
->      /usr/bin/run &#0036;HOME/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh &#0036;HOME/runtime/joomla_configuration.php joomla_configuration.php
+>      /usr/bin/run ${HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh &#0036;HOME/runtime/joomla_configuration.php joomla_configuration.php
 
 The system wil then push out the updated config from S3 to any other running servers
 
@@ -31,23 +31,23 @@ The system wil then push out the updated config from S3 to any other running ser
 1. Login to one of your webservers
 2. Go to &#0036;HOME/runtime/wordpress_config.php and edit the file (MAKING VERY SURE THAT THE CONFIGURATION IS CORRECT AS INCORRECT CONFIG WILL CRASH ALL YOUR SERVERS ONCE YOU PERFORM STEP 3)
 3.
->      /usr/bin/run &#0036;HOME/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh &#0036;HOME/runtime/wordpress_config.php wordpress_config.php
+>      /usr/bin/run ${HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh &#0036;HOME/runtime/wordpress_config.php wordpress_config.php
 
 The system wil then push out the updated config from S3 to any other running servers
 
 ####  DRUPAL
 
 1. Login to one of your webservers
-2. Go to &#0036;HOME/runtime/drupal_settings.php and edit the file (MAKING VERY SURE THAT THE CONFIGURATION IS CORRECT AS INCORRECT CONFIG WILL CRASH ALL YOUR SERVERS ONCE YOU PERFORM STEP 3)
+2. Go to ${HOME}/runtime/drupal_settings.php and edit the file (MAKING VERY SURE THAT THE CONFIGURATION IS CORRECT AS INCORRECT CONFIG WILL CRASH ALL YOUR SERVERS ONCE YOU PERFORM STEP 3)
 3.
->      /usr/bin/run &#0036;HOME/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh &#0036;HOME/runtime/drupal_settings.php drupal_settings.php
+>      /usr/bin/run ${HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh &#0036;HOME/runtime/drupal_settings.php drupal_settings.php
 
 The system wil then push out the updated config from S3 to any other running servers
 
 ####  MOODLE
 
 1. Login to one of your webservers
-2. Go to &#0036;HOME/runtime/moodle_config.php and edit the file (MAKING VERY SURE THAT THE CONFIGURATION IS CORRECT AS INCORRECT CONFIG WILL CRASH ALL YOUR SERVERS ONCE YOU PERFORM STEP 3)
+2. Go to ${HOME}/runtime/moodle_config.php and edit the file (MAKING VERY SURE THAT THE CONFIGURATION IS CORRECT AS INCORRECT CONFIG WILL CRASH ALL YOUR SERVERS ONCE YOU PERFORM STEP 3)
 3.
 >      /usr/bin/run &#0036;HOME/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh &#0036;HOME/runtime/moodle_config.php moodle_config.php
 
