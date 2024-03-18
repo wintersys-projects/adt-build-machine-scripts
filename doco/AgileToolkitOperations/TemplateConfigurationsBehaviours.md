@@ -98,6 +98,22 @@ export BUILD_CHOICE="2"<br>
 
 #### Objective 8
 
+To deploy PHP version 8.1 you set the following values in the appropriate template
+
+export APPLICATION_LANGUAGE="PHP"<br>
+export PHP_VERSION="8.1"<br>
+
+#### Objective 9
+
+To deploy PHP version 8.3 you set the following values in the appropriate template
+
+export APPLICATION_LANGUAGE="PHP"<br>
+export PHP_VERSION="8.3"<br>
+
+-----------------------------------------------------------------
+
+#### Objective 10
+
 To enable the datastore you can set the following values appropriately in any of the templates - you can refer to the specification [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/templatedconfigurations/specification.md) to see what the HOST_BASE value should be for your datastore and you need to generate the access_key and secret_key for yourself
 
 export S3_ACCESS_KEY="xxxxx"<br>
@@ -108,7 +124,7 @@ export DATASTORE_CHOICE="digitalocean"<br>
 
 --------------------------------------------------------------
 
-#### Objective 9
+#### Objective 11
 
 To mount an application's asseta directory set the following values appropriately in template 3. In this example I use joomla where the assets directory is the images subdirectory
 
@@ -117,14 +133,14 @@ export PERSIST_ASSETS_TO_CLOUD="1"<br>
 
 --------------------------------------------------------------
 
-#### Objective 10
+#### Objective 12
 
 To deploy to Debian 12 machines, set these values in any of your templates
 
 export BUILDOS="debian"<br>
 export BUILDOS_VERSION="12"<br>
 
-#### Objective 11
+#### Objective 13
 
 To deploy to Ubuntu 24.04 machines, set these values in any of your templates
 
@@ -133,7 +149,7 @@ export BUILDOS_VERSION="22.04"<br>
 
 --------------------------------------------------------------
 
-#### Objective 12
+#### Objective 14
 
 To set your DNS provider, set the following values in your templates
 
@@ -143,7 +159,7 @@ export DNS_CHOICE="cloudflare"<br>
 
 -----------------------------------------------------------------
 
-#### Objective 13
+#### Objective 15
 
 To set your website characteristics set the following values in any template:
 
@@ -172,21 +188,7 @@ export WEBSITE_URL="www.testwebsite.uk"<br>
 
 
 
-#### Objective 6
 
-To deploy PHP version 8.1 you set the following values in the appropriate template
-
-export APPLICATION_LANGUAGE="PHP"<br>
-export PHP_VERSION="8.1"<br>
-
-#### Objective 7
-
-To deploy PHP version 8.3 you set the following values in the appropriate template
-
-export APPLICATION_LANGUAGE="PHP"<br>
-export PHP_VERSION="8.3"<br>
-
------------------------------------------------------------------
 
 
 
