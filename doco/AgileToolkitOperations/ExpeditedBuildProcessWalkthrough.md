@@ -32,10 +32,10 @@
 
 11. When you run this toolkit it will follow several prebuild steps to make sure that it has everything that the build process needs in order to proceed. The main steps that the script needs to run through needs to complete successfully before the build can begin are:
 
-     - Make sure software the needed software is up to date and installed  
-     - Select the cloudhost that you are deploying to (this overrides any values you set in the template when you deploy using the Expedited method)  
-     - Load the values you have set in your template into memory for use in the build process (including soft errors you can act on if the template has values are considered erroneous)  
-     - Configure the cloudhost CLI tools that you will be using for the build this involves reading a cloudhost cli template file and replacing placeholder values with live values from the tample. The cloudhost cli template file is stored at:
+- Make sure software the needed software is up to date and installed  
+- Select the cloudhost that you are deploying to (this overrides any values you set in the template when you deploy using the Expedited method)  
+- Load the values you have set in your template into memory for use in the build process (including soft errors you can act on if the template has values are considered erroneous)
+- Configure the cloudhost CLI tools that you will be using for the build this involves reading a cloudhost cli template file and replacing placeholder values with live values from the tample. The cloudhost cli template file is stored at:
      
   >       ${BUILD_HOME}/initscripts/configfiles<br><br>
 
