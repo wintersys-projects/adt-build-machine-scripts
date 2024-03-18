@@ -190,6 +190,21 @@ export APPLICATION_REPOSITORY_USERNAME="adt-demos"<br>
 export APPLICATION_REPOSITORY_PASSWORD="none"<br>
 export APPLICATION_REPOSITORY_TOKEN="xxxxx"<br>
 
+------------------------------------------------------------------------
+
+#### Objective 18
+
+Set the SMTP email settings using the following settings in any template:
+
+export SYSTEM_EMAIL_PROVIDER="1"<br>
+export SYSTEM_TOEMAIL_ADDRESS="testemail@testemail.com"<br>
+export SYSTEM_FROMEMAIL_ADDRESS="testemail@testemail.com"<br>
+export SYSTEM_EMAIL_USERNAME="xxxx"<br>
+export SYSTEM_EMAIL_PASSWORD="yyyy"<br>
+export EMAIL_NOTIFICATION_LEVEL="ERROR"<br>
+
+
+
 
 
 
