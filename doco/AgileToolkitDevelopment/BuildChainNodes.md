@@ -4,7 +4,9 @@ What I mean by this is you can chain together different combinations of "nodes" 
 
 The "standard" buildchain is "autoscaler, webserver, database" and it is expected that most applications will build out that combination of "nodes".  
 
-Using the file ${BUILD_HOME}/builddescriptors/buildstylescp.dat  
+Using the file 
+
+>      ${BUILD_HOME}/builddescriptors/buildstylescp.dat  
 
 You can define what buildchain you want to deploy.  
 
