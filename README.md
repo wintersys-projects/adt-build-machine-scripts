@@ -10,7 +10,7 @@
 ##### DETAILED DOCUMENTATION FOR DEVELOPERS: [DEVELOPMENT DOCO](./doco/AgileToolkitDevelopment)
 ##### OPERATIONS DOCUMENTATION FOR DEPLOYERS: [OPERATIONS DOCO](./doco/AgileToolkitOperations)
 ##### THE SPECIFICATION: [SPECIFICATION](./templatedconfigurations/specification.md)
-##### QUICK START DEMOS: [QUICK START DEMOS](https://github.com/wintersys-projects/adt-build-machine-scripts/wiki/Quick-Start-Demo)
+##### QUICK SPECIFICATION: [QUICK SPECIFICATION](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/templatedconfigurations/quick_specification.dat)
 
 There are four repositories associated with this toolkit, this one, and the one's listed below. 
 
