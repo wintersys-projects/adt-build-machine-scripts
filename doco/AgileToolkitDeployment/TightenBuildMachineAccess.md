@@ -8,7 +8,7 @@ You can use the helperscript:
 
 to adjust access to your build machine or you can use the manual process described below, if you need to.
 
-Now review the native firewall called "adt-build-machine" with your cloudhost and allow the additional IP address through the GUI also. 
+Now manually review the native firewall for your provider called "adt-build-machine" with your cloudhost, make sure your build machines is has this native firewall active and allow the additional IP address through the GUI also. 
 
 -----------------------------------
 
