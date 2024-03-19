@@ -2,7 +2,11 @@
 
 2. Similarly from the host where your website is currently hosted take a database dump using a tool like mysqldump for mysql or pg_dump for postgres and call it "database_archive.sql" look into the sql file and take a note from it of the database prefix that is in use and write it down or store it in a text file
 
-3. Copy both files to the directory &#0036;BUILD_HOME/migrations/ on the build machine that you are deploying your servers (running the agile deployment toolkit build process) from.
+3. Copy both files to the directory
+
+>      ${BUILD_HOME}/migrations/
+
+on the build machine that you are deploying your servers (running the agile deployment toolkit build process) from.
 
 4. Deploy a Virgin install of whichever CMS type your application is using the ADT. Don't go the whole way, you shouldn't be doing anything with the GUI system at all unless its just to check that the website is responsive. No GUI based installation steps should be followed. If its a Joomla website deploy a virgin joomla installation similarly you need a virgin installation of wordpress, drupal or moodle if your website with your original host has one of those as its CMS type. 
 
@@ -50,10 +54,10 @@ Get the IP address of your database server by
 
 >      ${HOME}/.ssh/webserver_configuration_settings.dat from "BUILDARCHIVECHOICE:virgin" to "BUILDARCHIVECHOICE:baseline"
 
-11. Go to &#0036;{HOME}/runtime and select the correspoding configuration file joomla's is "joomla_configuration.php" and find and change the database prefix (is probably set to jos_ for joomla) to be ther value of the database prefix that you saved in step 2. You also need to change the ip address of the database and if necessary the port that the database is running on (you made a note of them both at the end of step 8.
+10. Go to &#0036;{HOME}/runtime and select the correspoding configuration file joomla's is "joomla_configuration.php" and find and change the database prefix (is probably set to jos_ for joomla) to be ther value of the database prefix that you saved in step 2. You also need to change the ip address of the database and if necessary the port that the database is running on (you made a note of them both at the end of step 8.
 
      Once you have done that, run the script /usr/bin/config and wait a couple of minutes and then go to step 12
 
-12. Check that your new website is online and make a baselines of the webroot and database by following [how to baseline](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/master/doco/AgileToolkitDeployment/BaselinesAndBackups.md)
+11. Check that your new website is online and make a baselines of the webroot and database by following [how to baseline](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/master/doco/AgileToolkitDeployment/BaselinesAndBackups.md)
     
-13. Once you have made baselines you can deploy them with different DNS settings and in 12 steps or so you have migrated to us from your old provider. 
+12. Once you have made baselines you can deploy them with different DNS settings and in 12 steps or so you have migrated to us from your old provider. 
