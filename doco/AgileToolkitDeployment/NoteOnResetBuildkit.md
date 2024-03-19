@@ -2,10 +2,10 @@
 
 So, before pushing your (updated) repository to your git provider, you need to reset the buildkit which you can do by running
 
-${BUILD_HOME}/helperscripts/ResetBuildKit.sh
+>     ${BUILD_HOME}/helperscripts/ResetBuildKit.sh
 
 That said it doesn't clear out any settings you have in your templates, so, be sure to clear those out manually as well from the:  
 
-${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/*.tmpl 
+>     ${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/*.tmpl 
 
 files.
