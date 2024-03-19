@@ -26,6 +26,24 @@ To support another cloudhost provider (for example, AWS, google cloud, OVH cloud
 >     adt-autoscaler-scripts/installscripts/InstallMonitoringGear.sh
 >     adt-autoscaler-scripts/installscripts/InstallCloudhostTools.sh
 
+If you want to add a new cloudhost to your the toolkit you will need to configure a template with placeholders for your new cloudhost's CLI tool  
+You can find examples here:  
+
+>     ${BUILD_HOME}/initscripts/configfiles
+
+This script wil then initialise your config file template by replacing placeholder values with live values
+
+>     ${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh
+
+
+Its the same process on the autoscaler where you put your template in
+
+>      ${HOME}/providerscripts/cloudhost/configfiles
+
+and the script below will swap out the placeholders you have set for live values:
+
+>     ${HOME}/providerscripts/cloudhost/InitialiseCloudhostConfig.sh
+
 NOTE: originally the core supported AWS but I found I had to make various AWS specific customisations so I stripped AWS out of the core to keep the core as simple and consistent as possible. If you want to put the work in to add support for AWS, then, you might get some clues from my archived repositories which you can find below:  
 
 [build-machine-with-aws](https://github.com/wintersys-projects/adt-build-machine-scripts-withaws)  
