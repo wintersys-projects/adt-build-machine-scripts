@@ -14,40 +14,43 @@
 
 Delete the configuration file from your new webroot it might be something like  &#0036;HOME/migration/extraction/configuration.php that came with your migration, for example, configuration.php for joomla or config.php for wordpress. These files will contain old database information and so on which you don't want any more. 
 
-/bin/mv /var/www/html /var/www/html.old 
-
-/bin/mkdir /var/www/html
+>      /bin/mv /var/www/html /var/www/html.old 
+>      /bin/mkdir /var/www/html
 
 and from the root directory of your newly extracted webroot somewhere in &#0036;HOME/migration you can 
 
-/bin/mv * /var/www/html
+>      /bin/mv * /var/www/html
 
 You then need to issue the command:  
 
-run &#0036;HOME/providerscripts/utilities/EnforcePermissions.sh
+>      run ${HOME}/providerscripts/utilities/EnforcePermissions.sh
 
 Get the IP address of your database server by 
 
 8. Lets turn our attention to the database machine now. From step 5 you have the database sql file in your &#0036;HOME/migration directory. With this new database dump you can use whichever script is relevant below:
 
-   run &#0036;HOME/utilties/ConnectToMySQLDB.sh (for mysql) or
-   run &#0036;HOME/utilities/ConnecToPostgresDB.sh (for postgres)
+>     run ${HOME}/utilties/ConnectToMySQLDB.sh (for mysql) or
+>     run ${HOME}/utilities/ConnecToPostgresDB.sh (for postgres)
 
    and then, you need to provide the database dump to the script so full commands would be something like:
 
-    run &#0036;HOME/utilties/ConnectToMySQLDB.sh < &#0036;HOME/migrations/database_archive.sql
+>     run ${HOME}/utilties/ConnectToMySQLDB.sh < &#0036;HOME/migrations/database_archive.sql
 
    If it all runs successfully your database from your original hosting provider is now imported into your database and we can go back to the webserver to take some final steps to bring our new application online
 
    One final thing to do on the database server is to get its IP address and making a note of it which you can so by issuing the command:
 
-   &#0036;HOME/providerscripts/utilities/GetIP.sh
+>     ${HOME}/providerscripts/utilities/GetIP.sh
 
-   and you also need to make a note of what port your database machine is running on which you can do by looking for the value DBPORT in &#0036;HOME/.ssh/database_configuration_settings.dat
+   and you also need to make a note of what port your database machine is running on which you can do by looking for the value DBPORT in 
+   
+>     ${HOME}/.ssh/database_configuration_settings.dat
 
-9. On your webserver change the value of BUILDARCHIVECHOICE in file $HOME/.ssh/webserver_configuration_settings.dat from "BUILDARCHIVECHOICE:virgin" to "BUILDARCHIVECHOICE:baseline"
+9. On your webserver change the value of BUILDARCHIVECHOICE in file
 
-10. Go to &#0036;{HOME}/runtime and select the correspoding configuration file joomla's is "joomla_configuration.php" and find and change the database prefix (is probably set to jos_ for joomla) to be ther value of the database prefix that you saved in step 2. You also need to change the ip address of the database and if necessary the port that the database is running on (you made a note of them both at the end of step 8.
+>      ${HOME}/.ssh/webserver_configuration_settings.dat from "BUILDARCHIVECHOICE:virgin" to "BUILDARCHIVECHOICE:baseline"
+
+11. Go to &#0036;{HOME}/runtime and select the correspoding configuration file joomla's is "joomla_configuration.php" and find and change the database prefix (is probably set to jos_ for joomla) to be ther value of the database prefix that you saved in step 2. You also need to change the ip address of the database and if necessary the port that the database is running on (you made a note of them both at the end of step 8.
 
      Once you have done that, run the script /usr/bin/config and wait a couple of minutes and then go to step 12
 
