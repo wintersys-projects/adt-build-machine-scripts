@@ -53,7 +53,8 @@ You can do this by altering the directories that the basic auth is active for in
 -----------
 ### For APACHE:  
 
-##### ${HOME}/providerscripts/webserver/configuration/CustomiseApacheByApplication.sh
+##### ${HOME}/providerscripts/webserver/configuration/joomla/apache/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/joomla/apache/online/source/gatewayguardian.conf
 
 and for **Joomla**, alter:
 
@@ -65,6 +66,9 @@ to
 
 and for **Wordpress**, alter:
 
+##### ${HOME}/providerscripts/webserver/configuration/wordpress/apache/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/wordpress/apache/online/source/gatewayguardian.conf
+
 **/bin/echo "    <Directory /var/www/html/wp-admin>**
 
 to 
@@ -73,6 +77,9 @@ to
 
 and for **Moodle**, alter:
 
+##### ${HOME}/providerscripts/webserver/configuration/moodle/apache/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/moodle/apache/online/source/gatewayguardian.conf
+
 **/bin/echo "    <Directory /var/www/html/moodle/admin>**
 
 to 
@@ -80,6 +87,9 @@ to
 **/bin/echo "    <Directory /var/www/html/moodle/>**
 
 and for **Drupal**, alter:
+
+##### ${HOME}/providerscripts/webserver/configuration/drupal/apache/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/drupal/apache/online/source/gatewayguardian.conf
 
 **/bin/echo "    <Directory /var/www/html/>**
 
@@ -92,7 +102,14 @@ NOTE: Because of the way drupal works I couldn't get this mechanism to work sati
 ----------------
 ### For NGINX:  
 
-##### ${HOME}/providerscripts/webserver/configuration/CustomiseNginxByApplication.sh
+##### ${HOME}/providerscripts/webserver/configuration/joomla/nginx/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/joomla/nginx/online/source/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/wordpress/nginx/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/wordpress/nginx/online/source/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/moodle/nginx/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/moodle/nginx/online/source/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/drupal/nginx/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/drupal/nginx/online/source/gatewayguardian.conf
 
 and follow a similar process as described above for apache
 
@@ -100,7 +117,14 @@ and follow a similar process as described above for apache
 
 ### For LIGHTTPD:
 
-##### ${HOME}/providerscripts/webserver/configuration/CustomiseLighttpdByApplication.sh
+##### ${HOME}/providerscripts/webserver/configuration/joomla/lighttpd/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/joomla/lighttpd/online/source/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/wordpress/lighttpd/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/wordpress/lighttpd/online/source/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/moodle/lighttpd/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/moodle/lighttpd/online/source/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/drupal/lighttpd/online/repo/gatewayguardian.conf
+##### ${HOME}/providerscripts/webserver/configuration/drupal/lighttpd/online/source/gatewayguardian.conf
 
 and follow a similar process as described above for apache
 
