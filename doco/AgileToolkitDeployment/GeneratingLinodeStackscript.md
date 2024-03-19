@@ -4,24 +4,24 @@ The way to go about generating a userdata script for use in the "hardcore" build
 
 2. On the same machine that you performed (and tested) the expedited build run the script:  
 
-    ${BUILD_HOME}/helperscripts/GenerateOverrideScript.sh  
+>     ${BUILD_HOME}/helperscripts/GenerateOverrideScript.sh  
     
-    You should select the provider and template number (1, 2 or 3) that you wish to generate from  
+You should select the provider and template number (1, 2 or 3) that you wish to generate from  
     
-    Once the script has completed successsfully it will be available in  
+Once the script has completed successsfully it will be available in  
     
-    ${BUILD_HOME}/overridescripts  
+>     ${BUILD_HOME}/overridescripts  
     
 3. Run the script for AWS, Digital Ocean, Exoscale or Vultr  
 
-    ${BUILD_HOME}/helperscripts/GenerateHardcoreUserDataScript.sh  
+>     ${BUILD_HOME}/helperscripts/GenerateHardcoreUserDataScript.sh  
     
-    and on Linode:  
+and on Linode:  
     
-    ${BUILD_HOME}/helperscripts/GenerateHardcoreUserDataScript.sh stack  
+>     ${BUILD_HOME}/helperscripts/GenerateHardcoreUserDataScript.sh stack  
     
-    This will write the User Data / Stack Script to   
+This will write the User Data / Stack Script to   
     
-    ${BUILD_HOME}/userdatascripts/<name you give>  
+>     ${BUILD_HOME}/userdatascripts/<name you give>  
     
  4. The script ${BUILD_HOME}/userdatascripts/<name you give> can then be used a a User Data script on every provider accept Linode where it will be used as a stack script.  
