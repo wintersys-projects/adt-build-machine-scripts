@@ -1,18 +1,18 @@
 If you are on a webserver and your application is using an SQL based database you can connect straight to your tables by running:
 
->     ${HOME}/providerscripts/utilities/ConnectToRemoteMYSQLDB.sh
+>     run ${HOME}/providerscripts/utilities/ConnectToRemoteMYSQLDB.sh
 
 If you are on a webserver and your application is using an Postgres based database you can connect straight to your tables by running:
 
->     ${HOME}/providerscripts/utilities/ConnectToRemotePostgresDB.sh
+>     run ${HOME}/providerscripts/utilities/ConnectToRemotePostgresDB.sh
 
 If you are on your database machine already and running an SQL database rarther than faffing around with credentials and so on you can run:
 
->     ${HOME}/providerscripts/utilities/ConnectToMySQLDB.sh
+>     run ${HOME}/providerscripts/utilities/ConnectToMySQLDB.sh
 
 If you are on your database machine already and running a Postgres database rather than faffing around with credentials and so on you can run:
 
->     ${HOME}/providerscripts/utilities/ConnectToPostgresDB.sh
+>    run  ${HOME}/providerscripts/utilities/ConnectToPostgresDB.sh
 
-These scripts are my idea of PHPMYADMIN which I prefer because I am not much of a graphical guy and I am not convinced that phpmyadmin is robustly securable. 
+By default PHPMYADMIN isn't proovided with this toolkit but I am sure you could extend it to make it so.
 
