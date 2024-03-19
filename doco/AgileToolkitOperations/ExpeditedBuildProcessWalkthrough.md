@@ -29,7 +29,7 @@ To generate a new keypair you can follow: [keygen](https://www.ssh.com/academy/s
 
 >     ${BUILD_HOME}/templatedconfiguration/templates/<provider>
 
-7. Each default template has some fields marked **MANDATORY** these fields are the minimum set of fields which you must provide values to for your build process to have any chance of succeeding. If you don't provide a suffficient set of **valid** values, then, you should be warned about it as you try to start the build
+7. Each default template has some fields marked **MANDATORY** these fields are the minimum set of fields which you must provide values to for your build process to have any chance of succeeding. If you don't provide a suffficient set of **valid** values, then, you should be warned about it as you try to start the build. If you want to study some of the possible behaviours that your template can be configured for have a look [here](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/main/doco/AgileToolkitOperations/TemplateConfigurationsBehaviours.md)
 
 8. Once you are happy that your template is configured correctly you can start the build by running the following script:
 
