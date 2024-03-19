@@ -24,15 +24,7 @@ with any time you want to do the same build again.
 
 ----------------------------
 
-During a **hardcore build**, you have a couple of options
-
-For Option 1, you can:
-
-1. Take a copy of [Template Override](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/master/templatedconfigurations/templateoverrides/OverrideScript.sh) and follow the instructions contained with it to setup manual overrides.
-
-2. Paste your updated script into the user-data of a new VPS machine with your cloudhost. (The variables you have added must be correct and sane according to the [specification](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/master/templatedconfigurations/specification.md).
-
-For Option 2, you can: 
+During a **hardcore build**, you need to
 
 1. On your laptop clone the build client scripts for example (or from your fork):  
 
