@@ -1,4 +1,4 @@
-You have the choice to build certain components of the toolkit from source or from the regular repositories.   
+You have the choice to build certain aspects of this toolkit from source or from the regular repositories.   
 
 The advantage of building from source is that it gives you more control and you can use the very latest versions of software that the repos haven't caught up with yet which can be more secure. The disadvantage is that it is more complex and there is more that might go wrong and also the machines can take longer to build and deploy. 
 
