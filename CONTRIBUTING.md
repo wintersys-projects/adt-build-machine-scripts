@@ -14,9 +14,9 @@ The relevant files are: [Apache](https://github.com/wintersys-projects/adt-webse
 11. Provide an option to install phpmyadmin for managing the database and database tables.
 12. Originally the core supported AWS but I found I had to make various AWS specific customisations so I stripped AWS out of the core to keep the core as simple and consistent as possible. If you want to put the work in to add support for AWS, then, you might get some clues from my archived repositories which you can find below:
 
-build-machine-with-aws
-autoscaler-with-aws
-webserver-with-aws
-database-with-aws
+[build-machine-with-aws](https://github.com/wintersys-projects/adt-build-machine-scripts-withaws)  
+[autoscaler-with-aws](https://github.com/wintersys-projects/adt-autoscaler-scripts-withaws)  
+[webserver-with-aws](https://github.com/wintersys-projects/adt-webserver-scripts-withaws)  
+[database-with-aws](https://github.com/wintersys-projects/adt-database-scripts-withaws)
 
 
