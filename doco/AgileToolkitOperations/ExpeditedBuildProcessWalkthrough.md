@@ -40,7 +40,7 @@ To generate a new keypair you can follow: [keygen](https://www.ssh.com/academy/s
 - Make sure the needed software is up to date and installed  
 - Select the cloudhost that you are deploying to (this overrides any values you set in the template when you deploy using the Expedited method)  
 - Load the values you have set in your template into memory for use in the build process (including soft errors you can act on if the template has values are considered erroneous)
-- Configure the cloudhost CLI tools that you will be using for the build this involves reading a cloudhost cli template file and replacing placeholder values with live values from the tample. The cloudhost cli template file is stored at:
+- Configure the cloudhost CLI tools that you will be using for the build this involves reading a cloudhost cli template file and replacing placeholder values with live values from the template. The cloudhost cli template file is stored at:
      
 >     ${BUILD_HOME}/initscripts/configfiles
 
