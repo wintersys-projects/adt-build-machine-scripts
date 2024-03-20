@@ -43,7 +43,7 @@ To understand how the configuration system works you can review the scripts for 
 >     ${HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh
 >     ${HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh
 
-The configration bucket as a whole is cleaned out for each new build and so has to be reconstructed for the current build set up. Using this technique, is a useful way for sharing configuration setting without having to rely on the method of using tools such as "s3fs" to mount bucket and so on and create filesystems etc.
+The configration bucket as a whole is cleaned out for each new build and so has to be reconstructed for the current build set up. Using this technique, is a useful way for sharing configuration settings without having to rely on the method of using tools such as "s3fs" to mount bucket and so on and create a shared filesystems etc.
 
 In most cases you aren't going to want to touch anything in the S3 configuration bucket directly, an exception to this is the scaling mechanism. You will find a script
 
