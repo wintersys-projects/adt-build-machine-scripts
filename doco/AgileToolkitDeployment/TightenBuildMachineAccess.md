@@ -6,7 +6,7 @@ Following these stepas will activate/confgure the UFW firewall on your build mac
 
 #### HOW TO TIGHTEN BUILD MACHINE ACCESS  
 
-Quick method
+Quick method (you will need to already have access to your build machine to be able to use this method in order to add secondary allowed ip addresses)
 
 You can use the helperscript:  
 
@@ -20,7 +20,7 @@ Now manually review the native firewall for your provider called "adt-build-mach
 
 Long method
 
-Your build machine (the one that your user-data script gets run on) contains a lot of senstive data pertinent to your webservers and databases. By default all ports are firewalled off on it except for the SSH port you have selected. By default this SSH port accepts connections only from your laptop. You might want to grant access to other IP addresses, here is how you do that. 
+This is what you have to do if you don't have access to your build machine or you could use the "console" of your cloudhost provider to go onto your build machine and then use the "quick method" above. 
 
 1. Install S3CMD on your laptop/desktop and configure it so it can access your S3 compatible object store for your cloudhost.  
   
