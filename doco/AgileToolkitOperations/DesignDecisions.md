@@ -1,7 +1,7 @@
 ### DEVELOPMENT MODE
 
 In development mode, there are three machine types a "single webserver" and a "single database" server and a "build machine" upon which the server build process is initiated.  
-Its possible for the build machine to be your own laptop if you are running some version of linux, but it is not recommended because it will make configuration changes to your machine.  
+Its possible for the build machine to be your own laptop if you are running some debian/ubuntu version of linux, but it is not recommended because it will make configuration changes to your machine.  
     
 What you can do is run a **dedicated** "Ubuntu" or "Debian" Linux off a usb stick with persistent storage on your laptop to perform your builds on and have that USB as your "build usb", this would save you a bit of money because you won't need to be running a (small) build machine in the cloud all the time.  
   
