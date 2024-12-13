@@ -1,0 +1,138 @@
+#!/bin/sh
+###################################################################################
+# Author : Peter Winter
+# Date   : 13/07/2016
+# Description : This script will spin up a new server of the size, region and os
+# specified  on the hosting provider, cloudhost, of choice.
+###################################################################################
+# License Agreement:
+# This file is part of The Agile Deployment Toolkit.
+# The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# The Agile Deployment Toolkit is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
+####################################################################################
+####################################################################################
+set -x
+
+server_size="${1}"
+server_name="`/bin/echo ${2} | /usr/bin/cut -c -32`"
+snapshot_id="${3}"
+cloudhost="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
+build_identifier="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+
+build_environment="${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/build_environment"
+buildos="`/bin/grep '^BUILDOS=' ${build_environment} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
+buildos_version="`/bin/grep '^BUILDOS_VERSION=' ${build_environment} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
+region="`/bin/grep '^REGION=' ${build_environment} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
+ddos_protection="`/bin/grep '^ENABLE_DDOS_PROTECTION=' ${build_environment} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
+vpc_ip_range="`/bin/grep '^VPC_IP_RANGE=' ${build_environment} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
+
+os_choice="`${BUILD_HOME}/providerscripts/cloudhost/GetOperatingSystemVersion.sh ${cloudhost} ${buildos} ${buildos_version} | /bin/sed "s/'//g"`"
+key_id="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/credentials/PUBLICKEYID`"
+
+if ( [ "${cloudhost}" = "digitalocean" ] )
+then
+	if ( [ "${snapshot_id}" != "" ] )
+	then
+		os_choice="${snapshot_id}"
+	fi
+
+	if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${region}'") | select (.name == "adt-vpc").id'`" = "" ] )
+	then
+		/usr/local/bin/doctl vpcs create --name "adt-vpc" --region "${region}" --ip-range "${vpc_ip_range}"
+	fi
+	
+	vpc_id="`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${region}'") | select (.name == "adt-vpc").id'`"
+ 
+	/usr/local/bin/doctl compute droplet create "${server_name}" --size "${server_size}" --image "${os_choice}"  --region "${region}" --ssh-keys "${key_id}" --vpc-uuid "${vpc_id}"
+fi
+
+if ( [ "${cloudhost}" = "exoscale" ] )
+then
+	if ( [ "${snapshot_id}" != "" ] )
+	then
+		os_choice="${snapshot_id}"
+	fi
+	
+	/usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} --template "${os_choice}" --zone ${region} --ssh-key ${key_id} --cloud-init "${BUILD_HOME}/providerscripts/server/cloud-init/exoscale.dat"
+   
+	if ( [ "`/usr/bin/exo compute private-network list -O text | /bin/grep -w "adt_private_net_${region}"`" = "" ] )
+	then
+		/usr/bin/exo compute private-network create adt_private_net_${region} --zone ${region} --start-ip 10.0.0.20 --end-ip 10.0.0.200 --netmask 255.255.255.0
+	fi
+	
+	/usr/bin/exo compute instance private-network attach  ${server_name} adt_private_net_${region} --zone ${region} 
+fi
+
+if ( [ "${cloudhost}" = "linode" ] )
+then
+ 	key="`/usr/local/bin/linode-cli --json sshkeys view ${key_id} | /usr/bin/jq -r '.[].ssh_key'`"
+	emergency_password="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-30`"
+	BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+	/bin/echo "${emergency_password}" > ${BUILD_HOME}/runtimedata/${cloudhost}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD
+
+	if ( [ "`/usr/local/bin/linode-cli --json vpcs list | /usr/bin/jq -r '.[] | select (.label == "'${label}'").id'`" = "" ] )
+	then
+        	/usr/local/bin/linode-cli vpcs create --label adt-vpc --region ${region} --subnets.label adt-subnet --subnets.ipv4 ${vpc_ip_range}		
+	fi
+	
+	vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "adt-vpc").id'`"
+ 	subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
+	
+ 	if ( [ "${snapshot_id}" != "" ] )
+	then
+		/usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${region} --image "private/${snapshot_id}" --type ${server_size} --label "${server_name}" --no-defaults --interfaces.primary true --interfaces.purpose vpc --interfaces.subnet_id ${subnet_id} --interfaces.ipv4.nat_1_1 any
+	else	
+		/usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${region} --image "${os_choice}" --type ${server_size} --label "${server_name}" --no-defaults --interfaces.primary true --interfaces.purpose vpc --interfaces.subnet_id ${subnet_id} --interfaces.ipv4.nat_1_1 any
+
+	fi
+fi
+
+if (  [ "${cloudhost}" = "vultr" ] )
+then
+        if ( [ "`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "adt-vpc").id'`" = "" ] )
+        then
+                ip_block="`/bin/echo ${vpc_ip_range} | /usr/bin/awk -F'/' '{print $1}'`"
+                /usr/bin/vultr vpc2 create --region="${region}" --description="adt-vpc" --ip-type="v4" --ip-block="${ip_block}" --prefix-length="16"
+        fi
+
+        vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "adt-vpc").id'`"
+        os_choice="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${os_choice}"'")).id'`"
+	
+        user_data=`${BUILD_HOME}/providerscripts/server/cloud-init/vultr.dat`
+   
+        if ( [ "${snapshot_id}" != "" ] )
+        then
+           if ( [ "${ddos_protection}" = "1" ] )
+           then
+                        /usr/bin/vultr instance create --label="${server_name}" --region="${region}" --plan="${server_size}" --ipv6=false -s ${key_id} --snapshot="${snapshot_id}" --ddos=true --userdata="${user_data}"
+                else
+                        /usr/bin/vultr instance create --label="${server_name}" --region="${region}" --plan="${server_size}" --ipv6=false -s ${key_id} --snapshot="${snapshot_id}" --ddos=false --userdata="${user_data}"
+                fi
+        else
+           if ( [ "${ddos_protection}" = "1" ] )
+           then
+                        /usr/bin/vultr instance create --label="${server_name}" --region="${region}" --plan="${server_size}" --os="${os_choice}" --ipv6=false -s ${key_id} --ddos=true --userdata="${user_data}"
+                else
+                        /usr/bin/vultr instance create --label="${server_name}" --region="${region}" --plan="${server_size}" --os="${os_choice}" --ipv6=false -s ${key_id} --ddos=false --userdata="${user_data}"
+                fi    
+        fi
+
+ 	machine_id=""
+  	count="0"
+	while ( [ "${machine_id}" = "" ] && [ "${count}" -lt "10" ] )
+ 	do
+        	machine_id="`/usr/bin/vultr instance list -o json | /usr/bin/jq -r '.instances[] | select (.label == "'"${server_name}"'").id'`"
+	 	/bin/sleep 5
+   		count="`/usr/bin/expr ${count} + 1`"
+     	done
+
+	/usr/bin/vultr vpc2 nodes attach ${vpc_id} --nodes="${machine_id}"
+fi
