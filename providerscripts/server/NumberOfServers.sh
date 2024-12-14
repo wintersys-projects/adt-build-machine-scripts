@@ -24,10 +24,7 @@ server_type="${1}"
 cloudhost="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
-CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
-BUILD_ENVIRONMENT="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment"
-REGION="`/bin/grep '^REGION=' ${BUILD_ENVIRONMENT} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
@@ -36,8 +33,8 @@ fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
- 	zone="`${HOME}/providerscripts/utilities/ExtractConfigValue.sh 'REGION'`"
- 	/usr/bin/exo compute instance list --zone ${REGION} -O json | /usr/bin/jq -r '.[] | select (.name | contains("'${server_type}'")).id' | /usr/bin/wc -l
+        zone="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/${BUILD_IDENTIFIER}/CURRENTREGION`"
+ 	/usr/bin/exo compute instance list --zone ${zone} -O json | /usr/bin/jq -r '.[] | select (.name | contains("'${server_type}'")).id' | /usr/bin/wc -l
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
