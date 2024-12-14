@@ -20,7 +20,7 @@
 ####################################################################################
 #set -x
 
-export HOME="`/bin/cat /home/homedir.dat`"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 
 ip="${1}"
