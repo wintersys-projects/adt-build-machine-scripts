@@ -21,10 +21,7 @@
 #set -x
 
 export HOME="`/bin/cat /home/homedir.dat`"
-CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
-BUILD_ENVIRONMENT="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment"
-REGION="`/bin/grep '^REGION=' ${BUILD_ENVIRONMENT} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
 
 ip="${1}"
 cloudhost="${2}"
@@ -36,8 +33,9 @@ fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-	server_name="`/usr/bin/exo compute private-network show adt_private_net_${REGION} --zone ${REGION} -O json | /usr/bin/jq -r '.leases[] | select(.ip_address=="'${ip}'") | .instance'`"
-	/usr/bin/exo compute instance list --zone ${REGION} -O json | /usr/bin/jq -r '.[] | select (.name =="'${server_name}'").ip_address' 
+        zone="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/${BUILD_IDENTIFIER}/CURRENTREGION`"
+	server_name="`/usr/bin/exo compute private-network show adt_private_net_${zone} --zone ${zone} -O json | /usr/bin/jq -r '.leases[] | select(.ip_address=="'${ip}'") | .instance'`"
+	/usr/bin/exo compute instance list --zone ${zone} -O json | /usr/bin/jq -r '.[] | select (.name =="'${server_name}'").ip_address' 
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
