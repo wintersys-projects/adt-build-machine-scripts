@@ -4,6 +4,6 @@ There are various scripts you might want to run from the command line of your se
 
 For example, if you want to use the ConnectToRemoteMYSQLDB.sh script you can run it:
 
->     cd ${HOME}/providerscripts/utilities  
+>     cd ${HOME}/providerscripts/utilities/remote
 >     run ./ConnectToRemoteMYSQLDB.sh
 
