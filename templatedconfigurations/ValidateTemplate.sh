@@ -38,8 +38,10 @@ status 2>/dev/null
 
 if ( [ "$?" = "0" ] )
 then
+	status ""
 	log_command="status "
 else
+	/bin/echo ""
 	log_command="/bin/echo "
 fi
 
@@ -490,6 +492,7 @@ then
 	${log_command} "It looks like CLOUDHOST_ACCOUNT_ID is blank this should definitely not be the case for ${CLOUDHOST}"
 fi
 
+${log_command} ""
 ${log_command} "####################TEMPLATE VALIDATION REPORT ENDING####################"
 
 ${log_command} "Press <enter> when you have reviewed and accepted any messages that have appeared above (if there are none then you are all set already and just press enter)"
