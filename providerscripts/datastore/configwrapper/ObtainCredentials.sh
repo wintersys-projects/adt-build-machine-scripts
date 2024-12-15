@@ -44,35 +44,35 @@ destination="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}"
 
 if ( [ "`${datastore_tool} ls s3://${config_bucket}`" != "" ] )
 then
-	${datastore_tool_1} s3://${config_bucket}/credentials/shit ${destination}
+	${datastore_tool_1} s3://${config_bucket}/credentials/db_cred ${destination}
 	if ( [ "${DATASTORE_CHOICE}" = "digitalocean" ] || [ "${DATASTORE_CHOICE}" = "exoscale" ] || [ "${DATASTORE_CHOICE}" = "linode" ] || [ "${DATASTORE_CHOICE}" = "vultr" ] )
 	then	
 		if ( [ "`${datastore_tool} ls s3://${config_bucket}`" != "" ] )
 		then
-			${datastore_tool_1} s3://${config_bucket}/credentials/shit ${destination}
+			${datastore_tool_1} s3://${config_bucket}/credentials/db_cred ${destination}
 				
 			if ( [ "${HARDCORE}" = "1" ] )
 			then
     				if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 	 			then
-					/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`" 
-					/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`" 
-					/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`" 
+					/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`" 
+					/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`" 
+					/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`" 
      				else
-	  				database_name="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`"
-	  				database_username="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`"
-       					database_password="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`"
+	  				database_name="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`"
+	  				database_username="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`"
+       					database_password="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`"
 				fi
 			else
 	    			if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 	 			then
-					/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`" >&3
-     					/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`" >&3
-					/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`" >&3
+					/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`" >&3
+     					/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`" >&3
+					/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`" >&3
      				else
-	  				database_name="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`"
-	  				database_username="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`"
-       					database_password="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/shit`"
+	  				database_name="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`"
+	  				database_username="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`"
+       					database_password="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/db_cred`"
 	     			fi
 			fi
 		fi
