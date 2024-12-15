@@ -19,4 +19,4 @@ else
 
 fi
 
-${BUILD_HOME}/providerscripts/datastore/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/shit credentials/shit 
+${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/shit credentials/shit 
