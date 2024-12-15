@@ -53,7 +53,7 @@ on the build client machine which you can run to adjust the number of webservers
 
 And on the autoscaler, there is a script:
 
->     ${HOME}/providerscripts/utilities/ManuallyScale.sh <no_webservers>
+>     ${HOME}/providerscripts/utilities/processing/ManuallyScale.sh <no_webservers>
 
 ### ADDITIONAL THOUGHTS  
 
