@@ -131,13 +131,13 @@ fi
 
 status "Testing to see if the build is completed. This may take several attempts. Endless waiting (more than a few minutes) and something must be wrong"
 
-buildcompleted="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BUILDCOMPLETED" 2>/dev/null`"
+#buildcompleted="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BUILDCOMPLETED" 2>/dev/null`"
 
-while ( [ "${buildcompleted}" = "" ] )
-do
-	/bin/sleep 10
-	buildcompleted="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BUILDCOMPLETED" 2>/dev/null`"
-done
+#while ( [ "${buildcompleted}" = "" ] )
+#do
+#	/bin/sleep 10
+#	buildcompleted="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BUILDCOMPLETED" 2>/dev/null`"
+#done
 
 #This enables the application to have any post processing done that it needs. There is pre and post processing either side of the build process
 status "Performing any post processing that is needed for your application. This may take a little while depending on your application, Please wait...."
