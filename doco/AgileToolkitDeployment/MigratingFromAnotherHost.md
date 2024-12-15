@@ -27,14 +27,14 @@ and from the root directory of your newly extracted webroot somewhere in &#0036;
 
 You then need to issue the command:  
 
->      run ${HOME}/providerscripts/utilities/EnforcePermissions.sh
+>      run ${HOME}/providerscripts/utilities/security/EnforcePermissions.sh
 
 Get the IP address of your database server by 
 
 8. Lets turn our attention to the database machine now. From step 5 you have the database sql file in your &#0036;HOME/migration directory. With this new database dump you can use whichever script is relevant below:
 
->     run ${HOME}/utilties/ConnectToMySQLDB.sh (for mysql) or
->     run ${HOME}/utilities/ConnecToPostgresDB.sh (for postgres)
+>     run ${HOME}/providerscripts/utilties/remote/ConnectToMySQLDB.sh (for mysql) or
+>     run ${HOME}/providerscripts/utilities/remote/ConnecToPostgresDB.sh (for postgres)
 
    and then, you need to provide the database dump to the script so full commands would be something like:
 
@@ -44,7 +44,7 @@ Get the IP address of your database server by
 
    One final thing to do on the database server is to get its IP address and making a note of it which you can so by issuing the command:
 
->     ${HOME}/providerscripts/utilities/GetIP.sh
+>     ${HOME}/providerscripts/utilities/processing/GetIP.sh
 
    and you also need to make a note of what port your database machine is running on which you can do by looking for the value DBPORT in 
    
