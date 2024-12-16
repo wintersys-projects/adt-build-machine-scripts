@@ -153,7 +153,7 @@ then
 		serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
 		while ( [ "`/bin/echo ${serverinstalled} | /bin/grep ALIVE`" = "" ] )
 		do
-			/bin/sleep 10
+			/bin/sleep 1
 			serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
 		done
 	fi
