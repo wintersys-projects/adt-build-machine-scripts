@@ -123,6 +123,7 @@ status ""
 . ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
 . ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh
 
+/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
 then
@@ -202,9 +203,6 @@ start=`/bin/date +%s`
 #If we have anything to say here, on an application by application basis before the build really begins we put it in this
 #script
 . ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
-
-/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
-
 . ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 . ${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
 . ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
