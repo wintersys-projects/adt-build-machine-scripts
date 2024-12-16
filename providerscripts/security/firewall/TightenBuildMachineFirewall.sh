@@ -136,10 +136,12 @@ then
                         /usr/sbin/ufw default allow outgoing
    
                         buildmachine_ssh_port="`/bin/ls ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:* | /usr/bin/awk -F':' '{print $NF}'`"
+                        
 
                         if ( [ "${buildmachine_ssh_port}" = "" ] )
                         then
-                                buildmachine_ssh_port="`/bin/grep "^SSH_PORT=" /home/agile-deployer/adt-build-machine-scripts/runtimedata/vultr/crew1/build_environment`"
+                                #buildmachine_ssh_port="`/bin/grep "^SSH_PORT=" /home/agile-deployer/adt-build-machine-scripts/runtimedata/vultr/crew1/build_environment`"
+                                buildmachine_ssh_port="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
                         fi
 
                         if ( [ "${buildmachine_ssh_port}" = "" ] )
