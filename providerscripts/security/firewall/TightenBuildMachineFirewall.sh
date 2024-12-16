@@ -32,16 +32,10 @@ then
         /bin/sed -i "/^#/d" /var/spool/cron/crontabs/root
 fi
 
-if ( [ "${1}" != "" ] )
-then
-        BUILD_HOME="${1}"
-fi
-
+BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
-
 ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 ${BUILD_HOME}/providerscripts/server/GetServerName.sh ${ip} "${CLOUDHOST}"
-
 CLOUDHOST="`${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 
 if ( [ "`/bin/ls /root/FIREWALL-BUCKET:* 2>/dev/null`" = "" ] )
@@ -56,7 +50,7 @@ ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${IDENTIFIER}"
 
 if ( [ "`/usr/bin/crontab -l | /bin/grep Tighten | /bin/grep ${IDENTIFIER}`" = "" ] )
 then
-        /bin/echo "*/1 * * * * ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh ${BUILD_HOME}" >> /var/spool/cron/crontabs/root
+        /bin/echo "*/1 * * * * ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh" >> /var/spool/cron/crontabs/root
         /usr/bin/crontab -u root /var/spool/cron/crontabs/root
 fi
 
