@@ -25,26 +25,16 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-#set -x
+set -x
 
 if ( [ -f /var/spool/cron/crontabs/root ] )
 then
-	/bin/sed -i "/^#/d" /var/spool/cron/crontabs/root
+        /bin/sed -i "/^#/d" /var/spool/cron/crontabs/root
 fi
 
 if ( [ "${1}" != "" ] )
 then
-	BUILD_HOME="${1}"
-fi
-
-if ( [ "${2}" != "" ] )
-then
-	DATASTORE_CHOICE="${2}"
-fi
-
-if ( [ "${3}" != "" ] )
-then
-	CLOUDHOST="${3}"
+        BUILD_HOME="${1}"
 fi
 
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
@@ -52,123 +42,121 @@ BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 ${BUILD_HOME}/providerscripts/server/GetServerName.sh ${ip} "${CLOUDHOST}"
 
-if ( [ "${CLOUDHOST}" != "`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`" ] )
-then
-	CLOUDHOST="`${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
-fi
+CLOUDHOST="`${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 
 if ( [ "`/bin/ls /root/FIREWALL-BUCKET:* 2>/dev/null`" = "" ] )
 then
-	IDENTIFIER="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
-	/bin/touch /root/FIREWALL-BUCKET:${IDENTIFIER}
+        IDENTIFIER="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
+        /bin/touch /root/FIREWALL-BUCKET:${IDENTIFIER}
 else
-	IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
+        IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${IDENTIFIER}"
 
 if ( [ "`/usr/bin/crontab -l | /bin/grep Tighten | /bin/grep ${IDENTIFIER}`" = "" ] )
 then
-	/bin/echo "*/1 * * * * ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh ${BUILD_HOME} ${DATASTORE_CHOICE} ${CLOUDHOST} ${IDENTIFIER}" >> /var/spool/cron/crontabs/root
-	/usr/bin/crontab -u root /var/spool/cron/crontabs/root
+        /bin/echo "*/1 * * * * ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh ${BUILD_HOME}" >> /var/spool/cron/crontabs/root
+        /usr/bin/crontab -u root /var/spool/cron/crontabs/root
 fi
 
 if ( [ "`/usr/bin/crontab -l | /bin/grep 'apt' | /bin/grep 'update' | /bin/grep 'upgrade'`" = "" ] )
 then
-	/bin/echo "45 4 * * * /usr/bin/apt -y -qq update && /usr/bin/apt -y -qq upgrade && /usr/sbin/shutdown -r now" >> /var/spool/cron/crontabs/root
+        /bin/echo "45 4 * * * /usr/bin/apt -y -qq update && /usr/bin/apt -y -qq upgrade && /usr/sbin/shutdown -r now" >> /var/spool/cron/crontabs/root
 fi
 
 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT`" != "" ] )
 then
-	${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT 
+        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT 
 fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ] || [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIME_FIREWALL ] )
 then
-	/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/*FIREWALL*  2>/dev/null
+        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/*FIREWALL*  2>/dev/null
 
-	if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT`" != "" ] )
-	then
-		${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT 
-	fi
-	
-	if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat`" != "" ] )
-	then
-		 ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${DATASTORE_CHOICE} ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME} 
-	fi
-	
-	if ( [ "${LAPTOP_IP}" = "" ] )
-	then
-		if ( [ -f ${BUILD_HOME}/runtimedata/LAPTOPIP:* ] )
-		then
-			LAPTOP_IP="`/bin/ls ${BUILD_HOME}/runtimedata/LAPTOPIP:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
-		fi
-	fi 
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT 
+        fi
 
-	if ( [ "${LAPTOP_IP}" != "" ] )
-	then
-		if ( [ "${LAPTOP_IP}" != "BYPASS" ] )
-		then
-		
-		   if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips ] )
-		   then
-			   /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips
-		   fi
-		   
-		   /bin/echo "${LAPTOP_IP}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
-		   /usr/bin/uniq ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
-		   /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
-		   /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
-		   
-		   if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}`" = "" ] )
-		   then
-			   ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${IDENTIFIER}
-		   fi
-		   ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}/authorised-ips.dat
-		fi
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat`" != "" ] )
+        then
+                echo "LISTING FROM DATASTORE"
+                 ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME} 
+        fi
+
+        if ( [ "${LAPTOP_IP}" = "" ] )
+        then
+                if ( [ -f ${BUILD_HOME}/runtimedata/LAPTOPIP:* ] )
+                then
+                        LAPTOP_IP="`/bin/ls ${BUILD_HOME}/runtimedata/LAPTOPIP:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
+                fi
+        fi 
+
+        if ( [ "${LAPTOP_IP}" != "" ] )
+        then
+                if ( [ "${LAPTOP_IP}" != "BYPASS" ] )
+                then
+
+                   if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips ] )
+                   then
+                           /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips
+                   fi
+                   
+                   /bin/echo "${LAPTOP_IP}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+                   /usr/bin/uniq ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
+                   /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+                   /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+                   
+                   if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}`" = "" ] )
+                   then
+                           ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${IDENTIFIER}
+                   fi
+                   ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}/authorised-ips.dat
+                fi
    fi
 
    ips="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat | /bin/tr '\n' ' '`"
 
     if ( [ "${ips}" != "" ] )
     then
-		firewall=""
-		if ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "ufw" ] )
-		then
-			firewall="ufw"
-   		elif ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "iptables" ] )
-		then
-			firewall="iptables"
-		fi
+                firewall=""
+                if ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "ufw" ] )
+                then
+                        firewall="ufw"
+                elif ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "iptables" ] )
+                then
+                        firewall="iptables"
+                fi
 
- 		if ( [ "${firewall}" = "ufw" ] )
-  		then
-			/usr/bin/yes | /usr/sbin/ufw reset
-			/usr/sbin/ufw default deny incoming
-			/usr/sbin/ufw default allow outgoing
+                if ( [ "${firewall}" = "ufw" ] )
+                then
+                        /usr/bin/yes | /usr/sbin/ufw reset
+                        /usr/sbin/ufw default deny incoming
+                        /usr/sbin/ufw default allow outgoing
    
                         buildmachine_ssh_port="`/bin/ls ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:* | /usr/bin/awk -F':' '{print $NF}'`"
 
-   			if ( [ "${buildmachine_ssh_port}" = "" ] )
-      			then
-	 			buildmachine_ssh_port="`/bin/grep "^SSH_PORT=" /home/agile-deployer/adt-build-machine-scripts/runtimedata/vultr/crew1/build_environment`"
-     			fi
+                        if ( [ "${buildmachine_ssh_port}" = "" ] )
+                        then
+                                buildmachine_ssh_port="`/bin/grep "^SSH_PORT=" /home/agile-deployer/adt-build-machine-scripts/runtimedata/vultr/crew1/build_environment`"
+                        fi
 
- 			if ( [ "${buildmachine_ssh_port}" = "" ] )
-    			then
-				for ip in ${ips}
-   				do
-	   				/usr/sbin/ufw allow from ${ip}
-   				done	   		
-       			else
-				for ip in ${ips}
-   				do
-	   				/usr/sbin/ufw allow from ${ip} proto tcp to any port ${buildmachine_ssh_port}
-   				done
-       			fi
+                        if ( [ "${buildmachine_ssh_port}" = "" ] )
+                        then
+                                for ip in ${ips}
+                                do
+                                        /usr/sbin/ufw allow from ${ip}
+                                done       
+                        else
+                                for ip in ${ips}
+                                do
+                                        /usr/sbin/ufw allow from ${ip} proto tcp to any port ${buildmachine_ssh_port}
+                                done
+                        fi
 
-			/usr/bin/yes | /usr/sbin/ufw enable
-              	elif ( [ "${firewall}" = "iptables" ] )
+                        /usr/bin/yes | /usr/sbin/ufw enable
+                elif ( [ "${firewall}" = "iptables" ] )
                 then
                         /usr/sbin/iptables -F
                         buildmachine_ssh_port="`/bin/ls ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:* | /usr/bin/awk -F':' '{print $NF}'`"
@@ -192,8 +180,8 @@ then
        
         fi
 
-	if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ] && [ "`/usr/bin/diff ${BUILD_HOME}/runtimedata/${CLOUDHOST}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/ips/authorised-ips.dat`" != "" ] )
-	then
-		/bin/cp ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
-	fi
+        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ] && [ "`/usr/bin/diff ${BUILD_HOME}/runtimedata/${CLOUDHOST}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/ips/authorised-ips.dat`" != "" ] )
+        then
+                /bin/cp ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
+        fi
 fi
