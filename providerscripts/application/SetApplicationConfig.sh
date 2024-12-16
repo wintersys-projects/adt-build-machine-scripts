@@ -44,7 +44,7 @@ then
         fi
 fi
 
-. ${BUILD_HOME}/providerscripts/datastore/configwrapper/ObtainCredentials.sh
+. ${BUILD_HOME}/providerscripts/application/ObtainCredentials.sh
 
 if ( [ "${DB_HOSTNAME}" != "" ] )
 then
