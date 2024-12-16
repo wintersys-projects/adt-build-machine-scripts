@@ -164,7 +164,7 @@ fi
 #/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS} ${SERVER_USER}@${WSIP} "${SUDO} /bin/touch /home/${SERVER_USER}/config/INSTALLEDSUCCESSFULLY"
 /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLEDSUCCESSFULLY"
 
-${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${WEBSITE_URL} INSTALLEDSUCCESSFULLY INSTALLEDSUCCESSFULLY
+${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh INSTALLEDSUCCESSFULLY INSTALLEDSUCCESSFULLY
 
 status "Build process fully complete"
 
