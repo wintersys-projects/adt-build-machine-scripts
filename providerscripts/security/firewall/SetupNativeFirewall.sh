@@ -252,8 +252,8 @@ then
                 then
                         autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
-                        autoscaler_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-autoscaler")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")).id'`"
-
+                        autoscaler_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-autoscaler")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")) | select (.label | endswith ("'s-${BUILD_IDENTIFIER}'") | not).id'`"
+                        
                         if ( [ "${autoscaler_firewall_id}" = "" ] )
                         then
                                 /usr/local/bin/linode-cli firewalls create --label "adt-autoscaler-${BUILD_IDENTIFIER}" --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT
@@ -268,7 +268,7 @@ then
                                 /usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${autoscaler_firewall_id}
                         fi
 
-                        webserver_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-webserver")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")).id'`"
+                        webserver_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-webserver")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")) | select (.label | endswith ("'s-${BUILD_IDENTIFIER}'") | not).id'`"
 
                         if ( [ "${webserver_firewall_id}" = "" ] )
                         then
@@ -301,7 +301,7 @@ then
                                 fi
                         fi
 
-                        database_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-database")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")).id'`"
+                        database_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-database")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")) | select (.label | endswith ("'s-${BUILD_IDENTIFIER}'") | not).id'`"
 
                         if ( [ "${database_firewall_id}" = "" ] )
                         then
@@ -329,9 +329,9 @@ then
 
                 elif ( [ "${PRE_BUILD}" = "1" ] )
                 then
-                        firewall_ids="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-autoscaler")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
-                        firewall_ids="${firewall_ids} `/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-webserver")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
-                        firewall_ids="${firewall_ids} `/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-database")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
+                        firewall_ids="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-autoscaler")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")) | select (.label | endswith ("'s-${BUILD_IDENTIFIER}'") | not).id'`"
+                        firewall_ids="${firewall_ids} `/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-webserver")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")) | select (.label | endswith ("'s-${BUILD_IDENTIFIER}'") | not).id'`"
+                        firewall_ids="${firewall_ids} `/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-database")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'")) | select (.label | endswith ("'s-${BUILD_IDENTIFIER}'") | not).id'`"
 
                         if ( [ "${firewall_ids}" != "" ] )
                         then
