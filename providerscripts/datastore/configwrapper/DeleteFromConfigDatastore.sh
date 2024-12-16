@@ -39,11 +39,11 @@ then
         datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} rm "
 fi
 
-if ( [ "${2}" = "purge" ] )
+if ( [ "${1}" = "purge" ] )
 then
         ${datastore_tool} s3://${configbucket}/ 2>/dev/null
         ${datastore_tool} s3://${configbucket}/* 2>/dev/null
 else
-	${datastore_tool} s3://${configbucket}/$2
+	${datastore_tool} s3://${configbucket}/$1
 fi
 
