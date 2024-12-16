@@ -42,7 +42,7 @@ if ( [ "${2}" = "" ] )
 then
 	${datastore_tool} ls s3://${configbucket}
 else
-	${datastore_tool} ls s3://${configbucket}/${2}
+	${datastore_tool} ls s3://${configbucket}/${1}
 fi
 
 
