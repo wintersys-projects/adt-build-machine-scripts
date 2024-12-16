@@ -112,10 +112,10 @@ do
         ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh ${bucket}
 done
 
-${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh "${WEBSITE_URL}"
+${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh 
 
 status "Creating a new configuration bucket for build (${BUILD_IDENTIFIER})"
-${BUILD_HOME}/providerscripts/datastore/configwrapper/MountConfigDatastore.sh "${WEBSITE_URL}"
+${BUILD_HOME}/providerscripts/datastore/configwrapper/MountConfigDatastore.sh 
 if ( [ "$?" = "0" ] )
 then
         status "New configuration bucket is located at: (s3://${website_bucket}-config-${identifier}) for you"
