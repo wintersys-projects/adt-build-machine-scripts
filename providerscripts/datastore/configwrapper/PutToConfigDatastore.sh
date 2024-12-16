@@ -41,26 +41,24 @@ then
 
 fi
 
-if ( [ "$4" = "recursive" ] )
+if ( [ "$3" = "recursive" ] )
 then
-	${datastore_tool_1} $2 s3://${configbucket}/$3
+	${datastore_tool_1} $1 s3://${configbucket}/$2
 else
-	if ( [ -f ${2} ] )
+	if ( [ -f ${1} ] )
 	then
-		${datastore_tool} $2 s3://${configbucket}/$3
-	elif ( [ -f ./${2} ] )
+		${datastore_tool} $1 s3://${configbucket}/$2
+	elif ( [ -f ./${1} ] )
 	then
-		${datastore_tool} ./$2 s3://${configbucket}/$3
-		/bin/rm ./$2
-	elif ( [ -f /tmp/${2} ] )
+		${datastore_tool} ./$1 s3://${configbucket}/$2
+		/bin/rm ./$1
+	elif ( [ -f /tmp/${1} ] )
 	then
-		${datastore_tool} /tmp/$2 s3://${configbucket}/$3
+		${datastore_tool} /tmp/$1 s3://${configbucket}/$2
 	else
-		directory="`/bin/echo ${1} | /usr/bin/awk -F'/' 'NF{NF-=1};1' | /bin/sed 's/ /\//g'`"
-		/bin/mkdir -p /tmp/${directory}
-		/bin/touch /tmp/$2
-		${datastore_tool} /tmp/$2 s3://${configbucket}/$3
-		/bin/rm /tmp/$2
+		/bin/touch /tmp/$1
+		${datastore_tool} /tmp/$1 s3://${configbucket}/$2
+		/bin/rm /tmp/$1
 		
 	fi
 fi
