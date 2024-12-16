@@ -38,5 +38,5 @@ then
         datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} cp "
 fi
 
-${datastore_tool} s3://${configbucket}/$2 $3 
+${datastore_tool} s3://${configbucket}/$1 $2
 
