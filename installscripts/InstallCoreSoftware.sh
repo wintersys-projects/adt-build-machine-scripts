@@ -22,12 +22,12 @@
 #######################################################################################################
 #set -x
 
-if ( [ ! -f /root/DATASTORETOOL_INSTALLED ] ||  [ "${BUILDOS}" = "ubuntu" ] )
+if ( [ ! -f /root/DATASTORETOOL_INSTALLED ] &&  [ "${BUILDOS}" = "ubuntu" ] )
 then
 	status "Installing/Updating Datastore tools"
 	${BUILD_HOME}/installscripts/InstallDatastoreTools.sh "ubuntu"
  	/bin/touch /root/DATASTORETOOL_INSTALLED
-elif ( [ "${BUILDOS}" = "debian" ] )
+elif ( [ ! -f /root/DATASTORETOOL_INSTALLED ] && [ "${BUILDOS}" = "debian" ] )
 then
 	status "Installing/Updating Datastore tools"
 	${BUILD_HOME}/installscripts/InstallDatastoreTools.sh "debian"
