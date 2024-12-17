@@ -263,11 +263,8 @@ fi
 
 if ( [ "${GENERATE_SNAPSHOTS}" = "1" ] && [ "${PRODUCTION}" = "1" ] )
 then
-status "1"
         /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-status "1"
         /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-        status "1"
         /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_DB} ${SERVER_USER}@${db_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
 
         status "###########################################################################################"
