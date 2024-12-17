@@ -173,8 +173,11 @@ then
         fi
 fi
 
-export PRE_BUILD="1"
-. ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh
+if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
+then
+         export PRE_BUILD="1"
+         . ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh
+fi
 
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
 then
@@ -244,9 +247,9 @@ fi
 
 . ${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
 
-export PRE_BUILD="0"
 if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
 then
+         export PRE_BUILD="0"
          . ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh
 fi
 #If we have any messages to put out to the user post build, we add them to this script
