@@ -41,12 +41,12 @@ then
 	then
 		if ( [ "${buildos}" = "ubuntu" ] )
 		then
-			DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install s3cmd
+			DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install s3cmd >/dev/null
 		fi
 
 		if ( [ "${buildos}" = "debian" ] )
 		then
-			DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install s3cmd
+			DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install s3cmd >/dev/null
 		fi
 	fi
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "s5cmd" ] )
