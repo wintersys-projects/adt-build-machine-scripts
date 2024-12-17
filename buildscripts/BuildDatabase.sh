@@ -49,7 +49,10 @@ fi
 
 CUSTOM_USER_SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
-${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
+if ( [ "${DATABASE_IMAGE_ID}" = "" ] )
+then
+        ${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
+fi
 
 #status ""
 #status ""
