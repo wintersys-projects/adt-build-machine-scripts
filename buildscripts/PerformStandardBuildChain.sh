@@ -175,9 +175,12 @@ then
 fi
 
 #. ${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
-/bin/touch ${BUILD_HOME}/runtimedata//PRIME_FIREWALL
-cloudhost_holder="${CLOUDHOST}"
-. ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh
+if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
+then
+        /bin/touch ${BUILD_HOME}/runtimedata//PRIME_FIREWALL
+        cloudhost_holder="${CLOUDHOST}"
+        . ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh
+fi
 export CLOUDHOST="${cloudhost_holder}"
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
