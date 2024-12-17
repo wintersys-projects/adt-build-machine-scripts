@@ -27,10 +27,10 @@ fi
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | sh
+	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | sh
+	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh > /dev/null
 fi
