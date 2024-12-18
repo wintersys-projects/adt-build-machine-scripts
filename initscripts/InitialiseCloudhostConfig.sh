@@ -68,7 +68,7 @@ then
 
 	if ( [ "$?" != "0" ] )
 	then
-		status "Couldn't get the Digitalocean CLI tool to work, you will need to look into why. I have to exit..."
+		status "Couldn't get the Digitalocean CLI tool to work. Is your personal access token valid in your template?"
 		exit
 	fi 
 fi
@@ -136,7 +136,7 @@ then
 
 	if ( [ "$?" != "0" ] )
 	then
-		status "Couldn't get the Exoscale CLI tool to work, you will need to look into why. I have to exit..."
+		status "Couldn't get the Exoscale CLI tool to work. Is are your API access keys valid in your template?"
 		exit
 	fi 
 
@@ -198,7 +198,7 @@ then
 	
 	if ( [ "$?" != "0" ] )
 	then
-		status "Couldn't get the Linode CLI tool to work, you will need to look into why. I have to exit..."
+		status "Couldn't get the Linode CLI tool to work. Is your personal access token valid in your template?"
 		exit
 	fi 
 	
@@ -231,7 +231,7 @@ then
 		
 	if ( [ "$?" != "0" ] )
 	then
-		status "Couldn't get the Vultr CLI tool to work, you will need to look into why. I have to exit..."
+		status "Couldn't get the Vultr CLI tool to work. Is your personal access token valid in your template?"
 		exit
 	fi 
 fi
