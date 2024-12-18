@@ -5,8 +5,8 @@ prefixes="as- ws- db-"
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
-  while ( [ "`/bin/echo ${prefixes} | /bin/sed 's/ //g'`" != "" ] )
-  do
+  if ( [ "`/bin/echo ${prefixes} | /bin/sed 's/ //g'`" != "" ] )
+  then
         for prefix in ${prefixes}
         do
                 result="`/usr/bin/exo compute instance snapshot list -O json | /usr/bin/jq -r '.[] | select ( .instance | contains ("'${prefix}${REGION}-${BUILD_IDENTIFIER}-${rnd}'")).state'`" 
@@ -15,22 +15,19 @@ then
                         prefixes="`/bin/echo ${prefixes} | /bin/sed "s/${prefix}//g"`"
                 fi
         done
-  done
+  fi
   status "All snapshots generated"
 fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
-  while ( [ "`/bin/echo ${prefixes} | /bin/sed 's/ //g'`" != "" ] )
+  for prefix in ${prefixes}
   do
-        for prefix in ${prefixes}
-        do
-                result="`/usr/local/bin/linode-cli images list --json | /usr/bin/jq -r '.[] | select ( .label | contains ("'${prefix}${REGION}-${BUILD_IDENTIFIER}-${rnd}'")).status'`" 
-                if ( [ "${result}" = "available" ] )
-                then
-                        prefixes="`/bin/echo ${prefixes} | /bin/sed "s/${prefix}//g"`"
-                fi
-        done
+    result="`/usr/local/bin/linode-cli images list --json | /usr/bin/jq -r '.[] | select ( .label | contains ("'${prefix}${REGION}-${BUILD_IDENTIFIER}-${rnd}'")).status'`" 
+    if ( [ "${result}" = "available" ] )
+    then
+      prefixes="`/bin/echo ${prefixes} | /bin/sed "s/${prefix}//g"`"
+    fi
   done
   status "All snapshots generated"
 fi
