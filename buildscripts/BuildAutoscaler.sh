@@ -80,7 +80,6 @@ do
 
         status ""
         status ""
-        status "######################################################################################################"
         status "OK... Building autoscaler `/usr/bin/expr ${no_autoscalers} + 1`. This is the ${counter} attempt of 5"
 
         WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
