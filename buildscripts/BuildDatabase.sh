@@ -196,7 +196,7 @@ do
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
                 fi
 
-                status "Performing SSH keyscan on your new database machine (I allow up to 10 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
+                status "Performing SSH keyscan on your new database machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
 
                 if ( [ -f ${DATABASE_PUBLIC_KEYS} ] )
                 then
@@ -213,7 +213,7 @@ do
                 /usr/bin/ssh-keyscan -p ${keyscan_port} -T 60 ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
 
                 keytry="0"
-                while ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "10" ] )
+                while ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
                 do
                         status "Couldn't scan for database ${database_name} ssh-keys ... trying again"
                         /bin/sleep 10
@@ -221,7 +221,7 @@ do
                         /usr/bin/ssh-keyscan -p ${keyscan_port} -T 60 ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
                 done 
 
-                if ( [ "${keytry}" = "10" ] )
+                if ( [ "${keytry}" = "15" ] )
                 then
                         status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
                         ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP} ${CLOUDHOST}
