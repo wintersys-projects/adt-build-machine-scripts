@@ -29,6 +29,9 @@
 ###############################################################################################
 #set -x
 
+/bin/echo "set mouse=r
+syntax on" > /root/.vimrc
+
 if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
 then
          /bin/echo "You can only run this script from its own directory"
