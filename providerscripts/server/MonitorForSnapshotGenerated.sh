@@ -51,4 +51,3 @@ then
   status "All snapshots generated"
 fi
 
-/usr/bin/vultr snapshot list -o json | /usr/bin/jq -r '.snapshots[] | select ( .description | contains ("'${prefix}${REGION}-${BUILD_IDENTIFIER}-${rnd}'")).status'
