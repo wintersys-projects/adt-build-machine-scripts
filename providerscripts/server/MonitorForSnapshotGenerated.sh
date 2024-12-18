@@ -34,3 +34,21 @@ then
   done
   status "All snapshots generated"
 fi
+
+if ( [ "${CLOUDHOST}" = "vultr" ] )
+then
+  while ( [ "`/bin/echo ${prefixes} | /bin/sed 's/ //g'`" != "" ] )
+  do
+    for prefix in ${prefixes}
+    do
+      result="`/usr/bin/vultr snapshot list -o json | /usr/bin/jq -r '.snapshots[] | select ( .description | contains ("'${prefix}${REGION}-${BUILD_IDENTIFIER}-${rnd}'")).status'`" 
+      if ( [ "${result}" = "complete" ] )
+      then
+        prefixes="`/bin/echo ${prefixes} | /bin/sed "s/${prefix}//g"`"
+      fi
+    done
+  done
+  status "All snapshots generated"
+fi
+
+/usr/bin/vultr snapshot list -o json | /usr/bin/jq -r '.snapshots[] | select ( .description | contains ("'${prefix}${REGION}-${BUILD_IDENTIFIER}-${rnd}'")).status'
