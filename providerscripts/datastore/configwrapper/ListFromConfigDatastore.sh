@@ -40,23 +40,10 @@ fi
 
 if ( [ "${2}" = "" ] )
 then
-	#${datastore_tool} ls s3://${configbucket}
-	count="0"
-	while ( [ "`${datastore_tool} ls s3://${configbucket} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )	
-	do
-        	/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        	/bin/sleep 5
-        	count="`/usr/bin/expr ${count} + 1`"
-	done 
+	${datastore_tool} ls s3://${configbucket}
+
 else
-	#${datastore_tool} ls s3://${configbucket}/${1}
- 	count="0"
-	while ( [ "`${datastore_tool} ls s3://${configbucket}/${1} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )	
-	do
-        	/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        	/bin/sleep 5
-        	count="`/usr/bin/expr ${count} + 1`"
-	done 
+	${datastore_tool} ls s3://${configbucket}/${1}
 fi
 
 
