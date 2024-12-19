@@ -335,6 +335,14 @@ Moodle - export DIRECTORIES_TO_MOUNT="moodledata.filedir" - When the CMS is Word
 
 ----- 
 
+### SYNC_WEBROOTS
+
+When you are deploying multiple webservers you want to keep all of their webroots in sync. If you swtich this option on then if updates are made to the webroot on one server those changes are synced to all the other webservers that are active within a few seconds. This means that the webservers are kept in sync with any maintenance updates you make to one webserver with only a brief couple of seconds when there is a possibility of them being unsynchronised.
+
+Set this to 0 if you don't want to synchronise the webroots of your webservers set it to 1 if you do want to synchronise them
+
+-------
+
 ### PRODUCTION 
 ### DEVELOPMENT
 
