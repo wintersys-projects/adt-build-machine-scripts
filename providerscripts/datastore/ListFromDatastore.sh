@@ -37,4 +37,12 @@ then
         datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
 fi
 
-${datastore_tool} ls s3://${file_to_list} 2>/dev/null
+#${datastore_tool} ls s3://${file_to_list} 2>/dev/null
+
+count="0"
+while ( [ "`${datastore_tool} ls s3://${file_to_list} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
+do
+        /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
+        /bin/sleep 5
+        count="`/usr/bin/expr ${count} + 1`"
+done 
