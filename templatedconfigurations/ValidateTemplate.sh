@@ -179,6 +179,11 @@ then
 	export INPARALLEL="0"
 fi
 
+if ( [ "`/bin/grep "^SYNC_WEBROOTS " ${quick_specification} | /bin/grep -w "${SYNC_WEBROOTS}"  2>/dev/null `" = "" ] )
+then
+	${log_command} "Your value for the variable SYNC_WEBROOTS (${SYNC_WEBROOTS}) doesn't appear to be valid please review"
+fi
+
 if ( [ "`/bin/grep "^NO_AUTOSCALERS " ${quick_specification} | /bin/grep -w "${NO_AUTOSCALERS}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable NO_AUTOSCALERS (${NO_AUTOSCALERS}) doesn't appear to be valid please review"
