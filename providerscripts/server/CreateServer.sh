@@ -51,7 +51,7 @@ then
                 OS_CHOICE="${snapshot_id}"
         fi
 
-        if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'adt-vpc'")).id'`"
+        if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'adt-vpc'")).id'`" ] )
         then
                 /usr/local/bin/doctl vpcs create --name "adt-vpc" --region "${REGION}" --ip-range "${VPC_IP_RANGE}"
         fi
