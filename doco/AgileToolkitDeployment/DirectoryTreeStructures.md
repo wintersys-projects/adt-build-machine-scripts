@@ -58,4 +58,24 @@ On the build machine
 
 ```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/VPC_ACTIVE``` - this is a placeholder file and if it is here then it means that our build_machine is operating from within the same VPC as our server machines are.  
 
-```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/webserver_configuration_settings.dat``` - this is the webserver environment settings as generated from the template and possibly user input. This file will be ssh copied to any webserver machine that is being provisioned.   
+```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/webserver_configuration_settings.dat``` - this is the webserver environment settings as generated from the template and possibly user input. This file will be ssh copied to any webserver machine that is being provisioned. 
+
+------------------------------------
+
+```${BUILD_HOME}/buildscripts``` This directory is here for holding scripts which do the main builds of different machine types in the build chain such as autoscaler type machines, webserver type machines and database time machines. Other machine types can be added to build chains such as Caching machine types if you wanted to extend to the toolkit to provide support for caching systems as well.
+
+```${BUILD_HOME}/doco``` - this is the directory where documentation to do with the ADT can be stored, maintained and added to. You will find documentation in regard to development, deployment and operations
+
+```${BUILD_HOME}/helperscripts``` - Here you will find helperscripts which can do things like performance of interactive machine backups or connecting to different machine types over ssh with the management of the requisite keys managed by the scripts for you
+
+```${BUILD_HOME}/initscripts``` - This directory is for scripts which perform various initialisation processes such as the initiation of error reporting or a datastore initiation 
+
+```${BUILD_HOME}/installscripts``` - I use just regular apt mostly to install the software and the idea is to have installation scripts which can be written and added for any additional software that you want to install in the future or if you want to install a particular software using a different installation method. And so all install scripts should be located here for organisational reasons and convenient access as well.
+
+```${BUILD_HOME}/migration``` - If you are migrating the code base of, say, a joomla application from a different hosting provider this directory will likely be relevant to you according the recommended migration process which you can find elsewhere in this documentation
+
+```${BUILD_HOME}/processingscripts``` - The scripts located here are for doing any kind of application specific processing that is required. Its conceivable that during a build some application types might need speical treatment which you can write code for and apply here if you need to.
+
+```${BUILD_HOME}/selectionscripts``` - This is basically for interactive scripts where a partcular selection needs to be made, for example, which cloudhost you are deploying to and so on.
+
+```${BUILD_HOME}/templatedconfiguration``` - Anything to do with the templates that are used to perform the build prcess is located here. In ordinary operation you will most likely clone the ADT and head to this directory to populate the variables of the appropriate template for your cloudhost of choice and build style with the values necessary for the build to proceed. 
