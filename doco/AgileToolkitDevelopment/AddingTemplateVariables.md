@@ -1,8 +1,4 @@
 If you wanted to add a new variable to the templates in service to a new feature you have built then you can add the variable in the following way:  
-
-On the build machine repository, add the new variable to 
-
->      ${BUILD_HOME}/builddescriptors/envdump.dat
   
 To make the new variable available to the autoscaler,on the build machine repository, add the new variable to 
 
