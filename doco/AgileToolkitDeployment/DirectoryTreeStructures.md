@@ -1,3 +1,5 @@
+Here you will find an expose on the directory structures of the various different machine types with a brief explanation of what you will find. 
+
 On the build machine
 
 ```${BUILD_HOME}/builddescriptors/autoscalerscp.dat``` - the autoscaler relevant environment variables  
@@ -83,7 +85,7 @@ On the build machine
 ----------------------------
 
 
-Autoscaler  
+Autoscaler  machines
 
 ```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag  
 ```${HOME}/runtime/AUTHORISED_TO_SCALE``` - once the intial scaling is completed after a new autoscaler is provisioned, this flag is set which we can then check for to verify if we can provision new machines or not  
@@ -142,7 +144,7 @@ Autoscaler
 
 ----------------------------
 
-Webserver  
+Webserver machines
 
 ```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this flag is set from an autoscler on the current webserver to let us know that this webserver is online and was generated as a scaling event rather than as part of initial infrastructure provisioning  
 
@@ -190,6 +192,46 @@ Webserver
 ```${HOME}/runtime/updated_webroot.dat``` - if there are any new files in the webroot their paths are stored here and then they are copied to the datastore for distribution to the other webroots
 
 ```${HOME}/runtime/WEBSERVER_READY``` - this is set if the webserver has completed its initial build
+
+```${HOME}/cron``` - This directory contains the scripts relating to cron functionality
+
+```${HOME}/installscripts``` - This directory contains all the scripts which relate to installation of software and so on
+
+```${HOME}/providerscripts``` - This is where all scripts related to third party providers are kept such as datastore providers, git providers and so on
+
+```${HOME}/security``` - This directory has scripts that relate to security such as the firewall
+
+------------------------------
+
+Database Machines
+
+```${HOME}/runtime/APPLICATION_INSTALLED``` - If this file is present then it means that the system considers an application's data to have been installed into the database from an SQL dump file
+
+```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag  
+
+```${HOME}/runtime/BUILDCLIENTIP``` - this is a placeholder for the build machine's ip address. It is stored here for convenience.  
+
+```${HOME}/runtime/CPU_OVERLOAD_ACKNOWLEDGED, ${HOME}/runtime/LOW_DISK_ACKNOWLEDGED, ${HOME}/runtime/LOW_MEMORY_ACKNOWLEDGED``` - this flag tells us whenever we have notified the user by email of some sort of low resource situation. Using this flag it means we only send emails periodically rather than multi times consequtively in short order as we might do without these flags  
+
+```${HOME}/runtime/CREDENTIALS_PRIMED``` - once we have got the database credentials that were generated on the build machine on our current webserver we consider credentials to be primed (in other words, we know what our database credentials are if this is set).
+
+```${HOME}/runtime/DATABASE_APPLICATION_UPDATING``` - this is set when the application database is being updated if a database machine is being provisioned using a snapshot
+
+```${HOME}/runtime/DATABASE_READY``` - if the database has completed its build, this file will be present
+
+```${HOME}/runtime/dbinstalllock.file``` - if prsent this means that the database is currenlty being installed. You can't install the actual database if this lock file is present
+
+```${HOME}/runtime/FIREWALL-ACTIVE``` - this file is present if we believe that the firewall is active
+
+```${HOME}/runtime/initialiseDB.sql``` - this is the SQL dump file that was used to populate the database tables when the application was installed
+
+```${HOME}/runtime/installedsoftware``` - this directory serves as a record as to which software has been installed on this machine. It can be referred to if the software needs to be updated so that we know what packages to update and what pacakges to leave alone
+
+```${HOME}/runtime/KNICKERS_ARE_UP``` - this is to do with the firewall it means that we have set our base condition which is to allow outgoing connections but dissalow all incoming connections and so basically, "knickers are up" because no one is let in.
+
+```${HOME}/runtime/SNAPSHOT_BUILT``` - this will be present when a database machine has been provisioned using a snapshot
+
+```${HOME}/applicationdb``` - the files to do with the specific application we are installing
 
 ```${HOME}/cron``` - This directory contains the scripts relating to cron functionality
 
