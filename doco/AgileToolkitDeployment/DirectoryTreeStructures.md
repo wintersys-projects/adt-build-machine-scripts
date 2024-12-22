@@ -1,14 +1,12 @@
 Here you will find an expose on the directory structures of the various different machine types with a brief explanation of what you will find. 
 
-On the build machine
+#### On the build machine
 
 ```${BUILD_HOME}/builddescriptors/autoscalerscp.dat``` - the autoscaler relevant environment variables  
 ```${BUILD_HOME}/builddescriptors/databasescp.dat``` - the database relevant environment variables  
 ```${BUILD_HOME}/builddescriptors/webserverscp.dat``` - the webserver relevant environment variables   
 
 ```${BUILD_HOME}/builddescriptors/buildstyles.dat``` - configuration of different build methods for the tools we want to work with  
-
---------------------------------------------
 
 ```${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER``` - the currently active build identifier - user provider string    
 
@@ -62,7 +60,6 @@ On the build machine
 
 ```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/webserver_configuration_settings.dat``` - this is the webserver environment settings as generated from the template and possibly user input. This file will be ssh copied to any webserver machine that is being provisioned. 
 
-------------------------------------
 
 ```${BUILD_HOME}/buildscripts``` This directory is here for holding scripts which do the main builds of different machine types in the build chain such as autoscaler type machines, webserver type machines and database time machines. Other machine types can be added to build chains such as Caching machine types if you wanted to extend to the toolkit to provide support for caching systems as well.
 
@@ -84,8 +81,7 @@ On the build machine
 
 ----------------------------
 
-
-Autoscaler  machines
+#### Autoscaler  machines
 
 ```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag  
 ```${HOME}/runtime/AUTHORISED_TO_SCALE``` - once the intial scaling is completed after a new autoscaler is provisioned, this flag is set which we can then check for to verify if we can provision new machines or not  
@@ -144,7 +140,7 @@ Autoscaler  machines
 
 ----------------------------
 
-Webserver machines
+#### Webserver machines
 
 ```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this flag is set from an autoscler on the current webserver to let us know that this webserver is online and was generated as a scaling event rather than as part of initial infrastructure provisioning  
 
@@ -203,7 +199,7 @@ Webserver machines
 
 ------------------------------
 
-Database Machines
+#### Database Machines
 
 ```${HOME}/runtime/APPLICATION_INSTALLED``` - If this file is present then it means that the system considers an application's data to have been installed into the database from an SQL dump file
 
