@@ -146,3 +146,55 @@ Webserver
 
 ```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this flag is set from an autoscler on the current webserver to let us know that this webserver is online and was generated as a scaling event rather than as part of initial infrastructure provisioning  
 
+```${HOME}/runtime/APPLICATION_DB_GENERATED``` - this flag can be used when an application needs to install its database as part of the build process rather than through interaction with the user. This flag is set when the database is successfully installed. Moodle uses this flag to tell us when the initial database has been installed
+
+```${HOME}/runtime/APPLICATION_WEBROOT_UPDATING``` - This flag is set when we are provisioning from a snapshot and the webroot of the webserver is being updated with the latest copy of the application we are installing
+
+```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag 
+
+```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this can be set if the current webserver is provisioned through an autoscaling event and is considered to be online and primed
+
+```${HOME}/runtime/BUILDCLIENTIP``` - this is a convenient place to hold the ip address of the build machine for easy access
+
+```${HOME}/runtime/CACHE_CLEANED``` - if we want to clean our application cache at as the application installs this flag lets us know that the cache has been cleaned
+
+```${HOME}/runtime/CPU_OVERLOAD_ACKNOWLEDGED, ${HOME}/runtime/LOW_DISK_ACKNOWLEDGED, ${HOME}/runtime/LOW_MEMORY_ACKNOWLEDGED``` - this flag tells us whenever we have notified the user by email of some sort of low resource situation. Using this flag it means we only send emails periodically rather than multi times consequtively in short order as we might do without these flags  
+
+```${HOME}/runtime/CREDENTIALS_PRIMED``` - once we have got the database credentials that were generated on the build machine on our current webserver we consider credentials to be primed (in other words, we know what our database credentials are if this is set).
+
+```${HOME}/runtime/drupal_settings.php``` - the drupal configuration file
+```${HOME}/runtime/wordpress_config.php``` - the wordpress configuration file
+```${HOME}/runtime/joomla_configuration.php``` - the joomla configuration file
+```${HOME}/runtime/moodle_config.php``` - the moodle configuration file
+
+```${HOME}/runtime/FIREWALL-ACTIVE``` - this flag will be set if we consider the firewall active
+
+```${HOME}/runtime/GARBAGE_CLEANED``` - if an application needs any cleaning up done during its install, this flag will have been set once the garbage is cleaned
+
+```${HOME}/runtime/installedsoftware``` - this directory serves as a record as to which software has been installed on this machine. It can be referred to if the software needs to be updated so that we know what packages to update and what pacakges to leave alone
+
+```${HOME}/runtime/KNICKERS_ARE_UP``` - this is to do with the firewall it means that we have set our base condition which is to allow outgoing connections but dissalow all incoming connections and so basically, "knickers are up" because no one is let in.
+
+```${HOME}/runtime/MARKEDFORSHUTDOWN``` - for ease we can mark a machine for shutdown and the shutdown will then be actioned
+
+```${HOME}/runtime/PREPARE_MOUNTS``` - this means that the s3 mounts are prepared for datastore assets mounted to the current webroot
+
+```${HOME}/runtime/SETTING_UP_ASSETS``` - this is present when datastore mount assets are being prepared. This means that you won't get two attempts to mount if a mount is already in process for some bizarre reason
+
+```${HOME}/runtime/SNAPSHOT_BUILT``` - This is set from the build machine when a machine is being used to generate a snapshot. A webserver that has been provisioned from a snapahot will find this file present and that way we can know long term whether we are a snapshot style provisioned machine or a regular style provisioned machine
+
+```${HOME}/runtime/sslcertlock.file``` - this is a lock file for generating SSL certificates which must not be present if a new attempt to generate an SSL certificate can proceed. 
+
+```${HOME}/runtime/SSLUPDATED``` - this is set if the SSL certificate has been updated recently
+
+```${HOME}/runtime/updated_webroot.dat``` - if there are any new files in the webroot their paths are stored here and then they are copied to the datastore for distribution to the other webroots
+
+```${HOME}/runtime/WEBSERVER_READY``` - this is set if the webserver has completed its initial build
+
+```${HOME}/cron``` - This directory contains the scripts relating to cron functionality
+
+```${HOME}/installscripts``` - This directory contains all the scripts which relate to installation of software and so on
+
+```${HOME}/providerscripts``` - This is where all scripts related to third party providers are kept such as datastore providers, git providers and so on
+
+```${HOME}/security``` - This directory has scripts that relate to security such as the firewall
