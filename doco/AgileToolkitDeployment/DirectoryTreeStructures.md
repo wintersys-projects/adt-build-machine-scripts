@@ -83,26 +83,36 @@ On the build machine
 ----------------------------
 
 
-Autoscaler
+Autoscaler  
 
 ```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag
-```${HOME}/runtime/AUTHORISED_TO_SCALE``` - once the intial scaling is completed after a new autoscaler is provisioned, this flag is set which we can then check for to verify if we can provision new machines or not
+```${HOME}/runtime/AUTHORISED_TO_SCALE``` - once the intial scaling is completed after a new autoscaler is provisioned, this flag is set which we can then check for to verify if we can provision new machines or not  
 
-```${HOME}/runtime/autoscalelock.file``` - this flag is a lock file such that it can be checked to see if an autoscaling cycle is active. If an autoscaling cycle is active then another autoscaling cycle can't be initiated.
-```${HOME}/runtime/AUTOSCALER_READY``` - this flag tells us that an actual autoscaler machine has successfully been built. It is checked from the build-machine if we want to have more confidence that an autoscaling machine has built correctly
-```${HOME}/runtime/AUTOSCALINGMONITOR``` - This file tells us that an actual webserver is in the process of being built on this autoscaler. Because each autoscaler can concurrently build multiple webservers, you will find this file indexed for each webserver that is provisioned so that we have a record we can check when we believe that that webserver is being provisioned
-```${HOME}/runtime/beingbuiltips``` - Once a webserver has its ip assigned we keep a record here that we can check to tell us that that particular ip address belongs to a provisioning webserver. Once the webserver is provisioned we remove it from the beingbuildips directory. We need this so that we don't think the machine is unresponsive whilst it is provisoning and consider it a termination candidate.
-```${HOME}/runtime/beingbuiltpublicips``` - this is the same as the beingbuilips but for the machines public ip addresses rather than their private ones
-```${HOME}/runtime/BUILDCLIENTIP``` - this is a placeholder for the build machine's ip address. It is stored here for convenience.
-```${HOME}/runtime/BUILD_IN_PROGRESS``` - this is just a generic flag that tells us that some sort of webserver provisioning is taking place on this autoscaler. It doesn't tell us how many webservers or any details only that some sort of provisioning of webservers has taken place
-```${HOME}/runtime/CPU_OVERLOAD_ACKNOWLEDGED, ${HOME}/runtime/LOW_DISK_ACKNOWLEDGED, ${HOME}/runtime/LOW_MEMORY_ACKNOWLEDGED``` - this flag tells us whenever we have notified the user by email of some sort of low resource situation. Using this flag it means we only send emails periodically rather than multi times consequtively in short order as we might do without these flags
-```${HOME}/runtime/FIREWALL-ACTIVE``` - this tells us that our firewall of choice is active. We can check this flag to see if we believe we have activated the firewall or not
-```${HOME}/runtime/INITIALBUILDCOMPLETED``` - This flag is created by the build machine and it is set when the build machine believes that the initial build it is responsible for is completed. This is different or can be different to when it is believed that the autoscaler itself completed its own provisioning. The initial build status is used to regulate the cooling down period before the autoscaling of any additional webservers begins. This is configured to 5 minutes by default but you can change this to any value you want to suit your taste.
-```${HOME}/runtime/INITIALLY_PROVISIONING``` - This tells us that a machine is literally in its initial provisioning or start up phase. This value wraps its arms around the time between when the cli call to "create server" is made and the time when that naked server is first considerd "up" or "pingable". 
-```${HOME}/runtime/INITIALLY_SCALING_PROCESSSED``` - once the 5 minute cooling off period is processed after an autoscaler is provisioned this flag is set and we consider that the initial scaling has been processed which means that we are authorised to scale other new webservers now. 
+```${HOME}/runtime/autoscalelock.file``` - this flag is a lock file such that it can be checked to see if an autoscaling cycle is active. If an autoscaling cycle is active then another autoscaling cycle can't be initiated.  
 
+```${HOME}/runtime/AUTOSCALER_READY``` - this flag tells us that an actual autoscaler machine has successfully been built. It is checked from the build-machine if we want to have more confidence that an autoscaling machine has built correctly  
 
+```${HOME}/runtime/AUTOSCALINGMONITOR``` - This file tells us that an actual webserver is in the process of being built on this autoscaler. Because each autoscaler can concurrently build multiple webservers, you will find this file indexed for each webserver that is provisioned so that we have a record we can check when we believe that that webserver is being provisioned  
 
-Webserver
+```${HOME}/runtime/beingbuiltips``` - Once a webserver has its ip assigned we keep a record here that we can check to tell us that that particular ip address belongs to a provisioning webserver. Once the webserver is provisioned we remove it from the beingbuildips directory. We need this so that we don't think the machine is unresponsive whilst it is provisoning and consider it a termination candidate.  
 
-```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this flag is set from an autoscler on the current webserver to let us know that this webserver is online and was generated as a scaling event rather than as part of initial infrastructure provisioning
+```${HOME}/runtime/beingbuiltpublicips``` - this is the same as the beingbuilips but for the machines public ip addresses rather than their private ones  
+
+```${HOME}/runtime/BUILDCLIENTIP``` - this is a placeholder for the build machine's ip address. It is stored here for convenience.  
+
+```${HOME}/runtime/BUILD_IN_PROGRESS``` - this is just a generic flag that tells us that some sort of webserver provisioning is taking place on this autoscaler. It doesn't tell us how many webservers or any details only that some sort of provisioning of webservers has taken place  
+
+```${HOME}/runtime/CPU_OVERLOAD_ACKNOWLEDGED, ${HOME}/runtime/LOW_DISK_ACKNOWLEDGED, ${HOME}/runtime/LOW_MEMORY_ACKNOWLEDGED``` - this flag tells us whenever we have notified the user by email of some sort of low resource situation. Using this flag it means we only send emails periodically rather than multi times consequtively in short order as we might do without these flags  
+
+```${HOME}/runtime/FIREWALL-ACTIVE``` - this tells us that our firewall of choice is active. We can check this flag to see if we believe we have activated the firewall or not  
+
+```${HOME}/runtime/INITIALBUILDCOMPLETED``` - This flag is created by the build machine and it is set when the build machine believes that the initial build it is responsible for is completed. This is different or can be different to when it is believed that the autoscaler itself completed its own provisioning. The initial build status is used to regulate the cooling down period before the autoscaling of any additional webservers begins. This is configured to 5 minutes by default but you can change this to any value you want to suit your taste.  
+
+```${HOME}/runtime/INITIALLY_PROVISIONING``` - This tells us that a machine is literally in its initial provisioning or start up phase. This value wraps its arms around the time between when the cli call to "create server" is made and the time when that naked server is first considerd "up" or "pingable".   
+
+```${HOME}/runtime/INITIALLY_SCALING_PROCESSSED``` - once the 5 minute cooling off period is processed after an autoscaler is provisioned this flag is set and we consider that the initial scaling has been processed which means that we are authorised to scale other new webservers now.   
+
+Webserver  
+
+```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this flag is set from an autoscler on the current webserver to let us know that this webserver is online and was generated as a scaling event rather than as part of initial infrastructure provisioning  
+
