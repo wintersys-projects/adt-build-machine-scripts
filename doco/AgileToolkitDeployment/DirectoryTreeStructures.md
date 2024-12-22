@@ -85,7 +85,7 @@ On the build machine
 
 Autoscaler  
 
-```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag
+```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag  
 ```${HOME}/runtime/AUTHORISED_TO_SCALE``` - once the intial scaling is completed after a new autoscaler is provisioned, this flag is set which we can then check for to verify if we can provision new machines or not  
 
 ```${HOME}/runtime/autoscalelock.file``` - this flag is a lock file such that it can be checked to see if an autoscaling cycle is active. If an autoscaling cycle is active then another autoscaling cycle can't be initiated.  
