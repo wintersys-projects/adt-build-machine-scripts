@@ -112,6 +112,22 @@ Autoscaler
 
 ```${HOME}/runtime/INITIALLY_SCALING_PROCESSSED``` - once the 5 minute cooling off period is processed after an autoscaler is provisioned this flag is set and we consider that the initial scaling has been processed which means that we are authorised to scale other new webservers now.   
 
+```${HOME}/runtime/installedsoftware``` - this directory serves as a record as to which software has been installed on this machine. It can be referred to if the software needs to be updated so that we know what packages to update and what pacakges to leave alone
+
+```${HOME}/runtime/KNICKERS_ARE_UP``` - this is to do with the firewall it means that we have set our base condition which is to allow outgoing connections but dissalow all incoming connections and so basically, "knickers are up" because no one is let in.
+
+```${HOME}/runtime/MAINTENANCE_MODE``` - you can set maintenance mode which basically means scaling back to "one" active webserver and therefore one webroot. If you activate maintenance mode then this flag will be set. Live updates are possible but you might find it safer to make your application updates in a maintenance mode situation.
+
+```${HOME}/runtime/NOT_AUTHORISED_TO_SCALE``` - If this is set then it means that we consider this autoscaler to be allowed to issue orders to scale
+
+```${HOME}/runtime/potentialenders``` - potential enders - this is a list of IPs that we can keep when we are checking which webservers (based on IP) might need to be shutdown or terminated for some reason such as unresponsiveness or failed or slow build and so on.
+
+```${HOME}/runtime/POTENTIAL_STALLED_BUILD``` - Every newly provisioned webserver is considered potentially stalled, because a build can stall for reasons out of our control on rare occassions such as networking outages and so on. A webserver machine is considered potentially stalled by default until we hear from it that it isn't and we continue on from there then.
+
+```${HOME}/runtime/probed_ips/``` - this directory contrains probed webserver ips so that we can keep track of which webservers ultimately are OK to keep running and which webservers (for example, failed to respond to a curl command) need to be terminated. 
+
+----------------------------
+
 Webserver  
 
 ```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this flag is set from an autoscler on the current webserver to let us know that this webserver is online and was generated as a scaling event rather than as part of initial infrastructure provisioning  
