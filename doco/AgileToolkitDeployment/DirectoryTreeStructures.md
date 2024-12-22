@@ -130,6 +130,16 @@ Autoscaler
 
 ```${HOME}/runtime/UPDATEDSSL``` - This is just a flag that tells us when our SSL certificate has been updated. 
 
+```${HOME}/autoscaler``` - This directory contains the scripts which provide the autoscaling mechanism and functionality
+
+```${HOME}/cron``` - This directory contains the scripts relating to cron functionality
+
+```${HOME}/installscripts``` - This directory contains all the scripts which relate to installation of software and so on
+
+```${HOME}/providerscripts``` - This is where all scripts related to third party providers are kept such as datastore providers, git providers and so on
+
+```${HOME}/security``` - This directory has scripts that relate to security such as the firewall
+
 ----------------------------
 
 Webserver  
