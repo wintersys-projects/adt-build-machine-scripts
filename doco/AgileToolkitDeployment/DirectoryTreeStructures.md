@@ -136,7 +136,9 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/providerscripts``` - This is where all scripts related to third party providers are kept such as datastore providers, git providers and so on
 
-```${HOME}/security``` - This directory has scripts that relate to security such as the firewall
+```${HOME}/security``` - This directory has scripts that relate to security such as the firewall  
+
+```${HOME}/runtime/autoscaler_configuration_settings.dat ${HOME}/runtime/webserver_configuration_settings.dat ${HOME}/runtime/buildstyles.dat``` - these files are the configuration files for the autoscaler. You could alter the size of webservers that you are provisioning or change the SMTP provider being used or possibly other configuration settings by making alterations to these files  
 
 ----------------------------
 
@@ -195,7 +197,9 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/providerscripts``` - This is where all scripts related to third party providers are kept such as datastore providers, git providers and so on
 
-```${HOME}/security``` - This directory has scripts that relate to security such as the firewall
+```${HOME}/security``` - This directory has scripts that relate to security such as the firewall  
+
+```${HOME}/runtime/webserver_configuration_settings.dat ${HOME}/runtime/buildstyles.dat``` - these files are the configuration settings for our current webserver  
 
 ------------------------------
 
@@ -235,4 +239,6 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/providerscripts``` - This is where all scripts related to third party providers are kept such as datastore providers, git providers and so on
 
-```${HOME}/security``` - This directory has scripts that relate to security such as the firewall
+```${HOME}/security``` - This directory has scripts that relate to security such as the firewall  
+
+```${HOME}/runtime/database_configuration_settings.dat ${HOME}/runtime/buildstyles.dat``` - these files are the configuration settings for our current database machine
