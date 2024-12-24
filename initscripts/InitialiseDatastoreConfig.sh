@@ -101,8 +101,12 @@ fi
 
 /bin/cp ${BUILD_HOME}/.s5cfg /root/.s5cfg
 
-if ( [ -f /root/.rclone.conf
+if ( [ -f /root/.rclone.conf ] )
+then
+        /bin/rm /root/.rclone.conf
+fi
 
+/bin/cp ${BUILD_HOME}/.rclone.cfg /root/.rclone.conf
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "1$$agile" 3>&1 2>/dev/null
 ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "1$$agile" 3>&1 2>/dev/null
