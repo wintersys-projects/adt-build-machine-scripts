@@ -357,11 +357,6 @@ then
 	${log_command} "Your value for the variable ACTIVE_FIREWALLS (${ACTIVE_FIREWALLS}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^GENERATE_STATIC " ${quick_specification} | /bin/grep -w "${GENERATE_STATIC}"  2>/dev/null `" = "" ] )
-then
-	${log_command} "Your value for the variable GENERATE_STATIC (${GENERATE_STATIC}) doesn't appear to be valid please review"
-fi
-
 if ( [ "`/bin/grep "^INSTALL_MONITORING_GEAR " ${quick_specification} | /bin/grep -w "${INSTALL_MONITORING_GEAR}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable INSTALL_MONITORING_GEAR (${INSTALL_MONITORING_GEAR}) doesn't appear to be valid please review"
