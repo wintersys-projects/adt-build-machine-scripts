@@ -162,6 +162,8 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/CREDENTIALS_PRIMED``` - once we have got the database credentials that were generated on the build machine on our current webserver we consider credentials to be primed (in other words, we know what our database credentials are if this is set).
 
+```${HOME}/runtime/INITIAL_CONFIG_SET``` - this is set when the application's initial configuration has been set. This stops it being set again unless there is a difference that needs to be taken into account
+
 ```${HOME}/runtime/drupal_settings.php``` - the drupal configuration file
 ```${HOME}/runtime/wordpress_config.php``` - the wordpress configuration file
 ```${HOME}/runtime/joomla_configuration.php``` - the joomla configuration file
