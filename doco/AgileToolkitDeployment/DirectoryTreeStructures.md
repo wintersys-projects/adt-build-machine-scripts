@@ -158,6 +158,8 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/CACHE_CLEANED``` - if we want to clean our application cache at as the application installs this flag lets us know that the cache has been cleaned
 
+```${HOME}/runtime/DATASTORE_CACHE_PURGED``` - this is a flag that tells us when a datastore mounted filesystem has had its cache purged. We can test for this flag and purge the cache based on what we find. 
+
 ```${HOME}/runtime/CPU_OVERLOAD_ACKNOWLEDGED, ${HOME}/runtime/LOW_DISK_ACKNOWLEDGED, ${HOME}/runtime/LOW_MEMORY_ACKNOWLEDGED``` - this flag tells us whenever we have notified the user by email of some sort of low resource situation. Using this flag it means we only send emails periodically rather than multi times consequtively in short order as we might do without these flags  
 
 ```${HOME}/runtime/CREDENTIALS_PRIMED``` - once we have got the database credentials that were generated on the build machine on our current webserver we consider credentials to be primed (in other words, we know what our database credentials are if this is set).
