@@ -68,6 +68,14 @@ then
 	then
 		read x
 	fi
+        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+        if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+                exit
+        fi
+        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 	#################WORDPRESS################
 	#################MOODLE################
 elif ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/moodle/index.php ] && [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/moodle/version.php ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/moodle/userpix ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/moodle/report ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/moodle/enrol ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/moodle/theme ] )
