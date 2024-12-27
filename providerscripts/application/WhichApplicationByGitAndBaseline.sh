@@ -43,12 +43,21 @@ then
 	then
 		read x
 	fi
- 	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+ 
+ 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ] )
+  	then
+ 		/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+	else
+ 		status "Couldn't find joomla default configuration file in baseline webroot"
+   		exit
+   	fi
+    
+ 	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
  	then
   		status "Error, cannot find db prefix file"
     		exit
     	fi
+     
  	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}	
    	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
  #################JOOMLA################
@@ -68,8 +77,14 @@ then
 	then
 		read x
 	fi
-        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+ 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/wp-config.php.default ] )
+  	then
+        	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+        else
+	 	status "Couldn't find joomla default configuration file in baseline webroot"
+   		exit
+	fi
+	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
         then
                 status "Error, cannot find db prefix file"
                 exit
