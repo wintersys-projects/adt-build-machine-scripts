@@ -66,14 +66,21 @@ then
 	then
 		read x
 	fi
-  	/bin/cp ${interrogation_home}/tmp/backup/wp-config-sample.php ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config-sample.php
-	
- 	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
- 	then
-  		status "Error, cannot find db prefix file"
-    	fi
+        if ( [ -f ${interrogation_home}/tmp/backup/wp-config.php.default ] )
+        then
+                /bin/cp ${interrogation_home}/tmp/backup/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+        else
+                status "Couldn't find joomla default configuration file in baseline webroot"
+                exit
+        fi
+
+        if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+        fi
      
- 	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        /bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 	#################WORDPRESS################
 	#################MOODLE################
 elif ( [ -f ${interrogation_home}/tmp/backup/moodle/index.php ] && [ -f ${interrogation_home}/tmp/backup/moodle/version.php ] && [ -d ${interrogation_home}/tmp/backup/moodle/userpix ] && [ -d ${interrogation_home}/tmp/backup/moodle/report ] && [ -d ${interrogation_home}/tmp/backup/moodle/enrol ] && [ -d ${interrogation_home}/tmp/backup/moodle/theme ] )
