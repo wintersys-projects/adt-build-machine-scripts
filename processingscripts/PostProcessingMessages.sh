@@ -95,8 +95,7 @@ then
 		status ""
 		status "####################################################################"
 		status "Moodle should be available at: https://${WEBSITE_URL}/moodle"
-		status "The default admin user has the username: admin123 and password: changeme17832"
-		status "As implied you should change both of these immediately using the Moodle administration gui"
+		status "####################################################################"
 		status ""
 	fi
 fi
