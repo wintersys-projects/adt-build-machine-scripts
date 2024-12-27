@@ -397,6 +397,38 @@ then
 	fi
 fi
 
+if ( [ "${APPLICATION}" = "joomla" ] )
+then
+	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" ] )
+ 	then
+  		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with joomla"
+    	fi
+fi
+
+if ( [ "${APPLICATION}" = "wordpress" ] )
+then
+	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" ] )
+ 	then
+  		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with wordpress"
+    	fi
+fi
+
+if ( [ "${APPLICATION}" = "drupal" ] )
+then
+	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" ] )
+ 	then
+  		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with drupal"
+    	fi
+fi
+
+if ( [ "${APPLICATION}" = "moodle" ] )
+then
+	if ( [ "`/bin/echo "8.1 8.2 8.3" | /bin/grep "${PHP_VERSION}"`" ] )
+ 	then
+  		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with moodle"
+    	fi
+fi
+
 if ( [ ! "`echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
 then
 	${log_command} "It looks to me like the email address for the variable DNS_USERNAME (${DNS_USERNAME}) doesn't appear to be valid please review"
