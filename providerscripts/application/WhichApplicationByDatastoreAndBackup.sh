@@ -98,11 +98,11 @@ then
 		read x
 	fi
 
-        if ( [ -f ${interrogation_home}/tmp/backup/moodle/config.php.default] )
+        if ( [ -f ${interrogation_home}/tmp/backup/moodle/config.php.default ] )
         then
                 /bin/cp ${interrogation_home}/tmp/backup/moodle/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
         else
-                status "Couldn't find moodle default configuration file in baseline webroot"
+                status "Couldn't find moodle default configuration file in backup archive webroot"
                 exit
         fi
 
