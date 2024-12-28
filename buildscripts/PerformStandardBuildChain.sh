@@ -122,7 +122,7 @@ fi
 
 if ( [ "${pids}" != "" ] )
 then
-        /bin/sleep 60
+        /bin/sleep 30
 fi
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
