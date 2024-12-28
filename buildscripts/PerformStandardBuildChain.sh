@@ -120,6 +120,17 @@ then
         pids="${pids} $!"
 fi
 
+if ( [ "${pids}" != "" ] )
+then
+        /bin/sleep 60
+fi
+
+if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
+then
+        . ${BUILD_HOME}/providerscripts/application/SetApplicationConfig.sh
+fi
+
+
 for pid in ${pids}
 do
         wait ${pid}
@@ -181,10 +192,10 @@ cloudhost_holder="${CLOUDHOST}"
 
 export CLOUDHOST="${cloudhost_holder}"
 
-if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
-then
-        . ${BUILD_HOME}/providerscripts/application/SetApplicationConfig.sh
-fi
+#if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
+#then
+#        . ${BUILD_HOME}/providerscripts/application/SetApplicationConfig.sh
+#fi
        
 ##Do the build finalisation procedures
 . ${BUILD_HOME}/buildscripts/FinaliseBuildProcessing.sh
