@@ -399,7 +399,7 @@ fi
 
 if ( [ "${APPLICATION}" = "joomla" ] )
 then
-	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" ] )
+	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
   		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with joomla"
     	fi
@@ -407,7 +407,7 @@ fi
 
 if ( [ "${APPLICATION}" = "wordpress" ] )
 then
-	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" ] )
+	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
   		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with wordpress"
     	fi
@@ -415,7 +415,7 @@ fi
 
 if ( [ "${APPLICATION}" = "drupal" ] )
 then
-	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" ] )
+	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
   		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with drupal"
     	fi
@@ -423,7 +423,7 @@ fi
 
 if ( [ "${APPLICATION}" = "moodle" ] )
 then
-	if ( [ "`/bin/echo "8.1 8.2 8.3" | /bin/grep "${PHP_VERSION}"`" ] )
+	if ( [ "`/bin/echo "8.1 8.2 8.3" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
   		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with moodle"
     	fi
