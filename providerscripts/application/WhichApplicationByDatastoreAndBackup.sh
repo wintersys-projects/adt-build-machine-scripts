@@ -130,7 +130,7 @@ then
 	then
 		read x
 	fi
-        if ( [ -f ${interrogation_home}/tmp/backup/moodle/sites/default/settings.php.default ] )
+        if ( [ -f ${interrogation_home}/tmp/backup/sites/default/settings.php.default ] )
         then
                 /bin/cp ${interrogation_home}/tmp/backup/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         else
