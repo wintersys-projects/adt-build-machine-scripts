@@ -124,7 +124,7 @@ then
 	then
 		DIRECTORIES_TO_MOUNT="sites.default.files.pictures:sites.default.files.styles:sites.default.files.inline-images"
 	fi
-	status "Discovered you are deploying drupalfrom a datastore backup"
+	status "Discovered you are deploying drupal from a datastore backup"
 	status "Press the <enter> key to accept as true"
 	if ( [ "${HARDCORE}" != "1" ] )
 	then
