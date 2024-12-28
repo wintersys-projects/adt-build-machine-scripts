@@ -142,6 +142,22 @@ then
 	then
 		read x
 	fi
+  
+ 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/settings.php.default ] )
+  	then
+        	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+        else
+	 	status "Couldn't find drupal default configuration file in baseline webroot"
+   		exit
+	fi
+	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+                exit
+        fi
+        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
+
 	#################DRUPAL################
 fi
 
