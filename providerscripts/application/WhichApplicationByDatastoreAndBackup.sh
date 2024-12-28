@@ -130,14 +130,21 @@ then
 	then
 		read x
 	fi
-    	/bin/cp ${interrogation_home}/tmp/backup/settings.php ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php
-	
- 	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
- 	then
-  		status "Error, cannot find db prefix file"
-    	fi
-     
- 	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        if ( [ -f ${interrogation_home}/tmp/backup/moodle/sites/default/settings.php.default ] )
+        then
+                /bin/cp ${interrogation_home}/tmp/backup/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+        else
+                status "Couldn't find drupal default configuration file in backup webroot"
+                exit
+        fi
+
+        if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+        fi
+
+        /bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 	#################DRUPAL################
 fi
 
