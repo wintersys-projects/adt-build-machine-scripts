@@ -153,8 +153,8 @@ then
 	then
  		status ""
  		status "##############################################################################################################################"
- 		status "The build might pause here for up to 10 minutes (if you are building your webserver from source for example, which takes time)"
-   		status "Anything more than 10 minutes (most often there will likely be no pause at all) then you need to investigate what the hold-up is"
+ 		status "The build might pause here for several minutes (if you are building your webserver from source for example, which takes time)"
+   		status "Anything more than a few minutes (most often there will likely be no pause at all) then you need to investigate what the hold-up is"
       		status "##############################################################################################################################"
 		status ""
 		serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
