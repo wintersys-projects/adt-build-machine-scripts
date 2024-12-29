@@ -160,12 +160,17 @@ if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 	then
-		status "Application has completed its initialisation, just checking that it is also online.....endless waiting (more than a couple of minutes) and something must be wrong"
+ 		status ""
+ 		status "##############################################################################################################################"
+ 		status "The build might pause here for up to 10 minutes (if you are building your websever from source for example, which takes time)"
+   		status "Anything more than 10 minutes (most often there will likely be no pause at all) then you need to investigate what the hold-up is"
+      		status "##############################################################################################################################"
+		status ""
 		serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
 		while ( [ "`/bin/echo ${serverinstalled} | /bin/grep ALIVE`" = "" ] )
 		do
 			/bin/sleep 1
-			serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
+			serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`" 2>&1 > /dev/null
 		done
 	fi
 fi
