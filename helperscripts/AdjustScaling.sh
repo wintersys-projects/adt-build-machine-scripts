@@ -22,8 +22,8 @@
 
 if ( [ ! -f  ./AdjustScaling.sh ] )
 then
-	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-	exit
+        /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+        exit
 fi
 
 /bin/echo "Remember, scaling takes 15 minutes to come online after the completion of an initial build. If less than 5 minutes has passed, wait a bit, then adjust scaling"
@@ -36,19 +36,19 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 read response
 if ( [ "${response}" = "1" ] )
 then
-	CLOUDHOST="digitalocean"
+        CLOUDHOST="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-	CLOUDHOST="exoscale"
+        CLOUDHOST="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-	CLOUDHOST="linode"
+        CLOUDHOST="linode"
 elif ( [ "${response}" = "4" ] )
 then
-	CLOUDHOST="vultr"
+        CLOUDHOST="vultr"
 else
-	/bin/echo "Unrecognised  cloudhost. Exiting ...."
-	exit
+        /bin/echo "Unrecognised  cloudhost. Exiting ...."
+        exit
 fi
 
 /bin/echo "What is the build identifier you want to allow access for?"
@@ -69,46 +69,41 @@ TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /us
 
 configbucket="`/bin/echo "${website_url}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${configbucket}`" = "" ] )
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh`" = "" ] )
 then
-	/bin/echo "Can't find the configuration bucket in your datastore for website: ${website_url}"
-	/bin/echo "I have to exit, run the script again using a URL with an existing configuration bucket"
-	exit
+        /bin/echo "Can't find the configuration bucket in your datastore for website: ${website_url}"
+        /bin/echo "I have to exit, run the script again using a URL with an existing configuration bucket"
+        exit
 fi
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${configbucket}/SWITCHOFFSCALING`" != "" ] )
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh SWITCHOFFSCALING`" != "" ] )
 then
-	/bin/echo "Sorry, scaling is switched off at the moment. You can't switch it on using this script"
-	exit
+        /bin/echo "Sorry, scaling is switched off at the moment. You can't switch it on using this script"
+        exit
 fi
 
 if ( [ "${2}" = "off" ] )
 then
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING
-	${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING ${configbucket}/SWITCHOFFSCALING
-	/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING
-	exit
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING SWITCHOFFSCALING
+        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING
+        exit
 fi
 
 if ( [ "${2}" = "on" ] )
 then
-	${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${configbucket}/SWITCHOFFSCALING
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh SWITCHOFFSCALING
 fi
 
-${BUILD_HOME}/providerscripts/datastore/GetFromDatastore ${configbucket}/scalingprofile/profile.cnf ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
+#${BUILD_HOME}/providerscripts/datastore/configwrapper/GetFromConfigDatastore.sh scalingprofile/profile.cnf ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
 
-if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf ] )
+if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf ] )
 then
-	/bin/echo "Warning, couldn't find profile file, will try and create a new one for you"
-fi
-
-original_no_webservers="`/bin/grep "NO_WEBSERVERS" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf | /usr/bin/awk -F'=' '{print $NF}'`"
-
-if ( [ "${original_no_webservers}" = "" ] )
-then
-	original_no_webservers="0"
-	/bin/echo  "SCALING_MODE=static" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
-	/bin/echo  "NO_WEBSERVERS=0" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
+        original_no_webservers="`/bin/grep "NO_WEBSERVERS" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf | /usr/bin/awk -F'=' '{print $NF}'`"
+else
+        original_no_webservers="0"
+        /bin/echo  "SCALING_MODE=static" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
+        /bin/echo  "NO_WEBSERVERS=0" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
 fi
 
 /bin/echo "##################################################################################################################"
@@ -119,8 +114,8 @@ read no_webservers
 
 while ( [ "${no_webservers}" = "" ] || [ "${no_webservers}" -lt "2" ] )
 do
-	/bin/echo "Number of webservers has to be 2 or more. Please input a different value"
-	read no_webservers
+        /bin/echo "Number of webservers has to be 2 or more. Please input a different value"
+        read no_webservers
 done
 
 /bin/echo ""
@@ -130,12 +125,13 @@ read response
 
 if ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] )
 then
-	exit
+        exit
 fi
 
 /bin/sed -i "s/NO_WEBSERVER.*/NO_WEBSERVERS=${no_webservers}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
 
-${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf ${configbucket}/scalingprofile/profile.cnf 
+${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf scalingprofile/profile.cnf 
+#${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${configbucket}/scalingprofile/profile.cnf ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
 
 new_no_webservers="`/bin/grep "NO_WEBSERVERS" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf | /usr/bin/awk -F'=' '{print $NF}'`"
 
