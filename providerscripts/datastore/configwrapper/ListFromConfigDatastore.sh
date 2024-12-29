@@ -38,12 +38,7 @@ then
         datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
 fi
 
-if ( [ "${2}" = "" ] )
-then
-	${datastore_tool} ls s3://${configbucket}
+${datastore_tool} ls s3://${configbucket}/${1}
 
-else
-	${datastore_tool} ls s3://${configbucket}/${1}
-fi
 
 
