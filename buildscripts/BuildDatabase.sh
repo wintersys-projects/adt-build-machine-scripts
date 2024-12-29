@@ -325,30 +325,10 @@ do
                                 status "`/bin/date`"
                         fi
                         
-                        #Wait for the machine to become responsive before we check its integrity
 
-                        /usr/bin/ping -c 10 ${db_active_ip} 2>/dev/null
-
-                        pingcount="0"
-
-                        while ( [ "$?" != "0" ] )
-                        do
-                                /usr/bin/ping -c 10 ${db_active_ip}
-                                pingcount="`/usr/bin/expr ${pingcount} + 1`"
-                                if ( [ "${pingcount}" = "10" ] )
-                                then
-                                        status "I am having trouble pinging your new database server."
-                                        status "If you see this message repeatedly, maybe check that your security policy allows ping requests"
-                                        status "----------------------------------------------------------------------------------------------"
-                                        pingcount="0"
-                                fi
-                        done
-
-                        /bin/sleep 10
+                        #Check that the database is built and ready for action
 
                         done="0"
-                        #Check that the database is built and ready for action
-                        status "The database (${database_name}) has become responsive checking if it is also primed and ready"
                         alive=""
                         count2="0"
 
