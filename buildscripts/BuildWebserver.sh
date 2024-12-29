@@ -285,24 +285,7 @@ do
                                 status "Finished building the webserver (${webserver_name})"
                                 status "`/bin/date`"
                         fi
-                        #Wait for the machine to become responsive before we check its integrity
 
-                        pingcount="0"
-
-                        while ( [ "$?" != "0" ] )
-                        do
-                                /usr/bin/ping -c 10 ${ws_active_ip} 2>/dev/null
-                                pingcount="`/usr/bin/expr ${pingcount} + 1`"
-                                if ( [ "${pingcount}" = "10" ] )
-                                then
-                                        status "I am having trouble pinging your new webserver."
-                                        status "If you see this message repeatedly, maybe check that your security policy allows ping requests"
-                                        status "----------------------------------------------------------------------------------------------"
-                                        pingcount="0"
-                                fi
-                        done
-
-                        status "The webserver (${webserver_name}) has become responsive now need to check if it's primed and ready as well" 
 
                         #So, looking good. Now what we have to do is keep monitoring for the build process for our webserver to complete
                         done="0"
