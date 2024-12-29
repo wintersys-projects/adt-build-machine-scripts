@@ -144,15 +144,6 @@ fi
 #This enables the application to have any post processing done that it needs. There is pre and post processing either side of the build process
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
 /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" >&3
-status "Setting configuration values for the application you are installing (${APPLICATION})"
-/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3
-
-while ( [ "`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/ls /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET"`" = "" ] )
-do
-        status "Configuration file for your (${APPLICATION}) application doesn't seem to be set, I will try again"
-        /bin/sleep 10
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3
-done
 
 #We are satisfied that all is well, so let's try and see if the application is actually online and active
 
