@@ -145,6 +145,8 @@ fi
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
 /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" >&3
 
+/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3
+
 #We are satisfied that all is well, so let's try and see if the application is actually online and active
 
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
