@@ -131,7 +131,8 @@ fi
 /bin/sed -i "s/NO_WEBSERVER.*/NO_WEBSERVERS=${no_webservers}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
 
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf scalingprofile/profile.cnf 
-#${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${configbucket}/scalingprofile/profile.cnf ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
+/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
+${BUILD_HOME}/providerscripts/datastore/configwrapper/GetFromConfigDatastore.sh scalingprofile/profile.cnf ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
 
 new_no_webservers="`/bin/grep "NO_WEBSERVERS" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf | /usr/bin/awk -F'=' '{print $NF}'`"
 
