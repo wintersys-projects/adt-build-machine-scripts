@@ -307,29 +307,10 @@ do
                         
                         #Wait for the machine to become responsive before we check its integrity
 
-                        pingcount="0"
-
-                        while ( [ "$?" != "0" ] )
-                        do
-                                /usr/bin/ping -c 10 ${as_active_ip} 2>/dev/null
-                                pingcount="`/usr/bin/expr ${pingcount} + 1`"
-                                if ( [ "${pingcount}" = "10" ] )
-                                then
-                                        status "I am having trouble pinging your new autoscaling server."
-                                        status "If you see this message repeatedly, maybe check that your security policy allows ping requests"
-                                        status "----------------------------------------------------------------------------------------------"
-                                        pingcount="0"
-                                fi
-                        done
-
-                        /bin/sleep 10
-
                         done="0"
                         alive=""
                         #checking that the autoscaler is "built and alive" The last thing that the as.sh script does is reboot the machine
                         #that is our autoscaler. We do some rudimentary checking to detect when it is back up again post reboot.
-
-                        status "The autoscaler  ${autoscaler_name} is responsive, checking it is primed and ready as well"
            
                         alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
            
