@@ -49,10 +49,9 @@ then
                 /bin/bash -c "$(curl -sL https://git.io/vokNn)"
                 if ( [ -f /usr/local/bin/apt-fast ] )
                 then
-                        /bin/mv apt-fast /usr/sbin
+                        /bin/mv /usr/local/bin/apt-fast /usr/sbin
                         /bin/chmod +x /usr/sbin/apt-fast
                 fi
-                /bin/chmod +x /usr/sbin/apt-fast
                 /bin/mv apt-fast.conf /etc
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
@@ -68,10 +67,9 @@ then
                 /bin/bash -c "$(curl -sL https://git.io/vokNn)"
                 if ( [ -f /usr/local/bin/apt-fast ] )
                 then
-                        /bin/mv apt-fast /usr/sbin
+                        /bin/mv /usr/local/bin/apt-fast /usr/sbin
                         /bin/chmod +x /usr/sbin/apt-fast
                 fi
-                /bin/chmod +x /usr/sbin/apt-fast
                 /bin/mv apt-fast.conf /etc
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
