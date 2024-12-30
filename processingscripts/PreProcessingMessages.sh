@@ -33,10 +33,6 @@ then
 	status "############################################"
 	status "Number of autoscalers is set to: ${NO_AUTOSCALERS}"
 	status "############################################"
- 	if ( [ "${HARDCORE}" != "1" ] )
-	then
-		read x
-  	fi
 fi
 
 if ( [ "${CLOUDHOST}" = "vultr" ] )
