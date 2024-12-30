@@ -37,6 +37,11 @@ then
 		apt="/usr/sbin/apt-fast"
 	fi
 
+         if ( [ "${apt}" = "/usr/sbin/apt-fast" ] && [ ! -f /usr/sbin/apt-fast ] )
+        then
+                apt="/usr/bin/apt-get"
+        fi
+
 	if ( [ "${apt}" != "" ] )
 	then
 		if ( [ "${buildos}" = "ubuntu" ] )
