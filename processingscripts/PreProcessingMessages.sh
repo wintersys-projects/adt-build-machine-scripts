@@ -33,11 +33,6 @@ then
 	status "############################################"
 	status "Number of autoscalers is set to: ${NO_AUTOSCALERS}"
 	status "############################################"
-	status "Initial number of webservers is set to: ${NUMBER_WS}"
-	status "###########################################################################################################"
-	status "Modify your template  (${templatefile})"
-	status "and restart the build process to alter number of autoscalers or webservers values or press <enter> to accept"
-	status "###########################################################################################################"
  	if ( [ "${HARDCORE}" != "1" ] )
 	then
 		read x
