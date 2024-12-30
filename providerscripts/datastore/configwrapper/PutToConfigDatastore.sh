@@ -32,68 +32,30 @@ configbucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "s3cmd" ] )
 then
         datastore_tool="/usr/bin/s3cmd put "
-        datastore_tool_1="/usr/bin/s3cmd --recursive put "
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "s5cmd" ] )
 then
         host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
         datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} cp "
-	datastore_tool_1="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} cp "
-
 fi
 
-if ( [ "$3" = "recursive" ] )
+if ( [ "${2}" != "" ] )
 then
- 	count="0"
-	while ( [ "`${datastore_tool_1} $1 s3://${configbucket}/$2 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )	
-	do
-        	/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        	/bin/sleep 5
-        	count="`/usr/bin/expr ${count} + 1`"
-	done 
-	#${datastore_tool_1} $1 s3://${configbucket}/$2
+        command="${datastore_tool} $1 s3://${configbucket}/$2"
 else
-	if ( [ -f ${1} ] )
-	then
-  		count="0"
-		while ( [ "`${datastore_tool} $1 s3://${configbucket}/$2 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )	
-		do
-        		/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        		/bin/sleep 5
-        		count="`/usr/bin/expr ${count} + 1`"
-		done 
-		#${datastore_tool} $1 s3://${configbucket}/$2
-	elif ( [ -f ./${1} ] )
-	then
-   		count="0"
-		while ( [ "`${datastore_tool} ./$1 s3://${configbucket}/$2 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )	
-		do
-        		/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        		/bin/sleep 5
-        		count="`/usr/bin/expr ${count} + 1`"
-		done 
-		#${datastore_tool} ./$1 s3://${configbucket}/$2
-		/bin/rm ./$1
-	elif ( [ -f /tmp/${1} ] )
-	then
-    		count="0"
-		while ( [ "`${datastore_tool} /tmp/$1 s3://${configbucket}/$2 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )	
-		do
-        		/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        		/bin/sleep 5
-        		count="`/usr/bin/expr ${count} + 1`"
-		done 
-		#${datastore_tool} /tmp/$1 s3://${configbucket}/$2
-	else
-		/bin/touch /tmp/$1
-      		count="0"
-		while ( [ "`${datastore_tool} /tmp/$1 s3://${configbucket}/$2 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )	
-		do
-        		/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        		/bin/sleep 5
-        		count="`/usr/bin/expr ${count} + 1`"
-		done 
-		#${datastore_tool} /tmp/$1 s3://${configbucket}/$2
-		/bin/rm /tmp/$1
-		
-	fi
+        command="${datastore_tool} $1 s3://${configbucket}"
 fi
+
+count="0"
+satisfied="0"
+while ( [ "${count}" -lt "5" ] && [ "${satisfied}" = "0" ] )
+do
+        result="`${command} 2>&1 >/dev/null`" 
+        if ( [ "`/bin/echo ${result} | /bin/grep 'ERROR'`" != "" ] )
+        then
+                /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
+                /bin/sleep 5
+                count="`/usr/bin/expr ${count} + 1`"
+        else 
+                satisfied="1"
+        fi
+done 
