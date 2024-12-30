@@ -20,6 +20,9 @@
 ######################################################################################
 #set -x
 
+file_to_put="${1}"
+place_to_put="${2}"
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
@@ -38,11 +41,18 @@ then
         datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} cp "
 fi
 
-if ( [ "${2}" != "" ] )
+if ( [ ! -f ${file_to_put} ] )
 then
-        command="${datastore_tool} $1 s3://${configbucket}/$2"
+        /bin/touch /tmp/${file_to_put}
+        file_to_put="/tmp/${file_to_put}"
+fi
+        
+
+if ( [ "${place_to_put}" != "" ] )
+then
+        command="${datastore_tool} ${file_to_put} s3://${configbucket}/${place_to_put}"
 else
-        command="${datastore_tool} $1 s3://${configbucket}"
+        command="${datastore_tool} ${file_to_put} s3://${configbucket}"
 fi
 
 count="0"
@@ -59,3 +69,8 @@ do
                 satisfied="1"
         fi
 done 
+
+if ( [ -f /tmp/${file_to_put} ] )
+then
+        /bin/rm /tmp/${file_to_put}
+fi
