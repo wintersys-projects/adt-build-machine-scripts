@@ -47,7 +47,11 @@ then
         if ( [ "${buildos}" = "ubuntu" ] )
         then
                 /bin/bash -c "$(curl -sL https://git.io/vokNn)"
-                /bin/mv apt-fast /usr/sbin
+                if ( [ -f /usr/local/bin/apt-fast ] )
+                then
+                        /bin/mv apt-fast /usr/sbin
+                        /bin/chmod +x /usr/sbin/apt-fast
+                fi
                 /bin/chmod +x /usr/sbin/apt-fast
                 /bin/mv apt-fast.conf /etc
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
@@ -62,7 +66,11 @@ then
         if ( [ "${buildos}" = "debian" ] )
         then
                 /bin/bash -c "$(curl -sL https://git.io/vokNn)"
-                /bin/mv apt-fast /usr/sbin
+                if ( [ -f /usr/local/bin/apt-fast ] )
+                then
+                        /bin/mv apt-fast /usr/sbin
+                        /bin/chmod +x /usr/sbin/apt-fast
+                fi
                 /bin/chmod +x /usr/sbin/apt-fast
                 /bin/mv apt-fast.conf /etc
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
