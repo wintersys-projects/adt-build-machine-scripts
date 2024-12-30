@@ -26,7 +26,7 @@ then
         exit
 fi
 
-/bin/echo "Remember, scaling takes 15 minutes to come online after the completion of an initial build. If less than 5 minutes has passed, wait a bit, then adjust scaling"
+/bin/echo "Remember, scaling takes 5 minutes to come online after the completion of an initial build. If less than 5 minutes has passed, wait a bit, then adjust scaling"
 /bin/echo "Press <enter> to acknowledge"
 read x
 
@@ -61,65 +61,27 @@ read BUILD_IDENTIFIER
 
 /bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 
-/bin/echo "OK, can you please tell me the FULL URL (without the https:// ) for the website you want to scale up/down is (e.g. demo.nuocial.org.uk)"
-read website_url
-
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-configbucket="`/bin/echo "${website_url}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
+original_scale_value="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:* | /usr/bin/awk -F':' '{print $NF}'`"
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh`" = "" ] )
+if ( [ "${original_scale_value}" != "" ] )
 then
-        /bin/echo "Can't find the configuration bucket in your datastore for website: ${website_url}"
-        /bin/echo "I have to exit, run the script again using a URL with an existing configuration bucket"
-        exit
+        /bin/echo "Scaling value is currently set to ${original_scale_value} webservers"
 fi
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh SWITCHOFFSCALING`" != "" ] )
-then
-        /bin/echo "Sorry, scaling is switched off at the moment. You can't switch it on using this script"
-        exit
-fi
+/bin/echo "Please enter the number of webservers that you want to scale to"
+read new_scale_value
 
-if ( [ "${2}" = "off" ] )
-then
-        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING SWITCHOFFSCALING
-        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SWITCHOFFSCALING
-        exit
-fi
-
-if ( [ "${2}" = "on" ] )
-then
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh SWITCHOFFSCALING
-fi
-
-#${BUILD_HOME}/providerscripts/datastore/configwrapper/GetFromConfigDatastore.sh scalingprofile/profile.cnf ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
-
-if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf ] )
-then
-        original_no_webservers="`/bin/grep "NO_WEBSERVERS" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf | /usr/bin/awk -F'=' '{print $NF}'`"
-else
-        original_no_webservers="0"
-        /bin/echo  "SCALING_MODE=static" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
-        /bin/echo  "NO_WEBSERVERS=0" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
-fi
-
-/bin/echo "##################################################################################################################"
-/bin/echo "Your number of webservers is currently set to: ${original_no_webservers}"
-/bin/echo "What do you want to set your number of webservers to, please enter the number (2 or more) of webservers you want - as an integer"
-/bin/echo "##################################################################################################################"
-read no_webservers
-
-while ( [ "${no_webservers}" = "" ] || [ "${no_webservers}" -lt "2" ] )
+while ( ! [ "${new_scale_value}" -eq "${new_scale_value}" ] || [ "${new_scale_value}" -lt "2" ] ) 2> /dev/null
 do
-        /bin/echo "Number of webservers has to be 2 or more. Please input a different value"
-        read no_webservers
+        /bin/echo "Sorry integers 2 or higher only"
+        read new_scale_value
 done
 
 /bin/echo ""
-/bin/echo "Your number of webservers is about to be set to ${no_webservers}"
+/bin/echo "Your number of webservers is about to be set to ${new_scale_value}"
 /bin/echo "Enter 'Y' or 'y' to accept, anything else to abort"
 read response
 
@@ -128,20 +90,19 @@ then
         exit
 fi
 
-/bin/sed -i "s/NO_WEBSERVER.*/NO_WEBSERVERS=${no_webservers}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
+${BUILD_HOME}/providerscripts/datastore/configwrapper/MultiDeleteConfigDatastore.sh STATIC_SCALE:
+if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
+then
+        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:*
+fi
+/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${new_scale_value}
+${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${new_scale_value} STATIC_SCALE:${new_scale_value}
 
-${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf scalingprofile/profile.cnf 
-/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
-${BUILD_HOME}/providerscripts/datastore/configwrapper/GetFromConfigDatastore.sh scalingprofile/profile.cnf ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
-
-new_no_webservers="`/bin/grep "NO_WEBSERVERS" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf | /usr/bin/awk -F'=' '{print $NF}'`"
+new_no_webservers="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:* | /usr/bin/awk -F':' '{print $NF}'`"
 
 /bin/echo ""
 /bin/echo "Your number of webservers has been successfully set to: ${new_no_webservers}"
 /bin/echo ""
-
-/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/profile.cnf
-
 
 
 
