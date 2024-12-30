@@ -120,21 +120,15 @@ then
         pids="${pids} $!"
 fi
 
-if ( [ "${pids}" != "" ] )
-then
-        /bin/sleep 30
-fi
+for pid in ${pids}
+do
+        wait ${pid}
+done
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
         . ${BUILD_HOME}/providerscripts/application/SetApplicationConfig.sh
 fi
-
-
-for pid in ${pids}
-do
-        wait ${pid}
-done
 
 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 then
