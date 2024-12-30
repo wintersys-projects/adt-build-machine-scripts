@@ -212,6 +212,7 @@ start=`/bin/date +%s`
 . ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 . ${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
 . ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
+. ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 
 # I think the usual phrase is, 'we are all set'. So, tell the user we are starting the build proper.
 status ""
