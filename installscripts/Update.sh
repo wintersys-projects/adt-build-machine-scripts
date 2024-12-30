@@ -47,8 +47,8 @@ then
         if ( [ "${buildos}" = "ubuntu" ] )
         then
                 /bin/bash -c "$(curl -sL https://git.io/vokNn)"
-                /bin/mv apt-fast /usr/local/sbin/
-                /bin/chmod +x /usr/local/sbin/apt-fast
+                /bin/mv apt-fast /usr/sbin
+                /bin/chmod +x /usr/sbin/apt-fast
                 /bin/mv apt-fast.conf /etc
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
@@ -57,14 +57,13 @@ then
                 mirrors="`/bin/grep "^deb" /etc/apt/sources.list | /bin/grep -Po 'http.* ' | /usr/bin/awk '{print $1}' | /usr/bin/sort -u | /usr/bin/uniq | /usr/bin/tr '\n' ',' | /bin/sed 's/,$//'`" 
                 /bin/echo "MIRRORS=( '${mirrors}' )" >> /etc/apt-fast.conf
                 /bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
-                /bin/ln -s /usr/bin/apt-fast /usr/sbin/apt-fast  
         fi
 
         if ( [ "${buildos}" = "debian" ] )
         then
                 /bin/bash -c "$(curl -sL https://git.io/vokNn)"
-                /bin/mv apt-fast /usr/local/sbin/
-                /bin/chmod +x /usr/local/sbin/apt-fast
+                /bin/mv apt-fast /usr/sbin
+                /bin/chmod +x /usr/sbin/apt-fast
                 /bin/mv apt-fast.conf /etc
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
@@ -73,7 +72,6 @@ then
                 mirrors="`/bin/grep "^deb" /etc/apt/sources.list | /bin/grep -Po 'http.* ' | /usr/bin/awk '{print $1}' | /usr/bin/sort -u | /usr/bin/uniq | /usr/bin/tr '\n' ',' | /bin/sed 's/,$//'`" 
                 /bin/echo "MIRRORS=( '${mirrors}' )" >> /etc/apt-fast.conf
                 /bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
-                /bin/ln -s /usr/bin/apt-fast /usr/sbin/apt-fast
         fi   
 fi
 
