@@ -195,6 +195,12 @@ then
 	fi
 fi
 
+if ( [ "${WEBSERVER_CHOICE}" != "" ] )
+then
+        status "Restarting the webserver"
+        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
+fi
+
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
 #Other scripts can then check if the build has completed correctly before they action
 #/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS} ${SERVER_USER}@${WSIP} "${SUDO} /bin/touch /home/${SERVER_USER}/config/INSTALLEDSUCCESSFULLY"
