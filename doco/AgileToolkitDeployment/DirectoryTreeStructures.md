@@ -279,3 +279,9 @@ Here you will find an expose on the directory structures of the various differen
 
 ```SSLUPDATED``` - this is simply a flag which tells us that an SSL certificate has been updated  
 
+```dbp.dat``` - the database prefix
+
+```dbe.dat``` - marker file to remind us of which database the original install was made to
+
+```joomla_configuration.php wordpress_config.php drupal_settings.php moodle_config.php``` - the various configuration files for our applications
+
