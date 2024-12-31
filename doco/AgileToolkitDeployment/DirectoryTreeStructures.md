@@ -252,16 +252,30 @@ Here you will find an expose on the directory structures of the various differen
 #### Datastore structure and function:
 
 ```STATIC_SCALE:[no]``` - this tells us what the current number of webservers should be. If this number is changed then there will be a scale up or scale down of the number of webservers running  
+
 ```autoscalerip/``` - this directory contains the private IP addresses of the currently active autoscaler machines  
+
 ```autoscalerpublicip/``` - this directory contains the public IP addresses of the currenlty active autoscaler machines  
-```buildclientip/``` - this directory contains the ip address of the build machine   
-```overloadedips/``` - any ip addresses that are considered overloaded are stored here   
+
 ```webserverpublicips/``` - this directory contains the private IP addresses of the currently active webserver machines  
+
 ```webserverips/``` - this directory contains the public IP addresses of the currently active webserver machines  
-```beenonline/``` - if a machine has ever been online its IP address is written here this helps us distinguish between machines which might have IP addresses available but have never been fully online yet  
-```INSTALLED_SUCCESSFULLY``` - this is a flag which we can check which tells us that the entire build process has been considered to have completed successfully.   
+
 ```databaseip/``` - this directory contains the private IP addresses of the currently active database machine  
+
 ```databasepublicip/``` - this directory contains the public IP addresses of the currently active database machine  
+
+```buildclientip/``` - this directory contains the ip address of the build machine   
+
+```overloadedips/``` - any ip addresses that are considered overloaded are stored here   
+
+```beenonline/``` - if a machine has ever been online its IP address is written here this helps us distinguish between machines which might have IP addresses available but have never been fully online yet  
+
+```INSTALLED_SUCCESSFULLY``` - this is a flag which we can check which tells us that the entire build process has been considered to have completed successfully.   
+
 ```webroot-update/``` - a holding area that we sync updated webroots to which can then be distributed to other webserver's filesystems keeping all our webroots in sync in short order  
+
 ```ssl/``` - this directory holds information to do with the SSL certificates, including the SSL certificates themselves which can then be distributed to all the webservers once updated on one of them  
+
 ```SSLUPDATED``` - this is simply a flag which tells us that an SSL certificate has been updated  
+
