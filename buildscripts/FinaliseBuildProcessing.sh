@@ -158,6 +158,7 @@ status ""
 
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
+	status "Checking that ${WEBSERVER_CHOICE} has fully installed....please wait"
 	webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" >&3
 
 	while ( [ "${webserver_installed}" = "" ] )
@@ -169,6 +170,7 @@ fi
 
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
+	status "Checking that ${APPLICATION_LANGUAGE} has fully installed....please wait"
 	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" >&3
 
 	while ( [ "${application_language_installed}" = "" ] )
@@ -182,6 +184,8 @@ if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 	then
+ 		status "Checking that your application is fully responsive....please wait"
+
 		server_alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
 		while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
 		do
