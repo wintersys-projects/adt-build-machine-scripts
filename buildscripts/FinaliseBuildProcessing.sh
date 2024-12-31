@@ -149,21 +149,44 @@ status "Performing any post processing that is needed for your application...ple
 
 #We are satisfied that all is well, so let's try and see if the application is actually online and active
 
+status ""
+status "##############################################################################################################################"
+status "The build might pause here for several minutes (if you are compiling your webserver from source for example, which takes time)"
+status "Anything more than a few minutes then you need to investigate what the hold-up is because something might be wrong"
+status "##############################################################################################################################"
+status ""
+
+if ( [ "${WEBSERVER_CHOICE}" != "" ] )
+then
+	webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" >&3
+
+	while ( [ "${webserver_installed}" = "" ] )
+	do
+		/bin/sleep 1
+		webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" 2>&1 > /dev/null
+	done
+fi
+
+if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
+then
+	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" >&3
+
+	while ( [ "${application_language_installed}" = "" ] )
+	do
+		/bin/sleep 1
+		application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" 2>&1 > /dev/null
+	done
+fi
+
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 	then
- 		status ""
- 		status "##############################################################################################################################"
- 		status "The build might pause here for several minutes (if you are compiling your webserver from source for example, which takes time)"
-   		status "Anything more than a few minutes then you need to investigate what the hold-up is because something might be wrong"
-      		status "##############################################################################################################################"
-		status ""
-		serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
-		while ( [ "`/bin/echo ${serverinstalled} | /bin/grep ALIVE`" = "" ] )
+		server_alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
+		while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
 		do
 			/bin/sleep 1
-			serverinstalled="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`" 2>&1 > /dev/null
+			server_alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`" 2>&1 > /dev/null
 		done
 	fi
 fi
