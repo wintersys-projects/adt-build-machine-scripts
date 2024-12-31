@@ -209,7 +209,7 @@ Here you will find an expose on the directory structures of the various differen
 
 #### Database Machines
 
-```${HOME}/runtime/APPLICATION_INSTALLED``` - If this file is present then it means that the system considers an application's data to have been installed into the database from an SQL dump file
+```${HOME}/runtime/DB_APPLICATION_INSTALLED``` - If this file is present then it means that the system considers an application's data to have been installed into the database from an SQL dump file
 
 ```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag  
 
