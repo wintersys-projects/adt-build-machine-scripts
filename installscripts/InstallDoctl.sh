@@ -34,9 +34,11 @@ then
 	apt="/usr/sbin/apt-fast"
 fi
 
+install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 --o=Dpkg::Use-Pty=0 -qq -y install " 
+
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-	 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
+	 ${install_command} snapd
 	 snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 	 ${snap} install doctl
 	 /usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
@@ -44,7 +46,7 @@ fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
+	 ${install_command} snapd
 	 snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 	 ${snap} install doctl
 	 /usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
