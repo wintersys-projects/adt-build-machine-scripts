@@ -158,6 +158,9 @@ do
                 ASIP=${ip}
                 ASIP_PRIVATE=${private_ip}
 
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} autoscalerpublicip/${ip}
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} autoscalerip/${private_ip}
+
                 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                 then
                         as_active_ip="${ASIP_PRIVATE}"
