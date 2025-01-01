@@ -327,6 +327,9 @@ do
                                         read response
                                 fi
 
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
+
                                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP} ${CLOUDHOST}
 
                                 #Wait until we are sure that the image server(s) are destroyed because of a faulty build
