@@ -25,9 +25,20 @@ then
 	buildos="${1}"
 fi
 
+apt=""
+if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
+then
+	apt="/usr/bin/apt-get"
+elif ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-fast" ] )
+then
+	apt="/usr/sbin/apt-fast"
+fi
+
+install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 --o=Dpkg::Use-Pty=0 -qq -y install " 
+
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-	DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install pipx
+	${install_command} pipx
 	if ( [ -f /usr/local/bin/linode-cli ] )
 	then
 		/usr/bin/pipx upgrade linode-cli 
@@ -39,7 +50,7 @@ fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install pipx
+	${install_command} pipx
 	if ( [ -f /usr/local/bin/linode-cli ] )
 	then
 		/usr/bin/pipx upgrade linode-cli 
