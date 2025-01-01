@@ -335,6 +335,9 @@ do
                                 then
                                         read response
                                 fi
+                                
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicip
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerip
 
                                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP} ${CLOUDHOST}
 
