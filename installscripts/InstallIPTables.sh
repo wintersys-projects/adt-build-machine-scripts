@@ -36,6 +36,8 @@ then
 	apt="/usr/sbin/apt-fast"
 fi
 
+install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 --o=Dpkg::Use-Pty=0 -qq -y install " 
+
 if ( [ "${apt}" != "" ] )
 then
         if ( [ "${buildos}" = "ubuntu" ] )
@@ -45,13 +47,13 @@ then
                         /usr/sbin/ufw disable                                                                           
                 fi                                                                                                      
 
-                DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install iptables                 
+                ${install_command} iptables                 
 
                 /bin/echo iptables-persistent iptables-persistent/autosave_v4 boolean true | /usr/bin/sudo debconf-set-selections 
                 /bin/echo iptables-persistent iptables-persistent/autosave_v4 boolean true | /usr/bin/sudo debconf-set-selections 
 
-                DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install netfilter-persistent     
-                DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install iptables-persistent      
+                ${install_command} netfilter-persistent     
+                ${install_command} iptables-persistent      
         fi
 
         if ( [ "${buildos}" = "debian" ] )
@@ -59,13 +61,14 @@ then
                 if ( [ -f /usr/sbin/ufw ] )                                                                            
                 then                                                                                                    
                         /usr/sbin/ufw disable                                                                           
-                fi                                                                                                     
-                DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install iptables                
-
+                fi   
+	
+		${install_command} iptables
+  
                 /bin/echo iptables-persistent iptables-persistent/autosave_v4 boolean true | /usr/bin/sudo debconf-set-selections 
                 /bin/echo iptables-persistent iptables-persistent/autosave_v4 boolean true | /usr/bin/sudo debconf-set-selections 
 
-                DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install netfilter-persistent     
-                DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install iptables-persistent      
+                ${install_command} netfilter-persistent     
+                ${install_command} iptables-persistent     
         fi
 fi
