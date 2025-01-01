@@ -36,7 +36,7 @@ then
 	apt="/usr/sbin/apt-fast"
 fi
 
-install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 --o=Dpkg::Use-Pty=0 -qq -y install " 
+install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install " 
 
 if ( [ "${apt}" != "" ] )
 then
