@@ -37,21 +37,24 @@ then
 		apt="/usr/sbin/apt-fast"
 	fi
 
-         if ( [ "${apt}" = "/usr/sbin/apt-fast" ] && [ ! -f /usr/sbin/apt-fast ] )
+        if ( [ "${apt}" = "/usr/sbin/apt-fast" ] && [ ! -f /usr/sbin/apt-fast ] )
         then
                 apt="/usr/bin/apt-get"
         fi
+
+ 	install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 --o=Dpkg::Use-Pty=0 -qq -y install " 
+
 
 	if ( [ "${apt}" != "" ] )
 	then
 		if ( [ "${buildos}" = "ubuntu" ] )
 		then
-			DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install s3cmd >/dev/null
+			${install_command} s3cmd 
 		fi
 
 		if ( [ "${buildos}" = "debian" ] )
 		then
-			DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -qq -y install s3cmd >/dev/null
+			${install_command} s3cmd
 		fi
 	fi
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "s5cmd" ] )
