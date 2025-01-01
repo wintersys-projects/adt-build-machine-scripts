@@ -364,6 +364,9 @@ do
                                         read response
                                 fi
 
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
+
                                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP} ${CLOUDHOST}
 
                                 #Wait until we are sure that the database server(s) are destroyed because of a faulty build
