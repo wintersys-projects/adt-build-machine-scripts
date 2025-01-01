@@ -156,6 +156,9 @@ do
                 DBIP="${ip}"
                 DBIP_PRIVATE="${private_ip}"
 
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} databaseip/${private_ip}
+
                 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                 then
                         db_active_ip="${DBIP_PRIVATE}"
