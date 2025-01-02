@@ -189,6 +189,20 @@ do
 	core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" 2>&1 > /dev/null
 done
 
+if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
+then
+	status "Checking that your assets are mounted..."
+	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} ${HOME}/providerscripts/datastore/SetupAssetsStore.sh"
+	assets_mounted="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${private_ip} "${CUSTOM_USER_SUDO} ${HOME}/providerscripts/utilities/status/AreAssetsMounted.sh"`"
+
+	while ( [ "${assets_mounted}" = "" ] )
+	do
+		/bin/sleep 1
+ 		/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} ${HOME}/providerscripts/datastore/SetupAssetsStore.sh"
+ 		assets_mounted="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${private_ip} "${CUSTOM_USER_SUDO} ${HOME}/providerscripts/utilities/status/AreAssetsMounted.sh"`"
+	done
+fi
+
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
