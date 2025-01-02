@@ -218,7 +218,7 @@ do
                 keytry="1"
                 while ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
                 do
-                        status "Couldn't scan for autoscaler ${database_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
+                        status "Couldn't scan for database ${database_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
                         /bin/sleep 10
                         keytry="`/usr/bin/expr ${keytry} + 1`"
                         /usr/bin/ssh-keyscan -p ${keyscan_port} -T 60 ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
