@@ -180,6 +180,16 @@ then
 	done
 fi
 
+
+status "Checking that all core software  has fully installed....please wait"
+core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" >&3
+
+while ( [ "${core_software_installed}" = "" ] )
+do
+	/bin/sleep 1
+	core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" 2>&1 > /dev/null
+done
+
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
