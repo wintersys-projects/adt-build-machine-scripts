@@ -205,6 +205,8 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/webserver_configuration_settings.dat ${HOME}/runtime/buildstyles.dat``` - these files are the configuration settings for our current webserver  
 
+```${HOME}/runtime/ALL_CORE_SOFTWARE_INSTALLED``` - this is just a placeholder which tells us that the core software has all been installed
+
 ------------------------------
 
 #### Database Machines
