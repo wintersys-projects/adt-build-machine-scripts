@@ -198,7 +198,7 @@ fi
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
         status "Restarting the webserver"
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
+        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/CheckWebserverIsUp.sh" 2>&1 > /dev/null
 fi
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
