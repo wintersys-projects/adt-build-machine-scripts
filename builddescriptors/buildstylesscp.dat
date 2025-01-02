@@ -37,7 +37,6 @@
 # DATASTOREMOUNTTOOL:goof:source
 # DATASTOREMOUNTTOOL:goof:binary
 # DATASTOREMOUNTTOOL:rclone
-# DATASTOREMOUNTTOOL:geesefs:source
 # DATASTOREMOUNTTOOL:geesefs:binary
 # When installing mariadb on your VPS systems you can give it a verion number to install like this (note MySQL just installs the latest version and you don't have a choice)
 # MARIADB:<version>
@@ -92,7 +91,6 @@ CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.
 #DATASTOREMOUNTTOOL:s3fs:repo
 #DATASTOREMOUNTTOOL:goof:source
 #DATASTOREMOUNTTOOL:goof:binary
-#DATASTOREMOUNTTOOL:geesefs:source
 #DATASTOREMOUNTTOOL:geesefs:binary
 MARIADB:11.5.2
 POSTGRES:17
