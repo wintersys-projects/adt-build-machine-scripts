@@ -220,7 +220,7 @@ fi
 
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
-        status "Restart the ${WEBSERVER_CHOICE} webserver"
+        status "Restarting the ${WEBSERVER_CHOICE} webserver"
         /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
 fi
 
