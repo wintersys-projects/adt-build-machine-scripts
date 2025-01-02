@@ -156,18 +156,6 @@ status "Anything more than a few minutes then you need to investigate what the h
 status "##############################################################################################################################"
 status ""
 
-if ( [ "${WEBSERVER_CHOICE}" != "" ] )
-then
-	status "Checking that ${WEBSERVER_CHOICE} has fully installed....please wait"
-	webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" >&3
-
-	while ( [ "${webserver_installed}" = "" ] )
-	do
-		/bin/sleep 1
-		webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" 2>&1 > /dev/null
-	done
-fi
-
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
 	status "Checking that ${APPLICATION_LANGUAGE} has fully installed....please wait"
@@ -180,6 +168,17 @@ then
 	done
 fi
 
+if ( [ "${WEBSERVER_CHOICE}" != "" ] )
+then
+	status "Checking that ${WEBSERVER_CHOICE} has fully installed....please wait"
+	webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" >&3
+
+	while ( [ "${webserver_installed}" = "" ] )
+	do
+		/bin/sleep 1
+		webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" 2>&1 > /dev/null
+	done
+fi
 
 status "Checking that all core software  has fully installed....please wait"
 core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" >&3
