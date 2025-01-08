@@ -27,34 +27,22 @@ buildos="${2}"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-        if ( [ ! -f /usr/local/bin/doctl ] )
-        then
-                ${BUILD_HOME}/installscripts/InstallDoctl.sh "${buildos}"
-        fi
+        ${BUILD_HOME}/installscripts/InstallDoctl.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-        if ( [ ! -f /usr/bin/exo ] )
-        then
-                ${BUILD_HOME}/installscripts/InstallExo.sh "${buildos}"
-        fi
+        ${BUILD_HOME}/installscripts/InstallExo.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
-        if ( [ ! -f /usr/local/bin/linode-cli ] )
-        then
-                ${BUILD_HOME}/installscripts/InstallLinodeCLI.sh "${buildos}"
-        fi
+        ${BUILD_HOME}/installscripts/InstallLinodeCLI.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
 then
-        if ( [ ! -f /usr/bin/vultr ] )
-        then
-                ${BUILD_HOME}/installscripts/InstallSudo.sh "${buildos}"
-                ${BUILD_HOME}/installscripts/InstallVultrCLI.sh "${buildos}"        
-        fi
+        ${BUILD_HOME}/installscripts/InstallSudo.sh "${buildos}"
+        ${BUILD_HOME}/installscripts/InstallVultrCLI.sh "${buildos}"        
 fi
 
