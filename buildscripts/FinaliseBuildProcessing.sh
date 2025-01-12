@@ -180,13 +180,22 @@ then
 	done
 fi
 
-status "Checking that all core software  has fully installed....please wait"
+status "Checking that all core software has fully installed....please wait"
 core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" >&3
 
 while ( [ "${core_software_installed}" = "" ] )
 do
 	/bin/sleep 1
 	core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" 2>&1 > /dev/null
+done
+
+status "Checking that the bespoke application has been installed....please wait"
+bespoke_application_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED"`" >&3
+
+while ( [ "${bespoke_application_installed}" = "" ] )
+do
+	/bin/sleep 1
+	bespoke_application_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED"`" 2>&1 > /dev/null
 done
 
 if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
