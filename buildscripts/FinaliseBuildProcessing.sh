@@ -155,6 +155,18 @@ status "Anything more than a few minutes then you need to investigate what the h
 status "##############################################################################################################################"
 status ""
 
+if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
+then
+	status "Checking that ${APPLICATION_LANGUAGE} has fully installed....please wait"
+	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" >&3
+
+	while ( [ "${application_language_installed}" = "" ] )
+	do
+		/bin/sleep 1
+		application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" 2>&1 > /dev/null
+	done
+fi
+
 status "Checking that the application configuration for ${APPLICATION} has fully installed....please wait"
 
 /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3
@@ -168,18 +180,6 @@ do
 	application_configuration_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET"`" 2>&1 > /dev/null
 done
 
-
-if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
-then
-	status "Checking that ${APPLICATION_LANGUAGE} has fully installed....please wait"
-	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" >&3
-
-	while ( [ "${application_language_installed}" = "" ] )
-	do
-		/bin/sleep 1
-		application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" 2>&1 > /dev/null
-	done
-fi
 
 status "Checking that all core software has fully installed....please wait"
 core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" >&3
