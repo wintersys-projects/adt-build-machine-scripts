@@ -181,18 +181,6 @@ then
 	done
 fi
 
-if ( [ "${WEBSERVER_CHOICE}" != "" ] )
-then
-	status "Checking that ${WEBSERVER_CHOICE} has fully installed....please wait"
-	webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" >&3
-
-	while ( [ "${webserver_installed}" = "" ] )
-	do
-		/bin/sleep 1
-		webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_INSTALLED"`" 2>&1 > /dev/null
-	done
-fi
-
 status "Checking that all core software has fully installed....please wait"
 core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" >&3
 
@@ -242,8 +230,14 @@ fi
 
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
-        status "Restarting the ${WEBSERVER_CHOICE} webserver"
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
+	status "Checking that ${WEBSERVER_CHOICE} is up and running....please wait"
+
+	while ( "`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`" = "0" ] )
+ 	do
+        	status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver"
+        	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
+  		/bin/sleep 10
+	done
 fi
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
