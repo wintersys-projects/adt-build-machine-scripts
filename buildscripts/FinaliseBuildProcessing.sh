@@ -238,7 +238,16 @@ then
         	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
   		/bin/sleep 10
 	done
+ 			#	. ${HOME}/autoscaler/SelectHeadFile.sh
+	status "Checking that the website is online...."
+	while ( [ "`/usr/bin/curl -I --max-time 60 --insecure https://${private_ip}:443/index.php | /bin/grep -E 'HTTP/2 200|HTTP/2 301|HTTP/2 302|HTTP/2 303|200 OK|302 Found|301 Moved Permanently'`" = "" ] )
+	do
+		status "The Website isn't online yet. I will try again...please wait"
+ 		/bin/sleep 10
+	done
 fi
+
+status "Seeing this message means I am confident that it is 'all systems go' (once all systems go no more capitalism or communism, right?)"
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
 #Other scripts can then check if the build has completed correctly before they action
