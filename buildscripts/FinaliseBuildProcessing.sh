@@ -157,7 +157,7 @@ status ""
 
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
-	status "Checking that ${APPLICATION_LANGUAGE} has fully installed....please wait"
+	status "Checking that ${APPLICATION_LANGUAGE} has fully installed...."
 	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/APPLICATION_LANGUAGE_INSTALLED"`" >&3
 
 	while ( [ "${application_language_installed}" = "" ] )
@@ -167,7 +167,7 @@ then
 	done
 fi
 
-status "Checking that the application configuration for ${APPLICATION} has fully installed....please wait"
+status "Checking that the application configuration for ${APPLICATION} has fully installed...."
 
 /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3
 
@@ -181,7 +181,7 @@ do
 done
 
 
-status "Checking that all core software has fully installed....please wait"
+status "Checking that all core software has fully installed...."
 core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" >&3
 
 while ( [ "${core_software_installed}" = "" ] )
@@ -190,7 +190,7 @@ do
 	core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" 2>&1 > /dev/null
 done
 
-status "Checking that the bespoke application has been installed....please wait"
+status "Checking that the bespoke application has been installed...."
 bespoke_application_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED"`" >&3
 
 while ( [ "${bespoke_application_installed}" = "" ] )
@@ -217,7 +217,7 @@ if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 	then
- 		status "Checking that your application is fully responsive....please wait"
+ 		status "Checking that your application is fully responsive...."
 
 		server_alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`"
 		while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
@@ -230,7 +230,7 @@ fi
 
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
-	status "Checking that ${WEBSERVER_CHOICE} is up and running....please wait"
+	status "Checking that ${WEBSERVER_CHOICE} is up and running...."
 
 	while ( "`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`" = "0" ] )
  	do
@@ -238,13 +238,14 @@ then
         	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
   		/bin/sleep 10
 	done
+ 
  	. ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
   
 	status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
  
 	while ( [ "`/usr/bin/curl -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP/2 200|HTTP/2 301|HTTP/2 302|HTTP/2 303|200 OK|302 Found|301 Moved Permanently'`" = "" ] )
 	do
- 		/bin/sleep 10
+ 		/bin/sleep 1
 	done
 fi
 
