@@ -238,7 +238,7 @@ then
         	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
   		/bin/sleep 10
 	done
- 	. ${HOME}/providerscripts/application/SetHeadFile.sh
+ 	. ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
   
 	status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
  
