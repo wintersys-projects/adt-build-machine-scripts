@@ -23,7 +23,6 @@
 ###############################################################################
 #set -x
 
-if ( [ "`${HOME}/providerscripts/utilities/config/CheckConfigValue.sh APPLICATIONLANGUAGE:HTML`" = "1" ] )
 if ( [ "${APPLICATION_LANGUAGE}" = "HTML" ] )
 then
    headfile="index.html"
