@@ -242,7 +242,7 @@ then
 	status "Checking that the website is online...."
 	while ( [ "`/usr/bin/curl -I --max-time 60 --insecure https://${ws_active_ip}:443/index.php | /bin/grep -E 'HTTP/2 200|HTTP/2 301|HTTP/2 302|HTTP/2 303|200 OK|302 Found|301 Moved Permanently'`" = "" ] )
 	do
-		status "The Website isn't online yet. I will try again...please wait"
+		status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
  		/bin/sleep 10
 	done
 fi
