@@ -232,7 +232,7 @@ if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
 	status "Checking that ${WEBSERVER_CHOICE} is up and running....please wait"
 
-	while ( "`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`" = "0" ] )
+	while ( "`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`" = "0" ] )
  	do
         	status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver"
         	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
