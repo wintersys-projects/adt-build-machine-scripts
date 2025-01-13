@@ -24,23 +24,24 @@
 #set -x
 
 if ( [ "`${HOME}/providerscripts/utilities/config/CheckConfigValue.sh APPLICATIONLANGUAGE:HTML`" = "1" ] )
+if ( [ "${APPLICATION_LANGUAGE}" = "HTML" ] )
 then
    headfile="index.html"
-elif ( [ "`${HOME}/providerscripts/utilities/config/CheckConfigValue.sh APPLICATIONLANGUAGE:PHP`" = "1" ] )
+elif ( [ "${APPLICATION_LANGUAGE}" = "PHP" ] )
 then
-	if ( [ "`${HOME}/providerscripts/utilities/config/CheckConfigValue.sh APPLICATION:joomla`" = "1" ] )
+	if ( [ "${APPLICATION}" = "joomla" ] )
 	then
 		headfile="index.php"
 	fi
-	if ( [ "`${HOME}/providerscripts/utilities/config/CheckConfigValue.sh APPLICATION:wordpress`" = "1" ] )
+	if (  [ "${APPLICATION}" = "wordpress" ] )
 	then
 		headfile="index.php"
 	fi
-	if ( [ "`${HOME}/providerscripts/utilities/config/CheckConfigValue.sh APPLICATION:drupal`" = "1" ] )
+	if (  [ "${APPLICATION}" = "drupal" ] )
 	then
 		headfile="index.php"
 	fi
-	if ( [ "`${HOME}/providerscripts/utilities/config/CheckConfigValue.sh APPLICATION:moodle`" = "1" ] )
+	if (  [ "${APPLICATION}" = "moodle" ] )
 	then
 		headfile="moodle/index.php"
 	fi
