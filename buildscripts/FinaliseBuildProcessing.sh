@@ -156,6 +156,18 @@ status "Anything more than a few minutes then you need to investigate what the h
 status "##############################################################################################################################"
 status ""
 
+status "Checking that the application configuration for ${APPLICATION} has fully installed....please wait"
+
+application_configuration_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET"`" >&3
+
+while ( [ "${application_configuration_installed}" = "" ] )
+do
+	/bin/sleep 1
+ 	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3
+	application_configuration_installed="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET"`" 2>&1 > /dev/null
+done
+
+
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
 	status "Checking that ${APPLICATION_LANGUAGE} has fully installed....please wait"
