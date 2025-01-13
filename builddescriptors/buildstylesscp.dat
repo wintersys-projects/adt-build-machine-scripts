@@ -83,7 +83,7 @@ LIGHTTPD:source
 #PHP:fpm:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:ldap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu|9176
 #PHP config 2
 #PHP:fpm:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
-#PHP joomla 5 (zlib mysqli and json are enabled by default in php>8.0)
+#PHP joomla 5 (zlib and json are enabled by default in php>8.0)
 PHP:fpm:cli:simplexml:dom:gd:intl:zip:mysqli|9176
 #PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
 #PHP:fpm:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
