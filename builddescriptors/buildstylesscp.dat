@@ -69,16 +69,23 @@
 ###############################################################################################
 #Pick one build style for each component you want to enable installation for. The choice of which to install e.g. NGINX or APACHE is made elsewhere
 #All this does is tell us how to build it not whether to build it
+##############################################################NGINX###########################################################
 NGINX:repo
 #NGINX:source
 #NGINX:source:select:poll:http_ssl:http_v2:http_realip:http_addition:http_sub:http_dav:http_flv:http_mp4:http_gunzip:http_gzip_static:http_auth_request:http_random_index:http_secure_link:http_degradation:http_slice:http_stub_status:stream_ssl_preread:mail_ssl:stream_ssl:stream_realip 
+##############################################################NGINX###########################################################
+##############################################################APACHE###########################################################
 APACHE:repo
 #APACHE:source
 #APACHE:source:unixd:authz_core:alias:log_config:log_debug:logio:remoteip:expires:access_compat:dir:proxy:proxy_http:proxy_fcgi:http2:headers:rewrite:ssl:mime:unique_id:session:session_cookie:authn_core:authz_user:authn_file:authz_host:auth_basic:socache_shmcb:setenvif
+##############################################################APACHE###########################################################
+##############################################################LIGHTTPD###########################################################
 #LIGHTTPD:repo
 LIGHTTPD:source
 #LIGHTTPD:source:geoip:gnutls:maxminddb:openssl:pcre:rewrite:redirect:ssl:fastcgi:fastcgi-php
 LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
+##############################################################LIGHTTPD###########################################################
+##############################################################PHP###########################################################
 #PHP config 1
 #PHP:fpm:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:ldap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu|9176
 #PHP config 2
@@ -89,7 +96,8 @@ PHP:fpm:cli:simplexml:dom:gd:intl:zip:mysqli|9176
 #PHP:fpm:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
 CONFIGPHPPOOL:pm=ondemand:pm.max_children=4:pm.max_requests=200:pm.start_servers=10:pm.min_spare_servers=5:pm.max_spare_servers=20:pm.process_idle_timeout=10s
 CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.output_compression=On:cgi.fix_pathinfo=0:output_buffering=Off:disable_functions=exec,passthru,shell_exec,system,proc_open,popen,parse_ini_file,show_source:allow_url_fopen=Off:allow_url_include=Off:memory_limit=256M:opcache.enable=1:opcache.memory_consumption=256:open_basedir=/var/##/tmp:upload_tmp_dir=/var/www/html/tmp:sys_temp_dir=/var/www/html/tmp:expose_php=Off:date.timezone='Europe/London':cgi.force_redirect=On                                                                    
-#If you need goofys or s3fs or rclone then put it here
+##############################################################PHP###########################################################
+
 #DATASTOREMOUNTTOOL:rclone:repo
 #DATASTOREMOUNTTOOL:s3fs:repo
 DATASTOREMOUNTTOOL:goof:binary
