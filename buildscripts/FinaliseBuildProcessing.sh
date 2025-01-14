@@ -231,12 +231,15 @@ fi
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
 	status "Checking that ${WEBSERVER_CHOICE} is up and running...."
-
-	while ( "`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`" = "0" ] )
- 	do
-        	status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver"
+	count="0"
+	webserver_running="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`"
+ 	while ( [ "${webserver_running}" = "0" ] && [ "${count}" -lt "5" ] )
+  	do
+   		count="`/usr/bin/expr ${count} + 1`"
+        	status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver...this is attempt ${count} of 5"
         	/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
   		/bin/sleep 10
+       		webserver_running="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`"
 	done
  
  	. ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
