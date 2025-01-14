@@ -150,7 +150,7 @@ status "Performing any post processing that is needed for your application...ple
 
 status ""
 status "##############################################################################################################################"
-status "The build might pause here for several minutes"
+status "The build might pause here"
 status "Anything more than a few minutes then you need to investigate what the hold-up is because something might be wrong"
 status "##############################################################################################################################"
 status ""
