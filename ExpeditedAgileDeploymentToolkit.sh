@@ -156,7 +156,7 @@ then
                 status "Will have to exit (change BUILD_MACHINE_VPC if necessary in your template)"
                 exit
         else
-                status "Have successfully varified the presence of a usable VPC network on your build machine"
+                status "Have successfully verified the presence of a usable VPC network on your build machine"
         fi
 fi
 
