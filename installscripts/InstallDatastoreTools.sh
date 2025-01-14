@@ -25,7 +25,7 @@ then
 	buildos="${1}"
 fi
 
-if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "s3cmd" ] )
+if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/grep s3cmd`" != "" ] )
 then
 
 	apt=""
@@ -57,7 +57,7 @@ then
 			${install_command} s3cmd
 		fi
 	fi
-elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "s5cmd" ] )
+elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/grep s5cmd`" != "" ] )
 then
   		if ( [ "${buildos}" = "ubuntu" ] )
 		then
