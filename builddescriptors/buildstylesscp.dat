@@ -12,14 +12,17 @@
 # If you are building for NGINX you can select one of:
 # NGINX:source   (uses default hardcoded settings)
 # NGINX:source:<module1>:<module2>:....<modulen>
+# NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # NGINX:repo
 # If you are building for APACHE you can select one of:
 # APACHE:source   (uses default hardcoded settings)
 # APACHE:source:<module1>:<module2>:....<modulen>
+# APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # APACHE:repo
 # If you are building for lighttpd you can select one of:
 # LIGHTTPD:source   (uses default hardcoded settings)
 # LIGHTTPD:source:<module1>:<module2>:....<modulen>
+# LIGHTTPD:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # LIGHTTPD:repo
 # You can define what extensions PHP will be built with by modifying the line starting PHP: as shown below
 # PHP:<extension1>:<extension2>|port
