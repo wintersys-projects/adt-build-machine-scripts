@@ -78,6 +78,7 @@ APACHE:repo
 #LIGHTTPD:repo
 LIGHTTPD:source
 #LIGHTTPD:source:geoip:gnutls:maxminddb:openssl:pcre:rewrite:redirect:ssl:fastcgi:fastcgi-php
+LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
 #PHP config 1
 #PHP:fpm:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:ldap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu|9176
 #PHP config 2
