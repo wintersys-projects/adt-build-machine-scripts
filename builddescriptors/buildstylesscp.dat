@@ -91,12 +91,12 @@ CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.
 #If you need goofys or s3fs or rclone then put it here
 #DATASTOREMOUNTTOOL:rclone
 #DATASTOREMOUNTTOOL:s3fs:repo
-#DATASTOREMOUNTTOOL:goof:binary
-DATASTOREMOUNTTOOL:geesefs:binary
+DATASTOREMOUNTTOOL:goof:binary
+#DATASTOREMOUNTTOOL:geesefs:binary
 MARIADB:11.5.2
 POSTGRES:17
 BUILDCHAINTYPE:standard
-DATASTORETOOL:s3cmd
+DATASTORETOOL:s3cmd:repo
 PACKAGEMANAGER:apt-fast
 FIREWALL:ufw
 EMAILUTIL:mail
