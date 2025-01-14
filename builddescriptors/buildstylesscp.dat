@@ -32,11 +32,9 @@
 # This will perform something like, "apt install php8.0-fpm" if you put "fpm" in here for "extension1"
 # At the end of the line you can see "|port". When this is set it will set a port for use by php-fpm if it is not set then file sockets are used instead
 # If you have PERSIST_ASSETS_TO_CLOUD=1 then you need a datastore mount tool, you can install from repo or from source and your options are:
-# DATASTOREMOUNTTOOL:s3fs:source
 # DATASTOREMOUNTTOOL:s3fs:repo
-# DATASTOREMOUNTTOOL:goof:source
 # DATASTOREMOUNTTOOL:goof:binary
-# DATASTOREMOUNTTOOL:rclone
+# DATASTOREMOUNTTOOL:rclone:repo
 # DATASTOREMOUNTTOOL:geesefs:binary
 # When installing mariadb on your VPS systems you can give it a verion number to install like this (note MySQL just installs the latest version and you don't have a choice)
 # MARIADB:<version>
