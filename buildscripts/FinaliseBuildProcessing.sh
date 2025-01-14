@@ -250,6 +250,12 @@ then
   		/bin/sleep 10
        		webserver_running="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`"
 	done
+
+ 	if ( [ "${count}" = "5" ] )
+  	then
+   		status "Failed to start the webserver...you might want to take look into why on the webserver and then press <enter> if it is resolved"
+     		read response
+       	fi
  
  	. ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
   
