@@ -87,7 +87,7 @@ APACHE:repo
 ##############################################################LIGHTTPD###########################################################
 LIGHTTPD:repo
 #LIGHTTPD:source
-#LIGHTTPD:source:zlib:libxml:brotli:openssl
+#LIGHTTPD:source:zlib:libxml:brotli:openssl:gnutls
 #LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
 ##############################################################LIGHTTPD###########################################################
 ##############################################################PHP###########################################################
