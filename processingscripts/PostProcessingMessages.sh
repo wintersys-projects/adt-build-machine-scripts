@@ -47,7 +47,7 @@ then
      		DBIP_PUBLIC="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* | /usr/bin/awk -F':' '{print $NF}'`"
 	fi
  
-	status "The database public IP address is: ${DBIP}"
+	status "The database public IP address is: ${DBIP_PUBLIC}"
  	status "The database private IP address is: ${DBIP_PRIVATE} (try this one first from your application if it timesout, try the public one)"
 	status "The database port is ${DB_PORT}"
 	status "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')"
