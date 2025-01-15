@@ -153,7 +153,7 @@ do
 
            #     ${BUILD_HOME}/providerscripts/server/EnsureServerAttachedToVPC.sh "${CLOUDHOST}" "${database_name}" "${private_ip}"
 
-                DBIP="${ip}"
+                DBIP_PUBLIC="${ip}"
                 DBIP_PRIVATE="${private_ip}"
 
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
@@ -164,7 +164,7 @@ do
                         db_active_ip="${DBIP_PRIVATE}"
                 elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                 then
-                        db_active_ip="${DBIP}"
+                        db_active_ip="${DBIP_PUBLIC}"
                 fi
 
                 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* ] )
@@ -182,7 +182,7 @@ do
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips
                 fi
     
-                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:${DBIP}
+                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:${DBIP_PUBLIC}
                 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:${DBIP_PRIVATE}
 
                 #We create an ip mask for our server this is used when we set access privileges and so on within the database
@@ -191,7 +191,7 @@ do
                 IP_MASK=${IP_MASK}".%.%"
 
                 status "Have got the ip addresses for your database (${database_name})"
-                status "Public IP address: ${DBIP}"
+                status "Public IP address: ${DBIP_PUBLIC}"
                 status "Private IP address: ${DBIP_PRIVATE}"
 
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
