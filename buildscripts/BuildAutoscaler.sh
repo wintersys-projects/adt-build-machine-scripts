@@ -166,7 +166,7 @@ do
                         as_active_ip="${ASIP_PRIVATE}"
                 elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                 then
-                        as_active_ip="${ASIP}"
+                        as_active_ip="${ASIP_PUBLIC}"
                 fi
 
                 ASIPS="${ASIPS}${ASIP_PUBLIC}:"
@@ -222,7 +222,7 @@ do
                 if ( [ "${keytry}" = "15" ] )
                 then
                         status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP} ${CLOUDHOST}
+                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
                 else
                         if ( [ -f ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} ] )
                         then
