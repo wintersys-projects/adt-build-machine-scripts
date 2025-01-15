@@ -227,7 +227,7 @@ do
                 if ( [ "${keytry}" = "15" ] )
                 then
                         status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP} ${CLOUDHOST}
+                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
                 else
                         status "Successfully scanned remote database ${database_name} for ssh-keys"
 
@@ -287,7 +287,7 @@ do
                                 fi
 
                                 status "We are about to run the build script to actually build the machine into a database server"
-                                status "Please Note: The process of building the database is running on a remote machine with ip address : ${DBIP}"
+                                status "Please Note: The process of building the database is running on a remote machine with ip address : ${DBIP_PUBLIC}"
                                 status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
                                 status "Log files (stderr and stdout) are stored on the remote machine in /home/${SERVER_USER}/logs"
                                 status "Starting to build the database proper"
@@ -367,7 +367,7 @@ do
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
 
-                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP} ${CLOUDHOST}
+                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
 
                                 #Wait until we are sure that the database server(s) are destroyed because of a faulty build
                                 while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "${built}" ] )
