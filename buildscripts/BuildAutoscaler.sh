@@ -294,7 +294,7 @@ do
                                 #Wicked, we have our scripts so we can build our autoscaler now
 
                                 status "About to build the autoscaler"
-                                status "Please Note: The process of building the autoscaler is running on a remote machine with ip address : ${ASIP}"
+                                status "Please Note: The process of building the autoscaler is running on a remote machine with ip address : ${ASIP_PUBLIC}"
                                 status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
                                 status "Log files (stderr and stdout) are stored on the remote machine so if you need to review them, you will find them there"
                                 status "in the directory /home/${SERVER_USER}/logs"
