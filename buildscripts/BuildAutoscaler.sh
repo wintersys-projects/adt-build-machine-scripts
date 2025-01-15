@@ -155,7 +155,7 @@ do
       #     ${BUILD_HOME}/providerscripts/server/EnsureServerAttachedToVPC.sh "${CLOUDHOST}" "${autoscaler_name}" "${private_ip}"
           
                 status "It looks like the machine has booted OK"
-                ASIP=${ip}
+                ASIP_PUBLIC=${ip}
                 ASIP_PRIVATE=${private_ip}
 
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} autoscalerpublicip/${ip}
@@ -169,7 +169,7 @@ do
                         as_active_ip="${ASIP}"
                 fi
 
-                ASIPS="${ASIPS}${ASIP}:"
+                ASIPS="${ASIPS}${ASIP_PUBLIC}:"
                 ASIP_PRIVATES="${ASIP_PRIVATES}${ASIP_PRIVATE}:"
 
                 ASIPS_CLEANED="`/bin/echo ${ASIPS} | /bin/sed 's/\:/ /g'`"
@@ -184,7 +184,7 @@ do
                 fi
 
                 status "Have got the ip addresses for your autoscaler (${autoscaler_name})"
-                status "Public IP address: ${ASIP}"
+                status "Public IP address: ${ASIP_PUBLIC}"
                 status "Private IP address: ${ASIP_PRIVATE}"
 
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
@@ -339,7 +339,7 @@ do
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicip
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerip
 
-                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP} ${CLOUDHOST}
+                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
 
                                 #Wait until we are sure that the image server(s) are destroyed because of a faulty build
                                 while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
