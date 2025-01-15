@@ -65,6 +65,6 @@ then
 	#Add our record to the dns. Please note, proxying has to be off, but we need the ip address to be active with our DNS provider
 	#provider. The reason why proxying is off is that the system we use to install SSL certificates does not work when proxying is on
 
-	${BUILD_HOME}/providerscripts/dns/AddRecord.sh "${zoneid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${WSIP}" "true" "${DNS_CHOICE}" "${DNS_REGION}" "${WEBSITE_URL}"
+	${BUILD_HOME}/providerscripts/dns/AddRecord.sh "${zoneid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${WSIP_PUBLIC}" "true" "${DNS_CHOICE}" "${DNS_REGION}" "${WEBSITE_URL}"
 
 fi
