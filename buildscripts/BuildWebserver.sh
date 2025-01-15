@@ -197,7 +197,7 @@ do
                 if ( [ "${keytry}" = "15" ] )
                 then
                         status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP} ${CLOUDHOST}
+                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
                 else
                         status "Successfully scanned remote webserver ${webserver_name} for ssh-keys"
 
@@ -248,7 +248,7 @@ do
                                 fi
 
                                 status "About to build the webserver"
-                                status "Please Note: The process of building the webserver is running on a remote machine with ip address : ${WSIP}"
+                                status "Please Note: The process of building the webserver is running on a remote machine with ip address : ${WSIP_PUBLIC}"
                                 status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
                                 status "Log files (stderr and stdout) are stored on the remote machine in the directory /home/${SERVER_USER}/logs"
                                 status "Starting to build the webserver proper"
@@ -330,7 +330,7 @@ do
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
 
-                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP} ${CLOUDHOST}
+                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
 
                                 #Wait until we are sure that the image server(s) are destroyed because of a faulty build
                                 while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
