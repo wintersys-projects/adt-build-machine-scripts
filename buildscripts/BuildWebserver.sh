@@ -157,11 +157,11 @@ do
                         ws_active_ip="${WSIP_PRIVATE}"
                 elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                 then
-                        ws_active_ip="${WSIP}"
+                        ws_active_ip="${WSIP_PUBLIC}"
                 fi
 
                 status "Have got the ip addresses for your webserver (${webserver_name})"
-                status "Public IP address: ${WSIP}"
+                status "Public IP address: ${WSIP_PUBLIC}"
                 status "Private IP address: ${WSIP_PRIVATE}"
 
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
