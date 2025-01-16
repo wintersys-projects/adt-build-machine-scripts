@@ -263,57 +263,6 @@ fi
 #We inform the users of their credentials. Sometimes, depending on the application, the user needs to know more or less
 #Some applications we can configure for use behind the scenes, other times, the user has to do some stuff in the gui to
 #get to the point where the application can be used. In the later case, any additional information will be added here.
-
-if ( [ "${GENERATE_SNAPSHOTS}" = "1" ] && [ "${PRODUCTION}" = "1" ] )
-then
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_DB} ${SERVER_USER}@${db_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-
-        status "###########################################################################################"
-        status "You have asked for snapshots to be generated"
-        status "Generating your snapshots in the background, your machines may be offline until this completes"
-        pids=""
-
-        status "Generating a snapshot in the background for your autoscaler"
-        ${BUILD_HOME}/providerscripts/server/GenerateSnapshot.sh ${CLOUDHOST} "as-${REGION}-${BUILD_IDENTIFIER}-" ${DEFAULT_USER} &
-        pids="${pids} $!"
-
-        status "Generating a snapshot in the background for your webserver"
-        ${BUILD_HOME}/providerscripts/server/GenerateSnapshot.sh ${CLOUDHOST} "ws-${REGION}-${BUILD_IDENTIFIER}-" ${DEFAULT_USER} &
-        pids="${pids} $!"
-
-        status "Generating a snapshot in the background for your database"
-        ${BUILD_HOME}/providerscripts/server/GenerateSnapshot.sh ${CLOUDHOST} "db-${REGION}-${BUILD_IDENTIFIER}-" ${DEFAULT_USER} &
-        pids="${pids} $!"
-  
-        for pid in ${pids}
-        do
-                wait ${pid}
-        done
-        snapshot_build_identifier="s-${BUILD_IDENTIFIER}"
-        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier} ] )
-        then
-                /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}
-        else
-                /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}-backup.$$
-                /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}/* ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}-backup.$$
-        fi
-        /bin/cp -r ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/* ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}
-        /usr/bin/find ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier} -maxdepth 1 -type f ! -name '*.dat' -delete
-        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}/keys/id_rsa_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}.pub ] )
-        then
-                /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}.pub ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${snapshot_build_identifier}.pub
-                /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${snapshot_build_identifier}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${snapshot_build_identifier}
-        fi
-        
-        status "Monitoring for your snapshots to have fully generated, might take a minute, please wait"
-        . ${BUILD_HOME}/providerscripts/server/MonitorForSnapshotGenerated.sh
-
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/rm /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/rm /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-        /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_DB} ${SERVER_USER}@${db_active_ip} "${SUDO} /bin/rm /home/${SERVER_USER}/runtime/SNAPSHOT_BUILT"
-fi
  
 
 status ""
