@@ -200,11 +200,6 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >     export ALGORITHM="rsa"
 >     export BUILD_MACHINE_VPC="1"
 >     export VPC_IP_RANGE="10.0.1.0/24"
->     
->     #####Snapshot Identities#####
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
@@ -335,11 +330,6 @@ and using the values I recorded in my text file earlier, I modify the file as fo
 >     export ALGORITHM="rsa"
 >     export BUILD_MACHINE_VPC="1"
 >     export VPC_IP_RANGE="10.0.1.0/24"
->     
->     #####Snapshot Identities#####
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
