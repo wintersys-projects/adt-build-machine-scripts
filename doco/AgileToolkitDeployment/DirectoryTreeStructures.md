@@ -104,7 +104,7 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/FIREWALL-ACTIVE``` - this tells us that our firewall of choice is active. We can check this flag to see if we believe we have activated the firewall or not  
 
-```${HOME}/runtime/INITIALBUILDCOMPLETED``` - This flag is created by the build machine and it is set when the build machine believes that the initial build it is responsible for is completed. This is different or can be different to when it is believed that the autoscaler itself completed its own provisioning. The initial build status is used to regulate the cooling down period before the autoscaling of any additional webservers begins. This is configured to 5 minutes by default but you can change this to any value you want to suit your taste.  
+```${HOME}/runtime/INITIAL_BUILD_COMPLETED``` - This flag is created by the build machine and it is set when the build machine believes that the initial build it is responsible for is completed. This is different or can be different to when it is believed that the autoscaler itself completed its own provisioning. The initial build status is used to regulate the cooling down period before the autoscaling of any additional webservers begins. This is configured to 5 minutes by default but you can change this to any value you want to suit your taste.  
 
 ```${HOME}/runtime/INITIALLY_PROVISIONING``` - This tells us that a machine is literally in its initial provisioning or start up phase. This value wraps its arms around the time between when the cli call to "create server" is made and the time when that naked server is first considerd "up" or "pingable".   
 
