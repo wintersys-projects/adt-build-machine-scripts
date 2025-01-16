@@ -193,7 +193,7 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >     export DEVELOPMENT="1"
 >     ----- export BUILD_IDENTIFIER="" #MANDATORY
 >     export NO_AUTOSCALERS="0"
->     
+> 
 >     #####Security Settings#####
 >     export ACTIVE_FIREWALLS="3"
 >     export PUBLIC_KEY_NAME="AGILE_TOOLKIT_PUBLIC_KEY"
@@ -202,15 +202,10 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >     export SSL_LIVE_CERT="1"
 >     export BUILD_MACHINE_VPC="1"
 >     export ALGORITHM="rsa"
+>     export VPC_IP_RANGE="10.0.1.0/24"
 >     
->     #####Build Styles#####
->     export AUTOSCALE_FROM_SNAPSHOTS="0"
->     export GENERATE_SNAPSHOTS="0"
->     export SNAPSHOT_ID=""
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
->     export AUTOSCALE_FROM_BACKUP="0"
+>
+>     #####Build Style#####
 >     export INPARALLEL="0"
 >     
 >     #####Monitoring######
@@ -334,10 +329,6 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     export ALGORITHM="rsa"
 >     export VPC_IP_RANGE="10.0.1.0/24"
 >     
->     #####Snapshot Identities#####
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
