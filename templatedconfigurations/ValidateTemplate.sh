@@ -297,29 +297,6 @@ then
 	fi
 fi
 
-if ( [ "${AUTOSCALER_IMAGE_ID}" != "" ] || [ "${WEBSERVER_IMAGE_ID}" != "" ] || [ "${DATABASE_IMAGE_ID}" != "" ] )
-then
-  if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep "^s-"`" = "" ] )
-  then
-    status "It look like you are performing a snapshot style build but your BUILD_IDENTIFIER is set to ${BUILD_IDENTIFIER}"
-    status "A snapshot style build needs to have a BUILD_IDENTIFIER prefixed with the prefix 's-' so you need to set your BUILD_IDENTIFIER to s-${BUILD_IDENTIFIER}"
-    exit
-  fi
-  if ( [ "${GENERATE_SNAPSHOTS}" = "1" ] )
-  then
-    status "It looks like you are trying to generate snapshots when you are building from snapshots, this is not possible"
-  else
-  	status "This build will be a snapshot style built off previously generated snapshot images (not a regular build style)"
-  fi
-else
-	if ( [ "${GENERATE_SNAPSHOTS}" = "1" ] )
-	then
-		status "This build will be generating  snapshots of your machines"
-	else
-		status "This build will be a regular build style (not from snapshots)"
-  	fi
-fi
-
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep "^s-"`" = "" ] )
 then
 	snapshot_build_identifier="s-${BUILD_IDENTIFIER}"
