@@ -124,11 +124,11 @@ if ( [ "${as_active_ips}" != "" ] )
 then
         for autoscaler_ip in `/bin/echo ${as_active_ips} | /bin/sed 's/:/ /g'`
         do
-                test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIALBUILDCOMPLETED"
+                test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED"
         done
 elif ( [ "${as_active_ip}" != "" ] )
 then
-        test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIALBUILDCOMPLETED"
+        test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED"
 fi
 
 #status "Testing to see if the build is completed. This may take several attempts. Endless waiting (more than a few minutes) and something must be wrong"
