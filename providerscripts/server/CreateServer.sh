@@ -46,10 +46,6 @@ KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cre
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
-        if ( [ "${snapshot_id}" != "" ] )
-        then
-                OS_CHOICE="${snapshot_id}"
-        fi
 
         if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'adt-vpc'")).id'`" ] )
         then
@@ -64,12 +60,6 @@ fi
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
         template_visibility=" --template-visibility public "
-        
-        if ( [ "${snapshot_id}" != "" ] )
-        then
-                OS_CHOICE="${snapshot_id}"
-                template_visibilty=" --template-visibility private "
-        fi
         
         /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibilty} --cloud-init "${BUILD_HOME}/providerscripts/server/cloud-init/exoscale.dat"
         
@@ -87,11 +77,6 @@ then
         emergency_password="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-30`"
         BUILD_HOME="`/bin/cat /home/buildhome.dat`"
         /bin/echo "${emergency_password}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD
-
-        if ( [ "${snapshot_id}" != "" ] )
-        then
-                OS_CHOICE="private/${snapshot_id}"
-        fi
 
         if ( [ "`/usr/local/bin/linode-cli --json vpcs list | /usr/bin/jq -r '.[] | select (.label == "adt-vpc").id'`" = "" ] )
         then
@@ -117,22 +102,12 @@ then
 
         user_data=`${BUILD_HOME}/providerscripts/server/cloud-init/vultr.dat`
    
-        if ( [ "${snapshot_id}" != "" ] )
+        if ( [ "${DDOS_PROTECTION}" = "1" ] )
         then
-           if ( [ "${DDOS_PROTECTION}" = "1" ] )
-           then
-                        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --ipv6=false -s ${KEY_ID} --snapshot="${snapshot_id}" --ddos=true --userdata="${user_data}"
-                else
-                        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --ipv6=false -s ${KEY_ID} --snapshot="${snapshot_id}" --ddos=false --userdata="${user_data}"
-                fi
+                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="${user_data}"
         else
-           if ( [ "${DDOS_PROTECTION}" = "1" ] )
-           then
-                        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="${user_data}"
-                else
-                        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="${user_data}"
-                fi    
-        fi
+                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="${user_data}"
+        fi    
 
         machine_id=""
         count="0"
