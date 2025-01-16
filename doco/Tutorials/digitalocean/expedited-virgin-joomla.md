@@ -207,11 +207,6 @@ This file looks like this (I have put dashes before each line I wish to modify f
 >     export ALGORITHM="ecdsa"
 >     export BUILD_MACHINE_VPC="0"
 >     export VPC_IP_RANGE="10.116.0.0/24"
->     
->     #####Snapshot Identities#####
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
@@ -339,11 +334,6 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     export ALGORITHM="ecdsa"
 >     export BUILD_MACHINE_VPC="0"
 >     export VPC_IP_RANGE="10.116.0.0/24"
->     
->     #####Snapshot Identities#####
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
