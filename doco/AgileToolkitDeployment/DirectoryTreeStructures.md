@@ -124,8 +124,6 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/probed_ips/``` - this directory contrains probed webserver ips so that we can keep track of which webservers ultimately are OK to keep running and which webservers (for example, failed to respond to a curl command) need to be terminated.
 
-```${HOME}/runtime/SNAPSHOT_BUILT``` - This is set from the build machine when a machine is being used to generate a snapshot. A webserver that has been provisioned from a snapahot will find this file present and that way we can know long term whether we are a snapshot style provisioned machine or a regular style provisioned machine
-
 ```${HOME}/runtime/UPDATEDSSL``` - This is just a flag that tells us when our SSL certificate has been updated. 
 
 ```${HOME}/autoscaler``` - This directory contains the scripts which provide the autoscaling mechanism and functionality
@@ -185,8 +183,6 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/SETTING_UP_ASSETS``` - this is present when datastore mount assets are being prepared. This means that you won't get two attempts to mount if a mount is already in process for some bizarre reason
 
-```${HOME}/runtime/SNAPSHOT_BUILT``` - This is set from the build machine when a machine is being used to generate a snapshot. A webserver that has been provisioned from a snapahot will find this file present and that way we can know long term whether we are a snapshot style provisioned machine or a regular style provisioned machine
-
 ```${HOME}/runtime/sslcertlock.file``` - this is a lock file for generating SSL certificates which must not be present if a new attempt to generate an SSL certificate can proceed. 
 
 ```${HOME}/runtime/SSLUPDATED``` - this is set if the SSL certificate has been updated recently
@@ -234,8 +230,6 @@ Here you will find an expose on the directory structures of the various differen
 ```${HOME}/runtime/installedsoftware``` - this directory serves as a record as to which software has been installed on this machine. It can be referred to if the software needs to be updated so that we know what packages to update and what pacakges to leave alone
 
 ```${HOME}/runtime/KNICKERS_ARE_UP``` - this is to do with the firewall it means that we have set our base condition which is to allow outgoing connections but dissalow all incoming connections and so basically, "knickers are up" because no one is let in.
-
-```${HOME}/runtime/SNAPSHOT_BUILT``` - this will be present when a database machine has been provisioned using a snapshot
 
 ```${HOME}/applicationdb``` - the files to do with the specific application we are installing
 
