@@ -146,8 +146,6 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/APPLICATION_DB_GENERATED``` - this flag can be used when an application needs to install its database as part of the build process rather than through interaction with the user. This flag is set when the database is successfully installed. Moodle uses this flag to tell us when the initial database has been installed
 
-```${HOME}/runtime/APPLICATION_WEBROOT_UPDATING``` - This flag is set when we are provisioning from a snapshot and the webroot of the webserver is being updated with the latest copy of the application we are installing
-
 ```${HOME}/runtime/ATOP_RUNNING``` - this flag tells us if ATOP is running or not. We can check any time to see if ATOP is running or not using this flag 
 
 ```${HOME}/runtime/AUTOSCALED_WEBSERVER_ONLINE``` - this can be set if the current webserver is provisioned through an autoscaling event and is considered to be online and primed
