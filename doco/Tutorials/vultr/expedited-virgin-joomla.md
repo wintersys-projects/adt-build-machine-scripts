@@ -206,11 +206,6 @@ This file looks like this (I have put dashes before each line I wish to modify f
 >     export BUILD_MACHINE_VPC="1"
 >     export ALGORITHM="rsa"
 >     export VPC_IP_RANGE="192.168.0.0/16"
->     
->     #####Snapshot Identities#####
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
@@ -337,11 +332,6 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     export BUILD_MACHINE_VPC="1"
 >     export ALGORITHM="rsa"
 >     export VPC_IP_RANGE="192.168.0.0/16"
->     
->     #####Snapshot Identities#####
->     export WEBSERVER_IMAGE_ID=""
->     export AUTOSCALER_IMAGE_ID=""
->     export DATABASE_IMAGE_ID=""
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
