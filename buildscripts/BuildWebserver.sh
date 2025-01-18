@@ -215,7 +215,7 @@ do
                                 fi
                         done < ${BUILD_HOME}/builddescriptors/webserverscp.dat
 
-                        /usr/bin/scp -P ${keyscan_port} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1
+                        /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1
                         
                                 /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1   
                                 /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/InstallGit.sh
