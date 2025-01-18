@@ -23,7 +23,7 @@
 
 server_size="${1}"
 server_name="${2}"
-snapshot_id="${3}"
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
