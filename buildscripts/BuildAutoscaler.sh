@@ -199,7 +199,7 @@ do
                         /bin/rm ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
                 fi
 
-                /usr/bin/ssh-keyscan -p ${SSH_PORT} -T 60 ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+                /usr/bin/ssh-keyscan -T 60 ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
 
                 keytry="1"
                 while ( [ "`/usr/bin/diff -s ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} /dev/null | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
@@ -207,7 +207,7 @@ do
                         status "Couldn't scan for autoscaler ${autoscaler_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
                         /bin/sleep 10
                         keytry="`/usr/bin/expr ${keytry} + 1`"
-                        /usr/bin/ssh-keyscan -p ${SSH_PORT} -T 60 ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+                        /usr/bin/ssh-keyscan -T 60 ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
                 done 
 
                 if ( [ "${keytry}" = "15" ] )
