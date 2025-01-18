@@ -31,7 +31,7 @@ connected="0"
 sshpass="0"
 while ( [ "${connected}" = "0" ] && [ "${loop}" -lt "20" ] )
 do
-	/usr/bin/ssh ${OPTIONS} -o "PasswordAuthentication=no" ${DEFAULT_USER}@${initiation_ip} '/bin/touch /tmp/alive.$$' 2>/dev/null
+	/usr/bin/ssh ${OPTIONS} -o "PasswordAuthentication=no" -i ${BUILD_KEY} ${DEFAULT_USER}@${initiation_ip} '/bin/touch /tmp/alive.$$' 2>/dev/null
 	if ( [ "$?" = "0" ] )
 	then
 		connected="1"
@@ -46,12 +46,12 @@ then
 	exit
 fi
 
-/usr/bin/ssh ${OPTIONS} ${DEFAULT_USER}@${initiation_ip} "${SUDO} /usr/sbin/useradd ${SERVER_USER} 2>&1 >/dev/null ; /bin/echo ${SERVER_USER}:${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E /usr/sbin/chpasswd ; ${SUDO} /usr/bin/gpasswd -a ${SERVER_USER} sudo"
+/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${DEFAULT_USER}@${initiation_ip} "${SUDO} /usr/sbin/useradd ${SERVER_USER} 2>&1 >/dev/null ; /bin/echo ${SERVER_USER}:${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E /usr/sbin/chpasswd ; ${SUDO} /usr/bin/gpasswd -a ${SERVER_USER} sudo"
 
-/bin/cat ${BUILD_KEY}.pub | /usr/bin/ssh ${OPTIONS} -o "PasswordAuthentication=no" ${DEFAULT_USER}@${initiation_ip} "${SUDO} /bin/mkdir -p /home/${SERVER_USER}/.ssh ; ${SUDO} /bin/chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${SERVER_USER}/.ssh ; /bin/cat - >> /home/${SERVER_USER}/.ssh/authorized_keys ; ${SUDO} /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}"
+/bin/cat ${BUILD_KEY}.pub | /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} -o "PasswordAuthentication=no" ${DEFAULT_USER}@${initiation_ip} "${SUDO} /bin/mkdir -p /home/${SERVER_USER}/.ssh ; ${SUDO} /bin/chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${SERVER_USER}/.ssh ; /bin/cat - >> /home/${SERVER_USER}/.ssh/authorized_keys ; ${SUDO} /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}"
 
-/usr/bin/ssh ${OPTIONS} ${DEFAULT_USER}@${initiation_ip} "${SUDO} /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/.ssh ; ${SUDO} /bin/chmod 700 /home/${SERVER_USER}/.ssh ; ${SUDO} /bin/chmod 600 /home/${SERVER_USER}/.ssh/authorized_keys ; ${SUDO} /bin/rm /root/.ssh/authorized_keys 2>/dev/null ; ${SUDO} /bin/chmod 700 /home/${DEFAULT_USER}/.ssh 2>/dev/null ;  ${SUDO} /bin/chmod 600 /home/${DEFAULT_USER}/.ssh/authorized_keys 2>/dev/null ; ${SUDO} /bin/sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/sed -i 's/KbdInteractiveAuthentication yes/KbdInteractiveAuthentication no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/sed -i 's/ChallengeResponseAuthentication yes/ChallengeResponseAuthentication no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/chown ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER} ; ${SUDO} /etc/init.d/ssh reload;"    
+/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${DEFAULT_USER}@${initiation_ip} "${SUDO} /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/.ssh ; ${SUDO} /bin/chmod 700 /home/${SERVER_USER}/.ssh ; ${SUDO} /bin/chmod 600 /home/${SERVER_USER}/.ssh/authorized_keys ; ${SUDO} /bin/rm /root/.ssh/authorized_keys 2>/dev/null ; ${SUDO} /bin/chmod 700 /home/${DEFAULT_USER}/.ssh 2>/dev/null ;  ${SUDO} /bin/chmod 600 /home/${DEFAULT_USER}/.ssh/authorized_keys 2>/dev/null ; ${SUDO} /bin/sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/sed -i 's/KbdInteractiveAuthentication yes/KbdInteractiveAuthentication no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/sed -i 's/ChallengeResponseAuthentication yes/ChallengeResponseAuthentication no/g' /etc/ssh/sshd_config ; ${SUDO} /bin/chown ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER} ; ${SUDO} /etc/init.d/ssh reload;"    
 
-/usr/bin/scp ${OPTIONS} ${BUILD_KEY} ${SERVER_USER}@${initiation_ip}:/home/${SERVER_USER}/.ssh/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY
+/usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_KEY} ${SERVER_USER}@${initiation_ip}:/home/${SERVER_USER}/.ssh/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY
 
 status "It looks like the ${machine_type} machine with ip address ${initiation_ip} is booted and accepting connections, so, let's pass it all our configuration stuff that it needs"
