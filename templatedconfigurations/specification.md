@@ -681,17 +681,7 @@ Otherwise, set this value to one of "MySQL", "Maria" or "Postgres" when you have
 
 ### APPLICATION_NAME
 
-The APPLICATION_NAME corresponds to the APPLICATION IDENTIFIER
-
-APPLICATION IDENTIFIER       |     APPLICATION NAME  
-
-        1                    |    JOOMLA APPLICATION  
-        
-        2                    |    WORDPRESS APPLICATION  
-        
-        3                    |    DRUPAL APPLICATION  
-        
-        4                    |    MOODLE APPLICATION  
+This is just a text string descriptor for your application it could be "My Test Blog", "My Social Network", "Nuocial Online Community" and so on
         
         
 -----
