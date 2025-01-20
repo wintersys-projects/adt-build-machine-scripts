@@ -84,14 +84,17 @@ then
 	${log_command} "Your value for the variable APPLICATION_IDENTIFIER (${APPLICATION_IDENTIFIER}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${S3_HOST_BASE}" 2>/dev/null `" = "" ] )
-then
+for host_base in `/bin/echo ${S3_HOST_BASE} | /bin/sed 's/:/ /g'`
+do
 	datastore_choice="`/bin/echo ${DATASTORE_CHOICE} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
-	if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${S3_HOST_BASE}" | /bin/grep ${datastore_choice}  2>/dev/null `" = "" ] )
-	then
-		${log_command} "Your value for the variable S3_HOST_BASE (${S3_HOST_BASE}) doesn't appear to be valid please review"
-	fi
-fi
+        if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${host_base}" 2>/dev/null `" = "" ] )
+        then
+                if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${host_base}" | /bin/grep ${datastore_choice}`" = "" ] )
+                then
+                        ${log_command} "Your value for the variable S3_HOST_BASE (${host_base}) doesn't appear to be valid please review"
+                fi
+        fi
+done
 
 if ( [ "`/bin/grep "^S3_LOCATION " ${quick_specification} | /bin/grep -w "${S3_LOCATION}" 2>/dev/null `" = "" ] )
 then
