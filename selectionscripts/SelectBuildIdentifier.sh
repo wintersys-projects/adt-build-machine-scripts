@@ -25,7 +25,7 @@
 ####################################################################################
 #set -x
 
-while ( [ "${BUILD_IDENTIFIER}" = "" ] && [ "${HARDCORE}" = "0" ] )
+while ( [ "${BUILD_IDENTIFIER}" = "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 do
 	status ""
 	status ""
@@ -37,7 +37,7 @@ do
 	status "###################################################################################################"
 	status "Enter Build Identifier please:"
 			
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read BUILD_IDENTIFIER
 
