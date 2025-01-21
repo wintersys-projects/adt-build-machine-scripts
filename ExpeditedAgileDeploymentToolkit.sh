@@ -102,7 +102,7 @@ export USER="`/usr/bin/whoami`"
 
 export BUILD_CLIENT_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ "${PARAMETERS}" = "1" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
 then
     ${BUILD_HOME}/initscripts/InitialiseErrorStreams.sh 
 fi
@@ -175,7 +175,7 @@ then
         fi
 fi
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] || [ "${PARAMETERS}" = "1" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
 then
         #For anything other than a virgin build, we won't know what application type we are, so interrogate to find out
         if ( [ "${BUILD_CHOICE}" -ne "0"  ] )
