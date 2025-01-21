@@ -272,6 +272,8 @@ else
                         then
                                 read x
                         fi
+
+                        /usr/bin/exo dbaas ca-certificate > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                 fi
         fi
 
