@@ -39,7 +39,7 @@ then
 	fi
 	status "Discovered you are deploying joomla from a git repo baseline"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -73,7 +73,7 @@ then
 	fi
 	status "Discovered you are deploying wordpress from a git repo baseline"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -104,7 +104,7 @@ then
 	fi
 	status "Discovered you are deploying moodle from a git repo baseline"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -138,7 +138,7 @@ then
 	fi
 	status "Discovered you are deploying drupal from a git repo baseline"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -164,7 +164,7 @@ fi
 if ( [ "${APPLICATION}" = "" ] )
 then
 	status "Couldn't find a recognised application type. If you are sure you are OK with this, hit <enter> otherwise <ctrl-c> and have a look into what is going on"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
