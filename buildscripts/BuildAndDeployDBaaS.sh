@@ -140,7 +140,7 @@ else
                         status "######################################################################################################################################################"
                         status "Press <enter> when you are satisfied"
 
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read x
                         fi
@@ -176,7 +176,7 @@ else
                         status "##########################################################"
                         status "If these settings look OK to you, press <enter>"
 
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read x
                         fi
@@ -268,7 +268,7 @@ else
                         status "##########################################################"
                         status "If these settings look OK to you, press <enter>"
 
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read x
                         fi
@@ -415,7 +415,7 @@ else
                         status "##########################################################"
                         status "If these settings look OK to you, press <enter>"
 
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read x
                         fi
@@ -495,7 +495,11 @@ else
                         status "DB NAME:${DBaaS_DBNAME}"
                         status "##########################################################"
                         status "If these settings look OK to you, press <enter>"
-                        read response
+                        
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+                        then
+                                read x
+                        fi
 
                         /usr/bin/vultr database update ${cluster_id} --trusted-ips "${VPC_IP_RANGE}"
                 fi
