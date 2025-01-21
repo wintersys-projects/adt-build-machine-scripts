@@ -19,6 +19,11 @@
 #########################################################################################
 #########################################################################################
 #set -x
+
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+
 authorised="no"
 machine_types="as-${REGION}-${BUILD_IDENTIFIER} ws--${REGION}-${BUILD_IDENTIFIER} db--${REGION}-${BUILD_IDENTIFIER}"
 
