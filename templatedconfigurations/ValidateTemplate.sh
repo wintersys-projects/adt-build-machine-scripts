@@ -517,7 +517,7 @@ ${log_command} "####################TEMPLATE VALIDATION REPORT ENDING###########
 
 ${log_command} "Press <enter> when you have reviewed and accepted any messages that have appeared above (if there are none then you are all set already and just press enter)"
 
-if ( [ "${HARDCORE}" != "1" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
 	read x
 fi
