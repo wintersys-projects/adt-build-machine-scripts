@@ -41,11 +41,11 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${install_command} jq
+		eval ${install_command} jq
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		${install_command} jq
+		eval ${install_command} jq
 	fi
 fi
