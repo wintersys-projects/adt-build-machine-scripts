@@ -41,7 +41,7 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${install_command} jq 			
+		eval ${install_command} jq 			
 		version="`/usr/bin/curl -L https://api.github.com/repos/go-acme/lego/releases/latest | /usr/bin/jq -r '.name'`" 
 		if ( [ -f /usr/bin/lego ] )                                                                                    
 		then                                                                                                            
@@ -52,7 +52,7 @@ then
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		${install_command} jq 			
+		eval ${install_command} jq 			
 		version="`/usr/bin/curl -L https://api.github.com/repos/go-acme/lego/releases/latest | /usr/bin/jq -r '.name'`" 
 		if ( [ -f /usr/bin/lego ] )                                                                                    
 		then                                                                                                            
