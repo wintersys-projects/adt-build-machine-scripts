@@ -25,7 +25,7 @@
 
 update="0"
 
-if ( ( [ "${SYSTEM_EMAIL_USERNAME}" = "" ] || [ "${SYSTEM_EMAIL_PASSWORD}" = "" ] || [ "${SYSTEM_EMAIL_PROVIDER}" = "" ] || [ "${SYSTEM_TOEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] ) && [ "${HARDCORE}" != "1" ] )
+if ( ( [ "${SYSTEM_EMAIL_USERNAME}" = "" ] || [ "${SYSTEM_EMAIL_PASSWORD}" = "" ] || [ "${SYSTEM_EMAIL_PROVIDER}" = "" ] || [ "${SYSTEM_TOEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] ) && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
 	status ""
 	status ""
@@ -44,7 +44,7 @@ then
 	fi
 fi
 
-if ( [ "${update}" = "1" ] && [ "${HARDCORE}" != "1" ] )
+if ( [ "${update}" = "1" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
 	status "You have chosen to override the email addresses on the fly rather than in your template for this build so now you must tell me what values you want to use"
 	status "So, please enter the email address where you wish system messages to be sent"
