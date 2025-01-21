@@ -22,6 +22,7 @@
 ####################################################################################
 #set -x
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
 S3_SECRET_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_SECRET_KEY`"
 S3_LOCATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_LOCATION`"
