@@ -59,7 +59,7 @@ then
 	/bin/chown root:root ${BUILD_HOME}/.config/doctl/config.yaml /root/.config/doctl/config.yaml
 	/bin/chmod 400 ${BUILD_HOME}/.config/doctl/config.yaml /root/.config/doctl/config.yaml
 
-	if ( [ "${HARDCORE}" = "0" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
  	then
 		/usr/local/bin/doctl balance get >&3
 	else
@@ -127,7 +127,7 @@ then
 	/bin/chown root:root ${BUILD_HOME}/.exoscale.toml /root/.config/exoscale/exoscale.toml
 	/bin/chmod 400 ${BUILD_HOME}/.exoscale.toml /root/.config/exoscale/exoscale.toml
 
-	if ( [ "${HARDCORE}" = "0" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
  	then
 		/usr/bin/exo status >&3
   	else
@@ -189,7 +189,7 @@ then
 	/bin/chown root:root /root/.config/linode-cli ${BUILD_HOME}/.linode-cli
 	/bin/chmod 400 /root/.config/linode-cli ${BUILD_HOME}/.linode-cli
 	
- 	if ( [ "${HARDCORE}" = "0" ] )
+ 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
  	then
 		/usr/local/bin/linode-cli account view >/dev/null 2>/dev/null >&3
   	else
@@ -222,7 +222,7 @@ then
 		exit
 	fi
  
-	if ( [ "${HARDCORE}" = "0" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
  	then	
 		/usr/bin/vultr account >&3
   	else
