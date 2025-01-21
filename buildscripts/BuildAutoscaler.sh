@@ -315,7 +315,7 @@ do
                                 status "Hi, an autoscaler didn't seem to build correctly. I can destroy it and I can try again to build a new autoscaler for you."
                                 status "#########################################################################################################################"
                                 status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
-                                if ( [ "${HARDCORE}" != "1" ] )
+                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                                 then
                                         read response
                                 fi
@@ -354,7 +354,7 @@ do
         else
                 status "Autoscaler is already running. Will use that one..."
                 status "Press Enter if this is OK"
-                if ( [ "${HARDCORE}" != "1" ] )
+                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                 then
                         read response
                 fi
