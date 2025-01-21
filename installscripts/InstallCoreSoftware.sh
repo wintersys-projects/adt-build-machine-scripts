@@ -22,6 +22,8 @@
 #######################################################################################################
 #set -x
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 if ( [ ! -f /root/DATASTORETOOL_INSTALLED ] &&  [ "${BUILDOS}" = "ubuntu" ] )
 then
 	status "Installing/Updating Datastore tools"
