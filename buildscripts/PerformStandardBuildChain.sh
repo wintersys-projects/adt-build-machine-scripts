@@ -36,7 +36,7 @@ then
         then
                 status "How many autoscalers do you want to deploy?"
 
-                if ( [ "${HARDCORE}" != "1" ] )
+                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                 then
                         read NO_AUTOSCALERS
                 fi 
@@ -44,7 +44,7 @@ then
                 while ! ( [ "${NO_AUTOSCALERS}" -eq "${NO_AUTOSCALERS}" ] 2> /dev/null )
                 do
                         status "Sorry, invalid input, try again"
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read NO_AUTOSCALERS
                         fi
@@ -53,7 +53,7 @@ then
                 then
                         status "Number of autoscalers can't be less than 1 setting autoscalers to 1"
                         status "Press <enter> to accept"
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read x
                         fi
@@ -62,7 +62,7 @@ then
                 then
                         status "Number of autoscalers can't be greater than 5 setting autoscalers to 5"
                         status "Press <enter> to accept"
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read x
                         fi
@@ -70,7 +70,7 @@ then
                 else 
                         status "Number of autoscalers set to ${NO_AUTOSCALERS}"
                         status "Press <enter> to accept"
-                        if ( [ "${HARDCORE}" != "1" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
                                 read x
                         fi
