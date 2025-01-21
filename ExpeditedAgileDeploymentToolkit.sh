@@ -94,7 +94,7 @@ export BUILD_CLIENT_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ "${PARAMETERS}" = "1" ] )
 then
-    . ${BUILD_HOME}/initscripts/InitialiseErrorStreams.sh 
+    ${BUILD_HOME}/initscripts/InitialiseErrorStreams.sh 
 fi
 
 status "##################################################################################################################################"
