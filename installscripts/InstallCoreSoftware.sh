@@ -43,7 +43,7 @@ then
 	
  	UPGRADE_LOG="/root/logs/upgrade_out-`/bin/date | /bin/sed 's/ //g'`"
 
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then   
 		status "##################################################################################################"
 		status "I am about to make software changes on this machine. If you are OK with that, please press <enter>"
