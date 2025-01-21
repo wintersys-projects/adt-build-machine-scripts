@@ -23,6 +23,7 @@
 ####################################################################################
 #set -x
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh TOKEN`"
 CLOUDHOST_ACCOUNT_ID="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOSTACCOUNTID`"
