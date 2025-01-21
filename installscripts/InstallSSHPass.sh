@@ -41,12 +41,12 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${install_command} sshpass
+		eval ${install_command} sshpass
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		${install_command} sshpass
+		eval ${install_command} sshpass
 	fi
 fi
 
