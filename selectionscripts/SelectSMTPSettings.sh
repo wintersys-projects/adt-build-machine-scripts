@@ -23,6 +23,12 @@
 #########################################################################################
 #set -x
 
+SYSTEM_EMAIL_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_USERNAME`"
+SYSTEM_EMAIL_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_PASSWORD`"
+SYSTEM_EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_PROVIDER`"
+SYSTEM_TOEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_TOEMAIL_ADDRESS`"
+SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROMEMAIL_ADDRESS`"
+
 update="0"
 
 if ( ( [ "${SYSTEM_EMAIL_USERNAME}" = "" ] || [ "${SYSTEM_EMAIL_PASSWORD}" = "" ] || [ "${SYSTEM_EMAIL_PROVIDER}" = "" ] || [ "${SYSTEM_TOEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] ) && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
