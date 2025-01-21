@@ -21,6 +21,10 @@
 ######################################################################################################
 #set -x
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+
 status "####################################################################################"
 status "Please tell me which of the supported cloudhosts you are deploying to"
 status " 1. Digital Ocean (www.digitalocean.com)"
