@@ -23,6 +23,7 @@
 #########################################################################################
 #set -x
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SYSTEM_EMAIL_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_USERNAME`"
 SYSTEM_EMAIL_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_PASSWORD`"
 SYSTEM_EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_PROVIDER`"
