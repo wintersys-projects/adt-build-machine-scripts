@@ -40,6 +40,8 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/DBaaS_CERT``` - this is the certificate for your database when you are using a managed database solution. You can use this from your application configuration to provide secure database connections
 
+```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/STATIC_SCALE``` - this is used when the number of webservers to scale up or down to is set.
+
 ```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/database_configuration_settings.dat``` - this is the database server environment settings as generated from the template and possibly user input. This file will be ssh copied to any database machine that is being provisioned.   
 
 ```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/dbp.dat``` - this is the application specific database prefix as obtained for the current application we are installing.  
