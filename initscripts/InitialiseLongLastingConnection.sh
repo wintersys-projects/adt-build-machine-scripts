@@ -21,7 +21,7 @@
 #########################################################################################
 #set -x
 
-if ( [ "${HARDCORE}" = "0" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 then
 	actioned="0"
 	if ( [ -f /etc/ssh/ssh_config ] && [ "`/bin/grep 'ServerAliveInterval 60' /etc/ssh/ssh_config`" = "" ] )
@@ -32,7 +32,7 @@ then
 		status "Updating your client ssh config so that connections don't drop."
 		status "If this is OK, press the <enter> key, if not, then ctrl-c to exit"
 		status "########################################################################################################################"
-		if ( [ "${HARDCORE}" != "1" ] )
+		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 		then
 			read response
 		fi
@@ -50,7 +50,7 @@ then
 		status "Updating your server ssh config so that connections don't drop from clients to this machine."
 		status "If this is OK, press the <enter> key, if not, then ctrl-c to exit"
 		status "########################################################################################################################"
-		if ( [ "${HARDCORE}" != "1" ] )
+		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 		then
 			read response
 		fi
