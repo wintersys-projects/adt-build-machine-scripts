@@ -77,6 +77,16 @@ else
         fi
 fi
 
+if ( [ "${PARAMETER}" = "1" ] )
+then
+        /bin/touch /root/PARAMETER
+else
+        if ( [ -f /root/PARAMETER ] )
+        then
+                /bin/rm /root/PARAMETER
+        fi
+fi
+
 status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
