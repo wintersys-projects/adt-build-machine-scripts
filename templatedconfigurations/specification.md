@@ -108,7 +108,14 @@ This parameter is the S3 endpoint for your deployment. It should be located as n
 
 ##### vultr - Available endpints to choose from (2024) - ewr1.vultrobjects.com, ams1.vultrobjects.com, sjc1.vultrobjects.com, sgp1.vultrobjects.com
 
-You can set your ${S3_HOST_BASE} parameter in your template to one of these listed endpoints depending on who your object storage is hosted with (which will likely be the ssame provider as your VPS systems). 
+You can set your ${S3_HOST_BASE} parameter in your template to one of these listed endpoints depending on who your object storage is hosted with (which will likely be the ssame provider as your VPS systems).  
+
+A trick you can use with this value is that you can provide  a chain of values. What this will do is that whenever the system makes a backup it will make backups to all the regions in your region chain and that means you can make backups of your sourcecode/databases to multiple regions therefore making yourself more resilient. If a region for your provider is down you will still have backups in different regions that you can fall back on.
+To make a region chain you just set your template value to be a colon separated list. Using linode as an example your region chain would look like:  
+
+S3_HOST_BASE="nl-ams-1.linodeobjects.com:us-southeast-1.linodeobjects.com:in-maa-1.linodeobjects.com"   
+
+To make it clear just setting this value as described to a region chain will get you backups to nl-ams-1 us-southeast-1 in-maa-1  
 
 -----
 
