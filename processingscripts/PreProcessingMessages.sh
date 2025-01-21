@@ -42,7 +42,7 @@ then
 	status "If you want to switch on DDOS projection, enter 'Y' or 'y' below, anything else and DDOS protection won't be enabled". 
 	status " DDoS Protection adds 10Gbps of mitigation capacity per instance and costs an additional \$10/mo."
 	status "Do you want to enable DDOS protection 'Y' or 'N'"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read response
 
@@ -68,7 +68,7 @@ then
 	export APPLICATION_IDENTIFIER="1"
 	export APPLICATION="joomla"
 	status "Press <enter> to accept"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -82,7 +82,7 @@ then
 	export APPLICATION_IDENTIFIER="2"
 	export APPLICATION="wordpress"
 	status "Press <enter> to accept"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -96,7 +96,7 @@ then
 	export APPLICATION_IDENTIFIER="3"
 	export APPLICATION="drupal"
 	status "Press <enter> to accept"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -110,7 +110,7 @@ then
 	export APPLICATION_IDENTIFIER="4"
 	export APPLICATION="moodle"
 	status "Press <enter> to accept"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -128,7 +128,7 @@ then
 	status "Apologies, but, Wordpress doesn't support the Postgres Database."
 	status "I am defaulting to mariadb. Press <enter> to acknowledge"
 	status "################################################################"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
