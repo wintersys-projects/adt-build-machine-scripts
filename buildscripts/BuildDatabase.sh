@@ -340,7 +340,7 @@ do
                                 status "###########################################################################################################################"
                                 status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
 
-                                if ( [ "${HARDCORE}" != "1" ] )
+                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                                 then
                                         read response
                                 fi
@@ -367,7 +367,7 @@ do
                 status "A Database is already running, using that one......"
                 status "Press enter if that is OK"
 
-                if ( [ "${HARDCORE}" != "1" ] )
+                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                 then
                         read response
                 fi
