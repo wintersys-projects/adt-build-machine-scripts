@@ -26,10 +26,10 @@
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh TOKEN`"
-CLOUDHOST_ACCOUNT_ID="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOSTACCOUNTID`"
+CLOUDHOST_ACCOUNT_ID="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST_ACCOUNT_ID`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
-ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACCESSKEY`"
-SECRET_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SECRETKEY`"
+ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACCESS_KEY`"
+SECRET_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SECRET_KEY`"
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
