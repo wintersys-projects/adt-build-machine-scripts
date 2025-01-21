@@ -123,12 +123,12 @@ fi
 #export BUILDOS="`/bin/grep ^ID /etc/*-release | /usr/bin/awk -F'=' '{print $NF}' | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep '(ubuntu|debian)'`"
 export BUILDOS="`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
 
-. ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
+${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
 . ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh 
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-        ${BUILD_HOME}/selectionscripts/SelectCloudhost.sh
+        . ${BUILD_HOME}/selectionscripts/SelectCloudhost.sh
 else
         ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
 fi
