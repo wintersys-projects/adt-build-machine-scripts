@@ -41,12 +41,12 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${install_command} ruby
+		eval ${install_command} ruby
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		${install_command} ruby
+		eval ${install_command} ruby
 	fi
 fi
 
