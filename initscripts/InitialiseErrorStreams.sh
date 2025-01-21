@@ -20,6 +20,9 @@
 #########################################################################################
 #set -x
 
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDIDENTIFIER`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+
 if ( [ "${BUILD_IDENTIFIER}" != "" ] )
 then
         if ( [ "${PARAMETERS}" = "1" ] )
