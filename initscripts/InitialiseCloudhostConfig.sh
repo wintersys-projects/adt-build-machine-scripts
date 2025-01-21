@@ -23,6 +23,13 @@
 ####################################################################################
 #set -x
 
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh TOKEN`"
+CLOUDHOST_ACCOUNT_ID="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOSTACCOUNTID`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACCESSKEY`"
+SECRET_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SECRETKEY`"
+
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
 	if ( [ -f ${BUILD_HOME}/.config/doctl/config.yaml ] )
