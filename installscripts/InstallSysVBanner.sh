@@ -42,12 +42,12 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${install_command} sysvbanner
+		eval ${install_command} sysvbanner
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		${install_command} sysvbanner
+		eval ${install_command} sysvbanner
 	fi
 fi
 
