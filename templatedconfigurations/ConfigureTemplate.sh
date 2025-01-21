@@ -21,7 +21,7 @@
 ####################################################################################
 #set -x
 
-if ( [ "${HARDCORE}" != "1" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
 	status ""
 	status "I have the following templates available for ${CLOUDHOST}"
@@ -183,7 +183,7 @@ fi
 #load the environment from the template file
 . ${templatefile}
 
-if ( [ "${HARDCORE}" != "1" ] && [ "${0}" = "ExpeditedAgileDeploymentToolkit.sh" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] && [ "${0}" = "ExpeditedAgileDeploymentToolkit.sh" ] )
 then
 	. ${BUILD_HOME}/templatedconfigurations/ValidateTemplate.sh
 fi
