@@ -22,9 +22,6 @@
 #######################################################################################################
 #set -x
 
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
-
 if ( [ ! -f /root/DATASTORETOOL_INSTALLED ] &&  [ "${BUILDOS}" = "ubuntu" ] )
 then
 	status "Installing/Updating Datastore tools"
