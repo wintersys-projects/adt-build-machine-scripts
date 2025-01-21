@@ -89,7 +89,7 @@ then
 					/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem
 					status "Have successfully generated a new certificate for your domain ${WEBSITE_URL} because the old certificate has expired"
 					status "Press <enter> to acknowledge"
-					if ( [ "${HARDCORE}" != "1" ] )
+					if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 					then
 						read x
 					fi
@@ -125,7 +125,7 @@ then
 					/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem
 					status "Have successfully generated a new certificate for your domain ${WEBSITE_URL} because originally there was no certificate present on your filesystem for me to use"
 					status "Press <enter> to acknowledge"
-					if ( [ "${HARDCORE}" != "1" ] )
+					if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 					then
 						read x
 					fi
@@ -149,7 +149,7 @@ then
 		status "Found a certificate for this domain. For your info, this is its expiry date"
 		/usr/bin/openssl x509 -in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem -noout -enddate
 		status "Please enter Y to use the existing one. Anything else to input a new one"
-		if ( [ "${HARDCORE}" != "1" ] )
+		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 		then
 			read response
 		fi
