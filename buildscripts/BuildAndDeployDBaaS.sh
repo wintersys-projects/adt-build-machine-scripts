@@ -344,6 +344,9 @@ else
                                 export DBaaS_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
                                 export DBaaS_DBNAME="${db_name}"
+
+                                db_id="`/usr/local/bin/linode-cli --json databases list | /usr/bin/jq -r '.[] | select ( .label == "'${CLUSTER_NAME}'").id'`"
+                                /bin/echo "`/usr/local/bin/linode-cli --json databases mysql-ssl-cert ${db_id} | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                         elif ( [ "${database_type}" = "Postgres" ] )
                         then
                                 status "Your database is being provisioned, please wait (this can take 10s of minutes)....."
