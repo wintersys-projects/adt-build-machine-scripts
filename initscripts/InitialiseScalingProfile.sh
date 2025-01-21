@@ -12,7 +12,7 @@ then
   
   /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NUMBER_WS}
   ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NUMBER_WS}
- 	if ( [ "${HARDCORE}" != "1" ] )
+ 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
    status ""
    status "Press <enter> to accept these values"
