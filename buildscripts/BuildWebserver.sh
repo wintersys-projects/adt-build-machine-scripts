@@ -307,7 +307,7 @@ do
                                 status "Hi, a webserver didn't seem to build correctly. I can destroy it and I can try to build a new webserver for you"
                                 status "################################################################################################################"
                                 status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
-                                if ( [ "${HARDCORE}" != "1" ] )
+                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                                 then
                                         read response
                                 fi
@@ -330,7 +330,7 @@ do
         else
                 status "A webserver is already running, using that one"
                 status "Press enter if this is OK with you"
-                if ( [ "${HARDCORE}" != "1" ] )
+                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                 then
                         read response
                 fi
