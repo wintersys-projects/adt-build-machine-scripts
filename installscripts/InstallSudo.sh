@@ -41,12 +41,12 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${install_command} sudo
+		eval ${install_command} sudo
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		${install_command} sudo
+		eval ${install_command} sudo
 	fi
 fi
 
