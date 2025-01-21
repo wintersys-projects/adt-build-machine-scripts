@@ -34,7 +34,11 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/${build_identifier}``` - we already know the build_identifier from the directory path we are using, but, the build_identifier is stored here for easy access and if it is here it tells us that a build is actually in progress rather than just being prepared.   
 
-```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/CURRENTREGION``` - this tells us the current region for this particular build the region is build specific you could have a deployment to one region for one build_identifier and another deployment for another build_identifier  
+```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/CURRENTREGION``` - this tells us the current region for this particular build the region is build specific you could have a deployment to one region for one build_identifier and another deployment for another build_identifier 
+
+```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/DBaaS_HOSTNAME``` - this is the hostname for your database when you are using a managed database solution
+
+```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/DBaaS_CERT``` - this is the certificate for your database when you are using a managed database solution. You can use this from your application configuration to provide secure database connections
 
 ```${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/database_configuration_settings.dat``` - this is the database server environment settings as generated from the template and possibly user input. This file will be ssh copied to any database machine that is being provisioned.   
 
