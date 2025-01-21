@@ -50,7 +50,7 @@ fi
 
 #. ${BUILD_HOME}/providerscripts/application/ObtainCredentials.sh
 
-if ( [ "${HARDCORE}" = "1" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] )
 then
         if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
         then
