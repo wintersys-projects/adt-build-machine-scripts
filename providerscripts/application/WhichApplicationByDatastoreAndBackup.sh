@@ -151,7 +151,7 @@ fi
 if ( [ "${APPLICATION}" = "" ] )
 then
 	status "Couldn't find a recognised application type. If you are sure you are OK with this, hit <enter> otherwise <ctrl-c> and have a look into what is going on"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
