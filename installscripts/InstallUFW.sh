@@ -43,12 +43,12 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${install_command} ufw
+		eval ${install_command} ufw
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		${install_command} ufw	
+		eval ${install_command} ufw	
   	fi
 fi
 
