@@ -25,7 +25,7 @@ CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 
 if ( [ "${BUILD_IDENTIFIER}" != "" ] )
 then
-        if ( [ "${PARAMETERS}" = "1" ] )
+        if ( [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
         then
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ] )
                 then
