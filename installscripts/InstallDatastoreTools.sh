@@ -49,12 +49,12 @@ then
 	then
 		if ( [ "${buildos}" = "ubuntu" ] )
 		then
-			${install_command} s3cmd 
+			eval ${install_command} s3cmd 
 		fi
 
 		if ( [ "${buildos}" = "debian" ] )
 		then
-			${install_command} s3cmd
+			eval ${install_command} s3cmd
 		fi
 	fi
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/grep s5cmd`" != "" ] )
