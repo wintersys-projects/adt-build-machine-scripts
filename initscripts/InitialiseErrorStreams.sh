@@ -40,7 +40,7 @@ then
                 /bin/rm /root/INITIAL_ERROR_STREAM_SETUP
         fi
         
-        if ( [ "${HARDCORE}" != "1" ] )
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
         then
                 status "#################################################################################################"
                 status "If the build process freezes or fails to complete for some reason, please review the error stream"
