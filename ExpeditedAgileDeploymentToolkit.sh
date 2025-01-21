@@ -156,7 +156,7 @@ then
 fi
 
 ${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh
-. ${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh
+${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh
 . ${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh
 . ${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh
 . ${BUILD_HOME}/initscripts/PreFlightChecks.sh
