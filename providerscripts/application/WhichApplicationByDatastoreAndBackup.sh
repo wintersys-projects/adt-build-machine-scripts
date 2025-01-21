@@ -38,7 +38,7 @@ then
 	fi
 	status "Discovered you are deploying joomla from a datastore backup"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -62,7 +62,7 @@ then
 	fi
 	status "Discovered you are deploying wordpress from a datastore backup"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -93,7 +93,7 @@ then
 	fi
 	status "Discovered you are deploying moodle from a datastore backup"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
@@ -126,7 +126,7 @@ then
 	fi
 	status "Discovered you are deploying drupal from a datastore backup"
 	status "Press the <enter> key to accept as true"
-	if ( [ "${HARDCORE}" != "1" ] )
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
 	fi
