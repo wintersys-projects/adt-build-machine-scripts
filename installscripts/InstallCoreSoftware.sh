@@ -44,7 +44,7 @@ then
   		/bin/mkdir /root/logs
 	fi
 	
- 	UPGRADE_LOG="/root/logs/upgrade_out-`/bin/date | /bin/sed 's/ //g'`"
+ 	upgrade_log="/root/logs/upgrade_out-`/bin/date | /bin/sed 's/ //g'`"
 
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then   
@@ -57,68 +57,68 @@ then
 	status "##################################################################################################################################################"
 	status "Checking that the build software is up to date on this machine. Please wait .....This might take a few minutes the first time you run this script"
 	status "This is best practice to make sure that all the software is at its latest versions prior to the build process"
-	status "A log of the process is available at: ${UPGRADE_LOG}"
+	status "A log of the process is available at: ${upgrade_log}"
 	status "##################################################################################################################################################"
 
 	if ( [ "`/usr/bin/awk -F= '/^NAME/{print $2}' /etc/os-release | /bin/grep "Ubuntu"`" != "" ] )
 	then
  			/bin/touch /root/PERFORM_REBOOT
 			status "Performing software update....."
-			${BUILD_HOME}/installscripts/Update.sh "ubuntu"  >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/Update.sh "ubuntu"  >>${upgrade_log} 2>&1
 			status "Performing software upgrade....."
-			${BUILD_HOME}/installscripts/Upgrade.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/Upgrade.sh "ubuntu" >>${upgrade_log} 2>&1
    			status "Installing Firewall"
-   			${BUILD_HOME}/installscripts/InstallFirewall.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+   			${BUILD_HOME}/installscripts/InstallFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Initialising Firewall"
-   			${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+   			${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating go"
-			${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating curl"
-			${BUILD_HOME}/installscripts/InstallCurl.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallCurl.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating JQ"
-			${BUILD_HOME}/installscripts/InstallJQ.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallJQ.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating Lego"
-			${BUILD_HOME}/installscripts/InstallLego.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallLego.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating Ruby"
-			${BUILD_HOME}/installscripts/InstallRuby.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallRuby.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating SSHPass"
-			${BUILD_HOME}/installscripts/InstallSSHPass.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallSSHPass.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating Sudo"
-			${BUILD_HOME}/installscripts/InstallSudo.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallSudo.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating SysVBanner"
-			${BUILD_HOME}/installscripts/InstallSysVBanner.sh "ubuntu" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallSysVBanner.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating Cron"
-			${BUILD_HOME}/installscripts/InstallCron.sh "ubuntu" >>${UPGRADE_LOG} 2>&1 
+			${BUILD_HOME}/installscripts/InstallCron.sh "ubuntu" >>${upgrade_log} 2>&1 
 			/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
 	elif ( [ "`/usr/bin/awk -F= '/^NAME/{print $2}' /etc/os-release | /bin/grep "Debian"`" != "" ] )
 	then
   			/bin/touch /root/PERFORM_REBOOT
 			status "Performing software update....."
-			${BUILD_HOME}/installscripts/Update.sh "debian"  >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/Update.sh "debian"  >>${upgrade_log} 2>&1
 			status "Performing software upgrade....."
-			${BUILD_HOME}/installscripts/Upgrade.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/Upgrade.sh "debian" >>${upgrade_log} 2>&1
    			status "Installing Firewall"
-   			${BUILD_HOME}/installscripts/InstallFirewall.sh "debian" >>${UPGRADE_LOG} 2>&1
+   			${BUILD_HOME}/installscripts/InstallFirewall.sh "debian" >>${upgrade_log} 2>&1
 			status "Initialising Firewall"
-   			${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh "debian" >>${UPGRADE_LOG} 2>&1
+   			${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating go"
-			${BUILD_HOME}/installscripts/InstallGo.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallGo.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating curl"
-			${BUILD_HOME}/installscripts/InstallCurl.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallCurl.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating JQ"
-			${BUILD_HOME}/installscripts/InstallJQ.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallJQ.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating Lego"
-			${BUILD_HOME}/installscripts/InstallLego.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallLego.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating Ruby"
-			${BUILD_HOME}/installscripts/InstallRuby.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallRuby.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating SSHPass"
-			${BUILD_HOME}/installscripts/InstallSSHPass.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallSSHPass.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating Sudo"
-			${BUILD_HOME}/installscripts/InstallSudo.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallSudo.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating SysVBanner"
-			${BUILD_HOME}/installscripts/InstallSysVBanner.sh "debian" >>${UPGRADE_LOG} 2>&1
+			${BUILD_HOME}/installscripts/InstallSysVBanner.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating Cron"
-			${BUILD_HOME}/installscripts/InstallCron.sh "debian" >>${UPGRADE_LOG} 2>&1 
+			${BUILD_HOME}/installscripts/InstallCron.sh "debian" >>${upgrade_log} 2>&1 
 			/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
 	fi
 	/bin/touch ~/UPDATEDSOFTWARE
