@@ -22,6 +22,7 @@
 #set -x
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/grep s3cmd`" != "" ] )
 then
