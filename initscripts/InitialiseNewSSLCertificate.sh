@@ -26,6 +26,13 @@ status () {
 	/bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
+${SSL_GENERATION_METHOD}
+${SSL_GENERATION_SERVICE}
+${BUILD_HOME}
+${CLOUDHOST}
+${BUILD_IDENTIFIER}
+${WEBSITE_URL}
+
 #IP has been added to the DNS provider and now we have to set up the SSL certificate for this webserver
 
 if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] )
