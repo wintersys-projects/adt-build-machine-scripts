@@ -1,14 +1,15 @@
 
 
-${PRODUCTION}
-${DEVELOPMENT}
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
-${NUMBER_WS}
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
 
-
-
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
+DEVELOPMENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEVELOPMENT`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+NUMBER_WS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NUMBER_WS`"
 
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] )
 then
