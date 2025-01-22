@@ -20,6 +20,22 @@
 ####################################################################################
 #set -x
 
+${BUILD_IDENTIFIER}
+${BUILD_HOME}
+${CLOUDHOST}
+${PRODUCTION}
+${DEVELOPMENT}
+${BASELINE_DB_REPOSITORY}
+${NO_AUTOSCALERS}
+${INPARALLEL}
+${BUILD_ARCHIVE_CHOICE}
+${BUILD_MACHINE_VPC}
+${REGION}
+${AUTOSCALER_PUBLIC_KEYS}
+${OPTIONS} 
+${SSH_PORT} 
+${SERVER_USER}
+
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
 then
         if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys ] )
