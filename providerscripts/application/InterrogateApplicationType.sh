@@ -33,8 +33,8 @@ status () {
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
-WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
-WEBSITE_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITENAME`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+WEBSITE_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_NAME`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 APPLICATION_REPOSITORY_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_PROVIDER`"
 APPLICATION_REPOSITORY_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_USERNAME`"
