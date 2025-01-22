@@ -24,14 +24,13 @@
 ####################################################################################
 #set -x
 
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
-${ALGORITHM}
-${TOKEN}
-${BUILD_KEY}
-${PUBLIC_KEY_NAME}
-${PUBLIC_KEY_ID}
+BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
+TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh TOKEN`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+PUBLIC_KEY_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PUBLIC_KEY_NAME`"
 
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
