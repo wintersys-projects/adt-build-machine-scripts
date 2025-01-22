@@ -23,7 +23,11 @@
 #########################################################################################
 #set -x
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 #############################################################################################################
 # You might want to manually configure a remote database using a gui system.
@@ -44,21 +48,21 @@ then
         DBaaS_DBNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
 else
 
-${DATABASE_DBaaS_INSTALLATION_TYPE}
-${CLOUDHOST}
-${DATABASE_INSTALLATION_TYPE}
-${BYPASS_DB_LAYER}
-${BUILD_HOME}
-${VPC_IP_RANGE}
-${DATABASE_DBaaS_INSTALLATION_TYPE}
-${DB_PORT}
-${DBaaS_HOSTNAME}
-${DBaaS_USERNAME}
-${DBaaS_PASSWORD}
-${DBaaS_DBNAME}
-${BYPASS_DB_LAYER}
-${BUILD_IDENTIFIER}
-${CLUSTER_NAME}
+        DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
+        CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+        DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+        BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
+        VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
+        DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
+        DBaaS_HOSTNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_HOSTNAME`"
+        DBaaS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_USERNAME`"
+        DBaaS_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_PASSWORD`"
+        DBaaS_DBNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_DBNAME`"
+        BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
+        BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+        DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
+
+
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
         #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>:<database_username>"
