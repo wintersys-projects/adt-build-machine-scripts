@@ -70,24 +70,6 @@ ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 
-
-${OPTIONS}
-
-
-${AUTOSCALER_PUBLIC_KEYS}
-
-
-${RND}
-${OS_TYPE}
-${AS_SIZE}
-
-
-
-${OPTIONS} 
-${OPTIONS} -${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}
-
-
-
 if ( [ "${DEFAULT_USER}" = "root" ] )
 then
         SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
