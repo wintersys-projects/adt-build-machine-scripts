@@ -23,6 +23,10 @@
 #########################################################################################
 #set -x
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SYSTEM_EMAIL_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_USERNAME`"
 SYSTEM_EMAIL_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_PASSWORD`"
