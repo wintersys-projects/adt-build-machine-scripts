@@ -29,12 +29,11 @@
 #####################################################################################
 #set -x
 
-${BUILD_CHOICE}" 
-${WEBSITE_URL}
-${DIRECTORIES_TO_MOUNT}
-${WEBSITE_URL}" 
-${BUILD_HOME}
-${DATASTORE_CHOICE} 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
+BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
+DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT`"
+DATASTORE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATASTORE_CHOICE`"
 
 #When we are a baseline, we want to persist all our assets to our datastore. This involves deleting any existing assets from the bucket
 #we are persisting to so we issue a warning here, that the existing assets will be purged
