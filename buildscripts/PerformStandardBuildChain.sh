@@ -38,12 +38,6 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 
 
-AUTOSCALER_PUBLIC_KEYS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTOSCALER_PUBLIC_KEYS`"
-
-
-${AUTOSCALER_PUBLIC_KEYS}
-${OPTIONS} 
-
 ${SERVER_USER}
 
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
