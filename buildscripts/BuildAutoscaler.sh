@@ -35,6 +35,10 @@ done=0
 counter="0"
 count="0"
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
 status ""
 status ""
 status ""
@@ -50,23 +54,33 @@ SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
 
 
+
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+DEFAULT_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEFAULT_USER`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+WEBSITE_DISPLAY_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_DISPLAY_NAME`"
+NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
+BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
+BUILDOS_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS_VERSION`"
+BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
+INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
+NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
+
+
 ${OPTIONS}
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
+
+
 ${AUTOSCALER_PUBLIC_KEYS}
-${DEFAULT_USER}
-${SERVER_USER_PASSWORD}
-${REGION}
-${WEBSITE_URL}
-${WEBSITE_DISPLAY_NAME}
-${NO_AUTOSCALERS}
-${SERVER_USER}
+
+
 ${RND}
 ${OS_TYPE}
 ${AS_SIZE}
-${BUILDOS} 
-${BUILDOS_VERSION}
+
 ${AS_SERVER_TYPE}
 ${BUILD_MACHINE_VPC}
 ${ASIP_PRIVATE}
@@ -80,14 +94,14 @@ ${ASIPS_CLEANED}
 ${ASIP_PUBLIC}
 ${ASIP_PRIVATE}
 ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+
 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${BUILD_IDENTIFIER}
-${SERVER_USER}
+
+
 ${OPTIONS} 
-${ALGORITHM}
 ${OPTIONS} -${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}
-"${CUSTOM_USER_SUDO} 
-${INFRASTRUCTURE_REPOSITORY_OWNER}
-${NO_AUTOSCALERS}
+
+
 
 if ( [ "${DEFAULT_USER}" = "root" ] )
 then
