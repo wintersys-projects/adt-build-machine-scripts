@@ -21,11 +21,11 @@
 ####################################################################################
 #set -x
 
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
-${ALGORITHM}
-${SERVER_USER}
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
+
 
 #We want to get our key store setup so that when we build the machines they can grab the private key from the keystore rather than
 #passing the filename in as a -i parameter to ssh which is unwieldy.
