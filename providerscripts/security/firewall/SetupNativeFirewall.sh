@@ -20,6 +20,18 @@
 #########################################################################################
 set -x
 
+${ACTIVE_FIREWALLS}
+${BUILD_HOME}
+${CLOUDHOST}
+${PRE_BUILD}
+${REGION}-
+${BUILD_IDENTIFIER}" 
+${BUILD_MACHINE_VPC}
+${SSH_PORT}
+${VPC_IP_RANGE}
+${BUILD_IDENTIFIER}
+${DB_PORT}
+
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
         build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
