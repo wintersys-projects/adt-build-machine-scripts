@@ -218,7 +218,7 @@ start=`/bin/date +%s`
 
 #If we have anything to say here, on an application by application basis before the build really begins we put it in this
 #script
-. ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
+${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
 . ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 . ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 . ${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
