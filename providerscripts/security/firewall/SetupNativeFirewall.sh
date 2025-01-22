@@ -48,7 +48,7 @@ then
 
         if ( [ "${CLOUDHOST}" = "digitalocean" ] )
         then
-                if ( [ "${PRE_BUILD}" = "0" ] )
+                if ( [ "${pre_build}" = "0" ] )
                 then
                         autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
@@ -129,7 +129,7 @@ then
                                 /usr/local/bin/doctl compute firewall add-droplets ${database_firewall_id} --droplet-ids ${database_id}                
                         fi
 
-                elif ( [ "${PRE_BUILD}" = "1" ] )
+                elif ( [ "${pre_build}" = "1" ] )
                 then
                         firewall_ids="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-autoscaler")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
                         firewall_ids="${firewall_ids} `/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-webserver")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
@@ -165,7 +165,7 @@ then
 
         if ( [ "${CLOUDHOST}" = "exoscale" ] )
         then
-                if ( [ "${PRE_BUILD}" = "0" ] )
+                if ( [ "${pre_build}" = "0" ] )
                 then
                         autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
@@ -230,7 +230,7 @@ then
                                 /usr/bin/exo compute instance security-group add ${database_id} adt-database-${BUILD_IDENTIFIER}
                         fi
 
-                elif ( [ "${PRE_BUILD}" = "1" ] )
+                elif ( [ "${pre_build}" = "1" ] )
                 then
                         firewall_ids="`/usr/bin/exo -O json compute security-group list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-autoscaler")) |  select (.name | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
                         firewall_ids="${firewall_ids} `/usr/bin/exo -O json compute security-group list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-webserver")) |  select (.name | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
@@ -264,7 +264,7 @@ then
 
         if ( [ "${CLOUDHOST}" = "linode" ] )
         then       
-                if ( [ "${PRE_BUILD}" = "0" ] )
+                if ( [ "${pre_build}" = "0" ] )
                 then
                         autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
@@ -343,7 +343,7 @@ then
                         /usr/local/bin/linode-cli firewalls device-create --id ${webserver_id} --type linode ${webserver_firewall_id} 
                         /usr/local/bin/linode-cli firewalls device-create --id ${database_id} --type linode ${database_firewall_id} 
 
-                elif ( [ "${PRE_BUILD}" = "1" ] )
+                elif ( [ "${pre_build}" = "1" ] )
                 then
                         firewall_ids="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-autoscaler")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
                         firewall_ids="${firewall_ids} `/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label | contains ("adt-webserver")) |  select (.label | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
@@ -380,7 +380,7 @@ then
 
         if ( [ "${CLOUDHOST}" = "vultr" ] )
         then
-                if ( [ "${PRE_BUILD}" = "0" ] )
+                if ( [ "${pre_build}" = "0" ] )
                 then
                         #VPC_IP_RANGE doesn't need to be allowed by the firewall for vultr, machines in the same VPC can communiate by default by private IP
                         autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
@@ -440,7 +440,7 @@ then
                                 /usr/bin/vultr firewall rule create ${firewall_id} --protocol icmp --size 32 --ip-type v4 -s 0.0.0.0/0
                                 /usr/bin/vultr instance update-firewall-group ${database_id} -f ${firewall_id}
                         fi
-                elif ( [ "${PRE_BUILD}" = "1" ] )
+                elif ( [ "${pre_build}" = "1" ] )
                 then
                         # cleanup any hangover firewalls
                         firewall_ids="`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.description | contains ("adt-autoscaler")) |  select (.description | endswith ("'-${BUILD_IDENTIFIER}'") | not).id'`"
