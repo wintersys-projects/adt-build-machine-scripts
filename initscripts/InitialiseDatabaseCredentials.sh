@@ -1,12 +1,19 @@
 
-${DATABASE_INSTALLATION_TYPE}
+
 ${DBaaS_HOSTNAME}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 ${DBaaS_DBNAME}" >  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 ${DBaaS_PASSWORD}" >>  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 ${DBaaS_USERNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
+
+
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
