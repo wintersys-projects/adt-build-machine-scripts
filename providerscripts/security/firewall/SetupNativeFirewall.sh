@@ -20,17 +20,16 @@
 #########################################################################################
 set -x
 
-${ACTIVE_FIREWALLS}
-${BUILD_HOME}
-${CLOUDHOST}
-${PRE_BUILD}
-${REGION}-
-${BUILD_IDENTIFIER}" 
-${BUILD_MACHINE_VPC}
-${SSH_PORT}
-${VPC_IP_RANGE}
-${BUILD_IDENTIFIER}
-${DB_PORT}
+BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
+ACTIVE_FIREWALLS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACTIVE_FIREWALLS`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+PRE_BUILD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRE_BUILD`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
+VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
