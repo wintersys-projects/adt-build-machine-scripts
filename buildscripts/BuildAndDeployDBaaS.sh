@@ -54,14 +54,12 @@ else
         BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
         VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
         DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
-        DBaaS_HOSTNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_HOSTNAME`"
-        DBaaS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_USERNAME`"
-        DBaaS_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_PASSWORD`"
-        DBaaS_DBNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_DBNAME`"
+      #  DBaaS_HOSTNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_HOSTNAME`"
+      #  DBaaS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_USERNAME`"
+      #  DBaaS_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_PASSWORD`"
+      #  DBaaS_DBNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_DBNAME`"
         BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
         BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
-        DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
-
 
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
