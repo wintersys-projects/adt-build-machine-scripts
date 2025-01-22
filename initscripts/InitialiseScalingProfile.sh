@@ -1,3 +1,15 @@
+
+
+${PRODUCTION}
+${DEVELOPMENT}
+${BUILD_HOME}
+${CLOUDHOST}
+${BUILD_IDENTIFIER}
+${NUMBER_WS}
+
+
+
+
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] )
 then
   if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
