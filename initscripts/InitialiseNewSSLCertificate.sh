@@ -26,12 +26,12 @@ status () {
 	/bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
-${SSL_GENERATION_METHOD}
-${SSL_GENERATION_SERVICE}
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
-${WEBSITE_URL}
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_METHOD`"
+SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
 #IP has been added to the DNS provider and now we have to set up the SSL certificate for this webserver
 
