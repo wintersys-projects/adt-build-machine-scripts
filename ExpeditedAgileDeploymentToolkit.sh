@@ -222,7 +222,7 @@ ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 ${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
-. ${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
+#. ${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
 . ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
 
 # I think the usual phrase is, 'we are all set'. So, tell the user we are starting the build proper.
