@@ -302,7 +302,7 @@ do
                         /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}
                         /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}.pub ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}.pub
 
-                        /usr/bin/scp ${OPTIONS} -${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/InstallGit.sh
+                        /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/InstallGit.sh
                         git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
                         gitfetchno="0"
                         while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${as_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/as.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
