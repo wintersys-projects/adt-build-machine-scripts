@@ -24,6 +24,15 @@
 ####################################################################################
 #set -x
 
+${BUILD_HOME}
+${CLOUDHOST}
+${BUILD_IDENTIFIER}
+${ALGORITHM}
+${TOKEN}
+${BUILD_KEY}
+${PUBLIC_KEY_NAME}
+${PUBLIC_KEY_ID}
+
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
 TOKEN=""
