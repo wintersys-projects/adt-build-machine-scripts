@@ -24,10 +24,11 @@ status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
+pre_build="${1}"
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
 ACTIVE_FIREWALLS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACTIVE_FIREWALLS`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
-PRE_BUILD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRE_BUILD`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
