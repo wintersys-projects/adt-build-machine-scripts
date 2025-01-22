@@ -22,6 +22,15 @@
 ####################################################################################
 #set -x
 
+${SERVER_USER}
+${DNS_CHOICE}
+${WEBSITE_URL}
+${BUILD_HOME}
+${DNS_USERNAME}
+${DNS_SECURITY_KEY}
+${DNS_CHOICE}
+${DNS_REGION}
+
 if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/WEBSERVER_READY" ] && [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	#If we get to here then we know that the webserver was built correctly
