@@ -34,7 +34,7 @@ status () {
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
-WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
 DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT`"
 DATASTORE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATASTORE_CHOICE`"
