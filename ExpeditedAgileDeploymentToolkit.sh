@@ -197,7 +197,7 @@ fi
 
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
 then
-         . ${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
+         ${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
 fi
 
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
