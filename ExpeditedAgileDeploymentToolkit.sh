@@ -192,8 +192,7 @@ fi
 
 if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
 then
-         export PRE_BUILD="1"
-         ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh
+         ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "1"
 fi
 
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
@@ -268,8 +267,7 @@ fi
 
 if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
 then
-         export PRE_BUILD="0"
-         . ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh
+         ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 else
          . ${BUILD_HOME}/providerscripts/security/firewall/OnlyAddMachinesToFirewall.sh
 fi
