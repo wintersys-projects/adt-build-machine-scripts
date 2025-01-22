@@ -50,27 +50,22 @@ PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFI
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+DEFAULT_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEFAULT_USER`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
+WS_SIZE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WS_SIZE`"
+BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
+BUILDOS_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS_VERSION`"
+WS_SERVER_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WS_SERVER_TYPE`"
+BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
+BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
 
-${PRODUCTION}
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
-${WEBSERVER_PUBLIC_KEYS}
-${AUTOSCALER_PUBLIC_KEYS}
-${DEFAULT_USER}
-${SERVER_USER_PASSWORD}
-${WEBSITE_URL}
-${REGION}
-${SERVER_USER}
-${OS_TYPE}
-${WS_SIZE} 
-${BUILDOS} 
-${BUILDOS_VERSION}
-${WS_SERVER_TYPE}
-${BUILD_MACHINE_VPC}
-${INFRASTRUCTURE_REPOSITORY_OWNER}
-${BUILD_CHOICE}
-${HOME}
 
 if ( [ "${DEFAULT_USER}" = "root" ] )
 then
