@@ -225,7 +225,7 @@ do
                        initiation_ip="${ws_active_ip}"
                        machine_type="webserver"
 
-                       . ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh
+                       ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
 
@@ -318,7 +318,7 @@ do
                                 done="1"
                         fi
 
-                        . ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh
+                        ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh
 
                         #Remeber Webserver IP
                         WSIP=${ip}
