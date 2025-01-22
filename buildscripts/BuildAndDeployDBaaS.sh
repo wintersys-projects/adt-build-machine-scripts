@@ -23,6 +23,8 @@
 #########################################################################################
 #set -x
 
+
+
 #############################################################################################################
 # You might want to manually configure a remote database using a gui system.
 # If you want to do that you will need to setup the database manually and then set the 
@@ -41,6 +43,22 @@ then
         DBaaS_PASSWORD="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
         DBaaS_DBNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
 else
+
+${DATABASE_DBaaS_INSTALLATION_TYPE}
+${CLOUDHOST}
+${DATABASE_INSTALLATION_TYPE}
+${BYPASS_DB_LAYER}
+${BUILD_HOME}
+${VPC_IP_RANGE}
+${DATABASE_DBaaS_INSTALLATION_TYPE}
+${DB_PORT}
+${DBaaS_HOSTNAME}
+${DBaaS_USERNAME}
+${DBaaS_PASSWORD}
+${DBaaS_DBNAME}
+${BYPASS_DB_LAYER}
+${BUILD_IDENTIFIER}
+${CLUSTER_NAME}
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
         #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>:<database_username>"
