@@ -32,6 +32,7 @@ status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
 WEBSITE_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITENAME`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
