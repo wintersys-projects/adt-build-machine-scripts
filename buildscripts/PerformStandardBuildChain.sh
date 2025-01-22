@@ -20,20 +20,30 @@
 ####################################################################################
 #set -x
 
-${BUILD_IDENTIFIER}
-${BUILD_HOME}
-${CLOUDHOST}
-${PRODUCTION}
-${DEVELOPMENT}
-${BASELINE_DB_REPOSITORY}
-${NO_AUTOSCALERS}
-${INPARALLEL}
-${BUILD_ARCHIVE_CHOICE}
-${BUILD_MACHINE_VPC}
-${REGION}
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
+DEVELOPMENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEVELOPMENT`"
+BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
+NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
+INPARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INPARALLEL`"
+BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
+BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+
+
+AUTOSCALER_PUBLIC_KEYS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTOSCALER_PUBLIC_KEYS`"
+
+
 ${AUTOSCALER_PUBLIC_KEYS}
 ${OPTIONS} 
-${SSH_PORT} 
+
 ${SERVER_USER}
 
 if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
