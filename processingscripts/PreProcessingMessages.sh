@@ -21,6 +21,23 @@
 #######################################################################################################
 #set -x
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
+NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
+APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
+APPLICATION_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_IDENTIFIER`"
+BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
+DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
+DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
+DBaaS_DBNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_DBNAME`"
+
 status ""
 status ""
 status "#########################################"
