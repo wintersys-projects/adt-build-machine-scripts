@@ -26,6 +26,11 @@ done=0
 counter="0"
 count="0"
 
+
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
 #If done=1 then we know that we have build a database correctly so we don't need to run again
 #If databases fail to build, we try again up to 5 times
 
@@ -42,29 +47,30 @@ PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFI
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+DEFAULT_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEFAULT_USER`"
+DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+DB_SIZE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_SIZE`"
+BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
+BUILDOS_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS_VERSION`"
+DB_SERVER_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_SERVER_TYPE`"
+BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
+BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
+BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
+SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+
+
 
 ${OPTIONS}
-${BUILD_HOME}
-${CLOUDHOST}
-${BUILD_IDENTIFIER}
-${DEFAULT_USER}
-${SERVER_USER_PASSWORD}
-${DATABASE_INSTALLATION_TYPE}
-${WEBSITE_URL}
-${REGION}
-${SERVER_USER}
-${OS_TYPE} AS_SIZE AS_SERVER_TYPE
-${DB_SIZE} 
-${BUILDOS} 
-${BUILDOS_VERSION}
-${DB_SERVER_TYPE}
-${BUILD_MACHINE_VPC}
+${OS_TYPE} 
 ${IP_MASK}
-${CUSTOM_USER_SUDO} 
-${INFRASTRUCTURE_REPOSITORY_OWNER}
-${BASELINE_DB_REPOSITORY}
-${BUILD_CHOICE}
-${SSH_PORT} 
+ 
 
 if ( [ "${DEFAULT_USER}" = "root" ] )
 then
