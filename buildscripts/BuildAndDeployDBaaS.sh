@@ -28,6 +28,16 @@ status () {
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
+VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
+DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
+BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+
 
 #############################################################################################################
 # You might want to manually configure a remote database using a gui system.
@@ -48,19 +58,6 @@ then
         DBaaS_DBNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
 elif ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
-        DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
-        CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
-        DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
-        BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
-        VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
-        DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
-      #  DBaaS_HOSTNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_HOSTNAME`"
-      #  DBaaS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_USERNAME`"
-      #  DBaaS_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_PASSWORD`"
-      #  DBaaS_DBNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_DBNAME`"
-        BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
-        BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
-
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
         #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>:<database_username>"
@@ -528,7 +525,7 @@ else
         DBaaS_DBNAME="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
         DBaaS_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
         DBaaS_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"#
-        DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
+        DBaaS_HOSTNAME="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
         
@@ -538,29 +535,6 @@ ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_USERNAME=${DBaaS_USERNAME
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBPORT=${DB_PORT}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBaaS_HOSTNAME}"
 
-
-#
-#then
-#        DBaaS_HOSTNAME="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_HOSTNAME`"
-#        DBaaS_DBNAME="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#        DBaaS_USERNAME="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#        DBaaS_PASSWORD="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#        DB_PORT="`/bin/sed 4!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#else
-#        rnd="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
-#        rnd1="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
-#        rnd2="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"#
-#
-#        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials ] )
-#        then
-#                /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials
-#        fi
-#        
-#        /bin/echo "${rnd}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#        /bin/echo "${rnd1}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#        /bin/echo "${rnd2}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#        /bin/echo "${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#fi
 
 
 
