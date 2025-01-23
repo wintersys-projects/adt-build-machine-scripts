@@ -46,8 +46,8 @@ then
         DBaaS_USERNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
         DBaaS_PASSWORD="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
         DBaaS_DBNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
-else
-
+elif ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+then
         DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
         CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
         DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
@@ -524,23 +524,62 @@ else
                         /usr/bin/vultr database update ${cluster_id} --trusted-ips "${VPC_IP_RANGE}"
                 fi
         fi
+else
+        DBaaS_DBNAME="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
+        DBaaS_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
+        DBaaS_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"#
+        DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
 fi
 
-if ( [ -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials ] )
-then
-        /bin/echo "${DBaaS_HOSTNAME}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_HOSTNAME
-        /bin/echo "${DBaaS_DBNAME}" >  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_DBNAME=${DBaaS_DBNAME}"
-        /bin/echo "${DBaaS_PASSWORD}" >>  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_PASSWORD=${DBaaS_PASSWORD}"
-        /bin/echo "${DBaaS_USERNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_USERNAME=${DBaaS_USERNAME}"
-        /bin/echo "${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBPORT=${DB_PORT}"
-        /bin/echo "${DBaaS_HOSTNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBaaS_HOSTNAME}"
+        
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_DBNAME=${DBaaS_DBNAME}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_PASSWORD=${DBaaS_PASSWORD}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_USERNAME=${DBaaS_USERNAME}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBPORT=${DB_PORT}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBaaS_HOSTNAME}"
 
 
-fi
+#
+#then
+#        DBaaS_HOSTNAME="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_HOSTNAME`"
+#        DBaaS_DBNAME="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
+#        DBaaS_USERNAME="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
+#        DBaaS_PASSWORD="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
+#        DB_PORT="`/bin/sed 4!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
+#else
+#        rnd="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
+#        rnd1="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
+#        rnd2="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"#
+#
+#        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials ] )
+#        then
+#                /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials
+#        fi
+#        
+#        /bin/echo "${rnd}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
+#        /bin/echo "${rnd1}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
+#        /bin/echo "${rnd2}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
+#        /bin/echo "${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
+#fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
