@@ -31,6 +31,7 @@ database_ip="${1}"
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+
      
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_HOSTNAME ] )
 then
@@ -40,7 +41,7 @@ fi
 
 DB_PORT="`/bin/sed 4!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
 
-
+db_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 #if ( [ "${DB_PORT}" = "" ] )
 #then
 #     DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
