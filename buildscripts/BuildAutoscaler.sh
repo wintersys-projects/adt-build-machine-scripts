@@ -263,7 +263,7 @@ do
                       #  initiation_ip="${as_active_ip}"
                       #  machine_type="autoscaler"
 
-                        ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${as_active_ip}" "autoscaler"
+                        ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${as_active_ip}" "autoscaler" "${AUTOSCALER_PUBLIC_KEYS}"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat
 
