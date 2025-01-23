@@ -222,6 +222,7 @@ do
                         /bin/rm ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
                 fi
 
+                /usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${as_active_ip}"
                 /usr/bin/ssh-keyscan -T 60 ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
 
                 keytry="1"
