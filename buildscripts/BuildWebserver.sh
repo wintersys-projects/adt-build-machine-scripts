@@ -199,7 +199,7 @@ do
                         /bin/cp /dev/null ${WEBSERVER_PUBLIC_KEYS}
                 fi
 
-                /usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${ws_active_ip}"
+             #   /usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${ws_active_ip}"
                 /usr/bin/ssh-keyscan -T 60 ${ws_active_ip} >> ${WEBSERVER_PUBLIC_KEYS}
   
                 keytry="1"
