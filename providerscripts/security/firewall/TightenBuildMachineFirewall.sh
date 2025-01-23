@@ -25,7 +25,11 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-set -x
+#set -x
+
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 if ( [ -f /var/spool/cron/crontabs/root ] )
 then
@@ -40,13 +44,13 @@ CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 
 if ( [ "`/bin/ls /root/FIREWALL-BUCKET:* 2>/dev/null`" = "" ] )
 then
-        IDENTIFIER="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
-        /bin/touch /root/FIREWALL-BUCKET:${IDENTIFIER}
+        auth_bucket="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
+        /bin/touch /root/FIREWALL-BUCKET:${auth_bucket}
 else
-        IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
+        auth_bucket="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 fi
 
-${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${IDENTIFIER}"
+${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${auth_bucket}"
 
 if ( [ "`/usr/bin/crontab -l | /bin/grep TightenBuildMachineFirewall.sh`" = "" ] )
 then
@@ -59,37 +63,37 @@ then
         /bin/echo "45 4 * * * /usr/bin/apt -y -qq update && /usr/bin/apt -y -qq upgrade && /usr/sbin/shutdown -r now" >> /var/spool/cron/crontabs/root
 fi
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT`" != "" ] )
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
 then
-        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT 
+        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT 
 fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ] || [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIME_FIREWALL ] )
 then
         /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/*FIREWALL*  2>/dev/null
 
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${IDENTIFIER}/FIREWALL-EVENT 
+                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT 
         fi
 
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/authorised-ips.dat`" != "" ] )
         then
                 echo "LISTING FROM DATASTORE"
-                 ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME} 
+                 ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME} 
         fi
 
-        if ( [ "${LAPTOP_IP}" = "" ] )
+        if ( [ "${laptop_ip}" = "" ] )
         then
                 if ( [ -f ${BUILD_HOME}/runtimedata/LAPTOPIP:* ] )
                 then
-                        LAPTOP_IP="`/bin/ls ${BUILD_HOME}/runtimedata/LAPTOPIP:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
+                        laptop_ip="`/bin/ls ${BUILD_HOME}/runtimedata/LAPTOPIP:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
                 fi
         fi 
 
-        if ( [ "${LAPTOP_IP}" != "" ] )
+        if ( [ "${laptop_ip}" != "" ] )
         then
-                if ( [ "${LAPTOP_IP}" != "BYPASS" ] )
+                if ( [ "${laptop_ip}" != "BYPASS" ] )
                 then
 
                    if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips ] )
@@ -97,16 +101,16 @@ then
                            /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips
                    fi
                    
-                   /bin/echo "${LAPTOP_IP}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+                   /bin/echo "${laptop_ip}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
                    /usr/bin/uniq ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
                    /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
                    /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
                    
-                   if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${IDENTIFIER}`" = "" ] )
+                   if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}`" = "" ] )
                    then
-                           ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${IDENTIFIER}
+                           ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${auth_bucket}
                    fi
-                   ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}/authorised-ips.dat
+                   ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${auth_bucket}/authorised-ips.dat
                 fi
    fi
 
