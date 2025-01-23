@@ -280,10 +280,10 @@ do
 #                        /bin/echo "IdentityFile ~/.ssh/${SERVER_USER}.key" >> ~/.ssh/config
 #                        /bin/echo "IdentitiesOnly yes" >> ~/.ssh/config
 
-                         initiation_ip="${db_active_ip}"
-                         machine_type="database"
+                        # initiation_ip="${db_active_ip}"
+                        # machine_type="database"
 
-                         ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh
+                         ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${db_active_ip}" "database"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
 
