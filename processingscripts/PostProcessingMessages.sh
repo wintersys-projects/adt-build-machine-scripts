@@ -57,7 +57,23 @@ then
 	status "Please make a note of them but remember to keep them safe and secret"
 	status "You can enter them in the GUI system when you install the application"
 	status "#########################################"
-	. ${BUILD_HOME}/providerscripts/application/ObtainCredentials.sh
+	if ( [ "${HARDCORE}" = "1" ] )
+	then
+        	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+        	then
+                	/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" 
+                	/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" 
+                	/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" 
+        	fi
+	else
+        	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+        	then
+                	/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
+                	/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
+                	/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
+		fi
+  	fi
+
 	status "#########################################"
  
  
