@@ -47,7 +47,7 @@ fi
 
 db_port="`/bin/sed 4!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
 
-db_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+db_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 #if ( [ "${DB_PORT}" = "" ] )
 #then
 #     DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
