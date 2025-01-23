@@ -222,10 +222,10 @@ do
 #                        /bin/echo "IdentityFile ~/.ssh/${SERVER_USER}.key" >> ~/.ssh/config
 #                        /bin/echo "IdentitiesOnly yes" >> ~/.ssh/config
 
-                       initiation_ip="${ws_active_ip}"
-                       machine_type="webserver"
+                      # initiation_ip="${ws_active_ip}"
+                      # machine_type="webserver"
 
-                       ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh
+                       ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
 
