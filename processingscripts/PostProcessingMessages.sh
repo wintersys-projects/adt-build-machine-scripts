@@ -60,18 +60,9 @@ then
 	. ${BUILD_HOME}/providerscripts/application/ObtainCredentials.sh
 	status "#########################################"
  
- 	if ( [ "${DBIP_PRIVATE}" = "" ] )
-  	then
-   		DBIP_PRIVATE="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-	fi
  
-	if ( [ "${DBIP_PUBLIC}" = "" ] )
-  	then
-      		DBIP_PUBLIC="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-	fi
- 
-	status "The database public IP address is: ${DBIP_PUBLIC}"
- 	status "The database private IP address is: ${DBIP_PRIVATE} (try this one first from your application if it timesout, try the public one)"
+	status "The database public IP address is: `${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+ 	status "The database private IP address is: `${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"` (try this one first from your application if it timesout, try the public one)"
 	status "The database port is ${DB_PORT}"
 	status "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')"
 	status "#########################################"
