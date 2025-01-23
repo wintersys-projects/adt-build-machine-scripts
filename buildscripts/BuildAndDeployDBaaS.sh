@@ -52,7 +52,7 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS | /bin/grep MANUAL`" != "" ] )
 then
         database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS:MANUAL//g'`"
-        DBaaS_HOSTNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
+        DB_IDENTIFIER="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
         DBaaS_USERNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
         DBaaS_PASSWORD="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
         DBaaS_DBNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
@@ -177,7 +177,7 @@ then
 
                         export DATABASE_INSTALLATION_TYPE="DBaaS"
                         export DATABASE_DBaaS_INSTALLATION_TYPE="${DATABASE_DBaaS_INSTALLATION_TYPE}:${cluster_id}"
-                        export DBaaS_HOSTNAME="private-`/usr/local/bin/doctl databases connection ${cluster_id} | /usr/bin/awk '{print $3}' | /usr/bin/tail -1`"
+                        export DB_IDENTIFIER="private-`/usr/local/bin/doctl databases connection ${cluster_id} | /usr/bin/awk '{print $3}' | /usr/bin/tail -1`"
                         export DBaaS_USERNAME="${database_user}"
                         export DBaaS_PASSWORD="${database_password}"
                         export DBaaS_DBNAME="${db_name}"
@@ -185,7 +185,7 @@ then
 
                         status "The Values I have retrieved for your database setup are:"
                         status "##########################################################"
-                        status "HOSTNAME:${DBaaS_HOSTNAME}"
+                        status "HOSTNAME:${DB_IDENTIFIER}"
                         status "USERNAME:${DBaaS_USERNAME}"
                         status "PASSWORD:${DBaaS_PASSWORD}"
                         status "DATABASENAME:${DBaaS_DBNAME}"
@@ -261,7 +261,7 @@ then
                         export DBaaS_USERNAME="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.user"`"
                         export DBaaS_PASSWORD="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.password"`"
                         export DATABASE_INSTALLATION_TYPE="DBaaS"
-                        export DBaaS_HOSTNAME="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.host"`"
+                        export DB_IDENTIFIER="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.host"`"
                         export DBaaS_DBNAME="${db_name}"
                         export DB_PORT="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.port"`"
                         export DATABASE_REGION="${database_region}"
@@ -277,7 +277,7 @@ then
 
                         status "The Values I have retrieved for your database setup are:"
                         status "##########################################################"
-                        status "HOSTNAME:${DBaaS_HOSTNAME}"
+                        status "HOSTNAME:${DB_IDENTIFIER}"
                         status "USERNAME:${DBaaS_USERNAME}"
                         status "PASSWORD:${DBaaS_PASSWORD}"
                         status "DATABASENAME:${DBaaS_DBNAME}"
@@ -358,7 +358,7 @@ then
                                 fi
 
                                 export CLUSTER_NAME="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`"
-                                export DBaaS_HOSTNAME="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
+                                export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
                                 export DBaaS_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
                                 export DBaaS_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
@@ -412,7 +412,7 @@ then
                                 fi
 
                                 export CLUSTER_NAME="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`"
-                                export DBaaS_HOSTNAME="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
+                                export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
                                 export DBaaS_USERNAME="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
                                 export DBaaS_PASSWORD="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
@@ -424,7 +424,7 @@ then
                         status "The Values I have retrieved for your database setup are:"
                         status "##########################################################"
                         status "CLUSTERNAME:${CLUSTER_NAME}"
-                        status "HOSTNAME:${DBaaS_HOSTNAME}"
+                        status "HOSTNAME:${DB_IDENTIFIER}"
                         status "USERNAME:${DBaaS_USERNAME}"
                         status "PASSWORD:${DBaaS_PASSWORD}"
                         status "DATABASENAME:${DBaaS_DBNAME}"
@@ -498,7 +498,7 @@ then
 
                         export DBaaS_USERNAME="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").user'`"
                         export DBaaS_PASSWORD="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").password'`"
-                        export DBaaS_HOSTNAME="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").host'`"
+                        export DB_IDENTIFIER="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").host'`"
                         export DB_PORT="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").port'`"
                         export DBaaS_DBNAME="${db_name}"
 
@@ -507,7 +507,7 @@ then
                         status "##########################################################"
                         status "USERNAME:${DBaaS_USERNAME}"
                         status "PASSWORD:${DBaaS_PASSWORD}"
-                        status "HOST:${DBaaS_HOSTNAME}"
+                        status "HOST:${DB_IDENTIFIER}"
                         status "PORT:${DB_PORT}"
                         status "DB NAME:${DBaaS_DBNAME}"
                         status "##########################################################"
@@ -525,14 +525,14 @@ else
         DBaaS_DBNAME="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
         DBaaS_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
         DBaaS_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"#
-        DBaaS_HOSTNAME="self-managed"
+        DB_IDENTIFIER="self-managed"
 fi
       
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_DBNAME=${DBaaS_DBNAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_PASSWORD=${DBaaS_PASSWORD}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_USERNAME=${DBaaS_USERNAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
-${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBaaS_HOSTNAME}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DB_IDENTIFIER}"
 
 
 
