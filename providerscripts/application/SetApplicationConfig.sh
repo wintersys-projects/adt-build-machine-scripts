@@ -41,7 +41,7 @@ BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARC
 database_username="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_USERNAME'`"
 database_password="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_PASSWORD'`"
 database_name="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_DBNAME'`"
-db_port="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBPORT'`"
+db_port="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PORT'`"
 db_identifier="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_HOSTNAME'`"
 
  
