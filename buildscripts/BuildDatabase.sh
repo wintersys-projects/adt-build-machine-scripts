@@ -209,9 +209,9 @@ do
                 DBIP_PUBLIC="${ip}"
                 DBIP_PRIVATE="${private_ip}"
 
-                DBaaS_HOSTNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_HOSTNAME`"
+                DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_IDENTIFIER`"
 
-                if ( [ "${DBaaS_HOSTNAME}" = "self-managed" ] )
+                if ( [ "${DB_IDENTIFIER}" = "self-managed" ] )
                 then
                         ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBIP_PRIVATE}"
                 fi
