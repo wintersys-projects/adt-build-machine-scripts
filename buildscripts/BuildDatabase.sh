@@ -209,6 +209,13 @@ do
                 DBIP_PUBLIC="${ip}"
                 DBIP_PRIVATE="${private_ip}"
 
+                DBaaS_HOSTNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_HOSTNAME`"
+
+                if ( [ "${DBaaS_HOSTNAME}" = "self-managed" ] )
+                then
+                        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DB_PRIVATE}"
+                fi
+
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} databaseip/${private_ip}
 
