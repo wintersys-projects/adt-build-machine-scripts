@@ -259,7 +259,7 @@ then
          ${BUILD_HOME}/buildscripts/BuildDatabase.sh
 fi
 
-. ${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
+${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
 
 if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
 then
