@@ -62,12 +62,12 @@ then
  
  	if ( [ "${DBIP_PRIVATE}" = "" ] )
   	then
-     		DBIP_PRIVATE="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:* | /usr/bin/awk -F':' '{print $NF}'`"
+   		DBIP_PRIVATE="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 	fi
  
 	if ( [ "${DBIP_PUBLIC}" = "" ] )
   	then
-     		DBIP_PUBLIC="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* | /usr/bin/awk -F':' '{print $NF}'`"
+      		DBIP_PUBLIC="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 	fi
  
 	status "The database public IP address is: ${DBIP_PUBLIC}"
