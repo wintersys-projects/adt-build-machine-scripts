@@ -525,10 +525,9 @@ else
         DBaaS_DBNAME="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
         DBaaS_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
         DBaaS_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"#
-        DBaaS_HOSTNAME="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        DBaaS_HOSTNAME="self-managed"
 fi
-
-        
+      
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_DBNAME=${DBaaS_DBNAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_PASSWORD=${DBaaS_PASSWORD}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_USERNAME=${DBaaS_USERNAME}"
