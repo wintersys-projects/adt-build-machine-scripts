@@ -61,16 +61,19 @@ then
 	then
         	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
         	then
-                	/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" 
-                	/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" 
-                	/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" 
+                	/bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_DBNAME'`" 
+                	/bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_USERNAME'`" 
+                	/bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_PASSWORD'`" 
         	fi
 	else
         	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
         	then
-                	/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
-                	/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
-                	/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
+	                /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_DBNAME'`" >&3
+                	/bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_USERNAME'`" >&3
+                	/bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_PASSWORD'`" >&3
+                	#/bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
+                	#/bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
+                	#/bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
 		fi
   	fi
 
