@@ -326,7 +326,7 @@ do
                         then
                                 done="0"
                         else
-                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh
+                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
                                 done="1"
                         fi
 
