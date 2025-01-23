@@ -21,6 +21,17 @@
 #######################################################################################################
 #set -x
 
+${BUILD_HOME}
+${CLOUDHOST}
+${BUILD_IDENTIFIER}
+${WEBSERVER_PUBLIC_KEYS}
+${BASELINE_DB_REPOSITORY}
+${APPLICATION}
+${DB_PORT}
+${WEBSITE_URL}
+${SERVER_USER}
+${INFRASTRUCTURE_REPOSITORY_OWNER}
+
 WEBSERVER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/webserver_keys"
 OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
 
