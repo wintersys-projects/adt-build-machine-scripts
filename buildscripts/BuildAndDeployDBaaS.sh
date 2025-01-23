@@ -538,7 +538,7 @@ then
         /bin/echo "${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
         ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
         /bin/echo "${DBaaS_HOSTNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBaaS_HOSTNAME}}"
+        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBaaS_HOSTNAME}"
 
 
 fi
