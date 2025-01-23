@@ -293,14 +293,9 @@ do
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
                         
-                        for variable in `/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment`
-                        do
-                               # set ${variable} 2>/dev/null
-                                if ( [ "`export $variable 2>&1 | /bin/grep 'export:'`" != "" ] )
-                                then
-                                        continue
-                                fi
-                        done
+                        set -o allexport
+                        . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+                        set +o allexport
                         
                         while read param
                         do
