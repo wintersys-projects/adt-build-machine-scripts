@@ -62,8 +62,8 @@ fi
 /bin/sed -i '/$mailer /c\        public $mailer = "smtp";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$mailfrom /c\        public $mailfrom = "'${SYSTEM_FROMEMAIL_ADDRESS}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$replyto /c\        public $replyto = "'${SYSTEM_TOEMAIL_ADDRESS}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$fromname /c\        public $fromname = "'${WEBSITE_NAME} Webmaster'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$replytoname /c\        public $replytoname = "'${WEBSITE_NAME} Webmaster'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$fromname /c\        public $fromname = "'${WEBSITE_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$replytoname /c\        public $replytoname = "'${WEBSITE_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$smtpauth /c\        public $smtpauth = "1";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$smtpuser /c\        public $smtpuser = "'${SYSTEM_EMAIL_USERNAME}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$smtppass /c\        public $smtppass = "'${SYSTEM_EMAIL_PASSWORD}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
