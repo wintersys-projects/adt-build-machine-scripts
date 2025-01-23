@@ -259,10 +259,10 @@ do
 #                        /bin/echo "IdentityFile ~/.ssh/${SERVER_USER}.key" >> ~/.ssh/config
 #                        /bin/echo "IdentitiesOnly yes" >> ~/.ssh/config
 
-                        initiation_ip="${as_active_ip}"
-                        machine_type="autoscaler"
+                      #  initiation_ip="${as_active_ip}"
+                      #  machine_type="autoscaler"
 
-                        ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh
+                        ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${as_active_ip}" "autoscaler"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat
 
