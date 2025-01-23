@@ -41,8 +41,6 @@ SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_I
 
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
-/usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${initiation_ip}"
-
 loop="0"
 connected="0"
 sshpass="0"
