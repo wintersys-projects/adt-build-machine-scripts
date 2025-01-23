@@ -230,7 +230,8 @@ do
                        ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
-
+                        . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+                        
                         while read param
                         do
                                 param1="`eval /bin/echo ${param}`"
