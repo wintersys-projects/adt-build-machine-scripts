@@ -228,7 +228,7 @@ do
                       # initiation_ip="${ws_active_ip}"
                       # machine_type="webserver"
 
-                       ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver"
+                       ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver" "${WEBSERVER_PUBLIC_KEYS}"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
                         
