@@ -12,4 +12,9 @@ fi
 
 key="`/bin/echo ${keyvalue} | /usr/bin/awk -F'=' '{print $1}'`"
 
-/bin/sed -i "s/${key}=.*/${keyvalue}/" ${BUILD_ENVIRONMENT}
+if ( [ "`/bin/grep "^${key}=" ${BUILD_ENVIRONMENT}`" = "" ] )
+then
+        /bin/echo "${keyvalue}" >> ${BUILD_ENVIRONMENT}
+else
+        /bin/sed -i "s/${key}=.*/${keyvalue}/" ${BUILD_ENVIRONMENT}
+fi
