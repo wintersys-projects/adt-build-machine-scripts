@@ -29,11 +29,11 @@ then
 fi
 
 dbprefix="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat`"
-/bin/sed -i "/DB_HOST/c\ define('DB_HOST', \"${database_identifier}:${db_port}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
-/bin/sed -i "/DB_USER/c\ define('DB_USER', \"${database_username}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
-/bin/sed -i "/DB_PASSWORD/c\ define('DB_PASSWORD', \"${database_password}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
-/bin/sed -i "/DB_NAME/c\ define('DB_NAME', \"${database_name}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
-/bin/sed -i "/\$table_prefix/c\ \$table_prefix=\"${dbprefix}\";" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+/bin/sed -i '/DB_HOST/c\ define("DB_HOST", "'${database_identifier}:${db_port}'");' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+/bin/sed -i '/DB_USER/c\ define("DB_USER", "'${database_username}'");' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+/bin/sed -i '/DB_PASSWORD/c\ define("DB_PASSWORD", "'${database_password}'");' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+/bin/sed -i '/DB_NAME/c\ define("DB_NAME", "'${database_name}'");' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+/bin/sed -i '/\$table_prefix/c\ \$table_prefix="'${dbprefix}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
 
 if ( [ "`/bin/grep SALTEDALREADY ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default`" = "" ] )
 then
