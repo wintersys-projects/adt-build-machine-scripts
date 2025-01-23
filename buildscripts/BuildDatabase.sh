@@ -286,7 +286,7 @@ do
                         # initiation_ip="${db_active_ip}"
                         # machine_type="database"
 
-                         ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${db_active_ip}" "database"
+                         ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${db_active_ip}" "database" "${DATABASE_PUBLIC_KEYS}"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
                         
