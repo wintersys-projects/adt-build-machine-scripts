@@ -213,7 +213,7 @@ do
 
                 if ( [ "${DB_IDENTIFIER}" = "self-managed" ] )
                 then
-                        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBIP_PRIVATE}"
+                        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DBIP_PRIVATE}"
                 fi
 
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
