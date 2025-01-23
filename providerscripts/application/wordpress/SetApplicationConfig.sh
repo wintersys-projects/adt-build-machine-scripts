@@ -29,7 +29,7 @@ then
 fi
 
 dbprefix="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat`"
-/bin/sed -i "/DB_HOST/c\ define('DB_HOST', \"${database_identifier}:${DB_PORT}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+/bin/sed -i "/DB_HOST/c\ define('DB_HOST', \"${database_identifier}:${db_port}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
 /bin/sed -i "/DB_USER/c\ define('DB_USER', \"${database_username}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
 /bin/sed -i "/DB_PASSWORD/c\ define('DB_PASSWORD', \"${database_password}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
 /bin/sed -i "/DB_NAME/c\ define('DB_NAME', \"${database_name}\");" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
