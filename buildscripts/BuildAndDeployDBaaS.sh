@@ -532,7 +532,7 @@ fi
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_DBNAME=${DBaaS_DBNAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_PASSWORD=${DBaaS_PASSWORD}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_USERNAME=${DBaaS_USERNAME}"
-${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBPORT=${DB_PORT}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_HOSTNAME=${DBaaS_HOSTNAME}"
 
 
