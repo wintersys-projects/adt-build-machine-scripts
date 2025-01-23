@@ -266,7 +266,11 @@ do
                         ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${as_active_ip}" "autoscaler"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat
-                        . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+
+                        for variable in `/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment`
+                        do
+                                set ${variable} 2>/dev/null
+                        done
 
                         while read param
                         do
