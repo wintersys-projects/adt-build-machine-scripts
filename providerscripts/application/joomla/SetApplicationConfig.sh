@@ -40,10 +40,10 @@ then
         /bin/sed -i "/\$dbtype /c\        public \$dbtype = \'pgsql\';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
         /bin/sed -i "/\$port /d" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
         /bin/sed -i "/\$host /c\        public \$host = \'${database_identifier}\';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        /bin/sed -i "/\$host /a        public \$port = \'${DB_PORT}\';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+        /bin/sed -i "/\$host /a        public \$port = \'${db_port}\';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 else
  /bin/sed -i "/\$dbtype /c\        public \$dbtype = \'mysqli\';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
- /bin/sed -i "/\$host = /c\   public \$host = \'${database_identifier}:${DB_PORT}\';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+ /bin/sed -i "/\$host = /c\   public \$host = \'${database_identifier}:${db_port}\';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 fi
 
 
