@@ -256,7 +256,7 @@ do
                         /bin/cp /dev/null ${DATABASE_PUBLIC_KEYS}
                 fi
 
-                /usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${db_active_ip}"
+              #  /usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${db_active_ip}"
 
                 /usr/bin/ssh-keyscan -T 60 ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
 
