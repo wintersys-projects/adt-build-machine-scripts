@@ -326,12 +326,10 @@ do
                         then
                                 done="0"
                         else
+                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh
                                 done="1"
                         fi
 
-                        ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh
-
-                        #Remeber Webserver IP
                         WSIP=${ip}
 
                         #If $done != 1, then the webserver didn't build properly, so, destroy the machine
