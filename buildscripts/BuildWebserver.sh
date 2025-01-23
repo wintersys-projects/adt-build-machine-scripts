@@ -231,7 +231,11 @@ do
                        ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver"
 
                         /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
-                        . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+                        
+                        for variable in `/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment`
+                        do
+                                set ${variable} 2>/dev/null
+                        done
                         
                         while read param
                         do
