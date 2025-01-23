@@ -295,7 +295,11 @@ do
                         
                         for variable in `/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment`
                         do
-                                set ${variable} 2>/dev/null
+                               # set ${variable} 2>/dev/null
+                                if ( [ "`export $variable 2>&1 | /bin/grep 'export:'`" != "" ] )
+                                then
+                                        continue
+                                fi
                         done
                         
                         while read param
