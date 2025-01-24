@@ -27,16 +27,13 @@
 #######################################################################################################
 #set -x
 
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
-BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
-
 if ( [ -f /var/spool/cron/crontabs/root ] )
 then
         /bin/sed -i "/^#/d" /var/spool/cron/crontabs/root
 fi
 
-BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 ${BUILD_HOME}/providerscripts/server/GetServerName.sh ${ip} "${CLOUDHOST}"
