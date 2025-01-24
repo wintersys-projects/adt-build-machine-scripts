@@ -36,15 +36,6 @@
 #######################################################################################################
 #set -x
 
-${SERVER_USER_PASSWORD}
-${BUILD_HOME}
-${BUILDOS}
-${WEBSITE_URL}
-${DNS_CHOICE}
-${SSL_LIVE_CERT}
-${DNS_USERNAME}
-${DNS_SECURITY_KEY}
-
 status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
@@ -53,7 +44,9 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
-
+SSL_LIVE_CERT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_LIVE_CERT`"
+DNS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_USERNAME`"
+DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_KEY`"
 
 SUDO="/bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
