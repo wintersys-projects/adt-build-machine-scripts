@@ -24,15 +24,22 @@
 
 DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
 
-${CLOUDHOST}
-${DATABASE_INSTALLATION_TYPE}
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
+DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
+
+
+
 ${ASIP}
 ${cluster_id} --rule ip_addr:${WSIP}
 ${cluster_id} --rule ip_addr:${DBIP}
 ${cluster_id} --rule ip_addr:${BUILD_CLIENT_IP}
-${BUILD_HOME}
-${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}
 ${DATABASE_REGION} 
 ${DBaaS_DBNAME} 
 ${CLUSTER_NAME}
