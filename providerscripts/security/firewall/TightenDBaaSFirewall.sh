@@ -25,6 +25,21 @@
 DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
 
 
+${CLOUDHOST}
+${DATABASE_INSTALLATION_TYPE}
+${ASIP}
+${cluster_id} --rule ip_addr:${WSIP}
+${cluster_id} --rule ip_addr:${DBIP}
+${cluster_id} --rule ip_addr:${BUILD_CLIENT_IP}
+${BUILD_HOME}
+${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}
+${DATABASE_REGION} 
+${DBaaS_DBNAME} 
+${CLUSTER_NAME}
+${ASIP}\",\"${WSIP}\",\"${DBIP}\",\"${ASIP_PRIVATE}\",\"${WSIP_PRIVATE}\",\"${DBIP_PRIVATE}\",\"${BUILD_CLIENT_IP}
+"${DBaaS_HOSTNAME}
+
+
 if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
 	:
