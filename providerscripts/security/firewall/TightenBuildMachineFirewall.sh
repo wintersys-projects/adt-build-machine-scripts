@@ -33,7 +33,6 @@ then
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 ${BUILD_HOME}/providerscripts/server/GetServerName.sh ${ip} "${CLOUDHOST}"
