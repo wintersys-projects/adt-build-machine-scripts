@@ -85,7 +85,7 @@ then
                                          rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
                                 fi
 
-                                . ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
+                                ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
 
 
                                 if ( [ "${alldnsproxyips}" != "" ] )
@@ -196,7 +196,7 @@ then
                                 /usr/bin/exo compute security-group rule add adt-webserver-${BUILD_IDENTIFIER} --protocol icmp --network 0.0.0.0/0 --icmp-code 0 --icmp-type 8
                                 /usr/bin/exo compute security-group rule add adt-webserver-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${SSH_PORT}
 
-                                . ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
+                                ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
 
                                 if ( [ "${alldnsproxyips}" != "" ] )
                                 then
@@ -295,7 +295,7 @@ then
                         webserver_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
 
-                        . ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
+                        ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
                         ips="`/bin/echo ${ips} | /bin/sed 's/,$//g'`"
 
 
@@ -406,7 +406,7 @@ then
                         if ( [ "${webserver_id}" != "" ] )
                         then
                                 firewall_id="`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.description == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"    
-                                . ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
+                                ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
 
                                 if ( [ "${alldnsproxyips}" != "" ] )
                                 then
