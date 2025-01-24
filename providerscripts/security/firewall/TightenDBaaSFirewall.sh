@@ -78,11 +78,11 @@ then
         if ( [ "${database_type}" = "Postgres" ] )
 	then
 		status "Tightening the firewall on your postgres database for your webserver with following IPs: ${ips}"    
-		/usr/bin/exo dbaas update --zone ${DATABASE_REGION} ${DBaaS_DBNAME} --pg-ip-filter=${ips}
+		/usr/bin/exo dbaas update --zone ${DATABASE_REGION} ${DB_NAME} --pg-ip-filter=${ips}
 	elif ( [ "${database_type}" = "MySQL" ] )
 	then
 		status "Tightening the firewall on your mysql database for your webserver with following IPs: ${ips}"    
-		/usr/bin/exo dbaas update --zone ${DATABASE_REGION} ${DBaaS_DBNAME} --mysql-ip-filter=${ips}
+		/usr/bin/exo dbaas update --zone ${DATABASE_REGION} ${DB_NAME} --mysql-ip-filter=${ips}
 	fi
  fi
 
