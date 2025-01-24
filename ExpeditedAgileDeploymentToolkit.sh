@@ -265,10 +265,10 @@ if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ 
 then
          ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 else
-         . ${BUILD_HOME}/providerscripts/security/firewall/OnlyAddMachinesToFirewall.sh
+         ${BUILD_HOME}/providerscripts/security/firewall/OnlyAddMachinesToFirewall.sh
 fi
 #If we have any messages to put out to the user post build, we add them to this script
-. ${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
+${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
 
 #We inform the users of their credentials. Sometimes, depending on the application, the user needs to know more or less
 #Some applications we can configure for use behind the scenes, other times, the user has to do some stuff in the gui to
