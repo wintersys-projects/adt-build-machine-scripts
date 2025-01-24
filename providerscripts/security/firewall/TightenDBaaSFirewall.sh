@@ -34,7 +34,11 @@ DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DAT
 DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
 DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
 
-
+if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
+then    
+        database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
+	database_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
+fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
@@ -56,11 +60,11 @@ then
         if ( [ "${database_type}" = "Postgres" ] )
 	then
 		status "Tightening the firewall on your postgres database for your webserver with following IPs: ${ips}"    
-		/usr/bin/exo dbaas update --zone ${DATABASE_REGION} ${DB_NAME} --pg-ip-filter=${ips}
+		/usr/bin/exo dbaas update --zone ${database-region} ${DB_NAME} --pg-ip-filter=${ips}
 	elif ( [ "${database_type}" = "MySQL" ] )
 	then
 		status "Tightening the firewall on your mysql database for your webserver with following IPs: ${ips}"    
-		/usr/bin/exo dbaas update --zone ${DATABASE_REGION} ${DB_NAME} --mysql-ip-filter=${ips}
+		/usr/bin/exo dbaas update --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${ips}
 	fi
  fi
 
