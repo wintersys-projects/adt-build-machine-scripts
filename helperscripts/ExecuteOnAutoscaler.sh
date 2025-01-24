@@ -122,16 +122,6 @@ then
 	exit
 fi
 
-if ( [ "${command}" = "MAINTENANCE_MODE_ON" ] )
-then
-	 SERVER_USERNAME="`/bin/cat ${BUILD_HOME}/buildconfiguration/${CLOUDHOST}/${BUILD_IDENTIFIER}-credentials/SERVERUSER`"
-	 command="/home/${SERVER_USERNAME}/providerscripts/utilities/status/SetMaintenanceModeON.sh"
-elif ( [ "${command}" = "MAINTENANCE_MODE_OFF" ] )
-then
-	 SERVER_USERNAME="`/bin/cat ${BUILD_HOME}/buildconfiguration/${CLOUDHOST}/${BUILD_IDENTIFIER}-credentials/SERVERUSER`"
-	 command="/home/${SERVER_USERNAME}/providerscripts/utilities/status/SetMaintenanceModeOFF.sh"
-fi
-
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment ] )
 then
         ALGORITHM="rsa"
