@@ -45,6 +45,16 @@ ${SSL_LIVE_CERT}
 ${DNS_USERNAME}
 ${DNS_SECURITY_KEY}
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
+
+
 SUDO="/bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
 if ( [ ! -d /usr/local/go ] )
