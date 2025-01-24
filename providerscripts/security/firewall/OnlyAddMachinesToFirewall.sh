@@ -1,12 +1,12 @@
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
 
-
-${ACTIVE_FIREWALLS}
-${CLOUDHOST}
-${BUILD_HOME}
-${REGION}
-${BUILD_IDENTIFIER}
-${CLOUDHOST}
-
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+ACTIVE_FIREWALLS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACTIVE_FIREWALLS`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
