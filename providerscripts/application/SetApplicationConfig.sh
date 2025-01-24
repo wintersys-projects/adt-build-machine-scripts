@@ -38,9 +38,9 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
-database_username="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_USERNAME'`"
-database_password="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_PASSWORD'`"
-database_name="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DBaaS_DBNAME'`"
+database_username="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`"
+database_password="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`"
+database_name="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`"
 db_port="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PORT'`"
 database_identifier="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_IDENTIFIER'`"
 
