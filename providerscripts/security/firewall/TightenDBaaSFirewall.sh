@@ -22,6 +22,9 @@
 #########################################################################################
 #set -x
 
+DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
+
+
 if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
 	:
