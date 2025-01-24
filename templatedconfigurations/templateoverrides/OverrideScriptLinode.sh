@@ -72,7 +72,7 @@ fi
 /usr/bin/find /home/${BUILDMACHINE_USER} -type d -exec chmod 755 {} \;
 /usr/bin/find /home/${BUILDMACHINE_USER} -type f -exec chmod 744 {} \;
 
-BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
+export BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
 /bin/echo ${BUILD_HOME} > /home/buildhome.dat
 /bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
  
@@ -84,4 +84,4 @@ fi
 /bin/touch ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:${BUILDMACHINE_SSH_PORT}
 
 /bin/sh ${BUILD_HOME}/installscripts/InstallFirewall.sh "`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
-. ${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh 
+${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh 
