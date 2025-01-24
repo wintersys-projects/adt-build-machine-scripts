@@ -1,3 +1,13 @@
+
+
+${ACTIVE_FIREWALLS}
+${CLOUDHOST}
+${BUILD_HOME}
+${REGION}
+${BUILD_IDENTIFIER}
+${CLOUDHOST}
+
+
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
         status ""
