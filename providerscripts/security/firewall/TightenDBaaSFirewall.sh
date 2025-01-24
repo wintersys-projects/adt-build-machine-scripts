@@ -36,32 +36,10 @@ DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
 
 
 
-${ASIP}
-${cluster_id} --rule ip_addr:${WSIP}
-${cluster_id} --rule ip_addr:${DBIP}
-${cluster_id} --rule ip_addr:${BUILD_CLIENT_IP}
-${DATABASE_REGION} 
-${DBaaS_DBNAME} 
-${CLUSTER_NAME}
-${ASIP}\",\"${WSIP}\",\"${DBIP}\",\"${ASIP_PRIVATE}\",\"${WSIP_PRIVATE}\",\"${DBIP_PRIVATE}\",\"${BUILD_CLIENT_IP}
-"${DBaaS_HOSTNAME}
-
-
 if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
 	:
    #Because the DBaaS setup is in the same VPC as your machines we don't need to tighten its firewall because its only accessible from within the VPC
-#   if ( [ "${ASIP}" != "" ] )
-#   then
-#       status "Tightening the firewall on your database cluster for your autoscaler"    
-#       /usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${ASIP}  
-#   fi
-#   status "Tightening the firewall on your database cluster for your webserver"    
-#   /usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${WSIP}  
-#   status "Tightening the firewall on your database cluster for your database"    
-#   /usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${DBIP}  
-#    status "Tightening the firewall on your database cluster for your build client"    
-#   /usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${BUILD_CLIENT_IP}  
    
 fi
 
@@ -112,49 +90,8 @@ fi
 
 if ( [ "${CLOUDHOST}" = "vultr" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
-:
-  # export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/TOKEN`"
-
-  # if ( [ "${ASIP}" != "" ] )
-  # then
-  #     ips="\"${ASIP}\",\"${WSIP}\",\"${DBIP}\",\"${ASIP_PRIVATE}\",\"${WSIP_PRIVATE}\",\"${DBIP_PRIVATE}\",\"${BUILD_CLIENT_IP}\""
-  # else
-  #     ips="\"${WSIP}\",\"${DBIP}\",\"${WSIP_PRIVATE}\",\"${BUILD_CLIENT_IP}\""
-  # fi
-
-  # label="`/bin/echo ${DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
-
-  # if ( [ "${label}" = "" ] )
-  # then
-  #     label="`/bin/echo ${DBaaS_DBNAME}`"
-  # fi
-   
-  # databaseids="`/usr/bin/vultr database list | /bin/egrep "^ID" | /usr/bin/awk '{print $NF}'`"
-   
-  # while ( [ "${databaseids}" = "" ] )
-  # do
-  #     status "Attempting to obtain managed database id...."
-  #     databaseids="`/usr/bin/vultr database list | /bin/egrep "^ID" | /usr/bin/awk '{print $NF}'`"
-  #     /bin/sleep 30
-  # done
-
-  # for databaseid in ${databaseids}
-  # do
-  #      if ( [ "`/usr/bin/vultr database get ${databaseid} | /bin/grep "${DBaaS_HOSTNAME}"`" != "" ] )
-  #      then
-  #           selected_databaseid="${databaseid}"
-  #      fi
-  # done
-   
-  # if ( [ "${selected_databaseid}" = "" ] )
-  # then
-  #      status "Could not establish the correct database id for your DBaaS Firewall insitialisation"
-  #      status "Press <enter> to acknowledge"
-  #      read x
-  # else
-  #      status "Tightening the firewall on your mysql or postgres database for your webserver with following IPs: ${ips}"  
-  #      /usr/bin/vultr database update ${selected_databaseid} --trusted-ips="${ips}"
-  # fi  
+	:
+    #Because the DBaaS setup is in the same VPC as your machines we don't need to tighten its firewall because its only accessible from within the VPC
 fi
 
 
