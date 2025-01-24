@@ -39,24 +39,7 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 
 
-#############################################################################################################
-# You might want to manually configure a remote database using a gui system.
-# If you want to do that you will need to setup the database manually and then set the 
-# DATABASE_DBaaS_INSTALLATION_TYPE field according to the following nomenclature in your template
-# DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:MANUAL:<hostname>:<username>:<password>:<dbname>"
-# DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:MANUAL:<hostname>:<username>:<password>:<dbname>"
-# Obviously the type of database you have manually provisioned using a GUI system will have to match with what
-# you have set in your template in other words, one of MySQl or Postgres
-#############################################################################################################
-
-if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS | /bin/grep MANUAL`" != "" ] )
-then
-        database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS:MANUAL//g'`"
-        DB_IDENTIFIER="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
-        DBaaS_USERNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
-        DBaaS_PASSWORD="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
-        DBaaS_DBNAME="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
-elif ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
