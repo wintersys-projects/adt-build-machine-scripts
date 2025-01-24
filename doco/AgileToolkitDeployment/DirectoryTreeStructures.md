@@ -120,8 +120,6 @@ Here you will find an expose on the directory structures of the various differen
 
 ```${HOME}/runtime/KNICKERS_ARE_UP``` - this is to do with the firewall it means that we have set our base condition which is to allow outgoing connections but dissalow all incoming connections and so basically, "knickers are up" because no one is let in.
 
-```${HOME}/runtime/MAINTENANCE_MODE``` - you can set maintenance mode which basically means scaling back to "one" active webserver and therefore one webroot. If you activate maintenance mode then this flag will be set. Live updates are possible but you might find it safer to make your application updates in a maintenance mode situation.
-
 ```${HOME}/runtime/NOT_AUTHORISED_TO_SCALE``` - If this is set then it means that we consider this autoscaler to be allowed to issue orders to scale
 
 ```${HOME}/runtime/potentialenders``` - potential enders - this is a list of IPs that we can keep when we are checking which webservers (based on IP) might need to be shutdown or terminated for some reason such as unresponsiveness or failed or slow build and so on.
