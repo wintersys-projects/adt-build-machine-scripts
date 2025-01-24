@@ -342,10 +342,10 @@ then
 
                                 export CLUSTER_NAME="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`"
                                 export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
-                                export DBaaS_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
-                                export DBaaS_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
+                                export DB_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
+                                export DB_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
-                                export DBaaS_DBNAME="${db_name}"
+                                export DB_NAME="${db_name}"
 
                                 /bin/echo "`/usr/local/bin/linode-cli --json databases mysql-ssl-cert ${database_id} | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                         elif ( [ "${database_type}" = "Postgres" ] )
@@ -511,9 +511,9 @@ else
         DB_IDENTIFIER="self-managed"
 fi
       
-${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_DBNAME=${DB_NAME}"
-${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_PASSWORD=${DB_PASSWORD}"
-${BUILD_HOME}/helperscripts/SetVariableValue.sh "DBaaS_USERNAME=${DB_USERNAME}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_NAME=${DB_NAME}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PASSWORD=${DB_PASSWORD}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_USERNAME=${DB_USERNAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DB_IDENTIFIER}"
 
