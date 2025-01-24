@@ -36,6 +36,15 @@
 #######################################################################################################
 #set -x
 
+${SERVER_USER_PASSWORD}
+${BUILD_HOME}
+${BUILDOS}
+${WEBSITE_URL}
+${DNS_CHOICE}
+${SSL_LIVE_CERT}
+${DNS_USERNAME}
+${DNS_SECURITY_KEY}
+
 SUDO="/bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
 if ( [ ! -d /usr/local/go ] )
