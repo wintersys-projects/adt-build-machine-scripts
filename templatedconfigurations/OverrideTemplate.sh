@@ -20,6 +20,9 @@
 ####################################################################################
 ####################################################################################
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
 	while read line
