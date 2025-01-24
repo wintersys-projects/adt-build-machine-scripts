@@ -20,9 +20,10 @@
 #######################################################################################################
 #######################################################################################################
 #set -x
-
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+if ( [ "${BUILD_HOME}" = "" ] )
+then
+	BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+fi
 
 if ( [ -f /root/FIREWALL-INITIALISED ] )
 then
