@@ -22,8 +22,6 @@
 #########################################################################################
 #set -x
 
-DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
-
 status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
