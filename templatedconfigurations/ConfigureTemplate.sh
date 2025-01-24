@@ -137,7 +137,7 @@ else
   
 	templatefile="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates/${CLOUDHOST}${selectedtemplate}.tmpl"
 	
-	. ${BUILD_HOME}/templatedconfigurations/OverrideTemplate.sh
+	${BUILD_HOME}/templatedconfigurations/OverrideTemplate.sh
 
 fi
 
