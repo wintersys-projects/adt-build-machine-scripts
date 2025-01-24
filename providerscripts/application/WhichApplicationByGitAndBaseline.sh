@@ -25,6 +25,12 @@ status () {
 	/bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
+APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_BASELINE_SOURCECODE_REPOSITORY`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT`"
+
 APPLICATION=""
 
 #################JOOMLA################
