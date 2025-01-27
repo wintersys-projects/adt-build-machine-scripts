@@ -22,6 +22,8 @@
 ####################################################################################
 
 quick_specification="${BUILD_HOME}/templatedconfigurations/quick_specification.dat"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+. ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 
 if ( [ "${1}" != "" ] )
 then
