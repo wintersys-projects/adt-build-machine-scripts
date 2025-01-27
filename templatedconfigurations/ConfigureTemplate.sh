@@ -185,7 +185,7 @@ fi
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] && [ "${0}" = "ExpeditedAgileDeploymentToolkit.sh" ] )
 then
-	. ${BUILD_HOME}/templatedconfigurations/ValidateTemplate.sh
+	${BUILD_HOME}/templatedconfigurations/ValidateTemplate.sh
 fi
 
 #Take care of special case when a space is input in the website display name
