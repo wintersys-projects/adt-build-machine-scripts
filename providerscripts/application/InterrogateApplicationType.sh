@@ -122,7 +122,7 @@ fi
 if ( [ "${gitrepo}" = "1" ] )
 then
         ${BUILD_HOME}/providerscripts/git/GitClone.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}
-        . ${BUILD_HOME}/providerscripts/application/WhichApplicationByGitAndBaseline.sh
+        ${BUILD_HOME}/providerscripts/application/WhichApplicationByGitAndBaseline.sh
         /bin/rm -rf ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 1>/dev/null 2>/dev/null
 fi
 
@@ -132,7 +132,7 @@ then
         archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
         archive="${interrogation_home}/${archivename}"
         /bin/tar xvfz ${archive} -C ${interrogation_home}
-        . ${BUILD_HOME}/providerscripts/application/WhichApplicationByDatastoreAndBackup.sh
+        ${BUILD_HOME}/providerscripts/application/WhichApplicationByDatastoreAndBackup.sh
         /bin/rm -rf ${interrogation_home}/tmp 1>/dev/null 2>/dev/null
         /bin/rm ${interrogation_home}/applicationsourcecode.tar.gz 1>/dev/null 2>/dev/null
 fi
