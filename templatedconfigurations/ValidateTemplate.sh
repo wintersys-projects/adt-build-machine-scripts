@@ -22,18 +22,13 @@
 ####################################################################################
 
 quick_specification="${BUILD_HOME}/templatedconfigurations/quick_specification.dat"
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-. ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 
 if ( [ "${1}" != "" ] )
 then
 	templatefile="${1}"
 	. ${templatefile} 2>/dev/null
-fi
-
-if ( [ "${2}" != "" ] )
-then
-	BUILD_HOME="${2}"
 fi
 
 status 2>/dev/null
