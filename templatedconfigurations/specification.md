@@ -295,6 +295,8 @@ Make sure these tokens have the rights to create and destroy repositories as wel
 
 "1" means that your build machine is in the same VPC as your deployment machines and so private networking (private ip addresses in other words) can be used to commincate from the build machine to the deployment machines. This is the more secure option. 
 
+##### MAKE SURE THAT THE VALUE YOU SET HERE CORROLATES WITH THE VALUE THAT YOU HAVE SET FOR THE "REGION" VALUE
+
 ------
 
 ### VPC_IP_RANGE
