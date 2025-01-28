@@ -180,6 +180,7 @@ then
                         then
                                 read x
                         fi
+                        /usr/local/bin/doctl databases get-ca  > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                 fi
         fi
 
