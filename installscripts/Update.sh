@@ -46,7 +46,21 @@ if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyle
 then
         if ( [ "${buildos}" = "ubuntu" ] )
         then
-                ${BUILD_HOME}/installscripts/AptFastInstallHelper.sh
+                apt_fast_url='https://raw.githubusercontent.com/ilikenwf/apt-fast/master'
+
+                if ( [ -f /usr/local/sbin/apt-fast ] )
+                then
+                        /bin/rm -f /usr/local/sbin/apt-fast
+                fi
+
+                /usr/bin/wget "${apt_fast_url}"/apt-fast -O /usr/sbin/apt-fast
+                /bin/chmod +x /usr/local/bin/apt-fast
+
+                if ( [ ! -f /etc/apt-fast.conf ] )
+                then
+                        /usr/bin/wget "$apt_fast_url"/apt-fast.conf -O /etc/apt-fast.conf
+                fi
+                
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
                 /usr/bin/snap install aria2c 
@@ -54,7 +68,20 @@ then
 
         if ( [ "${buildos}" = "debian" ] )
         then
-                ${BUILD_HOME}/installscripts/AptFastInstallHelper.sh
+        
+                if ( [ -f /usr/local/sbin/apt-fast ] )
+                then
+                        /bin/rm -f /usr/local/sbin/apt-fast
+                fi
+
+                /usr/bin/wget "${apt_fast_url}"/apt-fast -O /usr/sbin/apt-fast
+                /bin/chmod +x /usr/local/bin/apt-fast
+
+                if ( [ ! -f /etc/apt-fast.conf ] )
+                then
+                        /usr/bin/wget "$apt_fast_url"/apt-fast.conf -O /etc/apt-fast.conf
+                fi
+                
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
                 DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
                 /usr/bin/snap install aria2c 
