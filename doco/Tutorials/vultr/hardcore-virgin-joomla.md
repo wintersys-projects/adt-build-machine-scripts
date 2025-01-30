@@ -194,9 +194,7 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
->     
->     #####Monitoring######
->     export INSTALL_MONITORING_GEAR="0" 
+
 
 So, editing  
 
@@ -323,9 +321,7 @@ and using the values I recorded in my text file earlier, I modify the file as fo
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
->     
->     #####Monitoring######
->     export INSTALL_MONITORING_GEAR="0"
+
 
 If all the dashes I have added are removed, then this file (with live values and not symbolic ones) would be ready for deployment.  
 
