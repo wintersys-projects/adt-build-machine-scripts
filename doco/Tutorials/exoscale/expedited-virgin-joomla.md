@@ -217,9 +217,7 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
->     
->     #####Monitoring######
->     export INSTALL_MONITORING_GEAR="0"
+
 
 So, I have referred to the specification and obtained necessary credentials from my accounts (Exoscale/Github) and decide how I want to configure the template 
 
@@ -345,9 +343,7 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >
 >     #####Build Style#####
 >     export INPARALLEL="0"
->     
->     #####Monitoring######
->     export INSTALL_MONITORING_GEAR="0"
+
 
 If all the dashes I have added are removed, then this file (with live values and not symbolic ones) would be ready for deployment.
 
