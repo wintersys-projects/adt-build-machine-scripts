@@ -342,11 +342,6 @@ then
 	${log_command} "Your value for the variable ACTIVE_FIREWALLS (${ACTIVE_FIREWALLS}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^INSTALL_MONITORING_GEAR " ${quick_specification} | /bin/grep -w "${INSTALL_MONITORING_GEAR}"  2>/dev/null `" = "" ] )
-then
-	${log_command} "Your value for the variable INSTALL_MONITORING_GEAR (${INSTALL_MONITORING_GEAR}) doesn't appear to be valid please review"
-fi
-
 if ( [ "${APPLICATION}" = "joomla" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
    joomla_version="`/bin/echo ${JOOMLA_VERSION} | /bin/sed 's/\./-/g'`"
