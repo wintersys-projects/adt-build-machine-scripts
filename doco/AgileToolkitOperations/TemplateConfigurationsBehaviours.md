@@ -341,28 +341,9 @@ and
 
 #### Objective 34
 
-To deploy from snasphots base snasphots that you have generated
-
->     export WEBSERVER_IMAGE_ID="yyyy"
->     export AUTOSCALER_IMAGE_ID="zzzz"
->     export DATABASE_IMAGE_ID="xxxx"
-
-
---------------------------------------------------------------------------------
-
-#### Objective 35
-
 To make the machines build in parrallel rather than sequentially, put:
 
 >     export INPARALLEL="1"
-
---------------------------------------------------------------------------------
-
-#### Objective 36
-
-To install monitoring gear put in any template:
-
->     export INSTALL_MONITORING_GEAR="1"
 
 ---------------------------------------------------------------------------------
 
