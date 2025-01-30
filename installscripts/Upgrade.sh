@@ -1,6 +1,6 @@
 #!/bin/sh
 ######################################################################################################
-# Description: This script will perform a software update
+# Description: This script will perform a software upgrade
 # Author: Peter Winter
 # Date: 17/01/2017
 #######################################################################################################
