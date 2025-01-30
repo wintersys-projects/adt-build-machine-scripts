@@ -61,9 +61,9 @@ then
 	then
  			/bin/touch /root/PERFORM_REBOOT
 			status "Performing software update....."
-			${BUILD_HOME}/installscripts/Update.sh "ubuntu"  >>${upgrade_log} 2>&1
-			status "Performing software upgrade....."
-			${BUILD_HOME}/installscripts/Upgrade.sh "ubuntu" >>${upgrade_log} 2>&1
+			${BUILD_HOME}/installscripts/InitialUpdate.sh "ubuntu"  >>${upgrade_log} 2>&1
+			#status "Performing software upgrade....."
+			#${BUILD_HOME}/installscripts/Upgrade.sh "ubuntu" >>${upgrade_log} 2>&1
    			status "Installing Firewall"
    			${BUILD_HOME}/installscripts/InstallFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Initialising Firewall"
@@ -91,9 +91,9 @@ then
 	then
   			/bin/touch /root/PERFORM_REBOOT
 			status "Performing software update....."
-			${BUILD_HOME}/installscripts/Update.sh "debian"  >>${upgrade_log} 2>&1
-			status "Performing software upgrade....."
-			${BUILD_HOME}/installscripts/Upgrade.sh "debian" >>${upgrade_log} 2>&1
+			${BUILD_HOME}/installscripts/InitialUpdate.sh "debian"  >>${upgrade_log} 2>&1
+			#status "Performing software upgrade....."
+			#${BUILD_HOME}/installscripts/Upgrade.sh "debian" >>${upgrade_log} 2>&1
    			status "Installing Firewall"
    			${BUILD_HOME}/installscripts/InstallFirewall.sh "debian" >>${upgrade_log} 2>&1
 			status "Initialising Firewall"
