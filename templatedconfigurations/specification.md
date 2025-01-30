@@ -722,25 +722,6 @@ The templating system is set up to use live certificates by default in all cases
 
 When you are making a "hardcore" build, you need to supply the number of the template you are generating a script for, for example, "1", "2", "3"
 
------------
-
-### INSTALL_MONITORING_GEAR  
-
-You can set the value to 0 or 1 to install monitoring gear and indicate which of the supported monitoring software you want to install. Currenlty supported are "glances", "nmon", "atop" and "native". "native" is only currently available on digitalocean but you are welcome to update the scripts.
-
-You can find learn about [glances](https://github.com/nicolargo/glances).
-
-Your available settings then are:
-
-0 (do not install monitoring gear) and
-
-1 (install monitoring gear)
-
-1|glances (install glances)
-1|native (install native - digital ocean only)
-1|nmon
-1|atop
-
 -------------
 ### INPARALLEL
 
