@@ -34,7 +34,7 @@ then
  	/bin/touch /root/DATASTORETOOL_INSTALLED
 fi
 
-if ( [ ! -f ~/UPDATEDSOFTWARE ] || [ "`/usr/bin/find ~/UPDATEDSOFTWARE -mmin +1440 -print`" != "" ] )
+if ( [ ! -f /root/UPDATEDSOFTWARE ] || [ "`/usr/bin/find ~/UPDATEDSOFTWARE -mmin +1440 -print`" != "" ] )
 then
 	if ( [ ! -d /root/logs ] )
  	then
@@ -60,8 +60,15 @@ then
 	if ( [ "`/usr/bin/awk -F= '/^NAME/{print $2}' /etc/os-release | /bin/grep "Ubuntu"`" != "" ] )
 	then
  			/bin/touch /root/PERFORM_REBOOT
-			status "Performing software update....."
-			${BUILD_HOME}/installscripts/InitialUpdate.sh "ubuntu"  >>${upgrade_log} 2>&1
+    
+    			if ( [ ! -f /root/UPDATEDSOFTWARE ] )
+       			then
+				status "Performing software update....."
+				${BUILD_HOME}/installscripts/InitialUpdate.sh "ubuntu"  >>${upgrade_log} 2>&1
+    			else
+       				${BUILD_HOME}/installscripts/UpdateAndUpgrade.sh "ubuntu"  >>${upgrade_log} 2>&1
+	   		fi
+      
 			#status "Performing software upgrade....."
 			#${BUILD_HOME}/installscripts/Upgrade.sh "ubuntu" >>${upgrade_log} 2>&1
    			status "Installing Firewall"
@@ -90,10 +97,15 @@ then
 	elif ( [ "`/usr/bin/awk -F= '/^NAME/{print $2}' /etc/os-release | /bin/grep "Debian"`" != "" ] )
 	then
   			/bin/touch /root/PERFORM_REBOOT
-			status "Performing software update....."
-			${BUILD_HOME}/installscripts/InitialUpdate.sh "debian"  >>${upgrade_log} 2>&1
-			#status "Performing software upgrade....."
-			#${BUILD_HOME}/installscripts/Upgrade.sh "debian" >>${upgrade_log} 2>&1
+     
+    			if ( [ ! -f /root/UPDATEDSOFTWARE ] )
+       			then
+				status "Performing software update....."
+				${BUILD_HOME}/installscripts/InitialUpdate.sh "debian"  >>${upgrade_log} 2>&1
+    			else
+       				${BUILD_HOME}/installscripts/UpdateAndUpgrade.sh "debian"  >>${upgrade_log} 2>&1
+	   		fi
+      
    			status "Installing Firewall"
    			${BUILD_HOME}/installscripts/InstallFirewall.sh "debian" >>${upgrade_log} 2>&1
 			status "Initialising Firewall"
@@ -118,5 +130,5 @@ then
 			${BUILD_HOME}/installscripts/InstallCron.sh "debian" >>${upgrade_log} 2>&1 
 			/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
 	fi
-	/bin/touch ~/UPDATEDSOFTWARE
+	/bin/touch /root/UPDATEDSOFTWARE
 fi
