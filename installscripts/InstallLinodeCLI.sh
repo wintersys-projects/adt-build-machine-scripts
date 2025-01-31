@@ -45,6 +45,7 @@ then
 		/usr/bin/pipx upgrade linode-cli 
 	else
 		/usr/bin/pipx install linode-cli 
+  		/usr/bin/pipx ensurepath
 		/usr/bin/ln -s /root/.local/bin/linode-cli /usr/local/bin/linode-cli
 	fi
 fi
@@ -57,6 +58,7 @@ then
 		/usr/bin/pipx upgrade linode-cli 
 	else
 		/usr/bin/pipx install linode-cli 
+  		/usr/bin/pipx ensurepath
 		/usr/bin/ln -s /root/.local/bin/linode-cli /usr/local/bin/linode-cli
 	fi
 fi
