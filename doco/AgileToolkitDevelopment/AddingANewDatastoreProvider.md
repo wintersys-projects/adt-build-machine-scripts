@@ -12,7 +12,6 @@ To add a new datastore manipulation tool such as rclone or s4cmd in addition to 
 >     adt-build-machine-scripts/initscripts/InitialiseDatastoreConfig.sh
 
 >     adt-autoscaler-scripts/providerscripts/datastore
->     adt-autoscaler-scripts/providerscripts/datastore/ObtainBuildClientIP.sh
 >     adt-autoscaler-scripts/providerscripts/datastore/InitialiseDatastoreConfig.sh
 >     adt-autoscaler-scripts/providerscripts/datastore/configwrapper/CheckConfigDatastore.sh
 >     adt-build-machine-scripts/installscripts/InstallDatastoreTools.sh
