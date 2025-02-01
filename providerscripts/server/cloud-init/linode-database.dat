@@ -4,3 +4,4 @@ runcmd:
   - '/usr/bin/apt-get -qq -y update'
   - '/usr/bin/apt-get -qq -y upgrade'
   - '/usr/bin/apt-get -qq -y install git'
+  - '/usr/bin/apt-get -qq -y install network-manager'
