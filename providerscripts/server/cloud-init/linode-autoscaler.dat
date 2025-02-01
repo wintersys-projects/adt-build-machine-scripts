@@ -5,4 +5,8 @@ runcmd:
   - '/usr/bin/apt-get -qq -y upgrade'
   - '/usr/bin/apt-get -qq -y install git'
   - '/usr/bin/apt-get -qq -y install network-manager'
+  - '/usr/bin/apt-get -qq -y install cron'
+  - '/usr/bin/apt-get -qq -y install curl'
+  - '/usr/bin/apt-get -qq -y install jq'
+  - '/usr/bin/apt-get -qq -y install rsync'
 
