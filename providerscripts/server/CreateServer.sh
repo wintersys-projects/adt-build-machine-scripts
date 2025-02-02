@@ -85,7 +85,7 @@ then
         vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "adt-vpc").id'`"
         subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
 
-        if ( [ "`/bin/echo ${server_name} | /bin/grep -E "^as-"`" != "" ] )
+        if ( [ "`/bin/echo ${server_name} | /bin/grep -E "-as-"`" != "" ] )
         then
                 cloud_config="`/bin/cat ${BUILD_HOME}/providerscripts/server/cloud-init/linode-autoscaler.dat | /usr/bin/base64 -w 0`"
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
