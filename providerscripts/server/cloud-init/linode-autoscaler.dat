@@ -10,6 +10,9 @@ runcmd:
   - '/usr/bin/apt-get -qq -y install curl'
   - '/usr/bin/apt-get -qq -y install jq'
   - '/usr/bin/apt-get -qq -y install rsync'
+  - '/usr/bin/apt-get -qq -y install snapd'
+  - '/usr/bin/snap install aria2c'
+  - '/bin/ln -s /snap/bin/aria2c /usr/sbin/aria2c'
   - '/bin/touch /home/SOFTWARE_FOUNDATION_INSTALLED'
 
 
