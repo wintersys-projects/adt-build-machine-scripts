@@ -37,4 +37,4 @@ runcmd:
   - '/bin/sed -i "s/^#ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
-  - '/usr/bin/systemctl restart sshd'
+  - '/usr/bin/systemctl restart ssh'
