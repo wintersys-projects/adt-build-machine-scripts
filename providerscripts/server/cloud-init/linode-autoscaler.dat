@@ -45,7 +45,7 @@ write_files:
 - encoding: b64
   content: XXXXAUTOSCALER_CONFIGURATIONXXXX
   owner: root:root
-  path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat.base64
+  path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat
   permissions: '0644'
 
 
