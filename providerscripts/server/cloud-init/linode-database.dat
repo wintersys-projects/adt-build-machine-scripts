@@ -2,7 +2,7 @@
 
 users:
   - name: XXXXSERVER_USERXXXX
-    passwd: XXXXSERVER_USER_PASSWORDXXXX
+    passwd: 'XXXXSERVER_USER_PASSWORDXXXX'
     groups: [ sudo ]
     shell: /bin/bash
     lock_passwd: false
