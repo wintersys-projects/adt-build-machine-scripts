@@ -13,6 +13,8 @@ users:
     ssh_authorized_keys:
       - XXXXSSH_PUBLIC_KEYXXXX
 
+ssh_pwauth: false
+
 runcmd:
   - '/usr/bin/apt-get -qq -y update'
   - '/usr/bin/apt-get -qq -y upgrade'
