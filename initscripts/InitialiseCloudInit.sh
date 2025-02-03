@@ -14,4 +14,4 @@ SECRET_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SECRET_KEY`"
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
-  /bin/cp 
+        /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/linode-autoscaler.dat 
