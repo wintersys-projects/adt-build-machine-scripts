@@ -6,12 +6,11 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
-TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh TOKEN`"
-CLOUDHOST_ACCOUNT_ID="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST_ACCOUNT_ID`"
-REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
-ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACCESS_KEY`"
-SECRET_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SECRET_KEY`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
-        /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/linode-autoscaler.dat 
+        /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/linode-autoscaler.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-autoscaler.dat
+        /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/linode-webserver.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat
+        /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/linode-database.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat
+fi
