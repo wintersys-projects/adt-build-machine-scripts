@@ -1,7 +1,8 @@
 #cloud-config
 
 users:
-  - name: XXXXOS_USERXXXX
+  - name: XXXXSERVER_USERXXXX
+    passwd: XXXXSERVER_USER_PASSWORDXXXX
     shell: /bin/bash
     groups:
       - sudo
