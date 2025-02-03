@@ -251,20 +251,20 @@ do
                         /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1
                         
                                 /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1   
-                                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/InstallGit.sh
-                                git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
-                                gitfetchno="0"
-                                while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/ws.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
-                                do
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/InstallGit.sh ; cd /home/${SERVER_USER}; /usr/bin/git clone https://${git_provider_domain}/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-webserver-scripts.git; /bin/cp -r ./adt-webserver-scripts/* .; /bin/rm -r ./adt-webserver-scripts ; /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/*; /bin/chmod 500 /home/${SERVER_USER}/ws.sh"
-                                        /bin/sleep 5
-                                        gitfetchno="`/usr/bin/expr ${gitfetchno} + 1`"
-                                done
-                                if ( [ "${gitfetchno}" = "5" ] )
-                                then
-                                        status "Had trouble getting the webserver infrastructure sourcecode, will have to exit"
-                                        exit
-                                fi
+                #                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/InstallGit.sh
+                #                git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
+                #                gitfetchno="0"
+                #                while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/ws.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
+                #                do
+                #                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/InstallGit.sh ; cd /home/${SERVER_USER}; /usr/bin/git clone https://${git_provider_domain}/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-webserver-scripts.git; /bin/cp -r ./adt-webserver-scripts/* .; /bin/rm -r ./adt-webserver-scripts ; /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/*; /bin/chmod 500 /home/${SERVER_USER}/ws.sh"
+                #                        /bin/sleep 5
+                #                        gitfetchno="`/usr/bin/expr ${gitfetchno} + 1`"
+                #                done
+                #                if ( [ "${gitfetchno}" = "5" ] )
+                #                then
+                #                        status "Had trouble getting the webserver infrastructure sourcecode, will have to exit"
+                #                        exit
+                #                fi
 
                                 status "About to build the webserver"
                                 status "Please Note: The process of building the webserver is running on a remote machine with ip address : ${WSIP_PUBLIC}"
