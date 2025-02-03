@@ -23,7 +23,7 @@ runcmd:
   - '/usr/bin/apt-get -qq -y update'
   - '/usr/bin/apt-get -qq -y upgrade'
   - '/usr/bin/apt-get -qq -y install git'
-  - '/usr/bin/git clone https://XXXXINFRASTRUCTURE_REPOSITORY_PROVIDERXXXX/XXXXINFRASTRUCTURE_REPOSITORY_OWNERXXXX/adt-database-scripts.git /home/XXXXSERVER_USERXXXX'
+  - '/usr/bin/git clone https://XXXXGIT_PROVIDER_DOMAINXXXX/XXXXINFRASTRUCTURE_REPOSITORY_OWNERXXXX/adt-database-scripts.git /home/XXXXSERVER_USERXXXX'
   - '/bin/sed -i "s/^PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config'
