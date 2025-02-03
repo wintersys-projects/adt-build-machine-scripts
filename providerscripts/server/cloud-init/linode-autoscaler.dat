@@ -44,7 +44,7 @@ runcmd:
 write_files:
 - encoding: b64
   content: XXXXAUTOSCALER_CONFIGURATIONXXXX
-  owner: XXXXSERVER_USERXXXX:XXXXSERVER_USERXXXX
+  owner: root:root
   path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat.base64
   permissions: '0644'
 
