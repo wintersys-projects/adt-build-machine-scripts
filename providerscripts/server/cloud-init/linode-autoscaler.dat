@@ -48,5 +48,12 @@ write_files:
   path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat
   permissions: '0644'
 
+write_files:
+- encoding: b64
+  content: XXXXBUILDSTYLES_SETTINGSXXXX
+  owner: root:root
+  path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat
+  permissions: '0644'
+
 
 
