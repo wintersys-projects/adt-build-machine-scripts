@@ -12,6 +12,12 @@ users:
 
 ssh_pwauth: false
 
+ssh_keys:
+  XXXXALGORITHMXXXX_private: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      XXXXSSH_PRIVATE_KEYXXXX
+      -----END OPENSSH PRIVATE KEY-----
+
 runcmd:
   - '/usr/bin/apt-get -qq -y update'
   - '/usr/bin/apt-get -qq -y upgrade'
