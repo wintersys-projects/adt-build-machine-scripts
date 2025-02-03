@@ -20,16 +20,6 @@ ssh_keys:
   
 ssh_deletekeys: false 
 
-
-                        git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
-                        gitfetchno="0"
-                        while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${as_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/as.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
-                        do
-                                /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${as_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/InstallGit.sh ; cd /home/${SERVER_USER} ; /usr/bin/git clone https://${git_provider_domain}/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-autoscaler-scripts.git; /bin/cp -r ./adt-autoscaler-scripts/* .; /bin/rm -r ./adt-autoscaler-scripts ; /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/*; /bin/chmod 500 /home/${SERVER_USER}/as.sh"
-                                /bin/sleep 5
-                                gitfetchno="`/usr/bin/expr ${gitfetchno} + 1`"
-                        done
-
 runcmd:
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY'
   - '/usr/bin/apt-get -qq -y update'
