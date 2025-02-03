@@ -13,6 +13,7 @@ users:
 ssh_pwauth: false
 
 runcmd:
+  - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY'
   - '/usr/bin/apt-get -qq -y update'
   - '/usr/bin/apt-get -qq -y upgrade'
   - '/usr/bin/apt-get -qq -y install git'
