@@ -65,6 +65,8 @@ then
 	exit
 fi
 
+SERVER_USER="`/bin/echo "${SERVER_USER}1"
+
 /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${DEFAULT_USER}@${initiation_ip} "${SUDO} /usr/sbin/useradd ${SERVER_USER} 2>&1 >/dev/null ; /bin/echo ${SERVER_USER}:${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E /usr/sbin/chpasswd ; ${SUDO} /usr/bin/gpasswd -a ${SERVER_USER} sudo"
 
 /bin/cat ${BUILD_KEY}.pub | /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} -o "PasswordAuthentication=no" ${DEFAULT_USER}@${initiation_ip} "${SUDO} /bin/mkdir -p /home/${SERVER_USER}/.ssh ; ${SUDO} /bin/chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${SERVER_USER}/.ssh ; /bin/cat - >> /home/${SERVER_USER}/.ssh/authorized_keys ; ${SUDO} /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}"
