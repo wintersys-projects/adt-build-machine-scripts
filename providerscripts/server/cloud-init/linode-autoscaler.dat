@@ -20,6 +20,20 @@ ssh_keys:
   
 ssh_deletekeys: false 
 
+write_files:
+- encoding: b64
+  content: XXXXAUTOSCALER_CONFIGURATIONXXXX
+  owner: root:root
+  path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat
+  permissions: '0644'
+
+write_files:
+- encoding: b64
+  content: XXXXBUILDSTYLES_SETTINGSXXXX
+  owner: root:root
+  path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat
+  permissions: '0644'
+
 runcmd:
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY'
   - '/usr/bin/apt-get -qq -y update'
@@ -40,20 +54,9 @@ runcmd:
   - '/bin/sed -i "s/^AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/usr/bin/systemctl restart ssh'
+  - '/home/XXXXSERVER_USERXXXX/as.sh'
 
-write_files:
-- encoding: b64
-  content: XXXXAUTOSCALER_CONFIGURATIONXXXX
-  owner: root:root
-  path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat
-  permissions: '0644'
 
-write_files:
-- encoding: b64
-  content: XXXXBUILDSTYLES_SETTINGSXXXX
-  owner: root:root
-  path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat
-  permissions: '0644'
 
 
 
