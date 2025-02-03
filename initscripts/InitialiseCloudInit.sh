@@ -24,7 +24,7 @@ then
         /bin/sed -i "s/XXXSERVER_USER_PASSWORDXXXX/${SERVER_USER_PASSWORD}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-autoscaler.dat
         /bin/sed -i "s/XXXSERVER_USER_PASSWORDXXXX/${SERVER_USER_PASSWORD}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat
         /bin/sed -i "s/XXXSERVER_USER_PASSWORDXXXX/${SERVER_USER_PASSWORD}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat
-        /bin/sed -i "s/XXXXSSH_PUBLIC_KEYXXXX/${BUILD_KEY}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-autoscaler.dat
-        /bin/sed -i "s/XXXXSSH_PUBLIC_KEYXXXX/${BUILD_KEY}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat
-        /bin/sed -i "s/XXXXSSH_PUBLIC_KEYXXXX/${BUILD_KEY}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat
+        /bin/sed -i "s;XXXXSSH_PUBLIC_KEYXXXX;${BUILD_KEY};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-autoscaler.dat
+        /bin/sed -i "s;XXXXSSH_PUBLIC_KEYXXXX;${BUILD_KEY};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat
+        /bin/sed -i "s;XXXXSSH_PUBLIC_KEYXXXX;${BUILD_KEY};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat
 fi
