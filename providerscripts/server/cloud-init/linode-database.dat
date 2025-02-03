@@ -25,6 +25,8 @@ runcmd:
   - '/usr/bin/apt-get -qq -y install git'
   - '/usr/bin/git clone https://XXXXGIT_PROVIDER_DOMAINXXXX/XXXXINFRASTRUCTURE_REPOSITORY_OWNERXXXX/adt-database-scripts.git /home/XXXXSERVER_USERXXXX/clone'
   - '/bin/mv /home/XXXXSERVER_USERXXXX/clone/* /home/XXXXSERVER_USERXXXX && /bin/rm -r /home/XXXXSERVER_USERXXXX/clone'
+  - '/usr/bin/find Example -type d -exec chmod 755 {} \;' 
+  - '/usr/bin/find Example -type f -exec chmod 644 {} \;'
   - '/bin/sed -i "s/^PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config'
