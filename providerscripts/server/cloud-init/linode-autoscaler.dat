@@ -12,7 +12,7 @@ users:
 ssh_pwauth: false
 
 ssh_keys:
-  rsa_private: |
+  XXXXALGORITHMXXXX_private: |
       -----BEGIN OPENSSH PRIVATE KEY-----
       XXXXSSH_PRIVATE_KEYXXXX
       -----END OPENSSH PRIVATE KEY-----
