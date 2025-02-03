@@ -317,21 +317,21 @@ do
 
                                 
                                 /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1
-                                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/InstallGit.sh
-                                git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
-                                gitfetchno="0"
-                                while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/db.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
-                                do
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/InstallGit.sh ; cd /home/${SERVER_USER}; /usr/bin/git clone https://${git_provider_domain}/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-database-scripts.git; /bin/cp -r ./adt-database-scripts/* .; /bin/rm -r ./adt-database-scripts ; /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/*; /bin/chmod 500 /home/${SERVER_USER}/db.sh"
-                                        /bin/sleep 5
-                                        gitfetchno="`/usr/bin/expr ${gitfetchno} + 1`"
-                                done
-
-                                if ( [ "${gitfetchno}" = "5" ] )
-                                then
-                                        status "Had trouble getting the database infrastructure sourcecode, will have to exit"
-                                        exit
-                                fi
+                      #          /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/InstallGit.sh
+                      #          git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
+                      #          gitfetchno="0"
+                      #          while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/db.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
+                      #          do
+                      #                  /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/InstallGit.sh ; cd /home/${SERVER_USER}; /usr/bin/git clone https://${git_provider_domain}/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-database-scripts.git; /bin/cp -r ./adt-database-scripts/* .; /bin/rm -r ./adt-database-scripts ; /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/*; /bin/chmod 500 /home/${SERVER_USER}/db.sh"
+                      #                  /bin/sleep 5
+                      #                  gitfetchno="`/usr/bin/expr ${gitfetchno} + 1`"
+                      #          done##
+#
+ #                               if ( [ "${gitfetchno}" = "5" ] )
+  #                              then
+   #                                     status "Had trouble getting the database infrastructure sourcecode, will have to exit"
+    #                                    exit
+     #                           fi
   
                                 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/CLOUDHOST:${CLOUDHOST}
 
