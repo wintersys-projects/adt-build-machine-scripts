@@ -1,7 +1,8 @@
 #cloud-config
 
 users:
-  - name: example-user
+  - name: XXXXSERVER_USERXXXX
+    passwd: XXXXSERVER_USER_PASSWORDXXXX
     shell: /bin/bash
     groups:
       - sudo
@@ -10,7 +11,7 @@ users:
 
     shell: /bin/bash
     ssh_authorized_keys:
-      - ####SSH_PUBLIC_KEY####
+      - XXXXSSH_PUBLIC_KEYXXXX
 
 runcmd:
   - '/usr/bin/apt-get -qq -y update'
