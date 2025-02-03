@@ -87,13 +87,22 @@ then
 
         if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
         then
-                cloud_config="`/bin/cat ${BUILD_HOME}/providerscripts/server/cloud-init/linode-autoscaler.dat | /usr/bin/base64 -w 0`"
+                if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-autoscaler.dat ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-autoscaler.dat | /usr/bin/base64 -w 0`"
+                fi
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
         then
-                cloud_config="`/bin/cat ${BUILD_HOME}/providerscripts/server/cloud-init/linode-webserver.dat | /usr/bin/base64 -w 0`"
+                if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat | /usr/bin/base64 -w 0`"
+                fi
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
         then
-                cloud_config="`/bin/cat ${BUILD_HOME}/providerscripts/server/cloud-init/linode-database.dat | /usr/bin/base64 -w 0`"
+                if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat | /usr/bin/base64 -w 0`"
+                fi
         fi
 
         /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} --image "${OS_CHOICE}" --type ${server_size} --label "${server_name}" --no-defaults --interfaces.primary true --interfaces.purpose vpc --interfaces.subnet_id ${subnet_id} --interfaces.ipv4.nat_1_1 any --metadata.user_data "${cloud_config}"
