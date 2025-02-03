@@ -12,6 +12,12 @@ users:
 
 ssh_pwauth: false
 
+ssh_keys:
+  XXXXALGORITHMXXXX_private: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      XXXXSSH_PRIVATE_KEYXXXX
+      -----END OPENSSH PRIVATE KEY-----
+
 runcmd:
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY'
   - '/usr/bin/apt-get -qq -y update'
