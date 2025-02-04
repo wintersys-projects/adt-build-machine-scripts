@@ -325,7 +325,7 @@ do
 
                         #Wait for the machine to become responsive before we check its integrity
 
-                        status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 5 minutes, something is likely wrong"
+                        status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
                         
                         
