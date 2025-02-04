@@ -224,7 +224,6 @@ ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 ${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
 #. ${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
 ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
-/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 
 # I think the usual phrase is, 'we are all set'. So, tell the user we are starting the build proper.
