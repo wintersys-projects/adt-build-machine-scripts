@@ -87,4 +87,4 @@ fi
 /bin/echo ${key_name} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYNAME
 /bin/echo ${PUBLIC_KEY_ID} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID
 
-${BUILD_HOME}/helperscripts/SetVariableValue.sh "KEY_ID=${PUBLIC_KEY_ID}"
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "PUBLIC_KEY_ID=${PUBLIC_KEY_ID}"
