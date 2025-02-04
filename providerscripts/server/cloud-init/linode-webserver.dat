@@ -51,6 +51,7 @@ runcmd:
   - '/bin/sed -i "s/^AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/usr/bin/systemctl restart ssh'
+#Buildhome.dat directory
   #- 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh /home/XXXXSERVER_USERXXXX/ws.sh'
 
 
