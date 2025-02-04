@@ -42,6 +42,7 @@ runcmd:
   - '/usr/bin/find /home/XXXXSERVER_USERXXXX/ -type d -exec chmod 755 {} \;' 
   - '/usr/bin/find /home/XXXXSERVER_USERXXXX/ -type f -exec chmod 644 {} \;'  
   - '/usr/bin/chown -R XXXXSERVER_USERXXXX:XXXXSERVER_USERXXXX /home/XXXXSERVER_USERXXXX'
+  - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY'
   - '/bin/sed -i "s/^PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config'
