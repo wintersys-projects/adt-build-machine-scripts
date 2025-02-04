@@ -29,10 +29,6 @@ write_files:
   owner: root:root
   path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat.gz
   permissions: '0644'
-- path: /etc/sudoers
-  content: | 
-        XXXXSERVER_USERXXXX ALL=NOPASSWD:/usr/bin/rsync
-  append: true
 
 runcmd:
   - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/webserver_configuration_settings.dat.gz'
