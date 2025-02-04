@@ -296,27 +296,27 @@ do
                         # initiation_ip="${db_active_ip}"
                         # machine_type="database"
 
-                         ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${db_active_ip}" "database" "${DATABASE_PUBLIC_KEYS}"
+         #                ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${db_active_ip}" "database" "${DATABASE_PUBLIC_KEYS}"
+#
+ #                       /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
+  #                      
+   #                     set -o allexport
+    #                    . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+     #                   set +o allexport
+      #                  
+       #                 while read param
+        #                do
+          #                      param1="`eval /bin/echo ${param}`"
+        #                        if ( [ "${param1}" != "" ] )
+         #                       then
+          #                              /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
+           #                     fi
+           #             done < ${BUILD_HOME}/builddescriptors/databasescp.dat#
 
-                        /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
-                        
-                        set -o allexport
-                        . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
-                        set +o allexport
-                        
-                        while read param
-                        do
-                                param1="`eval /bin/echo ${param}`"
-                                if ( [ "${param1}" != "" ] )
-                                then
-                                        /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
-                                fi
-                        done < ${BUILD_HOME}/builddescriptors/databasescp.dat
-
-                        /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/.ssh >/dev/null 2>&1
+                #        /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/.ssh >/dev/null 2>&1
 
                                 
-                                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1
+                #                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1
                       #          /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/InstallGit.sh
                       #          git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
                       #          gitfetchno="0"
@@ -333,53 +333,53 @@ do
     #                                    exit
      #                           fi
   
-                                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/CLOUDHOST:${CLOUDHOST}
+ #                               /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/CLOUDHOST:${CLOUDHOST}
 
                                 if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
                                 then
                                         /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
                                 fi
 
-                                status "We are about to run the build script to actually build the machine into a database server"
-                                status "Please Note: The process of building the database is running on a remote machine with ip address : ${DBIP_PUBLIC}"
-                                status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
-                                status "Log files (stderr and stdout) are stored on the remote machine in /home/${SERVER_USER}/logs"
-                                status "Starting to build the database proper"
-                                status "`/bin/date`"
+  #                              status "We are about to run the build script to actually build the machine into a database server"
+   #                             status "Please Note: The process of building the database is running on a remote machine with ip address : ${DBIP_PUBLIC}"
+    #                            status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
+     #                           status "Log files (stderr and stdout) are stored on the remote machine in /home/${SERVER_USER}/logs"
+      #                          status "Starting to build the database proper"
+       #                         status "`/bin/date`"
 
                                 #Decide which build we are selecting to build from - virgin, hourly, daily, weekly, monthly, bimonthly
-                                if ( [ "${BUILD_CHOICE}" = "0" ] )
-                                then
-                                        #We are building a virgin installation
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "1" ] )
-                                then
-                                        #We are building from a baseline
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "2" ] )
-                                then
-                                        #We are building from an hourly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "3" ] )
-                                then
-                                        #We are building from an daily backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "4" ] )
-                                then
-                                        #We are building from an weekly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "5" ] )
-                                then
-                                        #We are building from an monthly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "6" ] )
-                                then
-                                        #We are building from an bimonthly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-                                fi
+        #                        if ( [ "${BUILD_CHOICE}" = "0" ] )
+        #                        then
+        #                                #We are building a virgin installation
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
+          #                      elif ( [ "${BUILD_CHOICE}" = "1" ] )
+          #                      then
+           #                             #We are building from a baseline
+           #                             /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
+           #                     elif ( [ "${BUILD_CHOICE}" = "2" ] )
+           #                     then
+           #                             #We are building from an hourly backup
+           #                             /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
+            #                    elif ( [ "${BUILD_CHOICE}" = "3" ] )
+            #                    then
+            #                            #We are building from an daily backup
+            #                            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
+            #                    elif ( [ "${BUILD_CHOICE}" = "4" ] )
+            #                    then
+            #                            #We are building from an weekly backup
+            #                            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
+            #                    elif ( [ "${BUILD_CHOICE}" = "5" ] )
+            #                    then
+            #                            #We are building from an monthly backup
+            #                            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
+            #                    elif ( [ "${BUILD_CHOICE}" = "6" ] )
+            #                    then
+            #                            #We are building from an bimonthly backup
+             #                           /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
+             #                   fi
 
-                                status "Finished building the database server (${database_name})"
-                                status "`/bin/date`"
+                        status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 5 minutes, something is likely wrong"
+                        status "This is the current time for your reference `/bin/date`"
 
                         #Check that the database is built and ready for action
 
