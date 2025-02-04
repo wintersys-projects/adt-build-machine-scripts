@@ -339,7 +339,7 @@ do
                         alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
            
                    count="0"
-                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "15" ] )
+                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "30" ] )
                    do
                            count="`/usr/bin/expr ${count} + 1`"
                            /bin/sleep 10
