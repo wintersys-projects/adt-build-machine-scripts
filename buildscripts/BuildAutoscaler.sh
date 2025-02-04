@@ -336,10 +336,9 @@ do
                         #checking that the autoscaler is "built and alive" The last thing that the as.sh script does is reboot the machine
                         #that is our autoscaler. We do some rudimentary checking to detect when it is back up again post reboot.
            
-                        alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
            
                    count="0"
-                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "30" ] )
+                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "60" ] )
                    do
                            count="`/usr/bin/expr ${count} + 1`"
                            /bin/sleep 10
