@@ -231,27 +231,27 @@ do
                       # initiation_ip="${ws_active_ip}"
                       # machine_type="webserver"
 
-                       ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver" "${WEBSERVER_PUBLIC_KEYS}"
+   #                    ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver" "${WEBSERVER_PUBLIC_KEYS}"
 
-                        /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
+    #                    /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
                         
-                        set -o allexport
-                        . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
-                        set +o allexport
-                        
-                        while read param
-                        do
-                                param1="`eval /bin/echo ${param}`"
-                                if ( [ "${param1}" != "" ] )
-                                then
-                                        /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
-                                fi
-                        done < ${BUILD_HOME}/builddescriptors/webserverscp.dat
+     #                   set -o allexport
+      #                  . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+       #                 set +o allexport
+        #                
+         ##               while read param
+         #               do
+         #                       param1="`eval /bin/echo ${param}`"
+         #                       if ( [ "${param1}" != "" ] )
+         #                       then
+         #                               /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
+         #                       fi
+         #               done < ${BUILD_HOME}/builddescriptors/webserverscp.dat#
 
-                        /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1
+        #                /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1
                         
-                                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1   
-                #                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/InstallGit.sh
+        #                        /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1   
+        #        #                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/InstallGit.sh
                 #                git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
                 #                gitfetchno="0"
                 #                while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/ws.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
@@ -266,46 +266,46 @@ do
                 #                        exit
                 #                fi
 
-                                status "About to build the webserver"
-                                status "Please Note: The process of building the webserver is running on a remote machine with ip address : ${WSIP_PUBLIC}"
-                                status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
-                                status "Log files (stderr and stdout) are stored on the remote machine in the directory /home/${SERVER_USER}/logs"
-                                status "Starting to build the webserver proper"
-                                status "`/bin/date`"
+        #                        status "About to build the webserver"
+         #                       status "Please Note: The process of building the webserver is running on a remote machine with ip address : ${WSIP_PUBLIC}"
+         #                       status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
+         #                       status "Log files (stderr and stdout) are stored on the remote machine in the directory /home/${SERVER_USER}/logs"
+         #                       status "Starting to build the webserver proper"
+         #                       status "`/bin/date`"#
 
-                                #Which one is a called depends on what we are building from. Virgin, hourly, weekly, monthly or bimonthly
-                                if ( [ "${BUILD_CHOICE}" = "0" ] )
-                                then
-                                        #We are building a virgin system
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY}  ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "1" ] )
-                                then
-                                        #We are building from a baseline
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "2" ] )
-                                then
-                                        #We are building from an hourly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "3" ] )
-                                then
-                                        #We are building from an daily backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "4" ] )
-                                then
-                                        #We are building from an weekly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "5" ] )
-                                then
-                                        #We are building from an monthly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-                                elif ( [ "${BUILD_CHOICE}" = "6" ] )
-                                then
-                                        #We are building from an bimonthly backup
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-                                fi
+         #                       #Which one is a called depends on what we are building from. Virgin, hourly, weekly, monthly or bimonthly
+         #                       if ( [ "${BUILD_CHOICE}" = "0" ] )
+         #                       then
+         #                               #We are building a virgin system
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY}  ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
+         #                       elif ( [ "${BUILD_CHOICE}" = "1" ] )
+         #                       then
+         #                               #We are building from a baseline
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
+         #                       elif ( [ "${BUILD_CHOICE}" = "2" ] )
+         #                       then
+         #                               #We are building from an hourly backup
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
+         #                       elif ( [ "${BUILD_CHOICE}" = "3" ] )
+         #                       then
+         #                               #We are building from an daily backup
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
+         #                       elif ( [ "${BUILD_CHOICE}" = "4" ] )
+         #                       then
+         #                               #We are building from an weekly backup
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
+         #                       elif ( [ "${BUILD_CHOICE}" = "5" ] )
+         #                       then
+         #                               #We are building from an monthly backup
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
+         #                       elif ( [ "${BUILD_CHOICE}" = "6" ] )
+         #                       then
+         #                               #We are building from an bimonthly backup
+         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
+         #                       fi
 
-                                status "Finished building the webserver (${webserver_name})"
-                                status "`/bin/date`"
+                        status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 5 minutes, something is likely wrong"
+                        status "This is the current time for your reference `/bin/date`"
 
 
                         #So, looking good. Now what we have to do is keep monitoring for the build process for our webserver to complete
