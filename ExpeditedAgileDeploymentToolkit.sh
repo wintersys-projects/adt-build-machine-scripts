@@ -218,13 +218,13 @@ start=`/bin/date +%s`
 
 #If we have anything to say here, on an application by application basis before the build really begins we put it in this
 #script
-${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 ${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
 #. ${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
 ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
+${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 
 # I think the usual phrase is, 'we are all set'. So, tell the user we are starting the build proper.
 status ""
