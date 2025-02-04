@@ -73,7 +73,6 @@ fi
 /bin/chmod 700 ${BUILD_KEY}
 /bin/chmod 700 ${BUILD_KEY}.pub
 
-
 key_name="${PUBLIC_KEY_NAME}-${BUILD_IDENTIFIER}"
 ${BUILD_HOME}/providerscripts/security/DeleteSSHKeyPair.sh "${key_name}" "${TOKEN}" ${CLOUDHOST}
 ${BUILD_HOME}/providerscripts/security/RegisterSSHKeyPair.sh "${key_name}" "${TOKEN}" "`/bin/cat ${BUILD_KEY}.pub`" ${CLOUDHOST}
@@ -87,3 +86,5 @@ fi
 
 /bin/echo ${key_name} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYNAME
 /bin/echo ${PUBLIC_KEY_ID} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID
+
+${BUILD_HOME}/helperscripts/SetVariableValue.sh "KEY_ID=${PUBLIC_KEY_ID}"
