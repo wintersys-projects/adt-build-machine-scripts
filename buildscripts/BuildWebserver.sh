@@ -304,7 +304,7 @@ do
          #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
          #                       fi
 
-                        status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 5 minutes, something is likely wrong"
+                        status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
 
 
@@ -314,14 +314,14 @@ do
                         alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
 
                         count="0"
-                        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/WEBSERVER_READY" ] && [ "${count}" -lt "15" ] )
+                        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/WEBSERVER_READY" ] && [ "${count}" -lt "60" ] )
                         do
                                 count="`/usr/bin/expr ${count} + 1`"
                                 /bin/sleep 10
                                 alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
                         done
 
-                        if ( [ "${count}" = "15" ] )
+                        if ( [ "${count}" = "60" ] )
                         then
                                 done="0"
                         else
