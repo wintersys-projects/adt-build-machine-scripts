@@ -327,16 +327,24 @@ do
 
                         status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 5 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
+                        
+                        fi
+                        
+                        #Wait for the machine to become responsive before we check its integrity
 
                         done="0"
                         alive=""
                         #checking that the autoscaler is "built and alive" The last thing that the as.sh script does is reboot the machine
                         #that is our autoscaler. We do some rudimentary checking to detect when it is back up again post reboot.
-                      
-                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] )
+           
+                        alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
+           
+                   count="0"
+                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "15" ] )
                    do
+                           count="`/usr/bin/expr ${count} + 1`"
                            /bin/sleep 10
-                           alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
+                           alive="`/usr/bin/ssh -p ${SSH_PORT} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
                    done
                    
                    if ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] )
@@ -345,7 +353,7 @@ do
                                 status "Hi, an autoscaler didn't seem to build correctly. I can destroy it and I can try again to build a new autoscaler for you."
                                 status "#########################################################################################################################"
                                 status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
-                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+                                if ( [ "${HARDCORE}" != "1" ] )
                                 then
                                         read response
                                 fi
@@ -384,7 +392,7 @@ do
         else
                 status "Autoscaler is already running. Will use that one..."
                 status "Press Enter if this is OK"
-                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+                if ( [ "${HARDCORE}" != "1" ] )
                 then
                         read response
                 fi
