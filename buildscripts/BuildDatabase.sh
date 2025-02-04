@@ -378,7 +378,7 @@ do
              #                           /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
              #                   fi
 
-                        status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 5 minutes, something is likely wrong"
+                        status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
 
                         #Check that the database is built and ready for action
