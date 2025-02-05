@@ -102,18 +102,21 @@ then
         status "${autoscaler_cloud_init_status}"
         if ( [ "`/bin/echo ${autoscaler_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
         then
+                status "Invalid autoscaler cloud-init configuration found. I have to exit"
                 exit
         fi     
-        webserver_cloud_init_status= "`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat`"
+        webserver_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-webserver.dat`"
         status "${webserver_cloud_init_status}"
         if ( [ "`/bin/echo ${webserver_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
         then
+                status "Invalid webserver cloud-init configuration found. I have to exit"
                 exit
         fi   
-        database_cloud_init_status= "`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat`"
+        database_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/linode-database.dat`"
         status "${database_cloud_init_status}"
         if ( [ "`/bin/echo ${database_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
         then
+                status "Invalid database cloud-init configuration found. I have to exit"
                 exit
         fi   
 fi
