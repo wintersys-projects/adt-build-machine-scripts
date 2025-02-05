@@ -45,6 +45,8 @@ runcmd:
   - '/usr/bin/chown -R XXXXSERVER_USERXXXX:XXXXSERVER_USERXXXX /home/XXXXSERVER_USERXXXX'
   - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
   - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX.pub'
+  - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/database_configuration_settings.dat'
+  - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat'
   - '/bin/sed -i "s/^PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config'
