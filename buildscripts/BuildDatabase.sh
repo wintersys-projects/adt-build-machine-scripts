@@ -28,7 +28,8 @@ count="0"
 
 
 status () {
-        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        red='\033[0;36m'
+        /bin/echo "${red} $1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
 #If done=1 then we know that we have build a database correctly so we don't need to run again
