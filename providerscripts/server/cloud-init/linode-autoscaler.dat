@@ -37,6 +37,12 @@ write_files:
   path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat.gz
   permissions: '0644'
 
+package_update: true
+package_upgrade: true
+
+packages:
+  - git
+
 runcmd:
   - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat.gz'
   - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/webserver_configuration_settings.dat.gz'
