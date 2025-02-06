@@ -32,7 +32,7 @@ count="0"
 status () {
         cyan="`/usr/bin/tput setaf 6`"
         norm="`/usr/bin/tput sgr0`"
-        /bin/echo "${cyan} $1 ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${cyan} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
 status ""
