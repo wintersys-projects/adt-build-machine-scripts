@@ -36,7 +36,7 @@ counter="0"
 count="0"
 
 status () {
-        yellow="`/usr/bin/tput setaf 3`"
+        yellow="`/usr/bin/tput setaf 11`"
         norm="`/usr/bin/tput sgr0`"
         /bin/echo "${yellow} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
