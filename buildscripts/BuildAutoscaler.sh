@@ -36,8 +36,9 @@ counter="0"
 count="0"
 
 status () {
-        green='\033[0;32m'
-        /bin/echo -e "${green} $1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        green="`/usr/bin/tput setaf 2`"
+        norm="`/usr/bin/tput sgr0`"
+        /bin/echo "${green} $1 ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
 status ""
