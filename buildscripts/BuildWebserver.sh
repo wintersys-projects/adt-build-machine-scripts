@@ -28,8 +28,10 @@ done=0
 counter="0"
 count="0"
 
+
 status () {
-        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        purple='\033[0;35m'
+        /bin/echo "${purple} $1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
 status ""
