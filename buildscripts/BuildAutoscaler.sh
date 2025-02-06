@@ -36,7 +36,8 @@ counter="0"
 count="0"
 
 status () {
-        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        green='\033[0;32m'
+        /bin/echo -e "${green} $1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
 status ""
