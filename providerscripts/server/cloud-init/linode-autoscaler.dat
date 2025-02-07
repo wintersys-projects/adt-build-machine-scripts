@@ -25,6 +25,11 @@ write_files:
   path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat.gz
   permissions: '0644'
 - encoding: b64
+  content: XXXXWEBSERVER_CONFIGURATIONXXXX
+  owner: root:root
+  path: /home/XXXXSERVER_USERXXXX/.ssh/webserver_configuration_settings.dat.gz
+  permissions: '0644'
+- encoding: b64
   content: XXXXBUILDSTYLES_SETTINGSXXXX
   owner: root:root
   path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat.gz
@@ -58,6 +63,8 @@ runcmd:
   - '/bin/mv /home/XXXXSERVER_USERXXXX/clone/* /home/XXXXSERVER_USERXXXX && /bin/rm -r /home/XXXXSERVER_USERXXXX/clone'
   - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat.gz'
   - '/bin/cp /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat /home/XXXXSERVER_USERXXXX/runtime/autoscaler_configuration_settings.dat'
+  - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/webserver_configuration_settings.dat.gz'
+  - '/bin/cp /home/XXXXSERVER_USERXXXX/.ssh/webserver_configuration_settings.dat /home/XXXXSERVER_USERXXXX/runtime/webserver_configuration_settings.dat'  
   - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat.gz'
   - '/bin/cp /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat /home/XXXXSERVER_USERXXXX/runtime/buildstyles.dat'
   - '/usr/bin/find /home/XXXXSERVER_USERXXXX -type d -exec chmod 755 {} \;' 
