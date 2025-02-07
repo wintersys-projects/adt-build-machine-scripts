@@ -28,7 +28,7 @@ count="0"
 
 
 status () {
-        red="`/usr/bin/tput setaf 1`"
+        red="`/usr/bin/tput setaf 7`"
         norm="`/usr/bin/tput sgr0`"
         /bin/echo "${red} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
