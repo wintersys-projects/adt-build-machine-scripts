@@ -47,6 +47,7 @@ packages:
   - cron
   - sshpass
   - bc
+  - curl
 
 runcmd:
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
