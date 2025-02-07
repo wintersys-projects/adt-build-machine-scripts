@@ -19,7 +19,7 @@ ssh_keys:
       -----END OPENSSH PRIVATE KEY-----
 
 timezone: 'XXXTIMEZONEXXXX'
-hostname: Autoscaler
+hostname: Database
 
 write_files:
 - encoding: b64
