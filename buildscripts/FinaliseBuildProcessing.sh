@@ -225,14 +225,14 @@ do
 done
 
 
-status "Checking that all core software has fully installed...."
-core_software_installed=""
-
-while ( [ "${core_software_installed}" = "" ] )
-do
-        core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" 2>&1 > /dev/null
-        /bin/sleep 1
-done
+#status "Checking that all core software has fully installed...."
+#core_software_installed=""
+#
+#while ( [ "${core_software_installed}" = "" ] )
+#do
+#        core_software_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/ALL_CORE_SOFTWARE_INSTALLED"`" 2>&1 > /dev/null
+#        /bin/sleep 1
+#done
 
 status "Checking that the bespoke application has been installed...."
 bespoke_application_installed=""
