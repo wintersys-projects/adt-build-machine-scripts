@@ -30,7 +30,7 @@ count="0"
 
 
 status () {
-        cyan="`/usr/bin/tput setaf 6`"
+        cyan="`/usr/bin/tput setaf 4`"
         norm="`/usr/bin/tput sgr0`"
         /bin/echo "${cyan} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
