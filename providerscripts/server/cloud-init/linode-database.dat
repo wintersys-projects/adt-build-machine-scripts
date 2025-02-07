@@ -62,17 +62,17 @@ runcmd:
   - '/bin/sed -i "s/^AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/bin/sed -i "s/^#AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/usr/bin/systemctl restart ssh'
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallNetworkManager.sh' 
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallSoftwareProperties.sh' 
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallNetworkManager.sh' #make package
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallSoftwareProperties.sh' #make package
   - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallFirewall.sh' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallDatastoreTools.sh' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallDatabaseServer.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallDatabaseClient.sh'
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallJQ.sh' 
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallJQ.sh' #make package
   - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallGo.sh &'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallEmailUtil.sh' 
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallRsync.sh' 
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallCron.sh' 
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallRsync.sh' #make package
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && ${HOME}/installscripts/InstallCron.sh' #make package
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/db.sh'
 
 
