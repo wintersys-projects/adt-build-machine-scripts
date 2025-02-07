@@ -48,6 +48,7 @@ packages:
   - jq
   - rsync
   - cron
+  - nginx
 
 
 runcmd:
