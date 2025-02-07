@@ -262,12 +262,12 @@ fi
 
 ${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
 
-if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
-then
-         ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
-else
-         ${BUILD_HOME}/providerscripts/security/firewall/OnlyAddMachinesToFirewall.sh
-fi
+#if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
+#then
+#         ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
+#else
+#         ${BUILD_HOME}/providerscripts/security/firewall/OnlyAddMachinesToFirewall.sh
+#fi
 #If we have any messages to put out to the user post build, we add them to this script
 ${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
 
@@ -292,6 +292,8 @@ status "OK, have fun with it...."
 end=`/bin/date +%s`
 runtime="`/usr/bin/expr ${end} - ${start}`"
 status "This script completed at `/bin/date` and took `/bin/date -u -d @${runtime} +\"%T\"` to complete"
+
+${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 
 #Might be needed for the updates we applied at the start. The user can ssh onto the machie again and tail the logs to see what happened. 
 if ( [ -f /root/PERFORM_REBOOT ] )
