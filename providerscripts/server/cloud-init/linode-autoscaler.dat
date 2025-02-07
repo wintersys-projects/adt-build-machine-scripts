@@ -40,6 +40,9 @@ write_files:
   path: /home/homedir.dat
   permissions: '755'
 
+timezone: 'XXXTIMEZONEXXXX'
+hostname: Autoscaler
+
 package_update: true
 package_upgrade: true
 
