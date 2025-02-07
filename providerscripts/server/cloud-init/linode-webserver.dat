@@ -48,6 +48,17 @@ packages:
   - jq
   - rsync
   - cron
+  - php
+    - libapache2-mod-php
+    - php-cli
+    - php-simple
+    - php-xml
+    - php-dom
+    - php-gd
+    - php-intl
+    - php-zip
+    - php-mysqli
+    - php-curl
 
 runcmd:
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
