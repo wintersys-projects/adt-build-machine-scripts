@@ -38,7 +38,7 @@ status () {
 status ""
 status ""
 status ""
-status "#########################WEBSERVER#######################"
+status "#########################WEBSERVER BUILD MESSAGES ARE IN BLUE#######################"
 
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
