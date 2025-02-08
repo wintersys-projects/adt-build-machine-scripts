@@ -39,7 +39,7 @@ status () {
 status ""
 status ""
 status ""
-status "#########################DATABASE#######################"
+status "#########################DATABASE BUILD MESSAGES ARE IN WHITE#######################"
 
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
