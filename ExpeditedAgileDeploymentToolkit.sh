@@ -226,6 +226,9 @@ ${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
 ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
 ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 
+status "Are you happy for the build to proceed? Pressing <enter> now will begin the process of building your server machines"
+read x
+
 # I think the usual phrase is, 'we are all set'. So, tell the user we are starting the build proper.
 status ""
 status ""
