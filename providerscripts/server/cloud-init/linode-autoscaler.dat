@@ -20,6 +20,9 @@ ssh_keys:
 
 byobu_by_default: system
 
+timezone: 'XXXXTIMEZONEXXXX'
+hostname: Autoscaler
+
 write_files:
 - encoding: b64
   content: XXXXAUTOSCALER_CONFIGURATIONXXXX
@@ -41,9 +44,6 @@ write_files:
   owner: 'XXXXSERVER_USERXXXX:root'
   path: /home/homedir.dat
   permissions: '755'
-
-timezone: 'XXXXTIMEZONEXXXX'
-hostname: Autoscaler
 
 package_update: true
 package_upgrade: true
