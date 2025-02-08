@@ -18,6 +18,8 @@ ssh_keys:
       XXXXSSH_PRIVATE_KEYXXXX
       -----END OPENSSH PRIVATE KEY-----
 
+byobu_by_default: system
+
 write_files:
 - encoding: b64
   content: XXXXAUTOSCALER_CONFIGURATIONXXXX
