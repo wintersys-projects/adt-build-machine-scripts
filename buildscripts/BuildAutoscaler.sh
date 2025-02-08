@@ -44,7 +44,7 @@ status () {
 status ""
 status ""
 status ""
-status "#########################AUTOSCALER#######################"
+status "#########################AUTOSCALER BUILD MESSAGES ARE IN RED#######################"
 
 #For our remote commands, we have various options that we want to be set. To keep things as clean as possible
 #We set out options for our ssh command and scp command here and pass them in through the variable ${OPTIONS}
