@@ -52,16 +52,16 @@ write_files:
   path: /home/homedir.dat
   permissions: '755'
 
-package_update: true
-package_upgrade: true
-
 apt:  
   sources:
     php:
-      source: 'ppa:ondrej/php'
+      source: 'deb https://packages.sury.org/php/ noble main'
+#DEBIAN      source: 'deb https://packages.sury.org/php/ bookworm main'
+
+package_update: true
+package_upgrade: true
 
 packages:
-  - software-properties-common
   - git
   - network-manager 
   - software-properties-common
@@ -69,7 +69,6 @@ packages:
   - rsync
   - cron
   - nginx
-  - php8.4-mysqli
 
 
 runcmd:
