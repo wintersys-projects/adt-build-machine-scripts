@@ -40,6 +40,8 @@
 # DATASTOREMOUNTTOOL:rclone:repo
 # DATASTOREMOUNTTOOL:geesefs:binary
 # When installing mariadb on your VPS systems you can give it a verion number to install like this (note MySQL just installs the latest version and you don't have a choice)
+# If you put 'cloud-init' here then cloud-init will install the default version of mariadb
+# MARIADB:cloud-init
 # MARIADB:<version>
 # When installing postgres on your VPS systems you can give a version number to install like this
 # POSTGRES:<version>
