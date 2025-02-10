@@ -52,6 +52,11 @@ write_files:
   path: /home/homedir.dat
   permissions: '755'
 
+apt:  
+  sources:
+    php:
+      source: 'ppa:ondrej/php'
+
 package_update: true
 package_upgrade: true
 
@@ -63,6 +68,7 @@ packages:
   - rsync
   - cron
   - nginx
+  - php8.4-mysqli
 
 
 runcmd:
