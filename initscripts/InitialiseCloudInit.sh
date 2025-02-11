@@ -67,11 +67,26 @@ database_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST
 
 build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstylesscp.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_LANGUAGE`"
+
+if ( [ "${APPLICATION_LANGUAGE}" = "PHP" ] )
+then
+        PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
+        php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
+        php_module_list=""
+        for php_module in ${php_modules}
+        do
+                php_module_list="${php_module_list} php${PHP_VERSION}-${php_module}"
+        done
+fi
+
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
         /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/autoscaler.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
         /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/database.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+
+        /bin/sed -i "s;XXXXPHP_MODULESXXXX;${php_module_list};" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         /bin/sed -i "s/XXXXSSH_PORTXXXX/${SSH_PORT}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
         /bin/sed -i "s/XXXXSSH_PORTXXXX/${SSH_PORT}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         /bin/sed -i "s/XXXXSSH_PORTXXXX/${SSH_PORT}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
