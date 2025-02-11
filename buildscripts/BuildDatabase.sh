@@ -81,48 +81,6 @@ PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFI
 
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
-#${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
-
-#if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
-#then
-#        DBaaS_HOSTNAME="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_HOSTNAME`"
-#        DBaaS_DBNAME="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#        DBaaS_USERNAME="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#        DBaaS_PASSWORD="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#        DB_PORT="`/bin/sed 4!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#else
-#        rnd="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
-#        rnd1="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
-#        rnd2="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"#
-#
-#        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials ] )
-#        then
-#                /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials
-#        fi
-#        
-#        /bin/echo "${rnd}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#        /bin/echo "${rnd1}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#        /bin/echo "${rnd2}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#        /bin/echo "${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred
-#fi
-
-#if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred ] )
-#then
-#        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred credentials/db_cred
-#fi
-
-#status ""
-#status ""
-#status ""
-#status ""
-#status "========================================================="
-#status "=================BUILDING DATABASE======================="
-#status "========================================================="
-#
-#status "Logging for this database build is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${OUT_FILE}"
-#status "The error stream for this database build is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${ERR_FILE}"
-#status "========================================================="
-
 #If we don't need a database, then just skip the process of installing a database
 #We may have an application which doesn't require a database
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "None" ] )
@@ -149,14 +107,6 @@ do
                 RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
                 #database_name="database-${RND}-`/bin/echo ${BUILD_IDENTIFIER} | /usr/bin/tr '[:upper:]' '[:lower:]'`"
                 database_name="db-${REGION}-${BUILD_IDENTIFIER}-${RND}"
-
-              #  database_name="`/bin/echo ${database_name} | /usr/bin/cut -c -32 | /bin/sed 's/-$//g'`"
-
-                #What type of OS are we building for. Currently, (April 2018) only ubuntu and debian are supported
-             #   if ( [ "${OS_TYPE}" = "" ] )
-             #   then
-             #           OS_TYPE="`${BUILD_HOME}/providerscripts/cloudhost/GetOperatingSystemVersion.sh ${DB_SIZE} ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}`"
-             #   fi
 
                 status "Initialising a new server machine, please wait......"
 
@@ -205,8 +155,6 @@ do
                            status "Haven't been able to start your server, I will try again....."
                    fi
                 done
-
-           #     ${BUILD_HOME}/providerscripts/server/EnsureServerAttachedToVPC.sh "${CLOUDHOST}" "${database_name}" "${private_ip}"
 
                 DBIP_PUBLIC="${ip}"
                 DBIP_PRIVATE="${private_ip}"
@@ -268,8 +216,6 @@ do
                         /bin/cp /dev/null ${DATABASE_PUBLIC_KEYS}
                 fi
 
-              #  /usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${db_active_ip}"
-
                 /usr/bin/ssh-keyscan -T 60 ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
 
                 keytry="1"
@@ -288,97 +234,10 @@ do
                 else
                         status "Successfully scanned remote database ${database_name} for ssh-keys"
 
-                        #We don't want to pass in our private keys to our remote commands every time from the command line as it will look unwieldy.
-                        #So, we previously setup unique key files with out ssh private keys in them and now that we know the ip address of our autoscaler,
-                        #We can tell ourselves where to look for the private key to that ip address by configuring the config file to point to it
-#                        /bin/echo "Host ${db_active_ip}" >> ~/.ssh/config
-#                        /bin/echo "IdentityFile ~/.ssh/${SERVER_USER}.key" >> ~/.ssh/config
-#                        /bin/echo "IdentitiesOnly yes" >> ~/.ssh/config
-
-                        # initiation_ip="${db_active_ip}"
-                        # machine_type="database"
-
-         #                ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${db_active_ip}" "database" "${DATABASE_PUBLIC_KEYS}"
-#
- #                       /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
-  #                      
-   #                     set -o allexport
-    #                    . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
-     #                   set +o allexport
-      #                  
-       #                 while read param
-        #                do
-          #                      param1="`eval /bin/echo ${param}`"
-        #                        if ( [ "${param1}" != "" ] )
-         #                       then
-          #                              /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
-           #                     fi
-           #             done < ${BUILD_HOME}/builddescriptors/databasescp.dat#
-
-                #        /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/.ssh >/dev/null 2>&1
-
-                                
-                #                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1
-                      #          /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${db_active_ip}:/home/${SERVER_USER}/InstallGit.sh
-                      #          git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
-                      #          gitfetchno="0"
-                      #          while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/db.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
-                      #          do
-                      #                  /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/InstallGit.sh ; cd /home/${SERVER_USER}; /usr/bin/git clone https://${git_provider_domain}/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-database-scripts.git; /bin/cp -r ./adt-database-scripts/* .; /bin/rm -r ./adt-database-scripts ; /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/*; /bin/chmod 500 /home/${SERVER_USER}/db.sh"
-                      #                  /bin/sleep 5
-                      #                  gitfetchno="`/usr/bin/expr ${gitfetchno} + 1`"
-                      #          done##
-#
- #                               if ( [ "${gitfetchno}" = "5" ] )
-  #                              then
-   #                                     status "Had trouble getting the database infrastructure sourcecode, will have to exit"
-    #                                    exit
-     #                           fi
-  
- #                               /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/CLOUDHOST:${CLOUDHOST}
-
                                 if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
                                 then
                                         /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
                                 fi
-
-  #                              status "We are about to run the build script to actually build the machine into a database server"
-   #                             status "Please Note: The process of building the database is running on a remote machine with ip address : ${DBIP_PUBLIC}"
-    #                            status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
-     #                           status "Log files (stderr and stdout) are stored on the remote machine in /home/${SERVER_USER}/logs"
-      #                          status "Starting to build the database proper"
-       #                         status "`/bin/date`"
-
-                                #Decide which build we are selecting to build from - virgin, hourly, daily, weekly, monthly, bimonthly
-        #                        if ( [ "${BUILD_CHOICE}" = "0" ] )
-        #                        then
-        #                                #We are building a virgin installation
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-          #                      elif ( [ "${BUILD_CHOICE}" = "1" ] )
-          #                      then
-           #                             #We are building from a baseline
-           #                             /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-           #                     elif ( [ "${BUILD_CHOICE}" = "2" ] )
-           #                     then
-           #                             #We are building from an hourly backup
-           #                             /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-            #                    elif ( [ "${BUILD_CHOICE}" = "3" ] )
-            #                    then
-            #                            #We are building from an daily backup
-            #                            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-            #                    elif ( [ "${BUILD_CHOICE}" = "4" ] )
-            #                    then
-            #                            #We are building from an weekly backup
-            #                            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-            #                    elif ( [ "${BUILD_CHOICE}" = "5" ] )
-            #                    then
-            #                            #We are building from an monthly backup
-            #                            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-            #                    elif ( [ "${BUILD_CHOICE}" = "6" ] )
-            #                    then
-            #                            #We are building from an bimonthly backup
-             #                           /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/db.sh"
-             #                   fi
 
                         status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
@@ -390,10 +249,10 @@ do
                         count2="0"
 
                         count="0"
-                        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "60" ] )
+                        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "300" ] )
                         do
                                 count="`/usr/bin/expr ${count} + 1`"
-                                /bin/sleep 10
+                                /bin/sleep 2
                                 alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/DATABASE_READY"`"
                         done 
 
