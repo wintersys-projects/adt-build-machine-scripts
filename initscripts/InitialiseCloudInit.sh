@@ -39,7 +39,7 @@ do
         then
                 /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat
         fi
-done < ${BUILD_HOME}/builddescriptors/autoscalerscp.dat
+done < ${BUILD_HOME}/builddescriptors/autoscaler_descriptor.dat
 
 autoscaler_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
@@ -50,7 +50,7 @@ do
         then
                 /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
         fi
-done < ${BUILD_HOME}/builddescriptors/webserverscp.dat
+done < ${BUILD_HOME}/builddescriptors/webserver_descriptor.dat
 
 webserver_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
@@ -61,7 +61,7 @@ do
         then
                 /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
         fi
-done < ${BUILD_HOME}/builddescriptors/databasescp.dat
+done < ${BUILD_HOME}/builddescriptors/database_descriptor.dat
 
 database_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
