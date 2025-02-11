@@ -71,13 +71,18 @@ APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATI
 
 if ( [ "${APPLICATION_LANGUAGE}" = "PHP" ] )
 then
-        PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
-        php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
-        php_module_list=""
-        for php_module in ${php_modules}
-        do
-                php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
-        done
+        if ( [ "`/bin/grep ^PHP:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
+        then
+                /bin/sed 's/#XXXXPHPXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                
+                PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
+                php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
+                php_module_list=""
+                for php_module in ${php_modules}
+                do
+                        php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
+                done
+        fi
 fi
 
 /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/autoscaler.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
@@ -104,18 +109,23 @@ then
 fi
 
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
 
-if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] )
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] || [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "Maria" ] )
 then
         if ( [ "`/bin/grep ^MARIADB:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
         then
-                /bin/sed 's/#XXXXAPACHEXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         fi
 fi
-        
 
-
-DATABASE_INSTALLATION_TYPE
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "Postgres" ] )
+then
+        if ( [ "`/bin/grep ^POSTGRES:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
+        then
+                /bin/sed 's/#XXXXPOSTRGESQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+        fi
+fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
