@@ -67,6 +67,8 @@ packages:
   - rsync
   - cron
   - nginx
+  - php
+  - php-mysql
 
 
 runcmd:
