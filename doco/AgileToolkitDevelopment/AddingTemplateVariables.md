@@ -2,15 +2,15 @@ If you wanted to add a new variable to the templates in service to a new feature
   
 To make the new variable available to the autoscaler,on the build machine repository, add the new variable to 
 
->      ${BUILD_HOME}/builddescriptors/autoscalerscp.dat
+>      ${BUILD_HOME}/builddescriptors/autoscaler_descriptor.dat
 
 To make the new variable available to the webserver on the build machine repository, add the new variable to 
 
->      ${BUILD_HOME}/builddescriptors/webserverscp.dat
+>      ${BUILD_HOME}/builddescriptors/webserver_descriptor.dat
   
 To make the new variable available to the database on the build machine repository, add the new variable to 
 
->      ${BUILD_HOME}/builddescriptors/databasescp.dat  
+>      ${BUILD_HOME}/builddescriptors/database_descriptor.dat  
 
 NOTE: there needs to be an empty line at the end of each file so that all of the lines are read by the script
 
