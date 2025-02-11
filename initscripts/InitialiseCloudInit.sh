@@ -103,6 +103,20 @@ then
         fi
 fi
 
+DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] )
+then
+        if ( [ "`/bin/grep ^MARIADB:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
+        then
+                /bin/sed 's/#XXXXAPACHEXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+        fi
+fi
+        
+
+
+DATABASE_INSTALLATION_TYPE
+
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
 
