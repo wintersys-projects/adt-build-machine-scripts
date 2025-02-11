@@ -79,7 +79,7 @@ then
         if ( [ "`/bin/grep ^PHP:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
         then
                 /bin/sed  -i 's/#XXXXPHPXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-                /bin/sed  -i "s/#XXXXPHP_VERSIONXXXX/${PHP_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed  -i "s/XXXXPHP_VERSIONXXXX/${PHP_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
                 
                 PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
                 php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
