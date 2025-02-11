@@ -112,7 +112,7 @@ DATASTOREMOUNTTOOL:goof:binary
 #DATASTOREMOUNTTOOL:geesefs:binary
 MARIADB:cloud-init
 #MARIADB:11.5.2
-#MYSQL:cloud-init
+MYSQL:cloud-init
 POSTGRES:cloud-init
 #POSTGRES:17
 BUILDCHAINTYPE:standard
