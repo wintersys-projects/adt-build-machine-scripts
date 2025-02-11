@@ -63,7 +63,6 @@ packages:
 #XXXXNGINXXXXX  - nginx
 #XXXXAPACHEXXXX  - apache
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
-#XXXXMYSQL_CLIENTXXXX  - default-mysql-client
 #XXXXPOSTRGESQL_CLIENTXXXX  - postgresql-client
 
 runcmd:
