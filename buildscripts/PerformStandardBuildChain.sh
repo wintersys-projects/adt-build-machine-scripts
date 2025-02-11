@@ -176,18 +176,18 @@ fi
 AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
 OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
 
-if ( [ "${as_active_ips}" != "" ] )
-then
-        for ip in `/bin/echo ${as_active_ips} | /bin/sed 's/:/ /g'`
-        do
-                /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1        
-                /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1    
-        done
-elif ( [ "${as_active_ip}" != "" ] )
-then
-        /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1        
-        /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1    
-fi
+#if ( [ "${as_active_ips}" != "" ] )
+#then
+#        for ip in `/bin/echo ${as_active_ips} | /bin/sed 's/:/ /g'`
+#        do
+#                /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1        
+#                /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1    
+#        done
+#elif ( [ "${as_active_ip}" != "" ] )
+#then
+#        /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1        
+#        /usr/bin/scp ${OPTIONS} -P ${SSH_PORT} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1    
+#fi
 
 if ( [ "${PRODUCTION}" = "1" ] )
 then
@@ -199,7 +199,7 @@ fi
 
 #. ${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
 /bin/touch ${BUILD_HOME}/runtimedata//PRIME_FIREWALL
-cloudhost_holder="${CLOUDHOST}"
+#cloudhost_holder="${CLOUDHOST}"
 ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh
 
 export CLOUDHOST="${cloudhost_holder}"
