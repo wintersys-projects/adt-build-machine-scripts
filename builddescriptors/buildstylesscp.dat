@@ -100,6 +100,7 @@ LIGHTTPD:repo
 #PHP:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
 #PHP joomla 5 (zlib and json are enabled by default in php>8.0)
 PHP:cloud-init:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
+PHP:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
 #PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
 #PHP:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
 CONFIGPHPPOOL:pm=ondemand:pm.max_children=4:pm.max_requests=200:pm.start_servers=10:pm.min_spare_servers=5:pm.max_spare_servers=20:pm.process_idle_timeout=10s
@@ -110,9 +111,9 @@ CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.
 #DATASTOREMOUNTTOOL:s3fs:repo
 DATASTOREMOUNTTOOL:goof:binary
 #DATASTOREMOUNTTOOL:geesefs:binary
+#Note, "MySQL" isn't configurable through this file only Maria DB is
 MARIADB:cloud-init
 #MARIADB:11.5.2
-MYSQL:cloud-init
 POSTGRES:cloud-init
 #POSTGRES:17
 BUILDCHAINTYPE:standard
