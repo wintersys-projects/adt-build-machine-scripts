@@ -84,18 +84,6 @@ PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFI
 
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
-#status ""
-#status ""
-#status ""
-#status ""
-#status "========================================================="
-#status "=================BUILDING WEBSERVER======================"
-#status "========================================================="
-#
-#status "Logging for this webserver build is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${OUT_FILE}"
-#status "The error stream for this webserver build is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${ERR_FILE}"
-#status "========================================================="
-
 #If "done" is set to 1, then we know that a webserver has been successfully built and is running.
 #Try up to 5 times if the webserver is failing to complete its build
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
@@ -111,17 +99,7 @@ do
                 #Construct a unique name for this webserver
                 RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
 
-               # webserver_name="webserver-init-${RND}-`/bin/echo ${BUILD_IDENTIFIER} | /usr/bin/tr '[:upper:]' '[:lower:]'`"
-
                 webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-${RND}"
-               # webserver_name="`/bin/echo ${webserver_name} | /usr/bin/cut -c -32 | /bin/sed 's/-$//g'`"
-
-                #What OS type are we building for. Currently, only ubuntu is supported
-
-              #  if ( [ "${OS_TYPE}" = "" ] )
-              #  then
-              #          OS_TYPE="`${BUILD_HOME}/providerscripts/cloudhost/GetOperatingSystemVersion.sh ${WS_SIZE} ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}`"
-              #  fi
 
                 status "Initialising a new server machine, please wait......"
 
@@ -173,8 +151,6 @@ do
                         fi
            done
     
-        #   ${BUILD_HOME}/providerscripts/server/EnsureServerAttachedToVPC.sh "${CLOUDHOST}" "${webserver_name}" "${private_ip}"
-
                 WSIP_PUBLIC=${ip}
                 WSIP_PRIVATE=${private_ip}
 
@@ -205,7 +181,6 @@ do
                         /bin/cp /dev/null ${WEBSERVER_PUBLIC_KEYS}
                 fi
 
-             #   /usr/bin/ssh-keygen -f '/root/.ssh/known_hosts' -R "${ws_active_ip}"
                 /usr/bin/ssh-keyscan -T 60 ${ws_active_ip} >> ${WEBSERVER_PUBLIC_KEYS}
   
                 keytry="1"
@@ -224,89 +199,6 @@ do
                 else
                         status "Successfully scanned remote webserver ${webserver_name} for ssh-keys"
 
-                        #We don't want to pass in our private keys to our remote commands every time from the command line as it will look unwieldy.
-                        #So, we previously setup unique key files with out ssh private keys in them and now that we know the ip address of our autoscaler,
-                        #We can tell ourselves where to look for the private key to that ip address by configuring the config file to point to it
-#                        /bin/echo "Host ${ws_active_ip}" >> ~/.ssh/config
-#                        /bin/echo "IdentityFile ~/.ssh/${SERVER_USER}.key" >> ~/.ssh/config
-#                        /bin/echo "IdentitiesOnly yes" >> ~/.ssh/config
-
-                      # initiation_ip="${ws_active_ip}"
-                      # machine_type="webserver"
-
-   #                    ${BUILD_HOME}/buildscripts/InitiateNewMachine.sh "${ws_active_ip}" "webserver" "${WEBSERVER_PUBLIC_KEYS}"
-
-    #                    /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
-                        
-     #                   set -o allexport
-      #                  . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
-       #                 set +o allexport
-        #                
-         ##               while read param
-         #               do
-         #                       param1="`eval /bin/echo ${param}`"
-         #                       if ( [ "${param1}" != "" ] )
-         #                       then
-         #                               /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
-         #                       fi
-         #               done < ${BUILD_HOME}/builddescriptors/webserverscp.dat#
-
-        #                /usr/bin/scp -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/webserver_configuration_settings.dat >/dev/null 2>&1
-                        
-        #                        /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/builddescriptors/buildstylesscp.dat ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/.ssh/buildstyles.dat >/dev/null 2>&1   
-        #        #                /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_HOME}/providerscripts/git/GitRemoteInstall.sh ${SERVER_USER}@${ws_active_ip}:/home/${SERVER_USER}/InstallGit.sh
-                #                git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh`"
-                #                gitfetchno="0"
-                #                while ( [ "`/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/ls /home/${SERVER_USER}/ws.sh" 2>/dev/null`" = "" ] && [ "${gitfetchno}" -lt "5" ] )
-                #                do
-                #                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/InstallGit.sh ; cd /home/${SERVER_USER}; /usr/bin/git clone https://${git_provider_domain}/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-webserver-scripts.git; /bin/cp -r ./adt-webserver-scripts/* .; /bin/rm -r ./adt-webserver-scripts ; /bin/chown -R ${SERVER_USER}:${SERVER_USER} /home/${SERVER_USER}/*; /bin/chmod 500 /home/${SERVER_USER}/ws.sh"
-                #                        /bin/sleep 5
-                #                        gitfetchno="`/usr/bin/expr ${gitfetchno} + 1`"
-                #                done
-                #                if ( [ "${gitfetchno}" = "5" ] )
-                #                then
-                #                        status "Had trouble getting the webserver infrastructure sourcecode, will have to exit"
-                #                        exit
-                #                fi
-
-        #                        status "About to build the webserver"
-         #                       status "Please Note: The process of building the webserver is running on a remote machine with ip address : ${WSIP_PUBLIC}"
-         #                       status "To access this machine once it has finished provisioning you can use the scripts in ${BUILD_HOME}/helperscripts"
-         #                       status "Log files (stderr and stdout) are stored on the remote machine in the directory /home/${SERVER_USER}/logs"
-         #                       status "Starting to build the webserver proper"
-         #                       status "`/bin/date`"#
-
-         #                       #Which one is a called depends on what we are building from. Virgin, hourly, weekly, monthly or bimonthly
-         #                       if ( [ "${BUILD_CHOICE}" = "0" ] )
-         #                       then
-         #                               #We are building a virgin system
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY}  ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-         #                       elif ( [ "${BUILD_CHOICE}" = "1" ] )
-         #                       then
-         #                               #We are building from a baseline
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-         #                       elif ( [ "${BUILD_CHOICE}" = "2" ] )
-         #                       then
-         #                               #We are building from an hourly backup
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-         #                       elif ( [ "${BUILD_CHOICE}" = "3" ] )
-         #                       then
-         #                               #We are building from an daily backup
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-         #                       elif ( [ "${BUILD_CHOICE}" = "4" ] )
-         #                       then
-         #                               #We are building from an weekly backup
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-         #                       elif ( [ "${BUILD_CHOICE}" = "5" ] )
-         #                       then
-         #                               #We are building from an monthly backup
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-         #                       elif ( [ "${BUILD_CHOICE}" = "6" ] )
-         #                       then
-         #                               #We are building from an bimonthly backup
-         #                               /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${ws_active_ip} "${CUSTOM_USER_SUDO} /bin/sh /home/${SERVER_USER}/ws.sh"
-         #                       fi
-
                         status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
 
@@ -317,14 +209,14 @@ do
                         alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
 
                         count="0"
-                        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/WEBSERVER_READY" ] && [ "${count}" -lt "60" ] )
+                        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/WEBSERVER_READY" ] && [ "${count}" -lt "300" ] )
                         do
                                 count="`/usr/bin/expr ${count} + 1`"
-                                /bin/sleep 10
+                                /bin/sleep 2
                                 alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
                         done
 
-                        if ( [ "${count}" = "60" ] )
+                        if ( [ "${count}" = "300" ] )
                         then
                                 done="0"
                         else
