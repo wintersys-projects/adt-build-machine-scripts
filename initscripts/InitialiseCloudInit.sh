@@ -139,7 +139,7 @@ then
         fi
 fi
 
-if ( [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "MySQLa" ] )
+if ( [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "MySQL" ] )
 then
         if ( [ "`/bin/grep ^MYSQL:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
         then
