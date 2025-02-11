@@ -243,10 +243,10 @@ do
            
            
                    count="0"
-                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "60" ] )
+                   while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "300" ] )
                    do
                            count="`/usr/bin/expr ${count} + 1`"
-                           /bin/sleep 10
+                           /bin/sleep 2
                            alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
                    done
                    
