@@ -248,17 +248,17 @@ status ""
 status ""
 
 #This option will perform a standard build process (autoscaler, webserver, database)
-if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "standard" ] )
+if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "standard" ] )
 then
          ${BUILD_HOME}/buildscripts/PerformStandardBuildChain.sh
 fi
 #This option will only build a webserver (which you might want if you are building a static site)
-if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "webserver" ] )
+if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "webserver" ] )
 then
          ${BUILD_HOME}/buildscripts/BuildWebserver.sh
 fi
 #This option will only build a database if you want an easily deployed and secured database to use)
-if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /usr/bin/awk -F':' '{print $NF}'`" = "database" ] )
+if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "database" ] )
 then
          ${BUILD_HOME}/buildscripts/BuildDatabase.sh
 fi
