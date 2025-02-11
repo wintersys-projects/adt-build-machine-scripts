@@ -2,9 +2,9 @@ Here you will find an expose on the directory structures of the various differen
 
 #### On the build machine
 
-```${BUILD_HOME}/builddescriptors/autoscalerscp.dat``` - the autoscaler relevant environment variables  
-```${BUILD_HOME}/builddescriptors/databasescp.dat``` - the database relevant environment variables  
-```${BUILD_HOME}/builddescriptors/webserverscp.dat``` - the webserver relevant environment variables   
+```${BUILD_HOME}/builddescriptors/autoscaler_descriptor.dat``` - the autoscaler relevant environment variables  
+```${BUILD_HOME}/builddescriptors/database_descriptor.dat``` - the database relevant environment variables  
+```${BUILD_HOME}/builddescriptors/webserver_descriptor.dat``` - the webserver relevant environment variables   
 
 ```${BUILD_HOME}/builddescriptors/buildstyles.dat``` - configuration of different build methods for the tools we want to work with  
 
