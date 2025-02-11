@@ -130,6 +130,12 @@ then
         fi
 fi
 
+if ( [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "MySQL" ] )
+then
+        /bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+        /bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+fi
+
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ]  )
 then
         if ( [ "`/bin/grep ^POSTGRES:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
