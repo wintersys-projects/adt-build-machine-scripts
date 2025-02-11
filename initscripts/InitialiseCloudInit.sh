@@ -76,7 +76,7 @@ then
         php_module_list=""
         for php_module in ${php_modules}
         do
-                php_module_list="${php_module_list} php${PHP_VERSION}-${php_module}"
+                php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
         done
 fi
 
@@ -86,7 +86,7 @@ then
         /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/database.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
 
-        /bin/sed -i "s/XXXXPHP_MODULESXXXX/${php_module_list}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+        /bin/sed -i "s/XXXXPHP_MODULESXXXX/${php_modules_list}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         /bin/sed -i "s/XXXXSSH_PORTXXXX/${SSH_PORT}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
         /bin/sed -i "s/XXXXSSH_PORTXXXX/${SSH_PORT}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         /bin/sed -i "s/XXXXSSH_PORTXXXX/${SSH_PORT}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
