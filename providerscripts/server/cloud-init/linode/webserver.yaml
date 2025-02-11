@@ -33,8 +33,6 @@ locale: en_GB
 keyboard:
   layout: gb
 
-byobu_by_default: disable
-
 write_files:
 - encoding: b64
   content: XXXXWEBSERVER_CONFIGURATIONXXXX
@@ -52,10 +50,10 @@ write_files:
   path: /home/homedir.dat
   permissions: '755'
 
-apt:  
-  sources:
-    php:
-      source: 'deb https://packages.sury.org/php/ noble main'
+#apt:  
+#  sources:
+#    php:
+#      source: 'deb https://packages.sury.org/php/ noble main'
 #DEBIAN      source: 'deb https://packages.sury.org/php/ bookworm main'
 
 package_update: true
