@@ -57,7 +57,7 @@ To generate a new keypair you can follow: [keygen](https://www.ssh.com/academy/s
    
 10. When you begin a build with this buildkit it will expect you to have selected a build chain in the file by setting a value for BUILDCHAINTYPE: <br> <br>
 
->     ${BUILD_HOME}/builddescriptors/buildstylesscp.dat  
+>     ${BUILD_HOME}/builddescriptors/buildstyles.dat  
 
    If you have selected the "standard" build chain time which you most probabaly have then for production mode the build process will build autoscaler(s), webserver and database machines by calling the files  
 
