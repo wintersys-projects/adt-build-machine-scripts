@@ -130,6 +130,25 @@ then
         fi
 fi
 
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "MySQL" ] )
+then
+        if ( [ "`/bin/grep ^MYSQL:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXMYSQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXMYSQL_SERVERXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+        fi
+fi
+
+if ( [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "MySQLa" ] )
+then
+        if ( [ "`/bin/grep ^MYSQL:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXMYSQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXMYSQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+        fi
+fi
+
+
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ]  )
 then
         if ( [ "`/bin/grep ^POSTGRES:cloud-init ${BUILD_HOME}/builddescriptors/buildstylesscp.dat`" != "" ] )
