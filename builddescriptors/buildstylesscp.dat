@@ -75,7 +75,7 @@
 #Pick one build style for each component you want to enable installation for. The choice of which to install e.g. NGINX or APACHE is made elsewhere
 #All this does is tell us how to build it not whether to build it
 ##############################################################NGINX###########################################################
-MGINX:cloud-init
+NGINX:cloud-init
 #NGINX:repo
 #NGINX:source
 #NGINX:source:select:poll:http_ssl:http_v2:http_realip:http_addition:http_sub:http_dav:http_flv:http_mp4:http_gunzip:http_gzip_static:http_auth_request:http_random_index:http_secure_link:http_degradation:http_slice:http_stub_status:stream_ssl_preread:mail_ssl:stream_ssl:stream_realip 
@@ -99,7 +99,7 @@ LIGHTTPD:repo
 #PHP config 2
 #PHP:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
 #PHP joomla 5 (zlib and json are enabled by default in php>8.0)
-PHP:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
+PHP:cloud-init:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
 #PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
 #PHP:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
 CONFIGPHPPOOL:pm=ondemand:pm.max_children=4:pm.max_requests=200:pm.start_servers=10:pm.min_spare_servers=5:pm.max_spare_servers=20:pm.process_idle_timeout=10s
@@ -113,7 +113,7 @@ DATASTOREMOUNTTOOL:goof:binary
 MARIADB:cloud-init
 #MARIADB:11.5.2
 POSTGRES:cloud-init
-POSTGRES:17
+#POSTGRES:17
 BUILDCHAINTYPE:standard
 DATASTORETOOL:s3cmd:repo
 # DATASTORETOOL:s5cmd:binary
