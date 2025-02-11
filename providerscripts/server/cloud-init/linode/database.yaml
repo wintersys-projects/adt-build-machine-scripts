@@ -63,10 +63,8 @@ packages:
   - rsync
   - cron
 #XXXXMARIADB_SERVERXXXX  - mariadb-server
-#XXXXMYSQL_SERVERXXXX  - default-mysql-server
 #XXXXPOSTRGESQL_SERVERXXXX  - postgresql-server
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
-#XXXXMYSQL_CLIENTXXXX  - default-mysql-client
 #XXXXPOSTRGESQL_CLIENTXXXX  - postgresql-client
 
 runcmd:
