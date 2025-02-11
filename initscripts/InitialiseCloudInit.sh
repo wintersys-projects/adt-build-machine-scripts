@@ -89,8 +89,6 @@ then
         fi
 fi
 
-exit
-
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
 
 if ( [ "${WEBSERVER_CHOICE}" = "NGINX" ] )
@@ -127,8 +125,6 @@ then
                 /bin/sed -i 's/#XXXXPOSTRGESQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         fi
 fi
-
-exit
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
