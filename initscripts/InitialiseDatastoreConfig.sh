@@ -40,7 +40,7 @@ status "##############################"
 status "Configuring datastore tools..."
 status "##############################"
 
-if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/grep s3cmd`" != "" ] )
+if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
   if ( [ -f ${BUILD_HOME}/.s3cfg ] )
   then
@@ -90,7 +90,7 @@ then
   /bin/cp ${BUILD_HOME}/.s3cfg /root/.s3cfg
 fi
 
-if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstylesscp.dat | /bin/grep s5cmd`" != "" ] )
+if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
   if ( [ -f ${BUILD_HOME}/.s5cfg ] )
   then
