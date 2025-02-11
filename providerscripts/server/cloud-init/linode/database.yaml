@@ -62,6 +62,12 @@ packages:
   - jq
   - rsync
   - cron
+#XXXXMARIADB_SERVERXXXX  - mariadb-server
+#XXXXMYSQL_SERVERXXXX  - default-mysql-server
+#XXXXPOSTRGESQL_SERVERXXXX  - postgresql-server
+#XXXXMARIADB_CLIENTXXXX  - mariadb-client
+#XXXXMYSQL_CLIENTXXXX  - default-mysql-client
+#XXXXPOSTRGESQL_CLIENTXXXX  - postgresql-client
 
 runcmd:
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
