@@ -60,7 +60,7 @@ packages:
   - jq
   - rsync
   - cron
-#XXXXNGINXXXX  - nginx
+#XXXXNGINXXXXX  - nginx
 #XXXXAPACHEXXXX  - apache
 
 
