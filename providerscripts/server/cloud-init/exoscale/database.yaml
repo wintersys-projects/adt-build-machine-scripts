@@ -52,14 +52,15 @@ write_files:
   path: /home/homedir.dat
   permissions: '755'
 - content: |
-      network:
-        version: 2
-        ethernets:
-          eth1:
-            dhcp4: true
-    owner: 'root:root'
+    network:
+      version: 2
+      ethernets:
+        eth1:
+          dhcp4: true
+  owner: 'root:root'
   path: /etc/netplan/eth1.yaml
   permissions: '0644'
+
 
 package_update: true
 package_upgrade: true
@@ -107,4 +108,4 @@ runcmd:
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallFirewall.sh' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/db.sh &'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallDatabase.sh'
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallEmailUtil.sh' 
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallEmailUtil.sh'
