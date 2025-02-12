@@ -58,6 +58,15 @@ write_files:
             dhcp4: true
     owner: 'root:root'
     permissions: '0644'
+- content: |
+      network:
+        version: 2
+        ethernets:
+          eth1:
+            dhcp4: true
+    owner: 'root:root'
+    path: /etc/netplan/eth1.yaml
+    permissions: '0644'
 
 
 package_update: true
@@ -69,7 +78,6 @@ packages:
   - jq
   - rsync
   - cron
-  - whois
 #XXXXNGINXXXXX  - nginx
 #XXXXAPACHEXXXX  - apache
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
