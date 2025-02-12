@@ -59,7 +59,7 @@ write_files:
           dhcp4: true
   owner: 'root:root'
   path: /etc/netplan/eth1.yaml
-  permissions: '0644'
+  permissions: '0640'
 
 
 package_update: true
