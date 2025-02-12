@@ -216,8 +216,15 @@ do
                 do
                         status "Couldn't scan for autoscaler ${autoscaler_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
                         /bin/sleep 10
-                        keytry="`/usr/bin/expr ${keytry} + 1`"
+
                         /usr/bin/ssh-keyscan -T 60 ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+
+                        if ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS} | /bin/grep identical`" = "" ] )
+                        then
+                                /usr/bin/ssh-keyscan -T 60 -p ${SSH_PORT} ${ws_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS}
+                        fi
+
+                        keytry="`/usr/bin/expr ${keytry} + 1`"
                 done 
 
                 if ( [ "${keytry}" = "15" ] )
