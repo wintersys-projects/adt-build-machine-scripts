@@ -79,6 +79,8 @@ then
 			${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating curl"
 			${BUILD_HOME}/installscripts/InstallCurl.sh "ubuntu" >>${upgrade_log} 2>&1
+   			status "Installing/Updating whois"
+			${BUILD_HOME}/installscripts/InstallWhois.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating JQ"
 			${BUILD_HOME}/installscripts/InstallJQ.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating Lego"
@@ -114,6 +116,8 @@ then
 			${BUILD_HOME}/installscripts/InstallGo.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating curl"
 			${BUILD_HOME}/installscripts/InstallCurl.sh "debian" >>${upgrade_log} 2>&1
+      			status "Installing/Updating whois"
+			${BUILD_HOME}/installscripts/InstallWhois.sh "ubuntu" >>${upgrade_log} 2>&1
 			status "Installing/Updating JQ"
 			${BUILD_HOME}/installscripts/InstallJQ.sh "debian" >>${upgrade_log} 2>&1
 			status "Installing/Updating Lego"
