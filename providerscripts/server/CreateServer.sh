@@ -84,7 +84,7 @@ if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
         template_visibility=" --template-visibility public "
         
-        /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibilty} --cloud-init "${BUILD_HOME}/providerscripts/server/cloud-init/exoscale.dat"
+        /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibilty} --cloud-init "${cloud_config}"
         
         if ( [ "`/usr/bin/exo compute private-network list -O json | /usr/bin/jq -r '.[] | select (.name == "adt_private_net_'${REGION}'").id'`" = "" ] )
         then
