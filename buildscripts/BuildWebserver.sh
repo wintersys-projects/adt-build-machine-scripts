@@ -191,6 +191,13 @@ do
                         /bin/sleep 10
                         keytry="`/usr/bin/expr ${keytry} + 1`"
                         /usr/bin/ssh-keyscan -T 60 ${ws_active_ip} >> ${WEBSERVER_PUBLIC_KEYS}
+
+                        if ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" = "" ] )
+                        then
+                                /usr/bin/ssh-keyscan -T 60 -p ${SSH_PORT} ${ws_active_ip} >> ${WEBSERVER_PUBLIC_KEYS}
+                        fi
+
+                        keytry="`/usr/bin/expr ${keytry} + 1`"
                 done 
 
                 if ( [ "${keytry}" = "15" ] )
