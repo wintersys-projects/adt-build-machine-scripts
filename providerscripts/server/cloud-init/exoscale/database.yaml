@@ -71,6 +71,7 @@ packages:
   - jq
   - rsync
   - cron
+  - whois
 #XXXXMARIADB_SERVERXXXX  - mariadb-server
 #XXXXPOSTRGESQL_SERVERXXXX  - postgresql-server
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
