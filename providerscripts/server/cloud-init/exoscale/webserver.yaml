@@ -69,6 +69,7 @@ packages:
   - jq
   - rsync
   - cron
+  - whois
 #XXXXNGINXXXXX  - nginx
 #XXXXAPACHEXXXX  - apache
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
