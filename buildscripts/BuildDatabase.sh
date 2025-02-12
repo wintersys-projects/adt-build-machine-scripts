@@ -226,7 +226,7 @@ do
 
                         /usr/bin/ssh-keyscan -T 60 ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
 
-                        if ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" = "" ] )
+                        if ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] )
                         then
                                 /usr/bin/ssh-keyscan -T 60 -p ${SSH_PORT} ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
                         fi
