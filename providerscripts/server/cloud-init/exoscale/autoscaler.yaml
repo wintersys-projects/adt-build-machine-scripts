@@ -57,12 +57,12 @@ write_files:
   path: /home/homedir.dat
   permissions: '755'
 - content: |
-      network:
-        version: 2
-        ethernets:
-          eth1:
-            dhcp4: true
-    owner: 'root:root'
+    network:
+      version: 2
+      ethernets:
+        eth1:
+          dhcp4: true
+  owner: 'root:root'
   path: /etc/netplan/eth1.yaml
   permissions: '0644'
 
@@ -79,7 +79,6 @@ packages:
   - sshpass
   - bc
   - curl
-  - whois
 
 runcmd:
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
