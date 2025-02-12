@@ -219,7 +219,7 @@ do
 
                         /usr/bin/ssh-keyscan -T 60 ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
 
-                        if ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS} | /bin/grep identical`" = "" ] )
+                        if ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] )
                         then
                                 /usr/bin/ssh-keyscan -T 60 -p ${SSH_PORT} ${as_active_ip} >> ${AUTOSCALER_PUBLIC_KEYS}
                         fi
