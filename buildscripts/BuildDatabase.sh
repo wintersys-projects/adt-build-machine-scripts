@@ -21,7 +21,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-set -x
+#set -x
 done=0
 counter="0"
 count="0"
@@ -216,7 +216,7 @@ do
                         /bin/cp /dev/null ${DATABASE_PUBLIC_KEYS}
                 fi
 
-                /usr/bin/ssh-keyscan ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
+                /usr/bin/ssh-keyscan ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
 
                 keytry="1"
               #  while ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
@@ -225,11 +225,11 @@ do
                         status "Couldn't scan for database ${database_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
                         /bin/sleep 10
 
-                        /usr/bin/ssh-keyscan ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
+                        /usr/bin/ssh-keyscan ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
 
-                        if ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] )
+                        if ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ]  || [ "`/bin/grep 'ed25519' ${DATABASE_PUBLIC_KEYS}`" = "" ] )
                         then
-                                /usr/bin/ssh-keyscan -p ${SSH_PORT} ${db_active_ip} >> ${DATABASE_PUBLIC_KEYS}
+                                /usr/bin/ssh-keyscan -p ${SSH_PORT} ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
                         fi
                         keytry="`/usr/bin/expr ${keytry} + 1`"
                 done 
