@@ -70,28 +70,9 @@ else
 fi
 
 CUSTOM_USER_SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
-
-#These are the options that we want to use to connect to the remote server. Using a variable for them keeps our code cleaner
-#and simpler and also if we want to change a parameter globally, we can change it here and it will change throughout
-if ( [ "${PRODUCTION}" = "1" ] )
-then
-        AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
-fi
-
-WEBSERVER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/webserver_keys"
-
-if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-then
-        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
-        OPTIONS_AUTOSCALER="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
-else
-        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-        OPTIONS_AUTOSCALER="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-fi
-
+OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+OPTIONS_AUTOSCALER="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
-
-
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
 #If "done" is set to 1, then we know that a webserver has been successfully built and is running.
@@ -182,41 +163,6 @@ do
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
                 then
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
-                fi
-
-                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-                then
-                        status "Performing SSH keyscan on your new webserver machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
-
-                        if ( [ -f ${WEBSERVER_PUBLIC_KEYS} ] )
-                        then
-                                /bin/cp /dev/null ${WEBSERVER_PUBLIC_KEYS}
-                        fi
-
-                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
-  
-                        keytry="1"
-                        while ( ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
-                        do
-                                status "Couldn't scan for webserver ${webserver_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
-                                /bin/sleep 10
-                                /usr/bin/ssh-keyscan ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
-
-                                if ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
-                                then
-                                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
-                                fi
-
-                                keytry="`/usr/bin/expr ${keytry} + 1`"
-                        done 
-
-                        if ( [ "${keytry}" = "15" ] )
-                        then
-                                status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
-                        else
-                                status "Successfully scanned remote webserver ${webserver_name} for ssh-keys"
-                        fi
                 fi
 
                         status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
