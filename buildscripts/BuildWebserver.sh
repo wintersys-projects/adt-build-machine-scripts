@@ -186,13 +186,13 @@ do
   
                 keytry="1"
               #  while ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
-                while ( ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep 'ed25519' ${WEBSERVER_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
+                while ( ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
                 do
                         status "Couldn't scan for webserver ${webserver_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
                         /bin/sleep 10
                         /usr/bin/ssh-keyscan ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
 
-                        if ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep 'ed25519' ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
+                        if ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
                         then
                                 /usr/bin/ssh-keyscan -p ${SSH_PORT} ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
                         fi
