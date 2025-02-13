@@ -73,20 +73,8 @@ fi
 
 CUSTOM_USER_SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
-#For our remote commands, we have various options that we want to be set. To keep things as clean as possible
-#We set out options for our ssh command and scp command here and pass them in through the variable ${OPTIONS}
-
-if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-then
-        DATABASE_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/database_keys"
-        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
-else
-        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-fi
-
+OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
-
-
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
 #If we don't need a database, then just skip the process of installing a database
@@ -215,41 +203,6 @@ do
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
                 then
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
-                fi
-
-                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-                then
-                        status "Performing SSH keyscan on your new database machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
-
-                        if ( [ -f ${DATABASE_PUBLIC_KEYS} ] )
-                        then
-                                /bin/cp /dev/null ${DATABASE_PUBLIC_KEYS}
-                        fi
-
-                        /usr/bin/ssh-keyscan ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
-
-                        keytry="1"
-                        while ( ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${DATABASE_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
-                        do
-                                status "Couldn't scan for database ${database_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
-                                /bin/sleep 10
-
-                                /usr/bin/ssh-keyscan ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
-
-                                if ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ]  || [ "`/bin/grep ssh-${ALGORITHM} ${DATABASE_PUBLIC_KEYS}`" = "" ] )
-                                then
-                                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
-                                fi
-                                keytry="`/usr/bin/expr ${keytry} + 1`"
-                        done 
-
-                        if ( [ "${keytry}" = "15" ] )
-                        then
-                                status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
-                        else
-                                status "Successfully scanned remote database ${database_name} for ssh-keys"
-                        fi
                 fi
 
                 if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
