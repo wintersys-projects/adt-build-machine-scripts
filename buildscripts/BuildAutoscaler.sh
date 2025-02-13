@@ -213,7 +213,7 @@ do
 
                 keytry="1"
                # while ( [ "`/usr/bin/diff -s ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} /dev/null | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
-                while ( ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ] || [ "`/bin/grep 'ed25519' ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ) && [ "${keytry}" -lt "15" ] )
+                while ( ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ] || [ "`/bin/grep 'ed25519' ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
                 do
                         status "Couldn't scan for autoscaler ${autoscaler_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
                         /bin/sleep 10
