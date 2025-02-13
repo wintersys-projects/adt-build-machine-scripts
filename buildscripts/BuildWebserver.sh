@@ -23,7 +23,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #########################################################################################
 #########################################################################################
-#set -x
+set -x
 done=0
 counter="0"
 count="0"
@@ -57,6 +57,7 @@ BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHIN
 INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
 BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
@@ -78,8 +79,16 @@ then
 fi
 
 WEBSERVER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/webserver_keys"
-OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
-OPTIONS_AUTOSCALER="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
+
+if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+then
+        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
+        OPTIONS_AUTOSCALER="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
+else
+        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+        OPTIONS_AUTOSCALER="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+fi
+
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 
 
@@ -175,37 +184,40 @@ do
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
                 fi
 
-                status "Performing SSH keyscan on your new webserver machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
-
-                if ( [ -f ${WEBSERVER_PUBLIC_KEYS} ] )
+                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                 then
-                        /bin/cp /dev/null ${WEBSERVER_PUBLIC_KEYS}
-                fi
+                        status "Performing SSH keyscan on your new webserver machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
 
-                /usr/bin/ssh-keyscan ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
-  
-                keytry="1"
-              #  while ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
-                while ( ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
-                do
-                        status "Couldn't scan for webserver ${webserver_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
-                        /bin/sleep 10
-                        /usr/bin/ssh-keyscan ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
-
-                        if ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
+                        if ( [ -f ${WEBSERVER_PUBLIC_KEYS} ] )
                         then
-                                /usr/bin/ssh-keyscan -p ${SSH_PORT} ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
+                                /bin/cp /dev/null ${WEBSERVER_PUBLIC_KEYS}
                         fi
 
-                        keytry="`/usr/bin/expr ${keytry} + 1`"
-                done 
+                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
+  
+                        keytry="1"
+                        while ( ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
+                        do
+                                status "Couldn't scan for webserver ${webserver_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
+                                /bin/sleep 10
+                                /usr/bin/ssh-keyscan ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
 
-                if ( [ "${keytry}" = "15" ] )
-                then
-                        status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
-                else
-                        status "Successfully scanned remote webserver ${webserver_name} for ssh-keys"
+                                if ( [ "`/usr/bin/diff -s /dev/null ${WEBSERVER_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
+                                then
+                                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${ws_active_ip} > ${WEBSERVER_PUBLIC_KEYS}
+                                fi
+
+                                keytry="`/usr/bin/expr ${keytry} + 1`"
+                        done 
+
+                        if ( [ "${keytry}" = "15" ] )
+                        then
+                                status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
+                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
+                        else
+                                status "Successfully scanned remote webserver ${webserver_name} for ssh-keys"
+                        fi
+                fi
 
                         status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
@@ -260,7 +272,6 @@ do
                                 status "A webserver (${webserver_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
                                 counter="`/usr/bin/expr ${counter} - 1`"
                         fi
-                fi
         else
                 status "A webserver is already running, using that one"
                 status "Press enter if this is OK with you"
