@@ -1,5 +1,17 @@
 #cloud-config
 
+write_files:
+  - path: /etc/netplan/eth1.yaml
+    content: |
+      network:
+        version: 2
+        ethernets:
+          eth1:
+            dhcp4: true
+
+runcmd:
+  - [ netplan, apply ]
+
 manage_resolv_conf: true
 resolv_conf:
   nameservers:
@@ -54,15 +66,15 @@ write_files:
   owner: 'XXXXSERVER_USERXXXX:root'
   path: /home/homedir.dat
   permissions: '755'
-- content: |
-    network:
-      version: 2
-      ethernets:
-        eth1:
-          dhcp4: true
-  owner: 'root:root'
-  path: /etc/netplan/eth1.yaml
-  permissions: '0640'
+#- content: |
+#    network:
+#      version: 2
+#      ethernets:
+#        eth1:
+#          dhcp4: true
+#  owner: 'root:root'
+#  path: /etc/netplan/eth1.yaml
+#  permissions: '0640'
 
 package_update: true
 package_upgrade: true
@@ -79,7 +91,7 @@ packages:
   - curl
 
 runcmd:
-  - '/usr/sbin/netplan apply'
+ # - '/usr/sbin/netplan apply'
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
   - '/bin/cp /etc/ssh/ssh_host_rsa_key.pub /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX.pub'
   - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
