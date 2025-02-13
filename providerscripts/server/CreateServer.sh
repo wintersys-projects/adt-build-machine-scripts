@@ -50,7 +50,7 @@ then
         then
                 /bin/sed -i "s/XXXXAUTOSCALER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
 
-                if ( [ "${CLOUDHOST}" = "linode" ] || [ "${CLOUDHOST}" = "vultr" ]  )
+                if ( [ "${CLOUDHOST}" = "linode" ] )
                 then
                         cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml | /usr/bin/base64 -w 0`"
                 else 
@@ -62,7 +62,7 @@ then
         if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml ] )
         then
                 /bin/sed -i "s/XXXXWEBSERVER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-                if ( [ "${CLOUDHOST}" = "linode" ] || [ "${CLOUDHOST}" = "vultr" ] )
+                if ( [ "${CLOUDHOST}" = "linode" ] )
                 then
                         cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml | /usr/bin/base64 -w 0`"
                 else 
@@ -74,7 +74,7 @@ then
         if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml ] )
         then
                 /bin/sed -i "s/XXXXDATABASE_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-                if ( [ "${CLOUDHOST}" = "linode" ] || [ "${CLOUDHOST}" = "vultr" ]  )
+                if ( [ "${CLOUDHOST}" = "linode" ] )
                 then
                         cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml | /usr/bin/base64 -w 0`"
                 else 
@@ -160,8 +160,6 @@ then
 
         vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "adt-vpc").id'`"
         OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
-
-        user_data=`${BUILD_HOME}/providerscripts/server/cloud-init/vultr.dat`
    
         if ( [ "${DDOS_PROTECTION}" = "1" ] )
         then
