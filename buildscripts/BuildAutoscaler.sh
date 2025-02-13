@@ -80,14 +80,7 @@ else
 fi
 
 CUSTOM_USER_SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
-
-if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-then
-        AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
-        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
-else
-        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-fi
+OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
@@ -206,49 +199,6 @@ do
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
                 fi
 
-                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-                then
-                        status "Performing SSH keyscan on your new autoscaler machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
-
-                        AUTOSCALER_PUBLIC_KEYS_NUMBERED="${AUTOSCALER_PUBLIC_KEYS}:${autoscaler_no}"
-
-                        if ( [ -f ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} ] )
-                        then
-                                /bin/rm ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-                        fi
-
-                        /usr/bin/ssh-keyscan ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-
-                        keytry="1"
-                        while ( ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
-                        do
-                                status "Couldn't scan for autoscaler ${autoscaler_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
-                                /bin/sleep 10
-
-                                /usr/bin/ssh-keyscan ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-
-                                if ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ]  || [ "`/bin/grep ssh-${ALGORITHM} ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ] )
-                                then
-                                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-                                fi
-
-                                keytry="`/usr/bin/expr ${keytry} + 1`"
-                        done 
-
-                        if ( [ "${keytry}" = "15" ] )
-                        then
-                                status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
-                        else
-                                if ( [ -f ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} ] )
-                                then
-                                        /bin/cat ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} >> ${AUTOSCALER_PUBLIC_KEYS}
-                                        /bin/rm ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-                                fi
-                                status "Successfully scanned remote autoscaler ${autoscaler_name} for ssh-keys"
-                        fi
-
-                else
                         status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
                         
@@ -310,7 +260,7 @@ do
                                 fi
                                 counter="0"
                         fi
-                fi
+                
         else
                 status "Autoscaler is already running. Will use that one..."
                 status "Press Enter if this is OK"
