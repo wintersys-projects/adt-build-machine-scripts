@@ -59,6 +59,7 @@ INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.s
 BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
 BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
  
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
@@ -75,7 +76,14 @@ CUSTOM_USER_SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWOR
 #For our remote commands, we have various options that we want to be set. To keep things as clean as possible
 #We set out options for our ssh command and scp command here and pass them in through the variable ${OPTIONS}
 DATABASE_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/database_keys"
-OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
+
+if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+then
+        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
+else
+        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+fi
+
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 
 
@@ -209,69 +217,72 @@ do
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
                 fi
 
-                status "Performing SSH keyscan on your new database machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
-
-                if ( [ -f ${DATABASE_PUBLIC_KEYS} ] )
+                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                 then
-                        /bin/cp /dev/null ${DATABASE_PUBLIC_KEYS}
-                fi
+                        status "Performing SSH keyscan on your new database machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
 
-                /usr/bin/ssh-keyscan ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
-
-                keytry="1"
-              #  while ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
-                while ( ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${DATABASE_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
-                do
-                        status "Couldn't scan for database ${database_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
-                        /bin/sleep 10
+                        if ( [ -f ${DATABASE_PUBLIC_KEYS} ] )
+                        then
+                                /bin/cp /dev/null ${DATABASE_PUBLIC_KEYS}
+                        fi
 
                         /usr/bin/ssh-keyscan ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
 
-                        if ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ]  || [ "`/bin/grep ssh-${ALGORITHM} ${DATABASE_PUBLIC_KEYS}`" = "" ] )
-                        then
-                                /usr/bin/ssh-keyscan -p ${SSH_PORT} ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
-                        fi
-                        keytry="`/usr/bin/expr ${keytry} + 1`"
-                done 
-
-                if ( [ "${keytry}" = "15" ] )
-                then
-                        status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
-                else
-                        status "Successfully scanned remote database ${database_name} for ssh-keys"
-
-                                if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
-                                then
-                                        /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
-                                fi
-
-                        status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
-                        status "This is the current time for your reference `/bin/date`"
-
-                        #Check that the database is built and ready for action
-
-                        done="0"
-                        alive=""
-                        count2="0"
-
-                        count="0"
-                        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "300" ] )
+                        keytry="1"
+                        while ( ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${DATABASE_PUBLIC_KEYS}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
                         do
-                                count="`/usr/bin/expr ${count} + 1`"
-                                /bin/sleep 2
-                                alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/DATABASE_READY"`"
+                                status "Couldn't scan for database ${database_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
+                                /bin/sleep 10
+
+                                /usr/bin/ssh-keyscan ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
+
+                                if ( [ "`/usr/bin/diff -s /dev/null ${DATABASE_PUBLIC_KEYS} | /bin/grep identical`" != "" ]  || [ "`/bin/grep ssh-${ALGORITHM} ${DATABASE_PUBLIC_KEYS}`" = "" ] )
+                                then
+                                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${db_active_ip} > ${DATABASE_PUBLIC_KEYS}
+                                fi
+                                keytry="`/usr/bin/expr ${keytry} + 1`"
                         done 
 
-                        if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/DATABASE_READY" ] )
+                        if ( [ "${keytry}" = "15" ] )
                         then
-                                done=1
-                                built="`/usr/bin/expr ${built} + 1`"
+                                status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
+                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
+                        else
+                                status "Successfully scanned remote database ${database_name} for ssh-keys"
                         fi
+                fi
 
-                        #If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
-                        if ( [ "${done}" != "1" ] )
-                        then
+                if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
+                then
+                    /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
+                fi
+
+                status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
+                status "This is the current time for your reference `/bin/date`"
+
+                #Check that the database is built and ready for action
+
+                done="0"
+                alive=""
+                count2="0"
+
+                count="0"
+                while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "300" ] )
+                do
+                        count="`/usr/bin/expr ${count} + 1`"
+                        /bin/sleep 2
+                        alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/DATABASE_READY"`"
+                done 
+
+                if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/DATABASE_READY" ] )
+                then
+                    done=1
+                    built="`/usr/bin/expr ${built} + 1`"
+                fi
+
+                #If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
+                if ( [ "${done}" != "1" ] )
+                then
                                 status "###########################################################################################################################"
                                 status "Hi, a database server didn't seem to build correctly. I can destroy it and try again to build a new database server for you"
                                 status "###########################################################################################################################"
@@ -295,10 +306,9 @@ do
 
                                 count1="`/usr/bin/expr ${count1} - 1`"
 
-                        else
+              else
                                 status "A database server (${database_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
                                 counter="`/usr/bin/expr ${counter} - 1`"
-                        fi
                 fi
         else
                 status "A Database is already running, using that one......"
