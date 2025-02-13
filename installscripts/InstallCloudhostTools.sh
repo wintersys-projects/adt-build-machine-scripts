@@ -31,25 +31,25 @@ status () {
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-        status "Installing Digital Ocean cloudhost cli tool (doctl)"
+        status "Installing/Updating Digital Ocean cloudhost cli tool (doctl)"
         ${BUILD_HOME}/installscripts/InstallDoctl.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-        status "Installing Exoscale cloudhost cli tool (exo)"
+        status "Installing/Updating Exoscale cloudhost cli tool (exo)"
         ${BUILD_HOME}/installscripts/InstallExo.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
-        status "Installing Linode cloudhost cli tool (linode-cli)"
+        status "Installing/Updating Linode cloudhost cli tool (linode-cli)"
         ${BUILD_HOME}/installscripts/InstallLinodeCLI.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
 then
-        status "Installing Vultr cloudhost cli tool (vultr-cli)"
+        status "Installing/Updating Vultr cloudhost cli tool (vultr-cli)"
         ${BUILD_HOME}/installscripts/InstallSudo.sh "${buildos}"
         ${BUILD_HOME}/installscripts/InstallVultrCLI.sh "${buildos}"        
 fi
