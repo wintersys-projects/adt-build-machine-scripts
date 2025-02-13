@@ -29,7 +29,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-#set -x
+set -x
 
 done=0
 counter="0"
@@ -68,6 +68,7 @@ AS_SERVER_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AS_SERVER_TYPE`
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 
 
+
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
 
@@ -80,10 +81,15 @@ fi
 
 CUSTOM_USER_SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
-AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
-OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
-PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
+if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+then
+        AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
+        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
+else
+        OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+fi
 
+PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
 # If done=1, then we know that the autoscaler has been successfully built. We try up to 5 times before we give up if it fails
@@ -200,46 +206,49 @@ do
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
                 fi
 
-                status "Performing SSH keyscan on your new autoscaler machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
-
-                AUTOSCALER_PUBLIC_KEYS_NUMBERED="${AUTOSCALER_PUBLIC_KEYS}:${autoscaler_no}"
-
-                if ( [ -f ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} ] )
+                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                 then
-                        /bin/rm ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-                fi
+                        status "Performing SSH keyscan on your new autoscaler machine (I allow up to 15 attempts). If this does fail, check BUILD_MACHINE_VPC in your template"
 
-                /usr/bin/ssh-keyscan ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+                        AUTOSCALER_PUBLIC_KEYS_NUMBERED="${AUTOSCALER_PUBLIC_KEYS}:${autoscaler_no}"
 
-                keytry="1"
-               # while ( [ "`/usr/bin/diff -s ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} /dev/null | /bin/grep identical`" != "" ] && [ "${keytry}" -lt "15" ] )
-                while ( ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
-                do
-                        status "Couldn't scan for autoscaler ${autoscaler_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
-                        /bin/sleep 10
-
-                        /usr/bin/ssh-keyscan ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-
-                        if ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ]  || [ "`/bin/grep ssh-${ALGORITHM} ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ] )
-                        then
-                                /usr/bin/ssh-keyscan -p ${SSH_PORT} ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
-                        fi
-
-                        keytry="`/usr/bin/expr ${keytry} + 1`"
-                done 
-
-                if ( [ "${keytry}" = "15" ] )
-                then
-                        status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
-                        ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
-                else
                         if ( [ -f ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} ] )
                         then
-                                /bin/cat ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} >> ${AUTOSCALER_PUBLIC_KEYS}
                                 /bin/rm ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
                         fi
 
-                        status "Successfully scanned remote autoscaler ${autoscaler_name} for ssh-keys"
+                        /usr/bin/ssh-keyscan ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+
+                        keytry="1"
+                        while ( ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ] || [ "`/bin/grep ssh-${ALGORITHM} ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ] ) && [ "${keytry}" -lt "15" ] )
+                        do
+                                status "Couldn't scan for autoscaler ${autoscaler_name} ssh-keys attempt ${keytry} (this is normal and expected) .... trying again"
+                                /bin/sleep 10
+
+                                /usr/bin/ssh-keyscan ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+
+                                if ( [ "`/usr/bin/diff -s /dev/null ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} | /bin/grep identical`" != "" ]  || [ "`/bin/grep ssh-${ALGORITHM} ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}`" = "" ] )
+                                then
+                                        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${as_active_ip} > ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+                                fi
+
+                                keytry="`/usr/bin/expr ${keytry} + 1`"
+                        done 
+
+                        if ( [ "${keytry}" = "15" ] )
+                        then
+                                status "Couldn't obtain ssh-keys, having to destroy the machine and try again"
+                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
+                        else
+                                if ( [ -f ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} ] )
+                                then
+                                        /bin/cat ${AUTOSCALER_PUBLIC_KEYS_NUMBERED} >> ${AUTOSCALER_PUBLIC_KEYS}
+                                        /bin/rm ${AUTOSCALER_PUBLIC_KEYS_NUMBERED}
+                                fi
+                                status "Successfully scanned remote autoscaler ${autoscaler_name} for ssh-keys"
+                        fi
+
+                else
                         status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
                         
