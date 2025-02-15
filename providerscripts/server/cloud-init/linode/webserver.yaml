@@ -49,7 +49,8 @@ write_files:
   owner: 'XXXXSERVER_USERXXXX:root'
   path: /home/homedir.dat
   permissions: '755'
-- content: |
+- path: /var/www/html/example.com/index.html
+  content: |
     ClientAliveInterval 60
     ClientAliveCountMax 2
   owner: 'XXXXSERVER_USERXXXX:XXXXSERVER_USERXXXX'
