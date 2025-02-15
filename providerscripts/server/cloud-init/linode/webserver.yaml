@@ -54,7 +54,6 @@ write_files:
     ClientAliveInterval 60
     ClientAliveCountMax 2
   owner: 'XXXXSERVER_USERXXXX:XXXXSERVER_USERXXXX'
-  path: /home/XXXXSERVER_USERXXXX/.ssh/config
   permissions: '600'
 
 
