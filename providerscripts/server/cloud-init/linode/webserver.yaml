@@ -49,7 +49,7 @@ write_files:
   owner: 'XXXXSERVER_USERXXXX:root'
   path: /home/homedir.dat
   permissions: '755'
-- path: /var/www/html/example.com/index.html
+- path: /home/XXXXSERVER_USERXXXX/.ssh/config
   content: |
     ClientAliveInterval 60
     ClientAliveCountMax 2
