@@ -109,6 +109,16 @@ then
         fi
 fi
 
+if ( [ "${WEBSERVER_CHOICE}" = "LIGHTTPD" ] )
+then
+        if ( [ "`/bin/grep ^LIGHTTPD:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+        fi
+fi
+
+
+
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
 
