@@ -60,14 +60,7 @@ write_files:
   owner: 'XXXXSERVER_USERXXXX:XXXXSERVER_USERXXXX'
   path: /home/XXXXSERVER_USERXXXX/.ssh/config
   permissions: '600'
-- content: |
-    ClientAliveInterval 60
-    ClientAliveCountMax 2
-  owner: 'root:root'
-  path: /root/.ssh/config
-  permissions: '600'
   
-
 package_update: true
 package_upgrade: true
 
