@@ -185,6 +185,7 @@ status ""
 status "##############################################################################################################################"
 status "The build might pause here"
 status "Anything more than a few minutes then you need to investigate what the hold-up is because something might be wrong"
+status "If you are performing a webserver from source build its likely that any wait here will be longer than a repo or cloud-init based build"
 status "##############################################################################################################################"
 status ""
 
