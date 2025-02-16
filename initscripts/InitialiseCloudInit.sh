@@ -105,7 +105,7 @@ if ( [ "${WEBSERVER_CHOICE}" = "APACHE" ] )
 then
         if ( [ "`/bin/grep ^APACHE:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
         then
-                /bin/sed -i 's/#XXXXAPACHEXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
         fi
 fi
 
