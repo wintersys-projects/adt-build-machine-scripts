@@ -128,7 +128,7 @@ ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-        CLOUDHOST="`${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS} ${BUILDOS_VERSION}`"
+        CLOUDHOST="`${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}`"
 else
         ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
 fi
