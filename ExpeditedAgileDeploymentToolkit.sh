@@ -134,7 +134,7 @@ else
 fi
 
 ${BUILD_HOME}/helperscripts/SetupEth1.sh ${CLOUDHOST}
-. ${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
+${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
 
 status ""
 status ""
