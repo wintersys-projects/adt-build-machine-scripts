@@ -115,4 +115,4 @@ do
 done
 
 status "Your cloudhost is set to ${cloudhost}"
-/bin/echo ${cloudhost}
+/bin/echo "${cloudhost}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
