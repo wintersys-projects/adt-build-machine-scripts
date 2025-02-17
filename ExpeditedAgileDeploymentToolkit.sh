@@ -179,11 +179,6 @@ read x
 
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-then
-    . ${BUILD_HOME}/initscripts/InitialiseErrorStreams.sh
-fi
-
 ${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh
 ${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh
 ${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh
