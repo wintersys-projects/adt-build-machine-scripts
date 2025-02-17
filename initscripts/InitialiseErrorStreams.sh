@@ -20,20 +20,23 @@
 #########################################################################################
 #set -x
 
-if ( [ "${BUILD_IDENTIFIER}" != "" ] )
+build_identifier="${1}"
+cloudhost="${2}"
+
+if ( [ "${build_identifier}" != "" ] )
 then
      #   if ( [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
      #   then
-                if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ] )
+                if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs ] )
                 then
-                        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
+                        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs
                 fi
       #  fi
         exec 3>&1
         out_file="build_out-`/bin/date | /bin/sed 's/ //g'`"
-        exec 1>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}
+        exec 1>>${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs/${out_file}
         err_file="build_err-`/bin/date | /bin/sed 's/ //g'`"
-        exec 2>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}
+        exec 2>>${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs/${err_file}
         
         if ( [ -f /root/INITIAL_ERROR_STREAM_SETUP ] )
         then
@@ -44,7 +47,7 @@ then
         then
                 status "#################################################################################################"
                 status "If the build process freezes or fails to complete for some reason, please review the error stream"
-                status "The error stream for this build is located at: ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}"
+                status "The error stream for this build is located at: ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs/${err_file}"
                 status "#################################################################################################"
                 status "Press <enter> to continue"
                 read x
