@@ -46,12 +46,12 @@ do
 			
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
-		read BUILD_IDENTIFIER
+		read build_identifier
 
 		while ( [ "${build_identifier}" = "" ] )
 		do
 			status "The build identifier can't be blank, try again...."
-			read BUILD_IDENTIFIER
+			read build_identifier
 		done
 	fi
  	if ( [ -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier} ] )
@@ -77,4 +77,3 @@ then
 fi
 
 /bin/echo "${build_identifier}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
-/bin/echo "${build_identifier}"
