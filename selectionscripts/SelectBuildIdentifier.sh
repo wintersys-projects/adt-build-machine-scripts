@@ -25,6 +25,10 @@
 ####################################################################################
 #set -x
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
 while ( [ "${BUILD_IDENTIFIER}" = "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 do
 	status ""
