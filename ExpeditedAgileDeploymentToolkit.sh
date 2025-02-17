@@ -174,7 +174,7 @@ status "The main error log file is located at ${err_file}"
 status "Press <enter> to acknowledge"
 read x
 
-. ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh
+${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
 . ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh
 
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
