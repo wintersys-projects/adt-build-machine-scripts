@@ -147,6 +147,7 @@ then
         CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 else
         ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
+        /bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
 fi
 
 ${BUILD_HOME}/helperscripts/SetupEth1.sh ${CLOUDHOST}
@@ -177,7 +178,6 @@ read x
 . ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh
 
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
-/bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
