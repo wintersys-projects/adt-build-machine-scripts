@@ -49,6 +49,8 @@ status () {
 
 status "The initial output log file is located at ${out_file}"
 status "The initial error log file is located at ${err_file}"
+status "Press <enter> to acknowledge"
+read x
 
 if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
 then
@@ -168,6 +170,8 @@ exec 2>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_fi
 
 status "The main output log file is located at ${out_file}"
 status "The main error log file is located at ${err_file}"
+status "Press <enter> to acknowledge"
+read x
 
 . ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh
 . ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh
