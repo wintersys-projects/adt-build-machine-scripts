@@ -58,46 +58,46 @@ do
 				1)       
 					CLOUDHOST="digitalocean"
 					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-					 if ( [ "${BUILDOS}" = "ubuntu" ] )
-					 then
-						 DEFAULT_USER="root"
-					 elif ( [ "${BUILDOS}" = "debian" ] )
-					 then
-						 DEFAULT_USER="root"
-					 fi
+					# if ( [ "${BUILDOS}" = "ubuntu" ] )
+					# then
+				#		 DEFAULT_USER="root"
+				#	 elif ( [ "${BUILDOS}" = "debian" ] )
+				#	 then
+				#		 DEFAULT_USER="root"
+				#	 fi
 					;;
 				2)
 					CLOUDHOST="exoscale"
 					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-					if ( [ "${BUILDOS}" = "ubuntu" ] )
-					then
-						 DEFAULT_USER="ubuntu"
-					elif ( [ "${BUILDOS}" = "debian" ] )
-					then
-						DEFAULT_USER="debian"
-					fi
+				#	if ( [ "${BUILDOS}" = "ubuntu" ] )
+				#	then
+				#		 DEFAULT_USER="ubuntu"
+				#	elif ( [ "${BUILDOS}" = "debian" ] )
+				#	then
+				#		DEFAULT_USER="debian"
+				#	fi
 					;;            
 				3)       
 					CLOUDHOST="linode"
 			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-					if ( [ "${BUILDOS}" = "ubuntu" ] )
-					then
-						DEFAULT_USER="root"
-					 elif ( [ "${BUILDOS}" = "debian" ] )
-					 then
-						 DEFAULT_USER="root"
-					 fi
+				#	if ( [ "${BUILDOS}" = "ubuntu" ] )
+				#	then
+				#		DEFAULT_USER="root"
+				#	 elif ( [ "${BUILDOS}" = "debian" ] )
+				#	 then
+				#		 DEFAULT_USER="root"
+				#	 fi
 					 ;;
 				4)       
 					CLOUDHOST="vultr"
 			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION}
-					 if ( [ "${BUILDOS}" = "ubuntu" ] )
-					 then
-						 DEFAULT_USER="root"
-					 elif ( [ "${BUILDOS}" = "debian" ] )
-					 then
-						 DEFAULT_USER="root"
-					 fi
+				#	 if ( [ "${BUILDOS}" = "ubuntu" ] )
+				#	 then
+				#		 DEFAULT_USER="root"
+				#	 elif ( [ "${BUILDOS}" = "debian" ] )
+				#	 then
+				#		 DEFAULT_USER="root"
+				#	 fi
 					 ;;
 				*)
 		   esac 
