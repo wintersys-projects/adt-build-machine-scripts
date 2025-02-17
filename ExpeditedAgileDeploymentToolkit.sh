@@ -115,6 +115,11 @@ export USER="`/usr/bin/whoami`"
 
 export BUILD_CLIENT_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 
+if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
+then
+        /bin/mkdir ${BUILD_HOME}/runtimedata 
+fi
+
 status "##################################################################################################################################"
 status "WARNING, ONLY RUN THIS ON A DEDICATED MACHINE IT WILL INSTALL SOFTWARE AND MAKE MACHINE CHANGES THAT YOU MAY NOT WANT ON YOUR"
 status "DAY TO DAY LAPTOP. YOU CAN RUN THIS FROM A DEDICATED VPS MACHINE OR POSSIBLY FROM A DEDICATED LINUX DISTRO FROM A PERSISTENT"
