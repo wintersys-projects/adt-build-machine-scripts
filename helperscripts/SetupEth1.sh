@@ -20,7 +20,9 @@
 #######################################################################################################
 #set -x
 
-if ( [ "${CLOUDHOST}" = "exoscale" ] )
+cloudhost="${1}"
+
+if ( [ "${cloudhost}" = "exoscale" ] )
 then
 	/bin/echo "network:
   version: 2
