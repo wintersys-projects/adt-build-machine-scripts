@@ -23,6 +23,8 @@
 build_identifier="${1}"
 cloudhost="${2}"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 if ( [ "${build_identifier}" != "" ] )
 then
      #   if ( [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
