@@ -111,4 +111,5 @@ do
 	fi
 done
 
-status "Your cloudhost is set to ${CLOUDHOST}"
+status "Your cloudhost is set to ${cloudhost}"
+/bin/echo ${cloudhost}
