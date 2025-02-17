@@ -22,12 +22,15 @@
 #######################################################################################################
 #set -x
 
-if ( [ ! -f /root/DATASTORETOOL_INSTALLED ] &&  [ "${BUILDOS}" = "ubuntu" ] )
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+buildos="${1}"
+
+if ( [ ! -f /root/DATASTORETOOL_INSTALLED ] &&  [ "${buildos}" = "ubuntu" ] )
 then
 	status "Installing/Updating Datastore tools"
 	${BUILD_HOME}/installscripts/InstallDatastoreTools.sh "ubuntu" 2>&1 >/dev/null
  	/bin/touch /root/DATASTORETOOL_INSTALLED
-elif ( [ ! -f /root/DATASTORETOOL_INSTALLED ] && [ "${BUILDOS}" = "debian" ] )
+elif ( [ ! -f /root/DATASTORETOOL_INSTALLED ] && [ "${buildos}" = "debian" ] )
 then
 	status "Installing/Updating Datastore tools"
 	${BUILD_HOME}/installscripts/InstallDatastoreTools.sh "debian" 2>&1 >/dev/null
