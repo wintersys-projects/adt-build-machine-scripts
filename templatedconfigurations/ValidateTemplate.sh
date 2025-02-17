@@ -21,6 +21,10 @@
 ####################################################################################
 ####################################################################################
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
 quick_specification="${BUILD_HOME}/templatedconfigurations/quick_specification.dat"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
