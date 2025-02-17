@@ -133,7 +133,7 @@ else
         ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
 fi
 
-. ${BUILD_HOME}/helperscripts/SetupEth1.sh
+${BUILD_HOME}/helperscripts/SetupEth1.sh ${CLOUDHOST}
 . ${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
 
 status ""
