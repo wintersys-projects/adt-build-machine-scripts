@@ -22,7 +22,6 @@
 #set -x
 
 buildos="${1}"
-buildos_version="${2}"
 
 status "####################################################################################"
 status "Please tell me which of the supported cloudhosts you are deploying to"
@@ -60,7 +59,7 @@ do
 			case  ${response}  in
 				1)       
 					cloudhost="digitalocean"
-					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} ${buildos_version}
+					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
 					# if ( [ "${BUILDOS}" = "ubuntu" ] )
 					# then
 				#		 DEFAULT_USER="root"
@@ -71,7 +70,7 @@ do
 					;;
 				2)
 					cloudhost="exoscale"
-					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} ${buildos_version}
+					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
 				#	if ( [ "${BUILDOS}" = "ubuntu" ] )
 				#	then
 				#		 DEFAULT_USER="ubuntu"
@@ -82,7 +81,7 @@ do
 					;;            
 				3)       
 					cloudhost="linode"
-			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} ${buildos_version}
+			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
 				#	if ( [ "${BUILDOS}" = "ubuntu" ] )
 				#	then
 				#		DEFAULT_USER="root"
@@ -93,7 +92,7 @@ do
 					 ;;
 				4)       
 					cloudhost="vultr"
-			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} ${buildos_version}
+			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
 				#	 if ( [ "${BUILDOS}" = "ubuntu" ] )
 				#	 then
 				#		 DEFAULT_USER="root"
