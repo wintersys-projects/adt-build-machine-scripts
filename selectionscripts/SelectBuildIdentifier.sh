@@ -29,7 +29,10 @@ status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
-while ( [ "${BUILD_IDENTIFIER}" = "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+cloudhost="${1}"
+
+while ( [ "${build_identifier}" = "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 do
 	status ""
 	status ""
@@ -45,32 +48,33 @@ do
 	then
 		read BUILD_IDENTIFIER
 
-		while ( [ "${BUILD_IDENTIFIER}" = "" ] )
+		while ( [ "${build_identifier}" = "" ] )
 		do
 			status "The build identifier can't be blank, try again...."
 			read BUILD_IDENTIFIER
 		done
 	fi
- 	if ( [ -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER} ] )
+ 	if ( [ -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier} ] )
   	then
    		status ""
      		status "#################################################################################################################"
-   		status "You already have a directory structure matching build identifier ${BUILD_IDENTIFIER}"
+   		status "You already have a directory structure matching build identifier ${build_identifier}"
      		status "If you are VERY sure this is OK and you want to continue enter (Y|y) anything else to select a new build identifier"
      		status "#################################################################################################################"
        		read response
 	 	if ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] )
    		then
-     			BUILD_IDENTIFIER=""
+     			build_identifier=""
 		fi
   	fi
 done
 
-BUILD_IDENTIFIER="`/bin/echo ${BUILD_IDENTIFIER} | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/cut -c -8`"
+build_identifier="`/bin/echo ${build_identifier} | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/cut -c -8`"
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
 then
 	/bin/mkdir ${BUILD_HOME}/runtimedata
 fi
 
-/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
+/bin/echo "${build_identifier}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
+/bin/echo "${build_identifier}"
