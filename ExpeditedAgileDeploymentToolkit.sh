@@ -32,9 +32,27 @@
 /bin/echo "set mouse=r
 syntax on" > /root/.vimrc
 
+if ( [ ! -d /root/logs ] )
+then
+        /bin/mkdir /root/logs
+fi
+
+exec 3>&1
+out_file="initiallogging-out-`/bin/date | /bin/sed 's/ //g'`"
+exec 1>>/root/logs/${out_file}
+err_file="initiallogging-err-`/bin/date | /bin/sed 's/ //g'`"
+exec 2>>/root/logs/${err_file}
+
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
+status "The initial output log file is located at ${out_file}"
+status "The initial error log file is located at ${err_file}"
+
 if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
 then
-         /bin/echo "You can only run this script from its own directory"
+         status "You can only run this script from its own directory"
          exit
 fi
 
@@ -50,17 +68,17 @@ then
 
         if ( [ "`/bin/echo "digitalocean exoscale linode vultr" | /bin/grep ${CLOUDHOST}`" = "" ] )
         then
-                /bin/echo "Unknown cloudhost passed as a parameter"
+                status "Unknown cloudhost passed as a parameter"
                 exit
         fi
         if ( [ "`/bin/echo "ubuntu debian" | /bin/grep ${BUILDOS}`" = "" ] )
         then
-                /bin/echo "Unknown build os passed as a parameter"
+                status "Unknown build os passed as a parameter"
                 exit
         fi
         if ( [ "`/bin/echo "1 2 3" | /bin/grep ${SELECTED_TEMPLATE}`" = "" ] )
         then
-                /bin/echo "Unknown template passed as a parameter"
+                status "Unknown template passed as a parameter"
                 exit
         fi
 fi
@@ -87,11 +105,6 @@ else
         fi
 fi
 
-status () {
-        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
-}
-
-
 if ( [ "${BUILD_HOME}" = "" ] )
 then
         export BUILD_HOME="`/bin/pwd`"
@@ -101,11 +114,6 @@ export USER="`/usr/bin/whoami`"
 /bin/chmod -R 700 ${BUILD_HOME}/.
 
 export BUILD_CLIENT_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
-
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
-then
-    ${BUILD_HOME}/initscripts/InitialiseErrorStreams.sh 
-fi
 
 status "##################################################################################################################################"
 status "WARNING, ONLY RUN THIS ON A DEDICATED MACHINE IT WILL INSTALL SOFTWARE AND MAKE MACHINE CHANGES THAT YOU MAY NOT WANT ON YOUR"
@@ -128,7 +136,8 @@ ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-        CLOUDHOST="`${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}`"
+        ${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}
+        CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 else
         ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
 fi
@@ -139,7 +148,22 @@ ${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
 status ""
 status ""
 
-. ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
+${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
+BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+
+if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ] )
+then
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
+fi
+
+out_file="build_out-`/bin/date | /bin/sed 's/ //g'`"
+exec 1>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}
+err_file="build_err-`/bin/date | /bin/sed 's/ //g'`"
+exec 2>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}
+
+status "The main output log file is located at ${out_file}"
+status "The main error log file is located at ${err_file}"
+
 . ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh
 . ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh
 
