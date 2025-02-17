@@ -27,8 +27,8 @@ status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
-/bin/echo "Host *" > ${HOME}/.ssh./config
+/bin/echo "Host *" > ${HOME}/.ssh/config
 /bin/echo "ServerAliveInterval 240" >> ${HOME}/.ssh/config
-/bin/echo "ServerAliveCountMax 2" >> ${HOME}/.ssh/.config
+/bin/echo "ServerAliveCountMax 2" >> ${HOME}/.ssh/config
 
 /bin/chmod 600 ${HOME}/.ssh/config
