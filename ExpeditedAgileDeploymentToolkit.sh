@@ -124,7 +124,7 @@ fi
 export BUILDOS="`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
 
 ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
-. ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh 
+${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
