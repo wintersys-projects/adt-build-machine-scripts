@@ -65,7 +65,7 @@ then
         if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 2>/dev/null`" = "" ] )
         then
                 status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
-                exit
+                /usr/bin/kill -9 $PPID        
         else
                 status "I have found potentially usable baseline sourcecode in your git repo. The build can proceed"
                 gitrepo="1"
@@ -99,7 +99,7 @@ then
                 backuparchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${periodicity}/applicationsourcecode.tar.gz"
         else
                 status "Your build kit doesn't seem to have a valid periodicity set"
-                exit
+                /usr/bin/kill -9 $PPID        
         fi
 
         datastorebucket="0"
@@ -115,7 +115,7 @@ then
                 datastorebucket="1"
         else
                 status "Did not find candidate sourcecode in your datastore"
-                exit
+                /usr/bin/kill -9 $PPID        
         fi
 fi
 
