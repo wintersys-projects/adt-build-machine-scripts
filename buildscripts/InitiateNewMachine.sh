@@ -60,7 +60,7 @@ done
 if ( [ "${connected}" != "1" ] )
 then
         status "Sorry could not connect to the ${machine_type}. Is it possible that your CLOUDHOST_PASSWORD hasn't been set?"
-        exit
+        /usr/bin/kill -9 $PPID
 fi
 
 /usr/bin/scp ${OPTIONS} -i ${BUILD_KEY} ${BUILD_KEY} ${SERVER_USER}@${initiation_ip}:/home/${SERVER_USER}/.ssh/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY
