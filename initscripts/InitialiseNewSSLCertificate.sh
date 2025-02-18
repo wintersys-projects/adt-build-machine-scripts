@@ -103,8 +103,8 @@ then
 				else
 					status "Something seems to be a bit wrong. We were trying to generate a new SSL ceritificate on the webserver, but, it doesn't seem to have been generated"
 					status "Can't operate without it, this is a secure system, so have to exit. Please investigate in ${BUILD_HOME}/logs"
-					exit
-				fi
+					/usr/bin/kill -9 $PPID				
+     				fi
 			fi
 		else
 
@@ -139,8 +139,8 @@ then
 				else
 					status "Something seems to be a bit wrong. We were trying to generate a new SSL ceritificate on the webserver, but, it doesnt seem to have been generated"
 					status "Cant operate without it, this is a secure system, so have to quit. Please investigate ${BUILD_HOME}/logs"
-					exit
-				fi
+					/usr/bin/kill -9 $PPID				
+     				fi
 			fi
 		fi
 
