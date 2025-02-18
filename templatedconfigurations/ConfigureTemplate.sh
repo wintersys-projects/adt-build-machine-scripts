@@ -198,14 +198,14 @@ then
 fi
 
 #Take care of special case when a space is input in the website display name
-export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
+#export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 
 
 #If the application repository token is set, override any password that has been set
-if ( [ "${APPLICATION_REPOSITORY_TOKEN}" != "" ] )
-then
-        export APPLICATION_REPOSITORY_PASSWORD="${APPLICATION_REPOSITORY_TOKEN}"
-fi
+#if ( [ "${APPLICATION_REPOSITORY_TOKEN}" != "" ] )
+#then
+#        export APPLICATION_REPOSITORY_PASSWORD="${APPLICATION_REPOSITORY_TOKEN}"
+#fi
 
 #Make it live
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier} ] )
