@@ -50,7 +50,10 @@ status () {
 status "The initial output log file is located at /root/logs/${out_file}"
 status "The initial error log file is located at /root/logs/${err_file}"
 status "Press <enter> to acknowledge"
-read x
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+then
+    read x
+fi
 
 if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
 then
@@ -172,7 +175,10 @@ exec 2>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_fi
 status "The main output log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}"
 status "The main error log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}"
 status "Press <enter> to acknowledge"
-read x
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+then
+    read x
+fi
 
 ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
 template_name="`/bin/cat ${BUILD_HOME}/runtimedata/current_template_name`"
