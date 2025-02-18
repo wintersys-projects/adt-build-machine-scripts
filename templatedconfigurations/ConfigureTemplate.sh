@@ -40,7 +40,7 @@ then
         then
                 status "There are no templates available, you will need to configure an appropriate template before the build can proceed"
                 status "Terminating this attempt...."
-                exit
+                /usr/bin/kill -9 $PPID
         fi
         status "######################################################################"
         status "There are ${numberoftemplates} available template(s) for ${cloudhost}"
@@ -126,7 +126,7 @@ then
         if ( [ "$?" != "0" ] )
         then
                 status "There is a problem with your template (${templatefile}) please correct it and try again...."
-                exit
+                /usr/bin/kill -9 $PPID        
         fi
 
 else
