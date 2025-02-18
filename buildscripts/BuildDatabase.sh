@@ -124,7 +124,7 @@ do
                         if ( [ "${count}" = "10" ] )
                         then
                                 status "Couldn't create database server"
-                                exit
+                                /usr/bin/kill -9 $PPID                        
                         fi
 
                         #Check that the server has been assigned its IP addresses and that they are active
@@ -279,5 +279,5 @@ done
 if ( [ "${counter}" = "5" ] )
 then
         status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
-        exit
+        /usr/bin/kill -9 $PPID
 fi
