@@ -332,9 +332,5 @@ status "This script completed at `/bin/date` and took `/bin/date -u -d @${runtim
 
 ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 
-#Might be needed for the updates we applied at the start. The user can ssh onto the machie again and tail the logs to see what happened. 
-if ( [ -f /root/PERFORM_REBOOT ] )
-then
-        /bin/rm /root/PERFORM_REBOOT
-        /usr/sbin/shutdown -r now
-fi
+/usr/sbin/shutdown -r now
+
