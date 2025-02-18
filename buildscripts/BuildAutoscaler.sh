@@ -130,7 +130,7 @@ do
                         if ( [ "${count}" -eq "10" ] )
                         then
                                  status "Couldn't autoscaler create server"
-                                 exit
+                                /usr/bin/kill -9 $PPID                        
                         fi
 
                         #Get the ip addresses of the server we have just built
@@ -277,5 +277,5 @@ done
 if ( [ "${counter}" = "5" ] )
 then
         status "The infrastructure failed to intialise because of a build problem with the autoscaler, please investigate, correct and rebuild"
-        exit
+        /usr/bin/kill -9 $PPID
 fi
