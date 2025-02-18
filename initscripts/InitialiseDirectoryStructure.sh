@@ -20,7 +20,7 @@
 #########################################################################################
 #set -x
 
-BUILD_HOME="`/bin/cat /home/build_home.dat`"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 cloudhost="${1}"
 build_identifier="${2}"
 
