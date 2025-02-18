@@ -81,7 +81,7 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                exit
+                                                /usr/bin/kill -9 $PPID                                        
                                         fi
                                 fi
                                 status "Creating the database cluster ${cluster_name}"
@@ -90,7 +90,7 @@ then
                                 if ( [ "$?" != "0" ] )
                                 then
                                         status "I had trouble creating the database cluster will have to exit....."
-                                        exit
+                                        /usr/bin/kill -9 $PPID                                
                                 fi
                         fi
 
@@ -216,7 +216,7 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                exit
+                                                /usr/bin/kill -9 $PPID                                        
                                         fi
                                 fi
                                 status "Creating  database ${db_name}, with engine: ${database_engine}, in region: ${database_region} and at size: ${database_size} please wait..."
@@ -312,7 +312,7 @@ then
                                                 then
                                                         BYPASS_DB_LAYER="0"
                                                 else
-                                                        exit
+                                                        /usr/bin/kill -9 $PPID                                                
                                                 fi
                                         fi
 
@@ -365,7 +365,7 @@ then
                                                 then
                                                         BYPASS_DB_LAYER="0"
                                                 else
-                                                        exit
+                                                        /usr/bin/kill -9 $PPID                                                
                                                 fi
                                         fi
 
@@ -456,7 +456,7 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                exit
+                                                /usr/bin/kill -9 $PPID                                        
                                         fi
                                 fi
 
