@@ -120,7 +120,6 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >     export PERSIST_ASSETS_TO_CLOUD="0" #This should always be set to 0 for a virgin and baseline deployment
 >     
 >     #####OS Settings#########
->     export DEFAULT_USER="root" # This must be "root" on Linode
 >     export BUILDOS="debian" # One of ubuntu|debian
 >     export BUILDOS_VERSION="12" # One of 20.04 22.04 24.04|10 11 12
 >     
@@ -241,7 +240,6 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     export PERSIST_ASSETS_TO_CLOUD="0" #This should always be set to 0 for a virgin and baseline deployment
 >     
 >     #####OS Settings#########
->     export DEFAULT_USER="root" # This must be "root" on Linode
 >     export BUILDOS="debian" # One of ubuntu|debian
 >     export BUILDOS_VERSION="12" # One of 20.04 22.04 24.04|10 11 12
 >     
