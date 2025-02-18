@@ -28,7 +28,7 @@ then
 	status "Darn it. This script requires a 64 bit machine to run on. I have to exit. If you don't have a 64 bit machine"
 	status "To build on of your own, you can spin one up in the cloud (ubuntu 20.04 and up) or (debian 10 and up ) and use that as your build machine to deploy from"
 	status "############################################################################################################"
-	exit
+	/usr/bin/kill -9 $PPID
 fi
 
 #Check that you are root and if not make some recommendations
@@ -41,7 +41,7 @@ then
 	status "If this is a problem and you don't want stuff installed on your machine, I recommend that you spin up a dedicated build machine"
 	status "in the cloud for dedicated use when building/deploying with this toolkit (ubuntu 20.04 and up or debian 10 and up) are suitable build machines to use"
 	status "###################################################################################################################################"
-	exit
+	/usr/bin/kill -9 $PPID
 fi
 
 
