@@ -206,19 +206,19 @@ status "${autoscaler_cloud_init_status}"
 if ( [ "`/bin/echo ${autoscaler_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
 then
         status "Invalid autoscaler cloud-init configuration found. I have to exit"
-        exit
+        /usr/bin/kill -9 $PPID
 fi     
 webserver_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml`"
 status "${webserver_cloud_init_status}"
 if ( [ "`/bin/echo ${webserver_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
 then
         status "Invalid webserver cloud-init configuration found. I have to exit"
-        exit
+        /usr/bin/kill -9 $PPID
 fi   
 database_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml`"
 status "${database_cloud_init_status}"
 if ( [ "`/bin/echo ${database_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
 then
         status "Invalid database cloud-init configuration found. I have to exit"
-        exit
+        /usr/bin/kill -9 $PPID
 fi   
