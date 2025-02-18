@@ -90,6 +90,12 @@ then
         exit
 fi
 
+number_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "-as-" "${CLOUDHOST}"`"
+
+/bin/echo "You are running ${number_autoscalers} and you are asking me to build ${new_scale_value} webservers"
+
+
+
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/MultiDeleteConfigDatastore.sh STATIC_SCALE:
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
 then
