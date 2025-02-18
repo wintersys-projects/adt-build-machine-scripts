@@ -52,8 +52,8 @@ then
 	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
  	then
   		status "Error, cannot find db prefix file"
-    		exit
-    	fi
+		/usr/bin/kill -9 $PPID    	
+  	fi
  	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
   	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
  #################JOOMLA################
@@ -77,8 +77,8 @@ then
                 /bin/cp ${interrogation_home}/tmp/backup/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
         else
                 status "Couldn't find joomla default configuration file in baseline webroot"
-                exit
-        fi
+		/usr/bin/kill -9 $PPID        
+  	fi
 
         if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
         then
@@ -109,8 +109,8 @@ then
                 /bin/cp ${interrogation_home}/tmp/backup/moodle/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
         else
                 status "Couldn't find moodle default configuration file in backup archive webroot"
-                exit
-        fi
+		/usr/bin/kill -9 $PPID        
+  	fi
 
         if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
         then
@@ -141,8 +141,8 @@ then
                 /bin/cp ${interrogation_home}/tmp/backup/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         else
                 status "Couldn't find drupal default configuration file in backup webroot"
-                exit
-        fi
+		/usr/bin/kill -9 $PPID        
+  	fi
 
         if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
         then
