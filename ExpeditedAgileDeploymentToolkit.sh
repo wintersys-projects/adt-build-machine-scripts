@@ -47,8 +47,8 @@ status () {
         /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
 }
 
-status "The initial output log file is located at ${out_file}"
-status "The initial error log file is located at ${err_file}"
+status "The initial output log file is located at /root/logs/${out_file}"
+status "The initial error log file is located at /root/logs/${err_file}"
 status "Press <enter> to acknowledge"
 read x
 
@@ -169,8 +169,8 @@ exec 1>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_fi
 err_file="build_err-`/bin/date | /bin/sed 's/ //g'`"
 exec 2>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}
 
-status "The main output log file is located at ${out_file}"
-status "The main error log file is located at ${err_file}"
+status "The main output log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}"
+status "The main error log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}"
 status "Press <enter> to acknowledge"
 read x
 
