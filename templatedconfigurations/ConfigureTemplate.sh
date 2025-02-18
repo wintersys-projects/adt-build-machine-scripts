@@ -28,7 +28,7 @@ status () {
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 cloudhost="${1}"
 build_identifier="${2}"
-selected_templates="${3}"
+selected_template="${3}"
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
@@ -131,7 +131,7 @@ then
 
 else
         #template overrides if we are running in hardcore mode
-        selectedtemplate="${SELECTED_TEMPLATE}"
+       # selectedtemplate="${SELECTED_TEMPLATE}"
         templatefile="${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/${cloudhost}${selectedtemplate}.tmpl"
         if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates ] )
         then
