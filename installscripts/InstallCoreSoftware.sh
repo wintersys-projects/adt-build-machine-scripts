@@ -65,9 +65,7 @@ then
 	status "##################################################################################################################################################"
 
 	if ( [ "`/usr/bin/awk -F= '/^NAME/{print $2}' /etc/os-release | /bin/grep "Ubuntu"`" != "" ] )
-	then
- 			/bin/touch /root/PERFORM_REBOOT
-    
+	then    
     			if ( [ ! -f /root/UPDATEDSOFTWARE ] )
        			then
 				status "Performing software update....."
@@ -104,9 +102,7 @@ then
 			${BUILD_HOME}/installscripts/InstallCron.sh "ubuntu" >>${upgrade_log} 2>&1 
 			/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
 	elif ( [ "`/usr/bin/awk -F= '/^NAME/{print $2}' /etc/os-release | /bin/grep "Debian"`" != "" ] )
-	then
-  			/bin/touch /root/PERFORM_REBOOT
-     
+	then     
     			if ( [ ! -f /root/UPDATEDSOFTWARE ] )
        			then
 				status "Performing software update....."
