@@ -54,15 +54,15 @@ then
         /bin/sed -i "s/XXXXACCESSKEYXXXX/${S3_ACCESS_KEY}/" ${BUILD_HOME}/.s3cfg
   else 
         status "Couldn't find the access key for your datastore, can't go on without it, will have to exit"
-        exit
-  fi
+        /usr/bin/kill -9 $PPID  
+fi
 
   if ( [ "${S3_SECRET_KEY}" != "" ] )
   then
         /bin/sed -i "s/XXXXSECRETKEYXXXX/${S3_SECRET_KEY}/" ${BUILD_HOME}/.s3cfg
   else 
         status "Couldn't find the secret key for your datastore, can't go on without it, will have to exit"
-        exit
+        /usr/bin/kill -9 $PPID  
   fi
 
   if ( [ "${S3_LOCATION}" != "" ] )
@@ -70,7 +70,7 @@ then
     /bin/sed -i "s/XXXXLOCATIONXXXX/${S3_LOCATION}/" ${BUILD_HOME}/.s3cfg
   else 
     status "Couldn't find the secret key for your datastore, can't go on without it, will have to exit"  
-    exit
+    /usr/bin/kill -9 $PPID  
   fi
 
   if ( [ "${S3_HOST_BASE}" != "" ] )
@@ -79,8 +79,8 @@ then
        /bin/sed -i "s/XXXXHOSTBASEXXXX/${host_base}/" ${BUILD_HOME}/.s3cfg
   else 
         status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
-        exit
-  fi
+        /usr/bin/kill -9 $PPID  
+fi
   
   if ( [ -f /root/.s3cfg ] )
   then
@@ -103,7 +103,7 @@ then
         /bin/echo "aws_access_key_id = ${S3_ACCESS_KEY}" >> ${BUILD_HOME}/.s5cfg
   else 
         status "Couldn't find the access key for your datastore, can't go on without it, will have to exit"
-        exit
+        /usr/bin/kill -9 $PPID  
   fi
 
   if ( [ "${S3_SECRET_KEY}" != "" ] )
@@ -111,7 +111,7 @@ then
         /bin/echo "aws_secret_access_key = ${S3_SECRET_KEY}" >> ${BUILD_HOME}/.s5cfg
   else 
         status "Couldn't find the secret key for your datastore, can't go on without it, will have to exit"
-        exit
+        /usr/bin/kill -9 $PPID  
   fi
 
   if ( [ "${S3_HOST_BASE}" != "" ] )
@@ -121,7 +121,7 @@ then
         /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base}'" >> /root/.bashrc
   else 
         status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
-        exit
+        /usr/bin/kill -9 $PPID  
   fi
 
   if ( [ -f /root/.s5cfg ] )
@@ -139,7 +139,7 @@ if ( [ "$?" != "0" ] )
 then
         status "I can't access your datastore, it isn't possible to continue. Please check the following settings in the template you are using:"
         status "S3_ACCESS_KEY,S3_SECRET_KEY,S3_LOCATION and S3_HOST_BASE"
-        exit
+        /usr/bin/kill -9 $PPID
 fi
 
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
