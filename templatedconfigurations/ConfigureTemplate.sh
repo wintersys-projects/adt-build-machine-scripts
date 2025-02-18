@@ -19,14 +19,23 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ####################################################################################
 ####################################################################################
-#set -x
+set -x
+
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+cloudhost="${1}"
+build_identifier="${2}"
+selected_templates="${3}"
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
         status ""
-        status "I have the following templates available for ${CLOUDHOST}"
+        status "I have the following templates available for ${cloudhost}"
         status ""
-        numberoftemplates="`/bin/ls -l ${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/*.tmpl | /usr/bin/wc -l`"
+        numberoftemplates="`/bin/ls -l ${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/*.tmpl | /usr/bin/wc -l`"
         if ( [ "${numberoftemplates}" = "0" ] )
         then
                 status "There are no templates available, you will need to configure an appropriate template before the build can proceed"
@@ -34,15 +43,15 @@ then
                 exit
         fi
         status "######################################################################"
-        status "There are ${numberoftemplates} available template(s) for ${CLOUDHOST}"
+        status "There are ${numberoftemplates} available template(s) for ${cloudhost}"
         status "######################################################################"
         status "" 
-        status "You can use one of these default templates or you can make your own and place it in the ${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST} directory"
-        status "with the nomenclature, ${CLOUDHOST}[templatenumber].tmpl"
+        status "You can use one of these default templates or you can make your own and place it in the ${BUILD_HOME}/templatedconfigurations/templates/${cloudhost} directory"
+        status "with the nomenclature, ${cloudhost}[templatenumber].tmpl"
         status "" 
         status "#############AVAILABLE TEMPLATES#####################"
 
-        /bin/ls -l ${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST} | /bin/grep ".tmpl$" | /usr/bin/awk '{print NR  "> " $s}' | /usr/bin/awk '{print $NF}' > /tmp/templates
+        /bin/ls -l ${BUILD_HOME}/templatedconfigurations/templates/${cloudhost} | /bin/grep ".tmpl$" | /usr/bin/awk '{print NR  "> " $s}' | /usr/bin/awk '{print $NF}' > /tmp/templates
 
         /usr/bin/sort -V -o /tmp/sortedtemplates /tmp/templates
 
@@ -54,8 +63,8 @@ then
                 status "Template ID ${templateid}: ${template}"
                 status "-----------------------------------------"
                 templatebasename="`/bin/echo ${template} | /bin/sed 's/\.tmpl//g'`"
-                templatefile="${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/${templatebasename}.tmpl"
-                templatedescription="`/bin/cat ${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/${templatebasename}.description`"
+                templatefile="${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/${templatebasename}.tmpl"
+                templatedescription="`/bin/cat ${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/${templatebasename}.description`"
                 status ""
                 status "Template File: ${templatefile}"
                 status ""
@@ -123,31 +132,31 @@ then
 else
         #template overrides if we are running in hardcore mode
         selectedtemplate="${SELECTED_TEMPLATE}"
-        templatefile="${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/${CLOUDHOST}${selectedtemplate}.tmpl"
-        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates ] )
+        templatefile="${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/${cloudhost}${selectedtemplate}.tmpl"
+        if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates ] )
         then
-                /bin/mkdir -p  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates
+                /bin/mkdir -p  ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates
         fi
-        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates/${CLOUDHOST}${selectedtemplate}.tmpl ] )
+        if ( [ -f ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates/${cloudhost}${selectedtemplate}.tmpl ] )
         then
-                /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates/${CLOUDHOST}${selectedtemplate}.tmpl ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates/${CLOUDHOST}${selectedtemplate}.tmpl.$$
+                /bin/mv ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates/${cloudhost}${selectedtemplate}.tmpl ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates/${cloudhost}${selectedtemplate}.tmpl.$$
         fi
 
-        /bin/cp ${templatefile} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates/${CLOUDHOST}${selectedtemplate}.tmpl
+        /bin/cp ${templatefile} ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates/${cloudhost}${selectedtemplate}.tmpl
   
-        templatefile="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/hardcoretemplates/${CLOUDHOST}${selectedtemplate}.tmpl"
+        templatefile="${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates/${cloudhost}${selectedtemplate}.tmpl"
 
         ${BUILD_HOME}/templatedconfigurations/OverrideTemplate.sh
 
 fi
 
-/bin/sed -i '/BUILD_IDENTIFIER=/d' ${templatefile}
-/bin/echo "export BUILD_IDENTIFIER=\"${BUILD_IDENTIFIER}\"" >> ${templatefile}
+/bin/sed -i '/build_identifier=/d' ${templatefile}
+/bin/echo "export build_identifier=\"${build_identifier}\"" >> ${templatefile}
 
-if ( [ "${CLOUDHOST}" != "" ] )
+if ( [ "${cloudhost}" != "" ] )
 then
-        /bin/sed -i '/CLOUDHOST=/d' ${templatefile}
-        /bin/echo "export CLOUDHOST=\"${CLOUDHOST}\"" >> ${templatefile}
+        /bin/sed -i '/cloudhost=/d' ${templatefile}
+        /bin/echo "export cloudhost=\"${cloudhost}\"" >> ${templatefile}
 fi
 
 #if ( [ "${SYSTEM_EMAIL_USERNAME}" != "" ] )
@@ -199,9 +208,10 @@ then
 fi
 
 #Make it live
-if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER} ] )
+if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier} ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}
 fi
-/bin/cp ${templatefile} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+/bin/cp ${templatefile} ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}
+/bin/echo ${templatefile} > ${BUILD_HOME}/runtimedata/current_template_name
 
