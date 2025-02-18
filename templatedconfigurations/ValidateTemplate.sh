@@ -477,32 +477,6 @@ then
 	fi
 fi
 
-if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DEFAULT_USER}" != "root" ] )
-then
-	${log_command} "It looks like your DEFAULT_USER is set to ${DEFAULT_USER} when it should be root"
-fi
-
-if ( [ "${CLOUDHOST}" = "exoscale" ]  && [ "${BUILDOS}" = "ubuntu" ] && [ "${DEFAULT_USER}" != "ubuntu" ] )
-then
-	${log_command} "It looks like your DEFAULT_USER is set to ${DEFAULT_USER} when it should be ubuntu"
-fi
-
-if ( [ "${CLOUDHOST}" = "exoscale" ]  && [ "${BUILDOS}" = "debian" ] && [ "${DEFAULT_USER}" != "debian" ] )
-then
-	${log_command} "It looks like your DEFAULT_USER is set to ${DEFAULT_USER} when it should be debian"
-fi
-
-if ( [ "${CLOUDHOST}" = "linode" ] && [ "${DEFAULT_USER}" != "root" ] )
-then
-	${log_command} "It looks like your DEFAULT_USER is set to ${DEFAULT_USER} when it should be root"
-fi
-
-if ( [ "${CLOUDHOST}" = "vultr" ] && [ "${DEFAULT_USER}" != "root" ] )
-then
-	${log_command} "It looks like your DEFAULT_USER is set to ${DEFAULT_USER} when it should be root"
-
-fi
-
 if ( ( [ "${CLOUDHOST}" = "linode" ] || [ "${CLOUDHOST}" = "exoscale" ] ) && [ "${CLOUDHOST_ACCOUNT_ID}" = "" ] )
 then
 	${log_command} "It looks like CLOUDHOST_ACCOUNT_ID is blank this should definitely not be the case for ${CLOUDHOST}"
