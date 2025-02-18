@@ -25,18 +25,6 @@ This is a unique string to describe your build. If you have multiple builds that
 
 -----
 
-### DEFAULT_USER  
-
-The default user should be set as follows:  
-
-digitalocean : **root** in all cases  
-exoscale : **ubuntu** when deploying ubuntu and **debian** when deploying debian  
-linode : **root** in all cases  
-vultr : **root** in all cases  
-aws : **ubuntu** when deploying ubuntu and **admin** when deploying debian  
-
------
-
 ### APPLICATION
 
 This can be set to one of "joomla", "wordpress", "drupal", "moodle"
