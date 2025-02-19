@@ -90,7 +90,7 @@ do
                 #Construct a unique name for this webserver
                 RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
 
-                webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-${RND}"
+                webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-init-${RND}"
 
                 status "Initialising a new server machine, please wait......"
 
