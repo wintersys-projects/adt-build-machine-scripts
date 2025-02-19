@@ -94,7 +94,7 @@ do
                 autoscaler_no="1"
         fi
 
-        status "OK... Building autoscaler `/usr/bin/expr ${no_autoscalers} + 1`. This is the ${counter} attempt of 5"
+        status "OK... Building autoscaler ${autoscaler_no}. This is the ${counter} attempt of 5"
 
         WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
         WEBSITE_DISPLAY_NAME_FILE="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed 's/ /_/g'`"
