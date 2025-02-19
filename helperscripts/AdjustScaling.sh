@@ -90,7 +90,8 @@ then
         exit
 fi
 
-number_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "-as-" "${CLOUDHOST}"`"
+number_of_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "-as-" "${CLOUDHOST}"`"
+number_of_webservers="${new_scale_value}"
 
 /bin/echo "You are running ${number_autoscalers} and you are asking me to build ${new_scale_value} webservers"
 
@@ -98,8 +99,7 @@ base_number_of_webservers="`/usr/bin/expr ${number_of_webservers} / ${number_of_
 total_base_number_of_webservers="`/usr/bin/expr ${base_number_of_webservers} \* ${number_of_autoscalers}`"
 additional_number_of_webservers="`/usr/bin/expr ${number_of_webservers} - ${total_base_number_of_webservers}`"
 
-
-new_scale_values="SCALE_SCALE"
+new_scale_values="STATIC_SCALE"
 for autoscaler_no in `printf "%d\n" $(seq 1 ${number_of_autoscalers})`
 do
         if ( [ "${additional_number_of_webservers}" -gt "0" ] )
@@ -112,6 +112,7 @@ do
 done
 
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/MultiDeleteConfigDatastore.sh STATIC_SCALE:
+
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
 then
         /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:*
@@ -121,9 +122,7 @@ fi
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values} ${new_scale_values}
 
 scaling_profile="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:*`"
-
-stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/SCALE_VALUE://g' | /bin/sed 's/:/ /g'`"
-
+stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
 total_number_of_webservers="0"
 
 for value in ${stripped_scaling_profile}
