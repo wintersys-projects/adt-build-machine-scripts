@@ -27,7 +27,7 @@ fi
 
 if ( [ -f /root/FIREWALL-INITIALISED ] )
 then
-	/usr/bin/kill -9 $PPID 
+	exit
 fi
 
 if ( [ "${BUILD_HOME}" = "" ] )
