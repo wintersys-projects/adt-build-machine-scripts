@@ -368,6 +368,12 @@ This will set the number of webservers to deploy by default. If you set this to 
 
 -----
 
+### MAX_WEBSERVERS
+
+This needs to be set to an integer that determines the maximum number of webservers that an autoscaler can start. If you set MAX_WEBSERVERS to 10 and you are running with  3 autoscaler machines then each autoscaler will be able to start a maximum of 10 webservers meaning 30 webservers overall. If you are running only 1 autoscaler machine and MAX_WEBSERVERS is set to 10 then that will mean that there will be a maximum of 10 webservers running. Its important to have MAX_WEBSERVERS set to prevent any run away scaling conditions from occuring. 
+
+-----
+
 ### WEBSERVER_CHOICE
 
 You have a choice of webserver that you want to deploy to. You can set this to "NGINX, "APACHE" or "LIGHTTPD". What you set this to will determine which webserver gets installed and used. 
