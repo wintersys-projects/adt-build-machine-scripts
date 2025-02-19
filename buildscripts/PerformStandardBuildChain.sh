@@ -114,6 +114,7 @@ then
                         ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh &
                         pids="${pids} $!"
                         tally="`/usr/bin/expr ${tally} + 1`"
+                        /bin/sleep 10
                 done
         fi
 fi 
