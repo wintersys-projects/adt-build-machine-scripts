@@ -19,7 +19,7 @@
 ####################################################################################
 ####################################################################################
 
-HOME="`/bin/cat /home/homedir.dat`"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 ${BUILD_HOME}/installscripts/Update.sh ${1}
 ${BUILD_HOME}/installscripts/Upgrade.sh ${1}
