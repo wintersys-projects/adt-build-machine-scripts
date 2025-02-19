@@ -120,10 +120,19 @@ fi
 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values}
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values} ${new_scale_values}
 
-new_no_webservers="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:*`"
+scaling_profile="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:*`"
+
+stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/SCALE_VALUE://g' | /bin/sed 's/:/ /g'`"
+
+total_number_of_webservers="0"
+
+for value in ${stripped_scaling_profile}
+do
+        total_number_of_webservers="`/usr/bin/expr ${total_number_of_webservers} + ${value}`"
+done
 
 /bin/echo ""
-/bin/echo "Your number of webservers has been successfully set to: ${new_no_webservers}"
+/bin/echo "Your number of webservers has been successfully set to: ${total_number_of_webservers}"
 /bin/echo ""
 
 
