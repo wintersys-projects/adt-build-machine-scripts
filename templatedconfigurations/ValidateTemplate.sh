@@ -183,6 +183,11 @@ then
 	export INPARALLEL="0"
 fi
 
+if ( ! [ `/usr/bin/expr match "${MAX_WEBSERVERS}" '^\([0-9]\+\)$'` ] )
+then
+	${log_command} "Your value for the variable MAXWEBSERVERS (${MAX_WEBSERVERS}) doesn't appear to be valid please review"
+fi
+
 if ( [ "${APPLICATION}" = "joomla" ] && [ "${APPLICATION_IDENTIFIER}" != "1" ] )
 then
 	${log_command} "There looks to be a mismatch between your application (${APPLICATION}) and your APPLICATION_IDENTIFIER (${APPLICATION_IDENTIFIER})"
