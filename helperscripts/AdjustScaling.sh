@@ -64,7 +64,14 @@ read BUILD_IDENTIFIER
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-original_scale_value="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:* | /usr/bin/awk -F':' '{print $NF}'`"
+scaling_profile="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:*`"
+stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
+original_scale_value="0"
+
+for value in ${stripped_scaling_profile}
+do
+        original_scale_value="`/usr/bin/expr ${original_scale_value} + ${value}`"
+done
 
 if ( [ "${original_scale_value}" != "" ] )
 then
@@ -133,6 +140,3 @@ done
 /bin/echo ""
 /bin/echo "Your number of webservers has been successfully set to: ${total_number_of_webservers}"
 /bin/echo ""
-
-
-
