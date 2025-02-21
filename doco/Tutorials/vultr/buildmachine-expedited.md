@@ -194,7 +194,7 @@ You can see in this image that port 1035 is about to be opened up to the ip addr
 
 ---------------
 
-7) You need to spin up a small machine to be your build machine by clicking "Create Droplet" on the top right of the GUI. And then follow these steps:
+7) You need to spin up a small machine to be your build machine by clicking "Create Server" on the top right of the GUI. And then follow these steps:
 
 >     1. Select which template you want debian 10 (or later) or ubuntu 20.04 (or later)
 >     2. Select which region you want to deploy to, for example, london
@@ -289,5 +289,11 @@ Run through the commands as shown below on your laptop to access your build mach
 &nbsp;
 
 ![](../../images/vultr/buildmachine-expedited/vult9.png "Vultr Tutorial Image 9")
+
+If you intend to set BUILD_MACHINE_VPC=1 in your template then once the build machine is fully online and you can ssh onto it you will need to add it to a VPC2 network in your current region. To do this you may need to create a VPC2 network and you will need to call it "adt-vpc". Once you have added the machine to the VPC2 network it will restart 
+
+[How to create a VPC2 network](https://docs.vultr.com/how-to-create-a-vultr-virtual-private-cloud-2-0)
+
+To add your build machine to your new VPC2 network, go to "Settings" "VPC2" of the machine in the GUI interface and add it to the VPC2 network. 
 
 --------------------------------------
