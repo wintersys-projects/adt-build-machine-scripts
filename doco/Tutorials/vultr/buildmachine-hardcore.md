@@ -291,4 +291,10 @@ Run through the commands as shown on your laptop to access your build machine
 
 ![](../../images/vultr/buildmachine-hardcore/vult8.png "Vultr Tutorial Image 8")
 
+If you intend to set BUILD_MACHINE_VPC=1 in your template then once the build machine is fully online and you can ssh onto it you will need to add it to a VPC2 network in your current region. To do this you may need to create a VPC2 network and you will need to call it "adt-vpc". Once you have added the machine to the VPC2 network it will restart 
+
+[How to create a VPC2 network](https://docs.vultr.com/how-to-create-a-vultr-virtual-private-cloud-2-0)
+
+To add your build machine to your new VPC2 network, go to "Settings" "VPC2" of the machine in the GUI interface and add it to the VPC2 network. 
+
 --------------------------------------
