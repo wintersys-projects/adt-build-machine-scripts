@@ -167,9 +167,9 @@ then
    
         if ( [ "${DDOS_PROTECTION}" = "1" ] )
         then
-                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="`/bin/cat ${cloud_config}`"
+                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
         else
-                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="`/bin/cat ${cloud_config}`"
+                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
         fi    
 
         machine_id=""
