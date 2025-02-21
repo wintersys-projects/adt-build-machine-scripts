@@ -150,13 +150,13 @@ else
 
 fi
 
-/bin/sed -i '/build_identifier=/d' ${templatefile}
-/bin/echo "export build_identifier=\"${build_identifier}\"" >> ${templatefile}
+/bin/sed -i '/BUILD_IDENTIFIER=/d' ${templatefile}
+/bin/echo "export BUILD_IDENTIFIER=\"${build_identifier}\"" >> ${templatefile}
 
 if ( [ "${cloudhost}" != "" ] )
 then
-        /bin/sed -i '/cloudhost=/d' ${templatefile}
-        /bin/echo "export cloudhost=\"${cloudhost}\"" >> ${templatefile}
+        /bin/sed -i '/CLOUDHOST=/d' ${templatefile}
+        /bin/echo "export CLOUDHOST=\"${cloudhost}\"" >> ${templatefile}
 fi
 
 #if ( [ "${SYSTEM_EMAIL_USERNAME}" != "" ] )
