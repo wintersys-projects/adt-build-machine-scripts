@@ -86,6 +86,7 @@ packages:
   - sshpass
   - bc
   - curl
+  - whois
 
 runcmd:
  # - '/usr/sbin/netplan apply'
