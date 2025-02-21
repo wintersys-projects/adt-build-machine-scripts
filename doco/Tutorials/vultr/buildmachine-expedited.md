@@ -199,8 +199,8 @@ You can see in this image that port 1035 is about to be opened up to the ip addr
 >     1. Select which template you want debian 10 (or later) or ubuntu 20.04 (or later)
 >     2. Select which region you want to deploy to, for example, london
 >     3. Select instance size "1GB" for example
->     4. Attach your SSH KEY
->     5. In the "User Data" area of your VPC machine, paste the entire script that you were left with from 4.
+>     4. Add the machine to a VPC called "adt-vpc" in your current region
+>     5. In the "User Data" area of your machine, paste the entire script that you were left with from 4.
 >     6. Click Create and wait for your machine to build
 >     7. Once the machine has built, go to "networking" -> "firewalls" and select "adt-build-machine" firewall and add your new droplet to the firewall
 
@@ -290,10 +290,3 @@ Run through the commands as shown below on your laptop to access your build mach
 
 ![](../../images/vultr/buildmachine-expedited/vult9.png "Vultr Tutorial Image 9")
 
-If you intend to set BUILD_MACHINE_VPC=1 in your template then once the build machine is fully online and you can ssh onto it you will need to add it to a VPC2 network in your current region. To do this you may need to create a VPC2 network and you will need to call it "adt-vpc". Once you have added the machine to the VPC2 network it will restart 
-
-[How to create a VPC2 network](https://docs.vultr.com/how-to-create-a-vultr-virtual-private-cloud-2-0)
-
-To add your build machine to your new VPC2 network, go to "Settings" "VPC2" of the machine in the GUI interface and add it to the VPC2 network. 
-
---------------------------------------
