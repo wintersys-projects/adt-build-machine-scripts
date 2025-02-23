@@ -16,6 +16,7 @@
 # NGINX:repo
 # If you are building for APACHE you can select one of:
 # APACHE:source   (uses default hardcoded settings)
+# APACHE:settings:<setting_name1=setting_value1>:<setting_name2=setting_value2>.....<setting_namen=setting_valuen>
 # APACHE:modules-list:<module1>:<module2>:....<modulen>
 # APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # APACHE:repo
@@ -84,6 +85,8 @@ NGINX:cloud-init
 ##############################################################APACHE###########################################################
 APACHE:repo
 #APACHE:source
+APACHE:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
+APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
 #APACHE:modules-list:unixd:authz_core:alias:log_config:log_debug:logio:remoteip:expires:access_compat:dir:proxy:proxy_http:proxy_fcgi:http2:headers:rewrite:ssl:mime:unique_id:session:session_cookie:authn_core:authz_user:authn_file:authz_host:auth_basic:socache_shmcb:setenvif
 #APACHE:software-packages:pandoc:build-essential:libssl-dev:libexpat-dev:libpcre3-dev:libapr1-dev:libaprutil1-dev:libnghttp2-dev:lua5.4:libjansson-dev:libcurl4-gnutls-dev
 ##############################################################APACHE###########################################################
