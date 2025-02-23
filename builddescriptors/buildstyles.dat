@@ -16,7 +16,7 @@
 # NGINX:repo
 # If you are building for APACHE you can select one of:
 # APACHE:source   (uses default hardcoded settings)
-# APACHE:settings:<setting_name1=setting_value1>:<setting_name2=setting_value2>.....<setting_namen=setting_valuen>
+# APACHE:settings:<setting_name1=setting_value1>:<setting_name2=setting_value2>:.....<setting_namen=setting_valuen>
 # APACHE:modules-list:<module1>:<module2>:....<modulen>
 # APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # APACHE:repo
