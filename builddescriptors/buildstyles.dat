@@ -95,7 +95,7 @@ APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestW
 
 ######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM SOURCE#####################################################
 #APACHE:source
-#APACHE:modules-list:ssl:rewrite:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi:socache_shmcb:log_config:logio:dir:unixd:authz_core:mime:http2
+#APACHE:modules-list:ssl:rewrite:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi:socache_shmcb:log_config:log_debug:logio:dir:unixd:authz_core:mime:http2
 #APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
 #APACHE:software-packages:pandoc:build-essential:libssl-dev:libexpat-dev:libpcre3-dev:libapr1-dev:libaprutil1-dev:libnghttp2-dev:lua5.4:libjansson-dev:libcurl4-gnutls-dev
 ##############################################################APACHE###########################################################
