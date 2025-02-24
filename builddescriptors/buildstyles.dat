@@ -77,7 +77,6 @@
 #All this does is tell us how to build it not whether to build it
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING CLOUD-INIT#################################################
 NGINX:cloud-init
-NGINX:modules-list:libnginx-mod-http-image-filter
 NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
@@ -97,7 +96,6 @@ NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout
 ##############################################################APACHE###########################################################
 #####UNCOMMENT AND MODIFY THESE TO INSTALL APACHE USING CLOUD-INIT#################################################
 APACHE:cloud-init
-APACHE:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
 APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
 
 ######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM REPO USING APT#############################################
