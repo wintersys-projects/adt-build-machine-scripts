@@ -17,6 +17,7 @@
 # If you are building for APACHE (your templates webserver is set to APACHE) you can select one of:
 # APACHE:source   (uses default hardcoded settings)
 # APACHE:modules-list:<module1>:<module2>:....<modulen>
+# APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building apache from source)
 # APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # APACHE:repo
 # If you are building for lighttpd (your template webserver is set to LIGHTTPD) you can select one of:
