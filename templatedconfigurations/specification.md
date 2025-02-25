@@ -289,7 +289,13 @@ Make sure these tokens have the rights to create and destroy repositories as wel
 
 ### VPC_IP_RANGE
 
-You need to put the address range of your VPC in here. This is mandatory because without it the firewalling won't function correctly and your website will likely timeoout. An example value of this might be 10.116.0.0/24 for a VPC in digital ocean's lon1 datacentre. This value will be different for each region where your VPC is and the you must have a VPC (or private network if you are on exoscale) called "adt-vpc"
+You need to put the address range of your VPC in here. This is mandatory because without it the firewalling won't function correctly and your website will likely timeoout. An example value of this might be 10.116.0.0/24 for a VPC in digital ocean's lon1 datacentre. This value will be different for each region where your VPC is and the you must have a VPC (or private network if you are on exoscale) called, for example, "adt-vpc". You can get the VPC_IP_RANGE from the GUI system for each provider and the value you place here needs to be the same as is displayed in the GUI system. Don't forget also that if you change your deployment region from, for example, london to amsterdam then your VPC_IP_RANGE will change also to reflect the new region and you will need to update this value as well. 
+
+------
+
+### VPC_NAME
+
+You can set the name of your VPC here. By giving your VPCs different names you can have VPCs in different regions of the same provider, for example, you could call your VPCs "adt-vpc-lon" and "adt-vpc-ams" and so on. Remember, if you have BUILD_MACHINE_VPC set to 1, then your build-machine will have to be attached to the same VPC as is named here. 
 
 -------
 
