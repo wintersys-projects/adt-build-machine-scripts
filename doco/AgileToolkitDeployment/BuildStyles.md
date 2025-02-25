@@ -268,3 +268,6 @@ How system emails can be sent can be set here:
 
 EMAILUTIL:sendemail
 EMAILUTIL:mail
+
+
+NOTE: I support cloud-init style installs as well as apt-get style installs because apt-get is more customisable and I found that cloud-init wasn't always an option because when PHP8.4 was new at least, it couldn't be installed with cloud-init so I had the option of falling back to the apt-get method to get it installed and I didn't know how to install MySQL using cloud-init either and so in that case I could fall back to the apt-get or apt-fast install method and still be up and running. Most likely in the future there might be other scenarios where cloud-init package install isn't an option and so having the option to fall back to apt-get saves the day.
