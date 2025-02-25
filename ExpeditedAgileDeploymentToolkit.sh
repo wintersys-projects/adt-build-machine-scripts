@@ -261,8 +261,7 @@ start=`/bin/date +%s`
 ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
-${BUILD_HOME}/buildscripts/BuildAndDeployDBaaS.sh
-#. ${BUILD_HOME}/initscripts/InitialiseDatabaseCredentials.sh
+${BUILD_HOME}/initscripts/IntialiseDatabaseService.sh
 ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
 ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 
