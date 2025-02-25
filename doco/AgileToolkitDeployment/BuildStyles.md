@@ -194,16 +194,15 @@ When you put this in the buildstyles.dat file it will install pgsql,curl,zip and
 
 You can also configure the php pool through this file. For example, you can set:
 
-> 
- 
- 
- 
- CONFIGPHPPOOL:pm=ondemand:pm.max_children=4:pm.max_requests=200:pm.start_servers=10:pm.min_spare_servers=5:pm.max_spare_servers=20:pm.process_idle_timeout=10s
+>     CONFIGPHPPOOL:pm=ondemand:pm.max_children=4:pm.max_requests=200:pm.start_servers=10:pm.min_spare_servers=5:
+>     pm.max_spare_servers=20:pm.process_idle_timeout=10s
 
 You can also configure the php.ini through this file. For example, you can set:
 
-> 
-  CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.output_compression=On:cgi.fix_pathinfo=0:output_buffering=Off:disable_functions=exec,passthru,shell_exec,system,proc_open,popen,parse_ini_file,show_source:allow_url_fopen=Off:allow_url_include=Off:memory_limit=256M:opcache.enable=1:opcache.memory_consumption=256:open_basedir=/var/##/tmp:upload_tmp_dir=/var/www/html/tmp
+>     CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.output_compression=On:
+>     cgi.fix_pathinfo=0:output_buffering=Off:disable_functions=exec,passthru,shell_exec,system,proc_open,popen,parse_ini_file,show_source:
+>     allow_url_fopen=Off:allow_url_include=Off:memory_limit=256M:opcache.enable=1:opcache.memory_consumption=256:
+>     open_basedir=/var/##/tmp:upload_tmp_dir=/var/www/html/tmp
 
 NOTE that when there are multiple separate terms/values the token ## is the delimiter
 
