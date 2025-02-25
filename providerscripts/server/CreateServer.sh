@@ -34,6 +34,8 @@ BUILDOS_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS_VERSIO
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 DDOS_PROTECTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ENABLE_DDOS_PROTECTION`"
 VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
+VPC_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_NAME`"
+
 
 #BUILDOS="`/bin/grep '^BUILDOS=' ${BUILD_ENVIRONMENT} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
 #BUILDOS_VERSION="`/bin/grep '^BUILDOS_VERSION=' ${BUILD_ENVIRONMENT} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'`"
