@@ -12,6 +12,7 @@
 # If you are building for NGINX (your template webserver is set to NGINX) you can select one of:
 # NGINX:source   (uses default hardcoded settings)
 # NGINX:modules-list:<module1>:<module2>:....<modulen>
+# APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
 # NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # NGINX:repo
 # If you are building for APACHE (your templates webserver is set to APACHE) you can select one of:
@@ -23,6 +24,7 @@
 # If you are building for lighttpd (your template webserver is set to LIGHTTPD) you can select one of:
 # LIGHTTPD:source   (uses default hardcoded settings)
 # LIGHTTPD:modules-list:<module1>:<module2>:....<modulen>
+# LIGHTTPD:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building lighttpd from source)
 # LIGHTTPD:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # LIGHTTPD:repo
 # You can define what extensions PHP will be built with by modifying the line starting PHP: as shown below
@@ -112,9 +114,21 @@ APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestW
 ##############################################################APACHE###########################################################
 
 ##############################################################LIGHTTPD###########################################################
-LIGHTTPD:repo
+#####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING CLOUD-INIT#################################################
+LIGHTTPD:cloud-init
+LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING APT#################################################
+#LIGHTTPD:repo
+#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD FROM SOURCE#################################################
 #LIGHTTPD:source
-#LIGHTTPD:modules-list:zlib:libxml:openssl:gnutls
+#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+#LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
+#LIGHTTPD:settings:server.use-ipv6='disable':server.bind='localhost':server.max-fds=2048:server.stat-cache-engine='simple'
 #LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
 ##############################################################LIGHTTPD###########################################################
 ##############################################################PHP###########################################################
