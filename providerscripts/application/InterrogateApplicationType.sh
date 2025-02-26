@@ -133,11 +133,11 @@ then
         archive="${interrogation_home}/${archivename}"
         /bin/tar xvfz ${archive} -C ${interrogation_home}
         ${BUILD_HOME}/providerscripts/application/WhichApplicationByDatastoreAndBackup.sh
-        /bin/rm -rf ${interrogation_home}/tmp 1>/dev/null 2>/dev/null
-        /bin/rm ${interrogation_home}/applicationsourcecode.tar.gz 1>/dev/null 2>/dev/null
+     #   /bin/rm -rf ${interrogation_home}/tmp 1>/dev/null 2>/dev/null
+     #   /bin/rm ${interrogation_home}/applicationsourcecode.tar.gz 1>/dev/null 2>/dev/null
 fi
 
-/bin/rmdir ${interrogation_home}
+#/bin/rmdir ${interrogation_home}
 
 cd ${BUILD_HOME}
 
