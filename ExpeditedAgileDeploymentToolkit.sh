@@ -223,6 +223,12 @@ then
                 status "#############################################################"
                 ${BUILD_HOME}/providerscripts/application/InterrogateApplicationType.sh
                 ${BUILD_HOME}/providerscripts/application/CheckForAssetsOverwrite.sh
+                
+                status ""
+                status "#############################################################"
+                status "Initialising assets datastore, this may or may not take a while"
+                status "#############################################################"
+                ${BUILD_HOME}/initscripts/InitialiseAssetDatastore.sh
         fi
 fi
 
