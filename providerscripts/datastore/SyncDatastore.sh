@@ -34,4 +34,12 @@ then
         datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
 fi
 
-${datastore_tool} sync s3://${original_object} s3://${new_object} 2>/dev/null
+if ( [ -d ${original_object} ] || [ -f ${original_object} ] )
+then
+        ${datastore_tool} sync ${original_object} s3://${new_object} 2>/dev/null
+elif ( [ -d ${new_object} ] || [ -f ${new_object} ] )
+then
+        ${datastore_tool} sync s3://${original_object} ${new_object} 2>/dev/null
+else
+        ${datastore_tool} sync s3://${original_object} s3://${new_object} 2>/dev/null
+fi
