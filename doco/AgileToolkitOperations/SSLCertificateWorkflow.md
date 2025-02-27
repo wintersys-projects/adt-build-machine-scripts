@@ -15,3 +15,6 @@ If they exist then a check is made to see if they are valid certificates. If the
 >     ${HOME}/ssl/live/${WEBSITE_URL}/*.pem
 
 If this system works correctly it should be a "hands off process" meaning that in normal operation you don't need to do anything to do with certificates because all of this manages it behind the scenes. 
+
+
+if SSL_GENERATION_METHOD is set to MANUAL then the pre-build process will ask you for a certificate to use for the current build which you will have to obtain from your prefered third party certificate provider. If you use the manual SSL certificate approach you will have to manually update the certificates on your servers. The manual option is only really meant for an emergency if you can't get your certificate in the usual way. 
