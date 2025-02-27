@@ -31,6 +31,8 @@ you can set
 
 What this will do is it will mount the entire webroot of your application from the Datastore. There will be performance issues and in my testing I can only get this approach to work if I use the rclone option in ${BUILD_HOME}/builddescriptors/buildstyles.dat on the build  machine. You are welcome to see if you can get this to work using one of the other solutions such as "s3fs", "goofys" or "geesefs".
 
+I haven't done any testing as to what your costs would be if you used this technique if they are high it might be possible to get them down using finely configured caching for rclone
+
 --------
 
 The workflow for the assets for the application are arranged as follows. 
