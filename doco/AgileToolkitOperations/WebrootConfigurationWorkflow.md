@@ -11,6 +11,7 @@ The most relevant parts of the configuration are the
 and 
 
 >     DIRECTORIES_TO_MOUNT
+>     SYNC_WEBROOTS="0"
 
 settings in your template.
 
