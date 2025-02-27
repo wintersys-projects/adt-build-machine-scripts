@@ -1,8 +1,8 @@
 Website assets can be treated in a few ways.
 
-1. Use a CDN at an application level without using any of what I mention here
-2. Don't offload any assets and set SYNC_WEBROOTS to 1 (this only works if your application doesn't create bontiful asset files)
-2. If you can't use a CDN and you have a large amount of assets you could fall back to what I am describing here which is to mount assets from your S3 bucket 
+1. Use a plugin at an application level to offload assets without using any of what I mention here
+2. Don't offload any assets at an application level and set SYNC_WEBROOTS to 1 (this only works if your application doesn't create bontiful asset files)
+3. If you can't use an application plugin for some reason or there isn't a suitable one and you have a large amount of assets you could fall back to what I am describing here which is to have this tooolkit mount assets from your S3 bucket in a way that makes the filesystem look just like a regular filesystem to your application but backed up by your S3 datastore rather than just your hard-disk. 
 
 The most relevant parts of the configuration are the 
 
@@ -11,7 +11,7 @@ The most relevant parts of the configuration are the
 and 
 
 >     DIRECTORIES_TO_MOUNT
->     SYNC_WEBROOTS="0"
+>     SYNC_WEBROOTS
 
 settings in your template.
 
@@ -19,7 +19,7 @@ settings in your template.
 
 - If you are deploying from a temporal backup then PERSIST ASSETS TO CLOUD CAN BE 1.
 
-- When PERSIST_ASSETS_TO_CLOUD is 1, then you can set which directories of your applications webroot you wish to be stored in the cloud (the S3 Data storage). Please refer to the specification for more details on how to set the value of DIRECTORIES_TO_MOUNT.
+- When PERSIST_ASSETS_TO_CLOUD is 1, then you can set which directories of your applications webroot you wish to be stored in the cloud (the S3 Data storage). Please refer to the specification for more details on how to set the value of DIRECTORIES_TO_MOUNT. If SYNC_WEBROOTS is 1, the directories mounted from S3 will not be included in the syncing process
 
 --------
 There is a special case where if 
