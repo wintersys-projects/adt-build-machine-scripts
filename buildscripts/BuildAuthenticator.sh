@@ -221,7 +221,7 @@ do
         fi
 done
 
-#If we get to here then we know that the webserver didn't build properly, so report it and exit
+#If we get to here then we know that the authentication server didn't build properly, so report it and exit
 
 if ( [ "${counter}" = "5" ] )
 then
