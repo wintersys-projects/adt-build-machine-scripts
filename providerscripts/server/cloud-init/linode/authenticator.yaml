@@ -21,7 +21,7 @@ ssh_pwauth: false
 
 
 timezone: 'XXXXTIMEZONEXXXX'
-hostname: XXXXWEBSERVER_HOSTNAMEXXXX
+hostname: XXXXAUTHENTICATOR_HOSTNAMEXXXX
 manage_etc_hosts: true
 
 bootcmd:
