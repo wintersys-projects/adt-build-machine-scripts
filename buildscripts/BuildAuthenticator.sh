@@ -161,7 +161,7 @@ do
                         status "This is the current time for your reference `/bin/date`"
 
 
-                        #So, looking good. Now what we have to do is keep monitoring for the build process for our webserver to complete
+                        #So, looking good. Now what we have to do is keep monitoring for the build process for our authenticator to complete
                         done="0"
                         alive=""
                         alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTHENTICATOR_READY"`"
@@ -196,8 +196,8 @@ do
                                         read response
                                 fi
 
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicips
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorips
 
                                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
