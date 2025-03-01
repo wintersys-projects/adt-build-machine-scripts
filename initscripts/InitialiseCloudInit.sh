@@ -123,6 +123,7 @@ then
         if ( [ "`/bin/grep ^NGINX:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
         then
                 /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
         fi
 fi
 
@@ -131,6 +132,7 @@ then
         if ( [ "`/bin/grep ^APACHE:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
         then
                 /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
         fi
 fi
 
@@ -139,6 +141,7 @@ then
         if ( [ "`/bin/grep ^LIGHTTPD:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
         then
                 /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
         fi
 fi
 
