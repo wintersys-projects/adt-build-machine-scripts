@@ -29,11 +29,6 @@ git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh ${I
 /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
 /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/authenticator_configuration_settings.dat
 
-
-XXXXWEBSERVER_HOSTNAMEXXXX
-XXXXAUTHENTICATOR_CONFIGURATIONXXXX
-XXXXSSH_PORTXXXX
-
 set -o allexport
 . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 set +o allexport
