@@ -32,9 +32,7 @@ git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh ${I
 
 XXXXWEBSERVER_HOSTNAMEXXXX
 XXXXAUTHENTICATOR_CONFIGURATIONXXXX
-#XXXXNGINXXXXX
-#XXXXAPACHEXXXX
-#XXXXLIGHTTPDXXXX
+
 XXXXALGORITHMXXXX
 XXXXBUILD_IDENTIFIERXXXX
 XXXXGIT_PROVIDER_DOMAINXXXX
@@ -228,6 +226,7 @@ fi
 /bin/sed -i "s/XXXXALGORITHMXXXX/${ALGORITHM}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
 /bin/sed -i "s/XXXXALGORITHMXXXX/${ALGORITHM}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
 /bin/sed -i "s/XXXXALGORITHMXXXX/${ALGORITHM}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+/bin/sed -i "s/XXXXALGORITHMXXXX/${ALGORITHM}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
 /bin/sed -i "s;XXXXAUTOSCALER_CONFIGURATIONXXXX;${autoscaler_configuration_settings};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
 /bin/sed -i "s;XXXXWEBSERVER_CONFIGURATIONXXXX;${webserver_configuration_settings};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
 /bin/sed -i "s;XXXXWEBSERVER_CONFIGURATIONXXXX;${webserver_configuration_settings};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
