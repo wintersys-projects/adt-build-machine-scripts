@@ -135,44 +135,44 @@ do
                         fi
            done
     
-                WSIP_PUBLIC=${ip}
-                WSIP_PRIVATE=${private_ip}
+                AUTHIP_PUBLIC=${ip}
+                AUTHIP_PRIVATE=${private_ip}
 
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} webserverpublicips/${ip}
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} webserverips/${private_ip}
 
                 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                 then
-                        ws_active_ip="${WSIP_PRIVATE}"
+                        auth_active_ip="${AUTHIP_PRIVATE}"
                 elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                 then
-                        ws_active_ip="${WSIP_PUBLIC}"
+                        auth_active_ip="${AUTHIP_PUBLIC}"
                 fi
 
-                status "Have got the ip addresses for your webserver (${webserver_name})"
-                status "Public IP address: ${WSIP_PUBLIC}"
-                status "Private IP address: ${WSIP_PRIVATE}"
+                status "Have got the ip addresses for your webserver (${authenticator_name})"
+                status "Public IP address: ${AUTHIP_PUBLIC}"
+                status "Private IP address: ${AUTHIP_PRIVATE}"
 
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
                 then
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
                 fi
 
-                        status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
+                        status "Waiting for the authenticator machine ${authenticator_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
                         status "This is the current time for your reference `/bin/date`"
 
 
                         #So, looking good. Now what we have to do is keep monitoring for the build process for our webserver to complete
                         done="0"
                         alive=""
-                        alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
+                        alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
 
                         count="0"
                         while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/WEBSERVER_READY" ] && [ "${count}" -lt "300" ] )
                         do
                                 count="`/usr/bin/expr ${count} + 1`"
                                 /bin/sleep 2
-                                alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
+                                alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
                         done
 
                         if ( [ "${count}" = "300" ] )
@@ -189,7 +189,7 @@ do
                         if ( [ "${done}" != "1" ] )
                         then
                                 status "################################################################################################################"
-                                status "Hi, a webserver didn't seem to build correctly. I can destroy it and I can try to build a new webserver for you"
+                                status "Hi, an authenticator server didn't seem to build correctly. I can destroy it and I can try to build a new webserver for you"
                                 status "################################################################################################################"
                                 status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
                                 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
@@ -200,19 +200,19 @@ do
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
                                 ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
 
-                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
+                                ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
                                 #Wait until we are sure that the image server(s) are destroyed because of a faulty build
-                                while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
+                                while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
                                 do
                                         /bin/sleep 30
                                 done
                         else
-                                status "A webserver (${webserver_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
+                                status "An authentication server (${authenticator_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
                                 counter="`/usr/bin/expr ${counter} - 1`"
                         fi
         else
-                status "A webserver is already running, using that one"
+                status "An authenticator is already running, using that one"
                 status "Press enter if this is OK with you"
                 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                 then
