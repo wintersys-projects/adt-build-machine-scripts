@@ -225,6 +225,6 @@ done
 
 if ( [ "${counter}" = "5" ] )
 then
-        status "The infrastructure failed to intialise because of a build problem, plese investigate, correct and rebuild"
+        status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
         /usr/bin/kill -9 $PPID
 fi
