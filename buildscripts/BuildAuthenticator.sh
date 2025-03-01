@@ -137,8 +137,8 @@ do
                 AUTHIP_PUBLIC=${ip}
                 AUTHIP_PRIVATE=${private_ip}
 
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} webserverpublicips/${ip}
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} webserverips/${private_ip}
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicips/${ip}
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorips/${private_ip}
 
                 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                 then
