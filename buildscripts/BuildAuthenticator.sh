@@ -68,18 +68,18 @@ OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
-#If "done" is set to 1, then we know that a webserver has been successfully built and is running.
-#Try up to 5 times if the webserver is failing to complete its build
+#If "done" is set to 1, then we know that a authentication server has been successfully built and is running.
+#Try up to 5 times if the authenticator is failing to complete its build
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
         counter="`/usr/bin/expr ${counter} + 1`"
         status "OK... Building an authentication server. This is the ${counter} attempt of 5"
  
         #Check if there is a webserver already running. If there is, then skip building the webserver
-        if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
         then
                 ip=""
-                #Construct a unique name for this webserver
+                #Construct a unique name for this authentication server
                 RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
 
                 authenticator_name="auth-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
@@ -98,7 +98,7 @@ do
                         do
                                 count="`/usr/bin/expr ${count} + 1`"
                                 /bin/sleep 10
-                                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${WS_SERVER_TYPE}" "${authenticator_name}" 
+                                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AUTH_SERVER_TYPE}" "${authenticator_name}" 
                         done
 
                         if ( [ "${count}" = "10" ] )
