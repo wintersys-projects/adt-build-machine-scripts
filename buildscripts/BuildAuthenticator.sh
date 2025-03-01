@@ -75,7 +75,7 @@ do
         counter="`/usr/bin/expr ${counter} + 1`"
         status "OK... Building an authentication server. This is the ${counter} attempt of 5"
  
-        #Check if there is a webserver already running. If there is, then skip building the webserver
+        #Check if there is an authenticator already running. If there is, then skip building the authenticator
         if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
         then
                 ip=""
