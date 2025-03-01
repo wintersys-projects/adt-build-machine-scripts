@@ -83,6 +83,18 @@ then
                         cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml"
                 fi           
         fi
+elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+then
+        if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml ] )
+        then
+                /bin/sed -i "s/XXXXAUTHENTICATOR_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+                if ( [ "${CLOUDHOST}" = "linode" ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml | /usr/bin/base64 -w 0`"
+                else 
+                        cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml"
+                fi           
+        fi
 fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
