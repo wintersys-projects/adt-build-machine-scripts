@@ -5,9 +5,6 @@
 # Description : This is the script which will build a functioning webserver. It contains
 # all the configuration settings and remote calls to the webserver we are building to ensure
 # that it is built correctly and functions as it is supposed to.
-# These scripts look more complicated than they really are. All that is happening is we are
-# copying over some files to our new autoscaler and executing a few commands (mostly to
-# install software) remotely on the autoscaler.
 ########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -45,7 +42,6 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
-DEFAULT_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEFAULT_USER`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
