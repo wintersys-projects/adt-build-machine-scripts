@@ -184,11 +184,11 @@ do
 
                         WSIP=${ip}
 
-                        #If $done != 1, then the webserver didn't build properly, so, destroy the machine
+                        #If $done != 1, then the authenticator didn't build properly, so, destroy the machine
                         if ( [ "${done}" != "1" ] )
                         then
                                 status "################################################################################################################"
-                                status "Hi, an authenticator server didn't seem to build correctly. I can destroy it and I can try to build a new webserver for you"
+                                status "Hi, an authenticator server didn't seem to build correctly. I can destroy it and I can try to build a new authentication server for you"
                                 status "################################################################################################################"
                                 status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
                                 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
