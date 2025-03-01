@@ -75,7 +75,6 @@ while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
         counter="`/usr/bin/expr ${counter} + 1`"
         status "OK... Building an authentication server. This is the ${counter} attempt of 5"
-        WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
  
         #Check if there is a webserver already running. If there is, then skip building the webserver
         if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
@@ -84,7 +83,7 @@ do
                 #Construct a unique name for this webserver
                 RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
 
-                webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
+                authenticator_name="auth-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
 
                 status "Initialising a new server machine, please wait......"
 
@@ -93,19 +92,19 @@ do
                 do
                         count="0"
                         #Actually start the server machine. Following this, there will be an active machine instance running on your cloud provider
-                        ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${WS_SERVER_TYPE}" "${webserver_name}" 
+                        ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AUTH_SERVER_TYPE}" "${authenticator_name}" 
 
                         #Keep trying if the first time wasn't successful
                         while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
                         do
                                 count="`/usr/bin/expr ${count} + 1`"
                                 /bin/sleep 10
-                                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${WS_SERVER_TYPE}" "${webserver_name}" 
+                                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${WS_SERVER_TYPE}" "${authenticator_name}" 
                         done
 
                         if ( [ "${count}" = "10" ] )
                         then
-                                status "Could not create webserver machine"
+                                status "Could not create authenticator machine"
                                 /usr/bin/kill -9 $PPID                        
                         fi
 
@@ -117,9 +116,9 @@ do
                         #Keep trying until we get the ip addresses of our new machine, both public and private ips
                         while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "20" ] )
                         do
-                                status "Interrogating for webserver ip address....."
-                                ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${webserver_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                                private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${webserver_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+                                status "Interrogating for authenticator ip address....."
+                                ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${authenticator_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+                                private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${authenticator_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
                                 /bin/sleep 10
                                 count="`/usr/bin/expr ${count} + 1`"
                         done
