@@ -181,8 +181,6 @@ do
                                 done="1"
                         fi
 
-                        WSIP=${ip}
-
                         #If $done != 1, then the authenticator didn't build properly, so, destroy the machine
                         if ( [ "${done}" != "1" ] )
                         then
