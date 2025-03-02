@@ -185,18 +185,17 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >     
 >     #####Server Settings #######
 >     export REGION="ch-gva-2"
->     export DB_SIZE="tiny"
 >     export DB_SERVER_TYPE="tiny"
->     export WS_SIZE="tiny"
 >     export WS_SERVER_TYPE="tiny"
->     export AS_SIZE="tiny"
 >     export AS_SERVER_TYPE="tiny"
+>     export AUTH_SERVER_TYPE="tiny"
 >     export CLOUDHOST="exoscale"
 >     export MACHINE_TYPE="EXOSCALE"
 >     export SSH_PORT="1035"
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
 >     
 >     #####Build Settings######
 >     export PRODUCTION="0"
@@ -310,18 +309,17 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     
 >     #####Server Settings #######
 >     export REGION="ch-gva-2"
->     export DB_SIZE="tiny"
 >     export DB_SERVER_TYPE="tiny"
->     export WS_SIZE="tiny"
 >     export WS_SERVER_TYPE="tiny"
->     export AS_SIZE="tiny"
 >     export AS_SERVER_TYPE="tiny"
+>     export AUTH_SERVER_TYPE="tiny"
 >     export CLOUDHOST="exoscale"
 >     export MACHINE_TYPE="EXOSCALE"
 >     export SSH_PORT="1035"
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
 >     
 >     #####Build Settings######
 >     export PRODUCTION="0"
