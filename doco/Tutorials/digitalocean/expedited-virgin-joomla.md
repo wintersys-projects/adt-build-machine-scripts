@@ -301,11 +301,8 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     
 >     #####Server Settings #######
 >     export REGION="lon1"
->     export DB_SIZE="s-1vcpu-1gb"
 >     export DB_SERVER_TYPE="s-1vcpu-1gb"
->     export WS_SIZE="s-1vcpu-1gb"
 >     export WS_SERVER_TYPE="s-1vcpu-1gb"
->     export AS_SIZE="s-1vcpu-1gb"
 >     export AS_SERVER_TYPE="s-1vcpu-1gb"
 >     export CLOUDHOST="digitalocean"
 >     export MACHINE_TYPE="DROPLET"
@@ -313,6 +310,7 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
 >     
 >     
 >     #####Build Settings######
