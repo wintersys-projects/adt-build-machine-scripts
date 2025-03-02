@@ -576,6 +576,12 @@ This is the cloudhost you are deploying to. The current choices are:
 
 You can set the cloudhost to Digital Ocean, for example by setting the CLOUDHOST variable as CLOUDHOST="digitalocean"
 
+-----------
+
+### AUTHORISATION_SERVER
+
+If you want to deploy an authorisation server then set this to "1" otherwise set it to "0"
+
 ---------
 
 ### MACHINE_TYPE
