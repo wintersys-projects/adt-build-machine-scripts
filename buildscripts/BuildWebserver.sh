@@ -185,8 +185,6 @@ do
                                 done="1"
                         fi
 
-                        WSIP=${ip}
-
                         #If $done != 1, then the webserver didn't build properly, so, destroy the machine
                         if ( [ "${done}" != "1" ] )
                         then
