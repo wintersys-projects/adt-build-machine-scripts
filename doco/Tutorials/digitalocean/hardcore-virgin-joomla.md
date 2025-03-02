@@ -162,18 +162,17 @@ This file looks like this (I have put a dashes before each line I wish to modify
 >     
 >     #####Server Settings #######
 >     export REGION="lon1"
->     export DB_SIZE="s-1vcpu-1gb"
 >     export DB_SERVER_TYPE="s-1vcpu-1gb"
->     export WS_SIZE="s-1vcpu-1gb"
 >     export WS_SERVER_TYPE="s-1vcpu-1gb"
->     export AS_SIZE="s-1vcpu-1gb"
 >     export AS_SERVER_TYPE="s-1vcpu-1gb"
+>     export AUTH_SERVER_TYPE="s-1vcpu-1gb"
 >     export CLOUDHOST="digitalocean"
 >     export MACHINE_TYPE="DROPLET"
 >     export SSH_PORT="1035"
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
 >     
 >     #####Build Settings######
 >     export PRODUCTION="0"
@@ -290,18 +289,18 @@ and using the values I recorded in my text file earlier, I modify the file as fo
 >     
 >     #####Server Settings #######
 >     export REGION="lon1"
->     export DB_SIZE="s-1vcpu-1gb"
 >     export DB_SERVER_TYPE="s-1vcpu-1gb"
->     export WS_SIZE="s-1vcpu-1gb"
 >     export WS_SERVER_TYPE="s-1vcpu-1gb"
->     export AS_SIZE="s-1vcpu-1gb"
 >     export AS_SERVER_TYPE="s-1vcpu-1gb"
+>     export AUTH_SERVER_TYPE="s-1vcpu-1gb"
 >     export CLOUDHOST="digitalocean"
 >     export MACHINE_TYPE="DROPLET"
 >     export SSH_PORT="1035"
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
+
 >     
 >     #####Build Settings######
 >     export PRODUCTION="0"
