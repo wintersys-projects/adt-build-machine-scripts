@@ -177,18 +177,17 @@ This file looks like this (I have put dashes before each line I wish to modify f
 >     
 >     #####Server Settings #######
 >     export REGION="lhr"
->     export DB_SIZE="vc2-1c-1gb"
 >     export DB_SERVER_TYPE="vc2-1c-1gb"
->     export WS_SIZE="vc2-1c-1gb"
 >     export WS_SERVER_TYPE="vc2-1c-1gb"
->     export AS_SIZE="vc2-1c-1gb"
 >     export AS_SERVER_TYPE="vc2-1c-1gb"
+>     export AUTH_SERVER_TYPE="vc2-1c-1gb"
 >     export CLOUDHOST="vultr"
 >     export MACHINE_TYPE="VULTR"
 >     export SSH_PORT="1035"
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
 >     
 >     #####Build Settings######
 >     export PRODUCTION="0"
@@ -299,18 +298,17 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     
 >     #####Server Settings #######
 >     export REGION="lhr"
->     export DB_SIZE="vc2-1c-1gb"
 >     export DB_SERVER_TYPE="vc2-1c-1gb"
->     export WS_SIZE="vc2-1c-1gb"
 >     export WS_SERVER_TYPE="vc2-1c-1gb"
->     export AS_SIZE="vc2-1c-1gb"
 >     export AS_SERVER_TYPE="vc2-1c-1gb"
+>     export AUTH_SERVER_TYPE="vc2-1c-1gb"
 >     export CLOUDHOST="vultr"
 >     export MACHINE_TYPE="VULTR"
 >     export SSH_PORT="1035"
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
 >     
 >     #####Build Settings######
 >     export PRODUCTION="0"
