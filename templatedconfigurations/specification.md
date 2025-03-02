@@ -552,9 +552,10 @@ Vultr: Available regions you can set for vultr are:  "ams","atl","cdg","dfw","ew
 
 ----------
 
-### DB_SIZE 
-### AS_SIZE 
-### WS_SIZE
+### DB_SIZE  (size of Database machines)
+### AS_SIZE  (size of autoscaler machines)
+### WS_SIZE  (size of webserver machines)
+### AUTH_SIZE (size of authorisation server machines)
 
 For the Database, the autoscaler and the webserver, you can set their individual sizes using these parameters.
 
@@ -575,6 +576,7 @@ Vultr: Available sizes you can set for your machines on vultr are: vc2-1c-1gb, v
 ### DB_SERVER_TYPE 
 ### AS_SERVER_TYPE 
 ### WS_SERVER_TYPE
+### AUTH_SERVER_TYPE
 
 For each machine size SIZE it needs to have the appropriate machine type set. The following machine types correspond to the appropriate _SIZE parameter directly above
 
