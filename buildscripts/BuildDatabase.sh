@@ -48,7 +48,6 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
-DB_SIZE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_SIZE`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 BUILDOS_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS_VERSION`"
 DB_SERVER_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_SERVER_TYPE`"
