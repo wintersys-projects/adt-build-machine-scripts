@@ -147,6 +147,11 @@ then
 	 ${log_command} "It looks like your values for PRODUCTION ( ${PRODUCTION}) and DEVELOPMENT (${DEVELOPMENT}) are inconsistent"
 fi
 
+if ( [ "`/bin/grep "^AUTHORISATION_SERVER " ${quick_specification} | /bin/grep -w "${DEVELOPMENT}"  2>/dev/null `" = "" ] )
+then
+	${log_command} "Your value for the variable DEVELOPMENT (${DEVELOPMENT}) doesn't appear to be valid please review"
+fi
+
 if ( [ "`/bin/grep "^WEBSERVER_CHOICE " ${quick_specification} | /bin/grep -w "${WEBSERVER_CHOICE}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable WEBSERVER_CHOICE (${WEBSERVER_CHOICE}) doesn't appear to be valid please review"
