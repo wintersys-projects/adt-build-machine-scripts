@@ -177,18 +177,17 @@ This file looks like this (I have put dashes before each line I wish to modify f
 >     
 >     #####Server Settings #######
 >     export REGION="lon1"
->     export DB_SIZE="s-1vcpu-1gb"
 >     export DB_SERVER_TYPE="s-1vcpu-1gb"
->     export WS_SIZE="s-1vcpu-1gb"
 >     export WS_SERVER_TYPE="s-1vcpu-1gb"
->     export AS_SIZE="s-1vcpu-1gb"
 >     export AS_SERVER_TYPE="s-1vcpu-1gb"
+>     export AUTH_SERVER_TYPE="s-1vpcu-1gb"
 >     export CLOUDHOST="digitalocean"
 >     export MACHINE_TYPE="DROPLET"
 >     export SSH_PORT="1035"
 >     export SERVER_TIMEZONE_CONTINENT="Europe"
 >     export SERVER_TIMEZONE_CITY="London"
 >     export USER="root"
+>     export AUTHORISATION_SERVER="0"
 >     
 >     
 >     #####Build Settings######
@@ -304,6 +303,7 @@ So, editing /home/wintersys-projects/adt-build-machine-scripts/templatedconfigur
 >     export DB_SERVER_TYPE="s-1vcpu-1gb"
 >     export WS_SERVER_TYPE="s-1vcpu-1gb"
 >     export AS_SERVER_TYPE="s-1vcpu-1gb"
+>     export AUTH_SERVER_TYPE="s-1vpcu-1gb"
 >     export CLOUDHOST="digitalocean"
 >     export MACHINE_TYPE="DROPLET"
 >     export SSH_PORT="1035"
