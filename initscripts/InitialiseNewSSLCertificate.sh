@@ -86,7 +86,7 @@ then
                                         /bin/mkdir ${BUILD_HOME}/.lego
                                 fi
 
-                                ${BUILD_HOME}/providerscripts/server/ObtainSSLCertificate.sh
+                                ${BUILD_HOME}/providerscripts/server/ObtainSSLCertificate.sh ${WEBSITE_URL}
 
                                 if ( [ -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.crt ] && [ -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.key ] )
                                 then
@@ -122,7 +122,7 @@ then
                         fi
 
                         #There was no certificate so generate one and copy it back to the build client for later use
-                        ${BUILD_HOME}/providerscripts/server/ObtainSSLCertificate.sh
+                        ${BUILD_HOME}/providerscripts/server/ObtainSSLCertificate.sh ${WEBSITE_URL}
 
                         if ( [ -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.crt ] && [ -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.key ] )
                         then
