@@ -76,6 +76,10 @@ do
         fi
 done < ${BUILD_HOME}/builddescriptors/authenticator_descriptor.dat
 
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+auth_website_url="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/[^.]*./auth./'`"
+/bin/sed -i "s/${WEBSITE_URL}/${auth_website_url}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/authenticator_configuration_settings.dat
+
 authenticator_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/authenticator_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
 build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstyles.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
