@@ -168,7 +168,7 @@ do
                         then
                                 done="0"
                         else
-                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
+                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} ${WEBSITE_URL}
                                 done="1"
                         fi
 
