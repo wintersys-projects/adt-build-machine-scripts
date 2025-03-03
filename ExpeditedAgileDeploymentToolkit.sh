@@ -270,6 +270,7 @@ ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
+        WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
         auth_website_url="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/[^.]*./auth./'`"
         ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${auth_website_url}
 fi
