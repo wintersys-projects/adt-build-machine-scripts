@@ -36,7 +36,7 @@ BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARC
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
-AUTHORISATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHORISATION_SERVER`"
+AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
 #if ( [ "`/bin/echo ${BUILD_IDENTIFIER} | /bin/grep -o "^s-"`" = "" ] )
@@ -124,7 +124,7 @@ if ( [ "${INPARALLEL}" = "0" ] )
 then
         ${BUILD_HOME}/buildscripts/BuildWebserver.sh 
         ${BUILD_HOME}/buildscripts/BuildDatabase.sh 
-        if ( [ "${AUTHORISATION_SERVER}" = "1" ] )
+        if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
         then
                 ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh
         fi
@@ -134,7 +134,7 @@ then
         pids="${pids} $!"
         ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
         pids="${pids} $!"
-        if ( [ "${AUTHORISATION_SERVER}" = "1" ] )
+        if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
         then
                 ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
                 pids="${pids} $!"
@@ -147,7 +147,7 @@ then
         pids="${pids} $!"
         ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
         pids="${pids} $!"
-        if ( [ "${AUTHORISATION_SERVER}" = "1" ] )
+        if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
         then
                 ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
                 pids="${pids} $!"
