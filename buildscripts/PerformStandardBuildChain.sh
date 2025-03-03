@@ -123,12 +123,21 @@ if ( [ "${INPARALLEL}" = "0" ] )
 then
         ${BUILD_HOME}/buildscripts/BuildWebserver.sh 
         ${BUILD_HOME}/buildscripts/BuildDatabase.sh 
+        if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+        then
+                ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh
+        fi
 elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "1" ]  )
 then
         ${BUILD_HOME}/buildscripts/BuildWebserver.sh &
         pids="${pids} $!"
         ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
         pids="${pids} $!"
+        if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+        then
+                ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
+                pids="${pids} $!"
+        fi
 fi
 
 if ( [ "${NO_AUTOSCALERS}" -eq "0" ] && [ "${INPARALLEL}" = "1" ]  && [ "${DEVELOPMENT}" = "1" ] )
@@ -137,6 +146,11 @@ then
         pids="${pids} $!"
         ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
         pids="${pids} $!"
+        if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+        then
+                ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
+                pids="${pids} $!"
+        fi
 fi
 
 for pid in ${pids}
