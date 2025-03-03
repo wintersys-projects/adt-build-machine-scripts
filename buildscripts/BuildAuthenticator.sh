@@ -127,8 +127,8 @@ do
                 AUTHIP_PUBLIC=${ip}
                 AUTHIP_PRIVATE=${private_ip}
 
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicips/${ip}
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorips/${private_ip}
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip/${ip}
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip/${private_ip}
 
                 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                 then
@@ -184,8 +184,8 @@ do
                                         read response
                                 fi
 
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicips
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorips
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
+                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
 
                                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
