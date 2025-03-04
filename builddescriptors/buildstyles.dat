@@ -58,8 +58,8 @@
 # PACKAGEMANAGER:apt|apt-fast
 # You can choose what style of firewall you would like to have by setting the FIREWALL. You can choose ufw or iptables
 # FIREWALL:ufw|iptables
-# You can choose which email utility you want to send your system emails using sendemail or mail
-# EMAILUTIL:sendemail|mutt
+# You can choose which email utility you want to send your system emails using sendemail or ssmtp
+# EMAILUTIL:sendemail|ssmtp
 ###############################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -159,5 +159,5 @@ DATASTORETOOL:s3cmd:repo
 # DATASTORETOOL:s5cmd:binary
 PACKAGEMANAGER:apt
 FIREWALL:ufw
-EMAILUTIL:mutt
+EMAILUTIL:ssmtp
 
