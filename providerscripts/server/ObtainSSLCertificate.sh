@@ -130,10 +130,10 @@ then
         #For production
         if ( [ "${SSL_LIVE_CERT}" = "1" ] )
         then
-                command="LINODE_TOKEN=${LINODE_TOKEN} /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --accept-tos run"
+                command="LINODE_TOKEN=${LINODE_TOKEN} /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "92.123.94.2:53,92.123.94.3:53,92.123.95.3:53,92.123.95.4:53,95.123.95.2:53" --accept-tos run"
         else
                 #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-                command="LINODE_TOKEN=${LINODE_TOKEN} /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --accept-tos run"
+                command="LINODE_TOKEN=${LINODE_TOKEN} /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "92.123.94.2:53,92.123.94.3:53,92.123.95.3:53,92.123.95.4:53,95.123.95.2:53" --accept-tos run"
         fi  
 fi
 
