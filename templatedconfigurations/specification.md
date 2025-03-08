@@ -242,6 +242,13 @@ This HAS to be exactly the same of the core part of the URL name of your website
 This is the URL of your website. It can be any valid URL
 
 -----
+
+### USER_EMAIL_DOMAIN
+
+I don't know what your DNS system setup will be but there's a good chance that the provider servicing your user's email addresses (for example I use cloudflare email routing) will be a different DNS system to that which is serving your website when you deploy with an authenticator machine. What this feature is for then is to allow you to define your user's email adress domain which will have to be different from your actual website domain. So, if your website domain is "www.nuocial.uk" and you are deploying with an authenticator and your email provider (it might be pre-existing for example if you are using this to add social.nuocial.uk as an addition to your existing setup), then, here is where you can define your user's email addresses domain name so that the system can filter for valid and invalid email addresses. For example, if your website domain is www.nuocial.uk you will likely need to set up a separate domain, nuocialmail.uk or something like that to service your email address allocation. Your users will then use the nuocial.uk address for your website and nuocialmail.uk as the domain of their email. You will only need to use this if you are deploying an authenticator machine.
+
+-----
+
 ### APPLICATION_REPOSITORY_PROVIDER
 
 This is the git service provider where your application repositories are hosted. It has to be one of "github", "bitbucket" or "gitlab". If you fill this variable with one of those three exact strings, then, that will tell us who your application code is hosted with. It may or may not be hosted with the same provider as the infrastructure code for the agile deployment toolkit
