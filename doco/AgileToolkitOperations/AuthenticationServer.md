@@ -1,0 +1,40 @@
+The person deploying this software needs to set two parameters in the template:
+
+1. AUTHENTICATION_SERVER (which can be '1' if you want an authentication server in your build chain and '0' if you don't want an authentication server in your build chain.
+2. USER_EMAIL_DOMAIN:
+
+What you need to do for  the USER_EMAIL_DOMAIN is key to how zero trust is implemented. You need to provide every user that you trust with an email address for your chosen domain. Maybe you already have your own
+ email server or emailing solution with pre-assigned email addresses or maybe you might want to use something like "cloudflare email routing" to allocate email addresses for your chosen domain to your users. The
+ way this works is that you need a separate domain for your email addresses to what you have for your website and its this separate domain that you enter the value of here. For example, if you have a web propert
+y with a domain "nuocial.uk" then you might have  an email address domain or USER_EMAIL_DOMAIN of "nuocialmail.uk". In this case the value you would enter here would be "nuocialmail.uk". You need to then grant e
+very user of your social network an email address for this domain because the user needs to have an email address that you have given them for this domain for the authentication process when you are making use o
+f an authentication server.
+
+Behind the scenes then, this is what happens, there needs to be some awareness on the part of the user for this mechanism to work.
+
+1. When first deployed the firewall (ufw or iptables) blocks all access to the port 443 from every machine type
+2. The user of the day tries to go to your web prroperty and they need to be aware that if they get a timeout, they need to surf to your authentication server at auth.nuocial.uk
+3. The authentication server is basically stand alone meaning that it has no private keys on it no access to any databases, minimal configuration information stored on it and so on which provides a layer of protection to the webservers and databases of the actual application. Once the user surfs to your authentication server, the authentication will present them with a text field which says, "Please enter your email ad
+dress here" - you  are welcome to spruce up the very minimal solution that I provide. The user then enters the email address (it has to be a nuocialmail.uk email address according to this example, if it isn't then it is rejected). Once the user enters their email address, the system will send them an authentication email.
+4. Once the user receives their authentication email it will have a link in it which they need to click and which will present them with another form and then they need to enter the IP address that the actual browser they are using is connecting through  based on the ip address that the website, "whatsmyip.com" gives to them from their current browser session.
+5. The form allowing the user to enter an ip address is only accessible by people who have a valid email address that you have assigned to them. Once they enter the ip address of their laptop or phone in short o
+order, the system will notify all the webservers that they need to allow that ip address through the firewall. Note, over time and depending on your user numbers a lot of ip addresses may be added. As I understa
+nd it, ufw will compare every  rule in your firewall settings on every request before deciding to allow or deny access which can be a performance hit and therefore ufw is only really suitable as a firewall solut
+ion for a small number of users. I have set up ip tables such that every rule will be compared against for the first request that is allowed through the firewall from a particular authorised client machine but o
+nce there has been a two way communication between the client and the server it is considered that a connection is "ESTABLISHED" and what iptables does is it allows all connections considered "ESTABLISHED" throu
+gh the firewall without comparing every rule in its ruleset. Checking if a connection is established happens before any of the individual ip addresses are checked. This will make performance acceptable because y
+ou are avoiding the overhead of checking against a large ruleset before a request is authorised access.
+
+NOTES:
+
+1. This solution then is intended to block all access to your webproperty for anyone that you don't know (including bots and so on)
+2. The user does need to have some knowledge because as far as I know there is no way to tell them "you need to go to the auth server" if when they try to connect to the web property there is a timeout because t
+he firewall is active.
+3. A user's ip address can change in the middle of a session meaning that if they are on their home wifi, for example using their phone and their wifi connection drops temporarily and their phone falls back to 5
+G then that will be a different ip address and it won't be allowed through the firewall so the user will have to know this and they will have to surf to the auth server and go through the process to allow their
+ip address through the network
+4. I believe that an authentication server that is correctly operated should be hard to breach and the first rule of secure computer systems is that there is a tendency for usability to go down as security incre
+ases so there is some sort of usability hit using this mechanism for the user, but, I believe that the security goes up as well so its just a question of what you want
+5. If you don't like the sound of an authentication server then you can use a cloud proxy like cloudflare (which this toolkit supports) to process incoming requests and provide a defence for your web property th
+at way.
+6. You probably  shouldn't use a naked DNS system (not cloudflare in other words) for your web property without also using an authentication server if you want to be most secure about things.
