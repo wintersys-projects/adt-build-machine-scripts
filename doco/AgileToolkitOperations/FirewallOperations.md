@@ -1,7 +1,7 @@
-if ACTIVE_FIREWALLS = 0 - No active firewalls
-if ACTIVE_FIREWALLS = 1 - UFW or iptables firewall only active on all machines 
-if ACTIVE_FIREWALLS = 2 - Native firewall only active on all machines 
-if ACTIVE_FIREWALLS = 3 - UFW or iptables and Native Firewall active on all machines
+if ACTIVE_FIREWALLS = 0 - No active firewalls  
+if ACTIVE_FIREWALLS = 1 - UFW or iptables firewall only active on all machines   
+if ACTIVE_FIREWALLS = 2 - Native firewall only active on all machines  
+if ACTIVE_FIREWALLS = 3 - UFW or iptables and Native Firewall active on all machines  
 
 On each machine there are two core scripts related to the firewalling of the machine
 
