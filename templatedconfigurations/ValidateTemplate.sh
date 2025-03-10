@@ -257,33 +257,6 @@ then
 	${log_command} "Your value for the variable DB_PORT is ${DB_PORT} and it can only be '25060' in this configuration"
 fi
 
-if ( [ "`/bin/grep "^DB_SIZE " ${quick_specification} | /bin/grep -w "${DB_SIZE}"  2>/dev/null `" = "" ] )
-then
-	cloudhost="`/bin/echo ${CLOUDHOST} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
-	if ( [ "`/bin/grep "^DB_SIZE " ${quick_specification} | /bin/grep -w "${DB_SIZE}" | /bin/grep ${cloudhost} 2>/dev/null `" = "" ] )
-	then
-		${log_command} "Your value for the variable DB_SIZE (${DB_SIZE}) doesn't appear to be valid please review"
-	fi
-fi
-
-if ( [ "`/bin/grep "^AS_SIZE " ${quick_specification} | /bin/grep -w "${AS_SIZE}"  2>/dev/null `" = "" ] )
-then
-	cloudhost="`/bin/echo  ${CLOUDHOST} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
-	if ( [ "`/bin/grep "^AS_SIZE " ${quick_specification} | /bin/grep -w "${AS_SIZE}" | /bin/grep ${cloudhost} 2>/dev/null `" = "" ] )
-	then
-		${log_command} "Your value for the variable AS_SIZE (${AS_SIZE}) doesn't appear to be valid please review"
-	fi
-fi
-
-if ( [ "`/bin/grep "^WS_SIZE " ${quick_specification} | /bin/grep -w "${WS_SIZE}"  2>/dev/null `" = "" ] )
-then
-	cloudhost="`/bin/echo ${CLOUDHOST} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
-	if ( [ "`/bin/grep "^WS_SIZE " ${quick_specification} | /bin/grep -w "${WS_SIZE}" | /bin/grep ${cloudhost} 2>/dev/null `" = "" ] )
-	then
-		${log_command} "Your value for the variable WS_SIZE (${WS_SIZE}) doesn't appear to be valid please review"
-	fi
-fi
-
 if ( [ "`/bin/grep "^DB_SERVER_TYPE " ${quick_specification} | /bin/grep -w "${DB_SERVER_TYPE}"  2>/dev/null `" = "" ] )
 then
 	cloudhost="`/bin/echo ${CLOUDHOST} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
