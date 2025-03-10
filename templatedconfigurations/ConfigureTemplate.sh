@@ -192,7 +192,7 @@ fi
 #load the environment from the template file
 . ${templatefile}
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] && [ "${0}" = "ExpeditedAgileDeploymentToolkit.sh" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
         ${BUILD_HOME}/templatedconfigurations/ValidateTemplate.sh ${templatefile}
 fi
