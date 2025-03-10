@@ -614,10 +614,10 @@ This is the user that the scripts is running as. It can be set, as, USER="root" 
 ### ACTIVE_FIREWALLS
 
 This will set which (if any) firewalls are active on your machines
- 0 - No active firewalls (not recommended
- 1 - UFW firewall only active on all machines
+ 0 - No active firewalls (not recommended)
+ 1 - UFW or iptables firewall only active on all machines
  2 - Native firewall only active on all machines 
- 3 - UFW and Native Firewall active on all machines (recommended) 
+ 3 - UFW or iptables and Native Firewall active on all machines (recommended) 
 
  NOTE: the UFW firewalls are always active on your build machine regardless of this setting for security reasons
 
