@@ -28,7 +28,7 @@ Once these placeholder tokens have been replaced as part of the build intialisat
 
 These files containing live data are then passed and used when the cli call is made to provision the machine from the script:
 
-${BUILD_HOME}/providerscripts/server/CreateServer.sh
+>     ${BUILD_HOME}/providerscripts/server/CreateServer.sh
 
 The newly provisioned server machine will then provision itself and run the live cloud-init script that you have provided
 
