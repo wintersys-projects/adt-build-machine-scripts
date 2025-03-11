@@ -8,10 +8,29 @@ Presuming that you have several webservers running if you change the configurati
 The shortcut way to update your application's configuration is as the following 3 step process:
 
 1. Login to one of your webservers using the helperscript on your build machine
-2. Go to ${HOME}/runtime and make your updates to the appropriate configuration file, one of, joomla_configuration.php, wordpress_config.php, drupal_settings.php, moodle_config.php
-3. Once your updates are made to your configuration file run the script /usr/bin/config to push it to your S3 datastore. Syntax checking has to be passed before the changes you make are accepted by the system. 
+2. Run the script:
+
+>     /usr/bin/changing_config 
+
+3. Go to
+
+>     ${HOME}/runtime
+
+and make your updates to the appropriate configuration file, one of, 
+
+>     joomla_configuration.php, wordpress_config.php, drupal_settings.php, moodle_config.php
+
+4. Once your updates are made to your configuration file run the script
+
+>     /usr/bin/config
+
+to push it to your S3 datastore. Syntax checking has to be passed before the changes you make are accepted by the system. 
 
 WARNING RUNNING THIS SCRIPT (/usr/bin/config) WILL PUSH YOUR CHANGES TO ALL YOUR WEBSERVERS  
+
+5. Run the script:
+
+>     /usr/bin/changed_config
 
 Configuration changes you make using the application's GUI system to an individual webserver will be overwritten by default. The reason for this is that when you have say 8 webservers running if you use the GUI system to make your configuration updates it will only update one of the webservers and the rest will remain as they were because this system doesn't use shared filesystems for the webserver webroot. You can't tell which webserver you have updated and which webserver you haven't. I chose to make needed update changes to the 
 
