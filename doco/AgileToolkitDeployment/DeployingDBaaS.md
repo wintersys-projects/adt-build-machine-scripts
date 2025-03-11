@@ -1,15 +1,6 @@
 
-The managed database you describe here will spin up automatically through the build process
+The managed database you describe here will spin up automatically through the build process. The way you setup your deployment to make use of a managed database is to go to your template and setup two values. The first value is "DATABASE_INSTALLATION_TYPE" which must be set to "DBaaS". The second value is DATABASE_DBaaS_INSTALLATION_TYPE which is described below for each DBaaS provider that is supported. With the DATABASE_DBaaS_INSTALLATION_TYPE parameter, you add the configuration qualities of the database you want to be provisioned such as size, region, engine type and so on. If these are all set correctly as part of your build process a managed database according to how you specify will be provisioned. If a managed database which satisfies the same provisioning is already running and available then a brand new database will not be provisioned but rather the existing database will be used. You  can keep your managed database running across multiple deployments of your application, but, you  will have to set "BYPASS_DB_LAYER" to "1" in your template. Please refer to the specification for more information on "BYPASS_DB_LAYER"
 
-### Manual
-
-You can use a managed database that you have manually started and configured rather than having the database provisioned by the toolkit and the cli for your provider.
-Note: the database can be a third party database provider such as AWS, Gooogle Cloud, Rackspace and so on. 
-
-##### DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:MANUAL:\<hostname\>:\<username\>:\<password\>:\<dbname\>"
-##### DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:MANUAL:\<hostname\>:\<username\>:\<password\>:\<dbname\>"
-
-You can review [here](https://repost.aws/knowledge-center/rds-connect-ec2-bastion-host) for how to setup a bastion host on AWS if you want to use RDS or Aurora as your database
 
 ### Digital Ocean
 
