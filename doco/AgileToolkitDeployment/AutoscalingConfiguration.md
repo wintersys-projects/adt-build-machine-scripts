@@ -24,4 +24,11 @@ available on each autoscaler that you can set up to be called from cron such tha
 
 Your cron situation might look like:
 
+>     30 8 * * *  export HOME="${HOME}" && ${HOME}/providerscripts/utilities/processing/ScalingUpdateEvent.sh 10"
+>     00 12 * * *  export HOME="${HOME}" && ${HOME}/providerscripts/utilities/processing/ScalingUpdateEvent.sh 6"
+>     00 14 * * *  export HOME="${HOME}" && ${HOME}/providerscripts/utilities/processing/ScalingUpdateEvent.sh 10"
+>     30 17 * * *  export HOME="${HOME}" && ${HOME}/providerscripts/utilities/processing/ScalingUpdateEvent.sh 3"
+
+If you want to scale up to 10 at 8:30AM scale down to 6 during a 2 hour lunch window, scale up to 10 again for the afternoon and then scale down to 3 overnight. 
+
 
