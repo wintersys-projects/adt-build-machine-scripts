@@ -1,14 +1,14 @@
-You have the choice to build certain aspects of this toolkit from source or from the regular repositories.   
+You have the choice to build certain aspects of this toolkit from source or from the regular repositories and sometime even install softwware directly from pre-compiled binaries.   
 
 The advantage of building from source is that it gives you more control and you can use the very latest versions of software that the repos haven't caught up with yet which can be more secure. The disadvantage is that it is more complex and there is more that might go wrong and also the machines can take longer to build and deploy. 
 
-In order to configure how you want each eligible component to be built you need to edit the file  
+In order to configure how you want each eligible component to be built you need to edit the file on your build-machine  
 
-**${BUILD_HOME}/buiddescriptors/buildstyles.dat**  
+>     ${BUILD_HOME}/buiddescriptors/buildstyles.dat 
 
 in your fork.
 
-The settings work as follows:
+What you can use as settings values is fully documented in the header of the buildstyles.dat file but a quick overview is as follows:
 
 #### The set of possible configurations you could have are as follows:
 -----
@@ -30,7 +30,7 @@ The settings work as follows:
 ##### LIGHTTPD:source
 ##### LIGHTTPD:repo
 -----
-##### If you are deploying PGOP then you can deploy it as:
+##### If you are deploying PHP then you can deploy it as:
 -----
 ##### PHP:\<module1\>:\<module2\>:\<modulen\>
 -----
