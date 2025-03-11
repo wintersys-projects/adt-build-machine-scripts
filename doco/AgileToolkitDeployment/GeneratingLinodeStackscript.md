@@ -1,6 +1,6 @@
-The way to go about generating a userdata script for use in the "hardcore" build process or a stack script if you are on linode is as follows:  
+For Linode it's possible to use "StackScripts" to make your deployment. What you will have to do is generate the StackScript which will only be useful on Linode and you can do this as follows. Using Stackscripts can be easier to deploy from because you can configure the parameters using a GUI system and then just have a "Hardcore" style build proceed. 
 
-1. Perform an expedited build using the parameters you require for your deployment. This will mean that you have a pre-populated template which deploys succcessfully which can be used that basis for generating the userdata or stack script.  
+1. Perform a test expedited build using the parameters you require for your deployment. This will mean that you have a pre-populated template which deploys succcessfully which can be used that basis for generating the userdata or stack script.  
 
 2. On the same machine that you performed (and tested) the expedited build run the script:  
 
@@ -12,16 +12,12 @@ Once the script has completed successsfully it will be available in
     
 >     ${BUILD_HOME}/overridescripts  
     
-3. Run the script for AWS, Digital Ocean, Exoscale or Vultr  
-
->     ${BUILD_HOME}/helperscripts/GenerateHardcoreUserDataScript.sh  
-    
-and on Linode:  
+3. To generate the Stackscript, run
     
 >     ${BUILD_HOME}/helperscripts/GenerateHardcoreUserDataScript.sh stack  
     
 This will write the User Data / Stack Script to   
     
->     ${BUILD_HOME}/userdatascripts/<name you give>  
+>     ${BUILD_HOME}/userdatascripts/<name you gave>  
     
- 4. The script ${BUILD_HOME}/userdatascripts/<name you give> can then be used a a User Data script on every provider accept Linode where it will be used as a stack script.  
+ 4. The script ${BUILD_HOME}/userdatascripts/<name you gave> can then be used as a Stackscript on Linode.
