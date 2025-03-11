@@ -25,7 +25,26 @@ If you make a change to
 
 and then run /usr/bin/config, here are the steps that the system goes through to push the changes you have made to all webservers.
 
+1. The script
 
+>     ${HOME}/providerscripts/application/configuration/ApplicationConfigurationUpdate.sh
+
+will be run and this will run a syntax check anc copy the configuration file to the S3 datastore.
+
+2. Every minute, each webserver looks for an updated configuration file for the installed application type when the script:
+
+>     ${HOME}/providerscripts/application/configuration/SetApplicationConfiguration.sh
+
+is run. When this script is run and a new configuration file is discovered in the S3 datastore, the new configuration file is copied by the current webserver and each other webserver in turn to their
+
+>     ${HOME}/runtime
+
+directory where a second syntax check is made using PHP validation. If the syntax check is passed, then the new configuration file that the current webserver has retrived from the datastore is presumed to be valid and is copied to the current applications configuration file location under the directory
+
+>     /var/www/html/
+
+
+If all has gone well,then the applications configuration will have been updated
 
 
 
