@@ -24,27 +24,25 @@ for Postgres
 
 7. If you make multiple builds and have, for example, "testbuild-1", "testbuild-2" and so on, you need to name them (<identifier>-BUILD_IDENTIFIER), "1-testbuild", "2-testbuild" rather than "testbuild-1" and "testbuild-2", this is because in some places the "BUILD_IDENTIFIER" might get truncated and you would lose the distinction.    
 
-8. When you are setting credentials for your application db during the **DBaaS** deployment process, make sure that the names/values you choose do not appear within you applications sourcecode. For example, a DB username like "admin" will likely appear in your application's sourcecode and when we do our credential switch for you during application redeployment, you will likely get unexpected substitutions going on within you application. This only applies to DBaaS installations when it is up to you to define credentials in most cases. For regular DB installs, we generate DB credentials for you, as you know. During regular database deployments the credentials are automatically generated and so, I have control of that and can make them distinct or random, but, with a DBaaS deployment it is up to you to make the credentials you use unique or non-existent strings with the source code. 
-
-9. The Agile Deployment Toolkit supports the following application database:
+8. The Agile Deployment Toolkit supports the following application database:
 
 ##### Joomla 5 using MySQL, MariaDB or Postgres is supported  
 ##### Wordpress using MySQL or MariaDB is supported (Postgres needs some faff with wordpress,but you are welcome to modify the toolkit)   
 ##### Drupal using MySQL, MariaDB or Postgres is supported  
 ##### Moodle using MySQL, MariaDB or Postgres is supported
  
-10. These builds depend on external services, if a service is down, github for example, the build may well not complete.
+9. These builds depend on external services, if a service is down, github for example, the build may well not complete.
 
-11. If you get problems with SSL certificate issuance during a build, it is most likely because of "rate limiting". This is most likely to occur if you are using the "hardcore" build method because the other build methods reuse previously issued certificates that are still valid. 
+10. If you get problems with SSL certificate issuance during a build, it is most likely because of "rate limiting". This is most likely to occur if you are using the "hardcore" build method because the other build methods reuse previously issued certificates that are still valid. 
 
-12. Be aware of firewall rules limits which are different by provider. If you had a great number of servers for some providers, the number of firewall rules might be a limiter. 
+11. Be aware of firewall rules limits which are different by provider. If you had a great number of servers for some providers, the number of firewall rules might be a limiter. 
  
-13. This toolkit is intended to by used in such a way that managed DBs are only used when making PRODUCTION deployments. When you are in development mode it is expected that you will use the database that these scripts install on your VPS servers.  
+12. This toolkit is intended to by used in such a way that managed DBs are only used when making PRODUCTION deployments. When you are in development mode it is expected that you will use the database that these scripts install on your VPS servers.  
  
-14. Remove termination protection for a managed database on Exoscale as follows:
+13. Remove termination protection for a managed database on Exoscale as follows:
  
  exo dbaas update <db-name - eg: testdb1> -z <region: eg. ch-gva-2> --termination-protection=false
 
-15. If you are planning to deploy to a DBaaS solution then you should do your development on equivalent database types. For example if your final DBaaS deployment is to a MYSQL instance then you should baseline using MySQL as your development database type, not Maria and likewise if your final DBaaS type is Maria DB, you should develop against Maria DB rarther than MySQL. You do this by setting DATABASE_INSTALLATION_TYPE in your template
+14. If you are planning to deploy to a DBaaS solution then you should do your development on equivalent database types. For example if your final DBaaS deployment is to a MYSQL instance then you should baseline using MySQL as your development database type, not Maria and likewise if your final DBaaS type is Maria DB, you should develop against Maria DB rarther than MySQL. You do this by setting DATABASE_INSTALLATION_TYPE in your template
 
  
