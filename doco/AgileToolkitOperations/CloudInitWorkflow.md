@@ -44,7 +44,7 @@ The same process needs to happen on the autoscaler machines when they provision 
 
 The original file with placeholder tokens in it is kept at:
 
-${HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver.yaml
+>     ${HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver.yaml
 
 When a scaling event happens, the script
 
