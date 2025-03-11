@@ -52,6 +52,11 @@ You passes in the build periodicity **"HOURLY", "DAILY", "WEEKLY", "MONTHLY", "B
 
 #####  IF THE ASSETS ARE STORED IN THE CLOUD AND THEN MOUNTED THEY ARE NOT PART OF THE BACKUPS (PERSIST_ASSETS_TO_CLOUD=1)
 	
-Its normal to set PERSIST_ASSETS_TO_CLOUD to 0 for baselines and virgin builds. This is because the cloud is only used to offload assets for a production build.
+Its normal to set 
+
+>     PERSIST_ASSETS_TO_CLOUD to 0
+
+for baselines and virgin builds. This is because the cloud is only used to offload assets for a production build.  
+
 So ordinarily if your application users are going to be generating assets you want them to be stored in your datastore and distributed from there (see elsewhere in this doco). Note, if your assets are stored in the cloud i.e. PERSIST_ASSETS_TO_CLOUD is set to 1, then, it is the only place where those assets are stored, there aren't any backups, so if you were to delete the assets from the bucket they are stored in by mistake, for example, it might hose your application. Therefore it is up to you to set up a backup policy for the assets that are stored in you S3 bucket. Its just a bucket with assets in it at the end of the day, so its not hard to make backups if you want to but some applications can generated GBs and GBs of assets and so can be hard to backup. Bottom line, be very cautious deleting image and media assets that are stored in S3 when PERSIST_ASSETS_TO_CLOUD is set to 1 because by default they are the only copy you have of those assets.  
 
