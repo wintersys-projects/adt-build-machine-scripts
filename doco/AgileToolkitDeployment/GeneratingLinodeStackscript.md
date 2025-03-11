@@ -20,4 +20,4 @@ This will write the User Data / Stack Script to
     
 >     ${BUILD_HOME}/userdatascripts/<name you gave>  
     
- 4. The script ${BUILD_HOME}/userdatascripts/<name you gave> can then be used as a Stackscript on Linode.
+ 4. The script ${BUILD_HOME}/userdatascripts/<name you gave> can then be used as a Stackscript on Linode. My Stackscript for the ADT has ID 635271 you are welcome to use that. It is called "AgileDeploymentToolkitDemos" it is publically available and I use it for my "Quick Demo" example deployments. 
