@@ -56,6 +56,6 @@ is called which replaces the placeholders and makes the live script available at
 
 When the script
 
->    ${HOME}/providerscripts/server/CreateServer.sh
+>     ${HOME}/providerscripts/server/CreateServer.sh
 
 is called, the live cloud-init script is passed to the cli call
