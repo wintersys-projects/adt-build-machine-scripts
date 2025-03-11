@@ -10,4 +10,8 @@ and you can leave
 
 unset  
 
-**MAKE SURE THE TOKEN IS GIVEN THE RIGHTS TO DELETE REPOSITORIES, OTHERWISE THERE WILL BE FAILURES RELATING TO BACKUPS AND SO ON AND ALSO, MAKE SURE THE TOKEN HAS NO EXPIRATION TIME OR YOU WILL HAVE TO GENERATE NEW ACCESS TOKENS WHEN IT EXPIRES AND UPDATE YOUR INFRASTRCTURE ACCORDINGLY**
+MAKE SURE THE TOKEN IS GIVEN THE RIGHTS TO DELETE REPOSITORIES, OTHERWISE THERE WILL BE FAILURES RELATING TO BACKUPS AND SO ON   
+
+If your token has a limited expiration time you will need to keep on top of that because if your deployment is deployed for longer than the expiration time of your token then backups and so on will start to fail (you should receive warning emails of course) if the token expires. To be safe you can set the token to never expire. 
+
+
