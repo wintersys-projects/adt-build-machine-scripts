@@ -1,5 +1,6 @@
 The following files need to be defined on the build machine
 
+>     ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/authenticator.yaml
 >     ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/autoscaler.yaml
 >     ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver.yaml
 >     ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/database.yaml
