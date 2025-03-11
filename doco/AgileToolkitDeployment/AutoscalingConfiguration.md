@@ -6,15 +6,21 @@ To set how many webservers you want to deploy you have to use the script:
 
 1. If you follow the script and set the value to scale to to be 10, then, if there is one autoscaler machine running, then
 
-STATIC_SCALE:10 will be written to the S3 datastore to be read by the autoscaler to tell it how many webservers to provision
+>     STATIC_SCALE:10
+
+will be written to the S3 datastore to be read by the autoscaler to tell it how many webservers to provision
 
 2. If you then run the script again and set the number of webservers to 5 then 
 
-STATIC_SCALE:5 will be written to the S3 datastore and that will be read by the autoscaler and it will scale down to 5 machines
+>     STATIC_SCALE:5
+
+will be written to the S3 datastore and that will be read by the autoscaler and it will scale down to 5 machines
 
 3. If you run the script "AdjustScaling.sh" and set the number of webservers to "10" and there are 3 autoscaler machines running then:
 
-STATIC_SCALE:4:3:3 will be written to the S3 Datastore and this will mean that autoscaler 1 will build out a total of 4 webservers, autoscaler 2 will build out 3 webservera and autoscaler 3 will build out 3 webservers. Having multiple autoscalers is not presumed to be for resource issues but rather for resilience issues. If one autoscaler fails there is another autoscaler that should still be running.
+>     STATIC_SCALE:4:3:3
+
+will be written to the S3 Datastore and this will mean that autoscaler 1 will build out a total of 4 webservers, autoscaler 2 will build out 3 webservera and autoscaler 3 will build out 3 webservers. Having multiple autoscalers is not presumed to be for resource issues but rather for resilience issues. If one autoscaler fails there is another autoscaler that should still be running.
 
 There is also the script
 
