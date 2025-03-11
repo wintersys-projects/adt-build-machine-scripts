@@ -14,42 +14,56 @@ What you can use as settings values is fully documented in the header of the bui
 -----
 ##### If you are building for NGINX you can select one of:
 -----
-##### NGINX:source:\<module1\>:\<module2\>:\<modulen\>
-##### NGINX:source
-##### NGINX:repo
+>     ##### NGINX:source:\<module1\>:\<module2\>:\<modulen\>
+>     ##### NGINX:source
+>     ##### NGINX:repo
 -----
 ##### If you are building for APACHE you can select one of:
 -----
-##### APACHE:source:\<module1\>:\<module2\>:\<modulen\>
-##### APACHE:source
-##### APACHE:repo
+>     ##### APACHE:source:\<module1\>:\<module2\>:\<modulen\>
+>     ##### APACHE:source
+>     ##### APACHE:repo
 -----
 ##### If you are building for lighttpd you can select one of:
 -----
-##### LIGHTTPD:source:\<module1\>:\<module2\>:\<modulen\>
-##### LIGHTTPD:source
-##### LIGHTTPD:repo
+>     ##### LIGHTTPD:source:\<module1\>:\<module2\>:\<modulen\>
+>     ##### LIGHTTPD:source
+>     ##### LIGHTTPD:repo
 -----
 ##### If you are deploying PHP then you can deploy it as:
 -----
-##### PHP:\<module1\>:\<module2\>:\<modulen\>
+>     ##### PHP:\<module1\>:\<module2\>:\<modulen\>
 -----
 ##### If you are using S3FS for your assets you can select one of:
 -----
-##### DATASTOREMOUNTTOOL:s3fs:source
-##### DATASTOREMOUNTTOOL:s3fs:repo
+>     ##### DATASTOREMOUNTTOOL:s3fs:repo
 -----
 ##### If you are using GOOFYS for your assets you can select one of:
 -----
-##### DATASTOREMOUNTTOOL:goof:binary
-##### DATASTOREMOUNTTOOL:goof:source
+>     ##### DATASTOREMOUNTTOOL:goof:binary
 -----
 
 Note: If you have multiple applications you are deploying then you can have different configurations for each application. 
 To use different PHP configurations for 2 different applications and have the wordpress one as active you could store it then as:
 
-##### #APPLICATION 1 (joomla)
-##### #PHP:\<module1\>:\<module2\>:\<modulen\>
-##### APPLICATION 2 (wordpress)
-##### PHP:\<module1\>:\<module2\>:\<modulen\>
+>     ##### #APPLICATION 1 (joomla)
+>     ##### #PHP:\<module1\>:\<module2\>:\<modulen\>
+>     ##### APPLICATION 2 (wordpress)
+>     ##### PHP:\<module1\>:\<module2\>:\<modulen\>
+
+To enable a repository based build of lighttpd make sure that your template is selecting LIGHTTPD as its webserver of choice and then change
+
+>     ##### LIGHTTPD:source:\<module1\>:\<module2\>:\<modulen\>
+>     ##### LIGHTTPD:source
+>     ##### LIGHTTPD:repo
+
+to
+
+>     ##### LIGHTTPD:source:\<module1\>:\<module2\>:\<modulen\>
+>     ##### LIGHTTPD:source
+>     LIGHTTPD:repo
+
+In this file
+
+>     ${BUILD_HOME}/buiddescriptors/buildstyles.dat 
 
