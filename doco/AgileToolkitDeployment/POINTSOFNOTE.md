@@ -45,4 +45,6 @@ for Postgres
 
 14. If you are planning to deploy to a DBaaS solution then you should do your development on equivalent database types. For example if your final DBaaS deployment is to a MYSQL instance then you should baseline using MySQL as your development database type, not Maria and likewise if your final DBaaS type is Maria DB, you should develop against Maria DB rarther than MySQL. You do this by setting DATABASE_INSTALLATION_TYPE in your template
 
+15. Note that when you make a baseline of an application you have developed, you will have used a URL to develop against such as "dev.testsite.uk". What this system does is when the baseline is being generated scripts replace all occurences of dev.testsite.uk with a placeholder token which isn't domain specific for both the webroot sourcecode and the database sql script. What this means is that the baseline can be deployed to any domain then because the placeholder token is replaced with the domain name of the target domain in all sourcecode. So, the same baseline can be deployed to "www.cargarage.com" or it can be deployed to "cafe.gardencentre.uk" or any other domain you choose. In this way any baselines you generate are flexible to deploy to any domain that you choose meaning that you can create a library of baselines that can be deployed any number of times to any number of domain names. 
+
  
