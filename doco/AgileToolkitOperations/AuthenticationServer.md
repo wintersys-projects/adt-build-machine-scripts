@@ -1,7 +1,7 @@
 The person deploying this software using the authentication server as the zero trust solution needs to set two parameters in the template:
 
->     1. AUTHENTICATION_SERVER (which can be '1' if you want an authentication server in your build chain and '0' if you don't want an authentication server in your build chain.
->     2. USER_EMAIL_DOMAIN:
+1. AUTHENTICATION_SERVER (which can be '1' if you want an authentication server in your build chain and '1' if you want an autheentication server).
+2. USER_EMAIL_DOMAIN:nuocial.uk (for example)
 
 What you need to do for the USER_EMAIL_DOMAIN is key to how zero trust is implemented. You need to provide every user that you trust with an email address for your chosen domain. Maybe you already have your own email server or emailing solution with pre-assigned email addresses or maybe you might want to use something like "cloudflare email routing" to allocate email addresses for your chosen domain to your users. The way this works is that you need a separate domain for your email addresses to what you have for your website and its this separate domain that you enter the value of here. For example, if you have a web property with a domain "nuocial.uk" then you might have  an email address domain or USER_EMAIL_DOMAIN of "nuocialmail.uk". In this case the value you would enter here would be "nuocialmail.uk". You need to then grant every user of your social network an email address for this domain because the user needs to have an email address that you have given them for this domain for the authentication process when you are making use of an authentication server.
 
