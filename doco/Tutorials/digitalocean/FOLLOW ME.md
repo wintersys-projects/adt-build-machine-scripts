@@ -1,5 +1,7 @@
 #### FOLLOW ME
 
+If you follow these tutorials in order good things might happen
+
 There's a few options here for learning how to use this toolkit with the DigitalOcean cloudhost.  
 
 #### 1. Expedited Build Method (recommended)  
