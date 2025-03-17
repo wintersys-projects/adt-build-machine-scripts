@@ -44,16 +44,14 @@ do
 	status "###################################################################################################"
 	status "Enter Build Identifier please:"
 			
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read build_identifier
+	read build_identifier
 
-		while ( [ "${build_identifier}" = "" ] )
-		do
-			status "The build identifier can't be blank, try again...."
-			read build_identifier
-		done
-	fi
+	while ( [ "${build_identifier}" = "" ] )
+	do
+		status "The build identifier can't be blank, try again...."
+		read build_identifier
+	done
+ 
  	if ( [ -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier} ] )
   	then
    		status ""
