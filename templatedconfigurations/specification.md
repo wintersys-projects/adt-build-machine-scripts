@@ -92,7 +92,7 @@ This parameter is the S3 endpoint for your deployment. It should be located as n
 
 ##### exoscale - Available endpoints to choose from (2024) - sos-ch-gva-2.exo.io, sos-ch-dk-2.exo.io, sos-de-fra-1.exo.io, sos-de-muc-1.exo.io, sos-at-vie-1.exo.io, sos-bg-sof-1
 
-##### linode - Available endpoints to choose from (2024) - nl-ams-1.linodeobjects.com us-southeast-1.linodeobjects.com in-maa-1.linodeobjects.com us-ord-1.linodeobjects.com eu-central-1.linodeobjects.com id-cgk-1.linodeobjects.com us-lax-1.linodeobjects.com us-mia-1.linodeobjects.com it-mil-1.linodeobjects.com us-east-1.linodeobjects.com jp-osa-1.linodeobjects.com fr-par-1.linodeobjects.com br-gru-1.linodeobjects.com us-sea-1.linodeobjects.com ap-south-1.linodeobjects.com se-sto-1.linodeobjects.com us-iad-1.linodeobjects.com  
+##### linode - Available endpoints to choose from (2025) - us-east-1.linodeobjects.com eu-central-1.linodeobjects.com ap-south-1.linodeobjects.com us-southeast-1.linodeobjects.com us-iad-1.linodeobjects.com fr-par-1.linodeobjects.com us-ord-1.linodeobjects.com in-maa-1.linodeobjects.com se-sto-1.linodeobjects.com it-mil-1.linodeobjects.com us-sea-1.linodeobjects.com id-cgk-1.linodeobjects.com jp-osa-1.linodeobjects.com br-gru-1.linodeobjects.com us-lax-1.linodeobjects.com nl-ams-1.linodeobjects.com us-mia-1.linodeobjects.com es-mad-1.linodeobjects.com us-iad-10.linodeobjects.com au-mel-1.linodeobjects.com gb-lon-1.linodeobjects.com sg-sin-1.linodeobjects.com jp-tyo-1.linodeobjects.com 
 
 ##### vultr - Available endpints to choose from (2024) - ewr1.vultrobjects.com, ams1.vultrobjects.com, sjc1.vultrobjects.com, sgp1.vultrobjects.com
 
