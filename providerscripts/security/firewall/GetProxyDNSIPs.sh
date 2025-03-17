@@ -20,6 +20,11 @@
 #########################################################################################
 #set -x
 
+status () {
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${0}: ${1}" >> /dev/fd/4
+}
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
