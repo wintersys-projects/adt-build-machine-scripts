@@ -184,6 +184,7 @@ then
     read x
 else
         /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+        /bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 fi
 
 ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
