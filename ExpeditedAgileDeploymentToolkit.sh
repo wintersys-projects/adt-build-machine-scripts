@@ -161,7 +161,7 @@ status ""
 
 ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
 
-if ( [ "${BUILD_IDENTIFIER}" = "" ] )
+if ( [ -f ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER ] )
 then
         BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 fi
