@@ -34,7 +34,11 @@ if ( [ "${BUILD_HOME}" = "" ] )
 then
 	BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 fi
-BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+
+if ( [ "${BUILD_IDENTIFIER}" = "" ] )
+then
+	BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+fi
 
 firewall=""
 if ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "ufw" ] )
