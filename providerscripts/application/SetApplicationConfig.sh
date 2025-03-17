@@ -26,6 +26,10 @@
 #####################################################################################
 #set -x
 
+status () {
+        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+}
+
 database_ip="${1}"
 
 #BUILD_HOME="`/bin/cat /home/buildhome.dat`"
