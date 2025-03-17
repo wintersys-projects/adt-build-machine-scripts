@@ -21,6 +21,11 @@
 ########################################################################################
 #set -x
 
+status () {
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${0}: ${1}" >> /dev/fd/4
+}
+
 email="${1}"
 apikey="${2}"
 websiteurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
