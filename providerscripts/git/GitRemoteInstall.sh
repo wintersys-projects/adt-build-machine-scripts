@@ -1,5 +1,10 @@
 #!/bin/sh
 
+status () {
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${0}: ${1}" >> /dev/fd/4
+}
+
 if ( [ ! -f /usr/bin/git ] )
 then
 	DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=60 -qq -y update
