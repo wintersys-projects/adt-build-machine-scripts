@@ -132,6 +132,8 @@ then
 else
         #template overrides if we are running in hardcore mode
        # selectedtemplate="${SELECTED_TEMPLATE}"
+        . ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/build_environment
+        
         templatefile="${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/${cloudhost}${selectedtemplate}.tmpl"
         if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates ] )
         then
