@@ -89,7 +89,7 @@ fi
 
 /bin/echo "cd adt-build-machine-scripts
 
-/bin/sh HardcoreADTWrapper.sh" >> ${BUILD_HOME}/userdatascripts/${userdatascript}
+. ./HardcoreADTWrapper.sh" >> ${BUILD_HOME}/userdatascripts/${userdatascript}
 
 if ( [ "${1}" != "stack" ] )
 then
