@@ -160,7 +160,11 @@ status ""
 status ""
 
 ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
-BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+
+if ( [ "${BUILD_IDENTIFIER}" = "" ] )
+then
+        BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ] )
 then
