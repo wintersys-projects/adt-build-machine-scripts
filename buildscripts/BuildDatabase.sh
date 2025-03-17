@@ -26,11 +26,11 @@ done=0
 counter="0"
 count="0"
 
-
 status () {
         red="`/usr/bin/tput setaf 7`"
         norm="`/usr/bin/tput sgr0`"
         /bin/echo "${red} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${0}: ${1}" >> /dev/fd/4
 }
 
 #If done=1 then we know that we have build a database correctly so we don't need to run again
