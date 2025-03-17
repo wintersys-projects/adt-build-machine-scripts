@@ -49,4 +49,4 @@ export HOME="/root"
 
 /usr/bin/stty -echo 
 /bin/chmod 755 ExpeditedAgileDeploymentToolkit.sh 
-./ExpeditedAgileDeploymentToolkit.sh 
+. ./ExpeditedAgileDeploymentToolkit.sh 
