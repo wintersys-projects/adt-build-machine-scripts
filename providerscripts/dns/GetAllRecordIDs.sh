@@ -21,6 +21,11 @@
 ###################################################################################
 #set -x
 
+status () {
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${0}: ${1}" >> /dev/fd/4
+}
+
 websiteurl="${2}"
 domainurl="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
 subdomain="`/bin/echo ${2} | /usr/bin/awk -F'.' '{print $1}'`"
