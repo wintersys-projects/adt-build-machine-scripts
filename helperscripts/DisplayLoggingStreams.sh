@@ -67,12 +67,13 @@ fi
 
 if ( [ "${response1}" = "" ] )
 then
-        /bin/echo "Do you want out (1) or err (2)"
+        /bin/echo "Do you want out (1) or err (2) or stat (3)"
         read response1
 fi
 
 error_stream="`/bin/ls -ltr ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs | /bin/grep build_err | /usr/bin/tail -1 | /usr/bin/awk '{print $NF}'`"
 output_stream="`/bin/ls -ltr ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs | /bin/grep build_out | /usr/bin/tail -1 | /usr/bin/awk '{print $NF}'`"
+status_stream="`/bin/ls -ltr ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs | /bin/grep build_stat | /usr/bin/tail -1 | /usr/bin/awk '{print $NF}'`"
 if ( [ "${response1}" = "1" ] )
 then
   if ( [ "${response}" = "t" ] )
@@ -96,6 +97,18 @@ then
   elif ( [ "${response}" = "v" ] )
   then
       /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${error_stream}
+  fi
+elif ( [ "${response1}" = "3" ] )
+then
+  if ( [ "${response}" = "t" ] )
+  then
+    /bin/tail -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
+  elif ( [ "${response}" = "c" ] )
+  then
+      /bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
+  elif ( [ "${response}" = "v" ] )
+  then
+      /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
   fi
 fi
 
