@@ -44,7 +44,8 @@ err_file="initiallogging-err-`/bin/date | /bin/sed 's/ //g'`"
 exec 2>>/root/logs/${err_file}
 
 status () {
-        /bin/echo "$1" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${0}: ${1}" >> /dev/fd/4
 }
 
 status "The initial output log file is located at /root/logs/${out_file}"
@@ -171,10 +172,12 @@ then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
 fi
 
-out_file="build_out-`/bin/date | /bin/sed 's/ //g'`"
+out_file="build_output_stream-`/bin/date | /bin/sed 's/ //g'`"
 exec 1>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}
-err_file="build_err-`/bin/date | /bin/sed 's/ //g'`"
+err_file="build_error_stream-`/bin/date | /bin/sed 's/ //g'`"
 exec 2>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}
+status_file="build_status_stream-`/bin/date | /bin/sed 's/ //g'`"
+exec 4>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_file}
 
 status "The main output log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}"
 status "The main error log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}"
