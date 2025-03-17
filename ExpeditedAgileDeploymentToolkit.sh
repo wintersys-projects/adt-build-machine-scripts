@@ -282,7 +282,6 @@ then
         ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${auth_website_url}
 fi
 ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
-exit
 ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
