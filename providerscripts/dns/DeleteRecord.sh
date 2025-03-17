@@ -20,6 +20,11 @@
 ####################################################################################
 #set -x
 
+status () {
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        /bin/echo "${0}: ${1}" >> /dev/fd/4
+}
+
 domain="${7}"
 domainurl="`/bin/echo ${domain} | /usr/bin/cut -d'.' -f2-`"
 recordid="${2}"
