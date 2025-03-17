@@ -218,8 +218,8 @@ then
         fi
 fi
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
-then
+#if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
+#then
         #For anything other than a virgin build, we won't know what application type we are, so interrogate to find out
         if ( [ "${BUILD_CHOICE}" -ne "0"  ] )
         then
@@ -237,7 +237,7 @@ then
                 status "#############################################################"
                 ${BUILD_HOME}/initscripts/InitialiseAssetDatastore.sh
         fi
-fi
+#fi
 
 #if ( [ "${AUTOSCALER_IMAGE_ID}" = "" ] && [ "${WEBSERVER_IMAGE_ID}" = "" ] && [ "${DATABASE_IMAGE_ID}" = "" ] )
 #then
