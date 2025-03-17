@@ -161,7 +161,7 @@ status ""
 
 ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
 
-if ( [ -f ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
         BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 fi
