@@ -31,7 +31,7 @@ status () {
         norm="`/usr/bin/tput sgr0`"
         /bin/echo "${red} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
         script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4
+        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 #If done=1 then we know that we have build a database correctly so we don't need to run again
