@@ -152,9 +152,9 @@ then
 		read x
 	fi
   
- 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/settings.php.default ] )
+ 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/default.settings.php ] )
   	then
-        	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+        	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/default.settings.php ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         else
 	 	status "Couldn't find drupal default configuration file in baseline webroot"
 		/usr/bin/kill -9 $PPID	
