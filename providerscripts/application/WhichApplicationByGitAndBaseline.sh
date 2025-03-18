@@ -136,7 +136,7 @@ then
  
 	#################MOODLE################
 	#################DRUPAL################
-elif ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/core/misc/drupal.js ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/themes ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/vendor ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/modules ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/profiles ] )
+elif ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/core/misc/drupal.js ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/themes ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/modules ] && [ -d ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/profiles ] )
 then
 	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:drupal
 	APPLICATION="drupal"
