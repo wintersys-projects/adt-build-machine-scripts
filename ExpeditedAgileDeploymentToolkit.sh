@@ -140,8 +140,10 @@ then
         read x
 fi
 
-#export BUILDOS="`/bin/grep ^ID /etc/*-release | /usr/bin/awk -F'=' '{print $NF}' | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep '(ubuntu|debian)'`"
-export BUILDOS="`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
+if ( [ "${BUILDOS}" = "" ] )
+then
+        export BUILDOS="`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
+fi
 
 ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
 ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
