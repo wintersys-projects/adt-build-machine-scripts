@@ -148,27 +148,20 @@ SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_I
 SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 
-DATABASE_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/database_${DB_IP}-keys"
+DATABASE_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/database_${DB_IP}keys"
 
 if ( [ ! -f ${DATABASE_PUBLIC_KEYS} ] )
 then
         /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${DB_IP} > ${DATABASE_PUBLIC_KEYS}    
-else
-        /bin/echo "#####################################################################################################################################################################"
-        /bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
-        /bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
-        /bin/echo "#####################################################################################################################################################################"
-        /bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"     
-        read response1
-        if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
+        if ( [ "`/bin/cat ${DATABASE_PUBLIC_KEYS}`" = "" ] )
         then
-                /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${DB_IP} > ${DATABASE_PUBLIC_KEYS}
+                /usr/bin/ssh-keyscan ${DB_IP} > ${DATABASE_PUBLIC_KEYS}    
         fi
 fi
 
 if ( [ "`/bin/cat ${DATABASE_PUBLIC_KEYS}`" = "" ] )
 then
-        /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online)"
+        /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
         /bin/rm ${DATABASE_PUBLIC_KEYS}
         exit
 fi
