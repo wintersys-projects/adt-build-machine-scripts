@@ -182,7 +182,7 @@ read x
 
 if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} | /bin/grep 'HEAD'`" = "" ] )
 then
-	/bin/echo "I am not sure that your baselined repository ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} generated successful, please double check"
+	/bin/echo "I am not sure that your baselined repository ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} generated successful, please double check using the GUI account for ${APPLICATION_REPOSITORY_USERNAME} on ${APPLICATION_REPOSITORY_PROVIDER}"
 else
 	/bin/echo "As far as I can tell the baseline has been generated maybe go check in the repository you created earlier for the code update"
 fi
