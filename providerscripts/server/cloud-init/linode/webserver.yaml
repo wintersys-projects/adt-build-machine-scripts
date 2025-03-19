@@ -29,12 +29,6 @@ timezone: 'XXXXTIMEZONEXXXX'
 hostname: XXXXWEBSERVER_HOSTNAMEXXXX
 manage_etc_hosts: true
 
-#bootcmd:
-#  - cloud-init-per once setlocales /bin/sed -i '/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g' /etc/locale.gen
-#  - cloud-init-per once /bin/echo LANG="en_GB.UTF-8" > /etc/default/locale
-#  - /usr/sbin/locale-gen
-
-#locale: en_GB
 keyboard:
   layout: gb
 
@@ -65,7 +59,6 @@ write_files:
       export LANG=en_GB.UTF-8
       export LC_ALL=en_GB.UTF-8
     append: true
-
   
 package_update: true
 package_upgrade: true
