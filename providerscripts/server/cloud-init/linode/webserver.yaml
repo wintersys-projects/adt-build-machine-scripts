@@ -84,7 +84,7 @@ packages:
 #XXXXPOSTRGESQL_CLIENTXXXX  - postgresql-client
 
 runcmd:
-  - '/bin/sed -i '/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g' /etc/locale.gen'
+  - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
   - '/usr/sbin/locale-gen'
 #XXXXPHPXXXX  - '/usr/bin/curl -sSL https://raw.githubusercontent.com/wintersys-projects/adt-build-machine-scripts/main/installscripts/php-installer.sh | /usr/bin/bash -x'
 #XXXXPHPXXXX  - '/usr/bin/apt-get install phpXXXXPHP_VERSIONXXXX-fpm phpXXXXPHP_VERSIONXXXX XXXXPHP_MODULESXXXX -y -qq'
