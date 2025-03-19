@@ -59,8 +59,14 @@ write_files:
   path: /home/XXXXSERVER_USERXXXX/.ssh/config
   owner: 'root:root'
   permissions: '0600'
+- path: /etc/profile
+    content: | 
+      export LANGUAGE=en_GB.UTF-8
+      export LANG=en_GB.UTF-8
+      export LC_ALL=en_GB.UTF-8
+    append: true
 
-
+  
 package_update: true
 package_upgrade: true
 
@@ -78,8 +84,8 @@ packages:
 #XXXXPOSTRGESQL_CLIENTXXXX  - postgresql-client
 
 runcmd:
-  - '/bin/echo LANG="en_GB.UTF-8" > /etc/default/locale'
-  - '/usr/sbin/locale-gen'
+#  - '/bin/echo LANG="en_GB.UTF-8" > /etc/default/locale'
+#  - '/usr/sbin/locale-gen'
 #XXXXPHPXXXX  - '/usr/bin/curl -sSL https://raw.githubusercontent.com/wintersys-projects/adt-build-machine-scripts/main/installscripts/php-installer.sh | /usr/bin/bash -x'
 #XXXXPHPXXXX  - '/usr/bin/apt-get install phpXXXXPHP_VERSIONXXXX-fpm phpXXXXPHP_VERSIONXXXX XXXXPHP_MODULESXXXX -y -qq'
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
