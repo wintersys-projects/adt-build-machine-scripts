@@ -164,8 +164,6 @@ APPLICATION_BASELINE_SOURCECODE_REPOSITORY="${identifier}-webroot-sourcecode-bas
 if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 2>&1`" = "" ] )
 then
         /bin/echo "Empty Repository found I can use it for your baseline"
-        /bin/echo "Press <enter> to continue"
-        read x
 elif ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} | /bin/grep 'HEAD'`" = "" ] )
 then
         /bin/echo "Repository with data found you will need to either delete it or rename it using the GUI and create a fresh repository for your baseline"
