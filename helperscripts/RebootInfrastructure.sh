@@ -2,7 +2,7 @@
 #########################################################################################################
 # Author : Peter Winter
 # Date   : 13/07/2016
-# Description : This script will reboot your infrastructure
+# Description : This script will reboot all the machines of your infrastructure
 #########################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
