@@ -198,8 +198,8 @@ do
                                         read response
                                 fi
 
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
+                                ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
+                                ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
 
                                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
 
