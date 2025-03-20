@@ -239,6 +239,8 @@ status "Press <enter> to acknowledge"
 # We store the entire environment in a file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 # We then reference this file for variable values anywhere we need using the scripts
 #
+# ${BUILD_HOME}/helperscripts/GetVariableValue.sh
+# ${BUILD_HOME}/helperscripts/SetVariableValue.sh
 #
 # This is a clean way to work rather than passing huge numbers of parameters all over the place to various subscripts
 # and I prefer it to simply exporting all the variables because it is more explicit in the sense that you have to
@@ -263,11 +265,24 @@ export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'/
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 
+# Intialise the configuration values for the VPS provider we are using (access tokens/keys) and so on
 ${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh
+
+# Ask the user if they want to set any SMTP settings if they are not already set
 ${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh
+
+# Set up the credentials for the server user
 ${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh
+
+# Initialise/configure the datastore ready for use (access keys, tokens, host base values and so on)
 ${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh
+
+# Make a few pre-flight checks to check that we are good to go
 ${BUILD_HOME}/initscripts/PreFlightChecks.sh
+
+# If the build machine is configured to be part of the same VPC as the servers are, then, just perform a crude check to make sure that the build
+# machine has been added to the same VPC when it was provisioned. If the build machine is verified as attached to a VPC we assume it is the 
+# correct VPC and let the test pass
 
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
@@ -280,9 +295,18 @@ then
     else
         status "Have successfully verified the presence of a usable VPC network on your build machine"
     fi
+    /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+    /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
+else
+    if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
+    then
+        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
+    fi
 fi
 
-#For anything other than a virgin build, we won't know what application type we are, so interrogate to find out
+# If we are installing an application (for example, Joomla or Wordpress) we don't know what application type we are until we check
+# so here we perform some checks to find out what application type we are
+# We also setup the assets datastore if we expect that our application is going to want to store its assets in the datastore
 if ( [ "${BUILD_CHOICE}" -ne "0"  ] )
 then
     status ""
@@ -300,25 +324,18 @@ then
     ${BUILD_HOME}/initscripts/InitialiseAssetDatastore.sh
 fi
 
+# The native firewal is the firewalling system that is provided by the VPS provider, so we set up the native firewalling here
 ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "1"
-${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
 
+# Initialise all of our security keys and store the PUBLIC_KEY_ID on the filesystem for reference from anywhere
+${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 
 #If this build machine doesn't have a VPC (the user should have created one when they spun it up from the GUI) then try
 #To create and add one. This will most likely drop the user's ssh connection to their build machine and so they will have
 #to reconnect but maybe that will encourage them to add the next build machine to a the VPC from the GUI system of their provider
 
-if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-then
-    /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-    /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
-else
-    if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
-    then
-        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
-    fi
-fi
+
 
 #Set a timestamp so we can tell how long the build took. It various considerably by cloudhost provider.
 start=`/bin/date +%s`
