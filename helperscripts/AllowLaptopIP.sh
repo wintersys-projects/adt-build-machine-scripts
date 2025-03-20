@@ -27,16 +27,16 @@
 
 if ( [ "`/bin/ls /root/FIREWALL-BUCKET:*  2>/dev/null`" != "" ] )
 then
-    IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
+	IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 else
-    /bin/echo "Could not find an identifier for your datastore's firewall bucket"
-    exit
+	/bin/echo "Could not find an identifier for your datastore's firewall bucket"
+	exit
 fi
 
 if ( [ ! -f  ./AllowLaptopIP.sh ] )
 then
-    /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-    exit
+	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+	exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -46,24 +46,24 @@ BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 read response
 if ( [ "${response}" = "1" ] )
 then
-    DATASTORE_PROVIDER="digitalocean"
+	DATASTORE_PROVIDER="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-    DATASTORE_PROVIDER="exoscale"
+	DATASTORE_PROVIDER="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-    DATASTORE_PROVIDER="linode"
+	DATASTORE_PROVIDER="linode"
 elif ( [ "${response}" = "4" ] )
 then
-    DATASTORE_PROVIDER="vultr"
+	DATASTORE_PROVIDER="vultr"
 else
-    /bin/echo "Unrecognised  cloudhost. Exiting ...."
-    exit
+	/bin/echo "Unrecognised  cloudhost. Exiting ...."
+	exit
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips ] )
 then
-    /bin/mkdir -p ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
 fi
 
 /bin/echo "Please enter the IP address of your laptop that you are modifying access for. You can find the ip address of your laptop using: www.whatsmyip.com"
@@ -75,24 +75,24 @@ read mode
 
 while ( [ "`/bin/echo "1 2" | /bin/grep ${mode}`" = "" ] )
 do
-    /bin/echo "I don't recognise that input..."
-    /bin/echo "Please enter 1 or 2"
-    read mode
+	/bin/echo "I don't recognise that input..."
+	/bin/echo "Please enter 1 or 2"
+	read mode
 done
 
 ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ] )
 then
-    /bin/echo "Couldn't find existing authorised ip addresses"
-    ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${IDENTIFIER}
+	/bin/echo "Couldn't find existing authorised ip addresses"
+	${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${IDENTIFIER}
 fi
 
 if ( [ "${mode}" = "1" ] )
 then
-    /bin/echo ${ip} >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+	/bin/echo ${ip} >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 else
-    /bin/sed -i "/${ip}/d" ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+	/bin/sed -i "/${ip}/d" ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 fi
 
 /bin/cat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat | /usr/bin/sort | /usr/bin/uniq >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
