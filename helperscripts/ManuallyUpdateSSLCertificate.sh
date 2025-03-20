@@ -24,8 +24,8 @@
 
 if ( [ ! -f  ./ManuallyUpdateSSLCertificate.sh ] )
 then
-	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-	exit
+    /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+    exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -37,16 +37,16 @@ read response
 
 if ( [ "${response}" = "1" ] )
 then
-        CLOUDHOST="digitalocean"
+    CLOUDHOST="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-        CLOUDHOST="exoscale"
+    CLOUDHOST="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-        CLOUDHOST="linode"
+    CLOUDHOST="linode"
 elif ( [ "${response}" = "4" ] )
 then
-        CLOUDHOST="vultr"
+    CLOUDHOST="vultr"
 fi
 
 /bin/echo
@@ -60,14 +60,14 @@ read WEBSITE_URL
 
 while ( [ "`/bin/echo ${domains} | /bin/grep ${WEBSITE_URL}`" = "" ] )
 do
-	/bin/echo "Sorry, that is not a matched domain name, please try again..."
-	read WEBSITE_URL
+    /bin/echo "Sorry, that is not a matched domain name, please try again..."
+    read WEBSITE_URL
 done
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem ] )
 then
-	/bin/echo "Found a certificate for this domain. For your info, this is its expiry date"
-	/usr/bin/openssl x509 -in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem -noout -enddate
+    /bin/echo "Found a certificate for this domain. For your info, this is its expiry date"
+    /usr/bin/openssl x509 -in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem -noout -enddate
 fi
 
 /bin/echo "Please paste your new SSL certificate chain. <ctrl-d> when done and please make sure the chain is exactly as intended"
@@ -76,20 +76,15 @@ fi
 chain=`cat`
 
 /bin/cp ${BUILD_HOME}/ssl/${WEBSITE_URL}/fullchain.pem ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem.previous.`/bin/date | /bin/sed 's/ //g'`
-
 /bin/echo "${chain}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem
-
 /bin/echo
-
 /bin/echo "Please paste your new SSL private key. <ctrl-d> when done and please make sure the chain is exactly as intended"
 /bin/echo "ESSENTIAL - Only copy from the first dash in the file '-' to the last dash in the file. Do not copy any prefixed whitespace or suffixed whitespace"
 
 privkey=`cat`
 
 /bin/cp ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/privkey.pem ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/privkey.pem.previous.`/bin/date | /bin/sed 's/ //g'`
-
 /bin/echo "${privkey}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/privkey.pem
-
 cd ${BUILD_HOME}/helperscripts
 
 sourcefile="SSL"
