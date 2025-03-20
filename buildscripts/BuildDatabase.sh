@@ -26,11 +26,11 @@ counter="0"
 count="0"
 
 status () {
-    red="`/usr/bin/tput setaf 7`"
-    norm="`/usr/bin/tput sgr0`"
-    /bin/echo "${red} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	red="`/usr/bin/tput setaf 7`"
+	norm="`/usr/bin/tput sgr0`"
+	/bin/echo "${red} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 #If done=1 then we know that we have build a database correctly so we don't need to run again
@@ -70,186 +70,186 @@ built="0"
 #If we are done then we can stop otherwise retry up to 5 times
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] && [ "${DATABASE_INSTALLATION_TYPE}" != "None" ] )
 do
-    counter="`/usr/bin/expr ${counter} + 1`"
-    status "OK... building a database server. This is attempt ${counter} of 5"
+	counter="`/usr/bin/expr ${counter} + 1`"
+	status "OK... building a database server. This is attempt ${counter} of 5"
 
-    #Make sure a database is not already running
-    if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
-    then
-        ip=""
-        #Create an identifier from our the user name we allocated to identify the database server
-        RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-        database_name="db-${REGION}-${BUILD_IDENTIFIER}-${RND}"
+	#Make sure a database is not already running
+	if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
+	then
+		ip=""
+		#Create an identifier from our the user name we allocated to identify the database server
+		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
+		database_name="db-${REGION}-${BUILD_IDENTIFIER}-${RND}"
 
-        status "Initialising a new server machine, please wait......"
+		status "Initialising a new server machine, please wait......"
 
-        server_started="0"
-        while ( [ "${server_started}" = "0" ] )
-        do
-            count="0"
-            #Actually spin up the machine we are going to build on
-            ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${DB_SERVER_TYPE}" "${database_name}"
+		server_started="0"
+		while ( [ "${server_started}" = "0" ] )
+		do
+			count="0"
+			#Actually spin up the machine we are going to build on
+			${BUILD_HOME}/providerscripts/server/CreateServer.sh "${DB_SERVER_TYPE}" "${database_name}"
 
-            #If for some reason, we failed to build the machine, then, give it another try
-            while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
-            do
-                count="`/usr/bin/expr ${count} + 1`"
-                /bin/sleep 10
-                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${DB_SERVER_TYPE}" "${database_name}" 
-            done
+			#If for some reason, we failed to build the machine, then, give it another try
+			while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
+			do
+				count="`/usr/bin/expr ${count} + 1`"
+				/bin/sleep 10
+				${BUILD_HOME}/providerscripts/server/CreateServer.sh "${DB_SERVER_TYPE}" "${database_name}" 
+			done
 
-            if ( [ "${count}" = "10" ] )
-            then
-                status "Couldn't create database server"
-                /usr/bin/kill -9 $PPID                        
-            fi
+			if ( [ "${count}" = "10" ] )
+			then
+				status "Couldn't create database server"
+				/usr/bin/kill -9 $PPID                        
+			fi
 
-            #Check that the server has been assigned its IP addresses and that they are active
-            ip=""
-            private_ip=""
-            count="0"
+			#Check that the server has been assigned its IP addresses and that they are active
+			ip=""
+			private_ip=""
+			count="0"
 
-            while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "20" ] )
-            do
-                status "Interrogating for database ip address....."
-                ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${database_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${database_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                /bin/sleep 10
-                count="`/usr/bin/expr ${count} + 1`"
-            done
-                   
-            if ( [ "${ip}" != "" ] && [ "${private_ip}" != "" ] )
-            then
-                server_started="1"
-            elif ( [ "${ip}" != "" ] && [ "${private_ip}" = "" ] )
-            then
-                status "Found a public ip address but not a private ip address"
-                status "This likely means that there is some sort problem with the VPC"
-            else
-                status "Haven't been able to start your server, I will try again....." 
-            fi
-        done
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "20" ] )
+			do
+				status "Interrogating for database ip address....."
+				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${database_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+				private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${database_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+				/bin/sleep 10
+				count="`/usr/bin/expr ${count} + 1`"
+			done
+               
+			if ( [ "${ip}" != "" ] && [ "${private_ip}" != "" ] )
+			then
+				server_started="1"
+			elif ( [ "${ip}" != "" ] && [ "${private_ip}" = "" ] )
+			then
+				status "Found a public ip address but not a private ip address"
+				status "This likely means that there is some sort problem with the VPC"
+			else
+				status "Haven't been able to start your server, I will try again....." 
+			fi
+		done
 
-        DBIP_PUBLIC="${ip}"
-        DBIP_PRIVATE="${private_ip}"
-        DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_IDENTIFIER`"
+		DBIP_PUBLIC="${ip}"
+		DBIP_PRIVATE="${private_ip}"
+		DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_IDENTIFIER`"
 
-        #Record the database IP address for later reference because this is a self managed database
-        if ( [ "${DB_IDENTIFIER}" = "self-managed" ] )
-        then
-            ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DBIP_PRIVATE}"
-        fi
+		#Record the database IP address for later reference because this is a self managed database
+		if ( [ "${DB_IDENTIFIER}" = "self-managed" ] )
+		then
+			${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DBIP_PRIVATE}"
+		fi
 
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} databaseip/${private_ip}
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} databaseip/${private_ip}
 
-        if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-        then
-            db_active_ip="${DBIP_PRIVATE}"
-        elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-        then
-            db_active_ip="${DBIP_PUBLIC}"
-        fi
+		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
+		then
+			db_active_ip="${DBIP_PRIVATE}"
+		elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+		then
+			db_active_ip="${DBIP_PUBLIC}"
+		fi
 
-        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* ] )
-        then
-            /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:*
-        fi
+		if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* ] )
+		then
+			/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:*
+		fi
      
-        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:* ] )
-        then
-            /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:*
-        fi
+		if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:* ] )
+		then
+			/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:*
+		fi
 
-        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips ] )
-        then
-            /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips
-        fi
+		if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips ] )
+		then
+			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips
+		fi
     
-        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:${DBIP_PUBLIC}
-        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:${DBIP_PRIVATE}
+		/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:${DBIP_PUBLIC}
+		/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:${DBIP_PRIVATE}
 
-        #We create an ip mask for our server this is used when we set access privileges and so on within the database
-        #and we want to allow access from machines on our private network
-        IP_MASK="`/bin/echo ${DBIP_PRIVATE} | /bin/grep -oE '[0-9]{1,3}\.[0-9]{1,3}' | /usr/bin/head -1`"
-        IP_MASK=${IP_MASK}".%.%"
+		#We create an ip mask for our server this is used when we set access privileges and so on within the database
+		#and we want to allow access from machines on our private network
+		IP_MASK="`/bin/echo ${DBIP_PRIVATE} | /bin/grep -oE '[0-9]{1,3}\.[0-9]{1,3}' | /usr/bin/head -1`"
+		IP_MASK=${IP_MASK}".%.%"
 
-        status "Have got the ip addresses for your database (${database_name})"
-        status "Public IP address: ${DBIP_PUBLIC}"
-        status "Private IP address: ${DBIP_PRIVATE}"
+		status "Have got the ip addresses for your database (${database_name})"
+		status "Public IP address: ${DBIP_PUBLIC}"
+		status "Private IP address: ${DBIP_PRIVATE}"
 
-        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
-        then
-            /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
-        fi
+		if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
+		then
+			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
+		fi
 
-        if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
-        then
-            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
-        fi
+		if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
+		then
+			/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
+		fi
 
-        status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
-        status "This is the current time for your reference `/bin/date`"
+		status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
+		status "This is the current time for your reference `/bin/date`"
 
-        #Check that the database is built and ready for action
-        done="0"
-        alive=""
-        count="0"
-        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "300" ] )
-        do
-            count="`/usr/bin/expr ${count} + 1`"
-            /bin/sleep 2
-            alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/DATABASE_READY"`"
-        done 
+		#Check that the database is built and ready for action
+		done="0"
+		alive=""
+		count="0"
+		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "300" ] )
+		do
+			count="`/usr/bin/expr ${count} + 1`"
+			/bin/sleep 2
+			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/DATABASE_READY"`"
+		done 
 
-        if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/DATABASE_READY" ] )
-        then
-            done=1
-            built="`/usr/bin/expr ${built} + 1`"
-        fi
+		if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/DATABASE_READY" ] )
+		then
+			done=1
+			built="`/usr/bin/expr ${built} + 1`"
+		fi
 
-        #If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
-        if ( [ "${done}" != "1" ] )
-        then
-            status "###########################################################################################################################"
-            status "Hi, a database server didn't seem to build correctly. I can destroy it and try again to build a new database server for you"
-            status "###########################################################################################################################"
-            status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
+		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
+		if ( [ "${done}" != "1" ] )
+		then
+			status "###########################################################################################################################"
+			status "Hi, a database server didn't seem to build correctly. I can destroy it and try again to build a new database server for you"
+			status "###########################################################################################################################"
+			status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
 
-            if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-            then
-                read response
-            fi
+			if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+			then
+				read response
+			fi
 
-            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
-            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
-            ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
+			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
 
-            #Wait until we are sure that the database server(s) are destroyed because of a faulty build
-            while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "${built}" ] )
-            do
-                /bin/sleep 30
-            done 
-            count1="`/usr/bin/expr ${count1} - 1`"
-        else
-            status "A database server (${database_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
-            counter="`/usr/bin/expr ${counter} - 1`"
-        fi
-    else
-        status "A Database is already running, using that one......"
-        status "Press enter if that is OK"
+			#Wait until we are sure that the database server(s) are destroyed because of a faulty build
+			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "${built}" ] )
+			do
+				/bin/sleep 30
+			done 
+			count1="`/usr/bin/expr ${count1} - 1`"
+		else
+			status "A database server (${database_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
+			counter="`/usr/bin/expr ${counter} - 1`"
+		fi
+	else
+		status "A Database is already running, using that one......"
+		status "Press enter if that is OK"
 
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-            read response
-        fi
-        done=1
-    fi
+		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+		then
+			read response
+		fi
+		done=1
+	fi
 done
 
 #If we get to here then we know that the database hasn't built correctly, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
-    status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
-    /usr/bin/kill -9 $PPID
+	status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
+	/usr/bin/kill -9 $PPID
 fi
