@@ -362,58 +362,58 @@ then
                         else
                             /usr/bin/kill -9 $PPID                                                
                         fi
-                fi
-                /usr/local/bin/linode-cli databases postgresql-create --label "${label}" --region "${db_region}" --type "${machine_type}" --cluster_size "${cluster_size}" --engine "${engine}" --ssl_connection "true" --allow_list "0.0.0.0/0"
-                database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
-
-                while ( [ "${database_id}" = "" ] ) 
-                do
-                    status "Attempting to get database id...if I am looking for more than a few minutes something must be wrong"
-                    /bin/sleep 20
+                    fi
+                    /usr/local/bin/linode-cli databases postgresql-create --label "${label}" --region "${db_region}" --type "${machine_type}" --cluster_size "${cluster_size}" --engine "${engine}" --ssl_connection "true" --allow_list "0.0.0.0/0"
                     database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
-                done
 
-                status "Have got the database id which is: ${database_id}"
-                status "Its now the long wait for the database to become active (this can take 10s of minutes)"
+                    while ( [ "${database_id}" = "" ] ) 
+                    do
+                        status "Attempting to get database id...if I am looking for more than a few minutes something must be wrong"
+                        /bin/sleep 20
+                        database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
+                    done
 
-                status="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
+                    status "Have got the database id which is: ${database_id}"
+                    status "Its now the long wait for the database to become active (this can take 10s of minutes)"
 
-                while ( [ "${status}" != "active" ] ) 
-                do
-                    /bin/sleep 20
                     status="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
-                done
-            else
-                /usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list "0.0.0.0/0"
+
+                    while ( [ "${status}" != "active" ] ) 
+                    do
+                        /bin/sleep 20
+                        status="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
+                    done
+                else
+                    /usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list "0.0.0.0/0"
+                fi
+
+                export CLUSTER_NAME="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
+                export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
+                export DB_USERNAME="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
+                export DB_PASSWORD="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
+                export DB_PORT="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
+                export DB_NAME="${db_name}"
+
+                /bin/echo "`/usr/local/bin/linode-cli --json databases postgresql-ssl-cert ${database_id} | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
             fi
 
-            export CLUSTER_NAME="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
-            export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
-            export DB_USERNAME="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
-            export DB_PASSWORD="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
-            export DB_PORT="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
-            export DB_NAME="${db_name}"
+            status "The Values I have retrieved for your database setup are:"
+            status "##########################################################"
+            status "CLUSTERNAME:${CLUSTER_NAME}"
+            status "HOSTNAME:${DB_IDENTIFIER}"
+            status "USERNAME:${DB_USERNAME}"
+            status "PASSWORD:${DB_PASSWORD}"
+            status "DATABASENAME:${DB_NAME}"
+            status "PORT:${DB_PORT}"
+            status "##########################################################"
+            status "If these settings look OK to you, press <enter>"
 
-            /bin/echo "`/usr/local/bin/linode-cli --json databases postgresql-ssl-cert ${database_id} | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
-        fi
-
-        status "The Values I have retrieved for your database setup are:"
-        status "##########################################################"
-        status "CLUSTERNAME:${CLUSTER_NAME}"
-        status "HOSTNAME:${DB_IDENTIFIER}"
-        status "USERNAME:${DB_USERNAME}"
-        status "PASSWORD:${DB_PASSWORD}"
-        status "DATABASENAME:${DB_NAME}"
-        status "PORT:${DB_PORT}"
-        status "##########################################################"
-        status "If these settings look OK to you, press <enter>"
-
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-            read x
+            if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+            then
+                read x
+            fi
         fi
     fi
-fi
 
         #########################################################################################################
         #If you are deploying to vultr provide a setting with the following format in your template
