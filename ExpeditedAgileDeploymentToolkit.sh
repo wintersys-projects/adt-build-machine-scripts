@@ -99,8 +99,8 @@ then
 
     if ( [ "`/bin/echo "1 2 3" | /bin/grep ${SELECTED_TEMPLATE}`" = "" ] )
     then
-         status "Unknown template passed as a parameter"
-         exit
+        status "Unknown template passed as a parameter"
+        exit
     fi
 fi
 
@@ -186,11 +186,11 @@ ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-     ${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}
-     CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
+    ${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}
+    CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 else
-     ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
-     /bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
+    ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
+    /bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
 fi
 
 # Certain providers need their Eth1 interface configured for private networking to be possible
@@ -210,7 +210,7 @@ ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
 # of what the BUILD_IDENTIFIER has just been set to from the filesystem
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-     BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+    BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 fi
 
 # We now have  all the information we need to switch from our intial logging to the main logging location that is going to be used
@@ -220,7 +220,7 @@ fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ] )
 then
-     /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
+    /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
 fi
 
 out_file="build_output_stream-`/bin/date | /bin/sed 's/ //g'`"
