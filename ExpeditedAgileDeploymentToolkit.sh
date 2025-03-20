@@ -331,23 +331,16 @@ ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "1"
 ${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 
-#If this build machine doesn't have a VPC (the user should have created one when they spun it up from the GUI) then try
-#To create and add one. This will most likely drop the user's ssh connection to their build machine and so they will have
-#to reconnect but maybe that will encourage them to add the next build machine to a the VPC from the GUI system of their provider
-
-
-
-#Set a timestamp so we can tell how long the build took. It various considerably by cloudhost provider.
-start=`/bin/date +%s`
-
-#If we have anything to say here, on an application by application basis before the build really begins we put it in this
-#script
-#
+# Output any pre-processing messages
 ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
+# Store our scaling requirements in the datastore (how many webservers to provision)
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
+#Intialise the key store
 ${BUILD_HOME}/initscripts/InitialiseKeystore.sh
+#Provision any DBaaS database service that the build requires 
 ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 
+# If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
     WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
@@ -355,14 +348,22 @@ then
     ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${auth_website_url}
 fi
 
+# Generate the SSL certificate that will be used by our webservers
 ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
+
+# We perform the build using cloud-init scripts passed to the server being provisioned when it is created using the CLI
+# This script will substitute placeholder tokens for live values
 ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 
+#Just check that its 'all systems go'
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
     status "Are you happy for the build to proceed? Pressing <enter> now will begin the process of building your server machines"
     read x
 fi
+
+#Set a timestamp so we can tell how long the build took. It various considerably by cloudhost provider.
+start=`/bin/date +%s`
 
 # I think the usual phrase is, 'we are all set'. So, tell the user we are starting the build proper.
 status ""
@@ -393,13 +394,13 @@ then
      ${BUILD_HOME}/buildscripts/BuildDatabase.sh
 fi
 
+# If there is a DBaaS instance running then we can tighten up its firewall by only allowing connections from machines in the same VPC
+# where and if this is possible
 ${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
+# Put out any post processing messages to the user
 ${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
 
 #We inform the users of their credentials. Sometimes, depending on the application, the user needs to know more or less
-#Some applications we can configure for use behind the scenes, other times, the user has to do some stuff in the gui to
-#get to the point where the application can be used. In the later case, any additional information will be added here.
- 
 
 status ""
 status "###################################################################################################################"
@@ -418,6 +419,7 @@ end=`/bin/date +%s`
 runtime="`/usr/bin/expr ${end} - ${start}`"
 status "This script completed at `/bin/date` and took `/bin/date -u -d @${runtime} +\"%T\"` to complete"
 
+# Complete the setting up of the native firewall
 ${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 
 /usr/sbin/shutdown -r now
