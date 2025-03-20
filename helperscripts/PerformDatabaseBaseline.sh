@@ -22,8 +22,8 @@
 
 if ( [ ! -f  ./PerformDatabaseBaseline.sh ] )
 then
-	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-	exit
+    /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+    exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -32,19 +32,19 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 read response
 if ( [ "${response}" = "1" ] )
 then
-	CLOUDHOST="digitalocean"
+    CLOUDHOST="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-	CLOUDHOST="exoscale"
+    CLOUDHOST="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-	CLOUDHOST="linode"
+    CLOUDHOST="linode"
 elif ( [ "${response}" = "4" ] )
 then
-	CLOUDHOST="vultr"
+    CLOUDHOST="vultr"
 else
-	/bin/echo "Unrecognised  cloudhost. Exiting ...."
-	exit
+    /bin/echo "Unrecognised  cloudhost. Exiting ...."
+    exit
 fi
 /bin/echo "What is the build identifier you want to connect to?"
 /bin/echo "You have these builds to choose from: "
@@ -59,15 +59,15 @@ token_to_match="db-`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`-${BU
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
 then
-	ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
+    ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
 else
-	ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
+    ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
 fi
 
 if ( [ "${ips}" = "" ] )
 then
-	/bin/echo "There doesn't seem to be any databases running"
-	exit
+    /bin/echo "There doesn't seem to be any databases running"
+    exit
 fi
 
 DIR="`/bin/pwd`"
@@ -77,15 +77,15 @@ DIR="`/bin/pwd`"
 count=1
 for ip in ${ips}
 do
-	/bin/echo "${count}:   ${ip}"
-	/bin/echo "Press Y/N to connect..."
-	read response
-	if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
-	then
-		DB_IP=${ip}
-		break
-	fi
-	count="`/usr/bin/expr ${count} + 1`"
+    /bin/echo "${count}:   ${ip}"
+    /bin/echo "Press Y/N to connect..."
+    read response
+    if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
+    then
+        DB_IP=${ip}
+        break
+    fi
+    count="`/usr/bin/expr ${count} + 1`"
 done
 
 SERVER_USERNAME="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
@@ -97,25 +97,25 @@ DATABASE_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 
 if ( [ ! -f ${DATABASE_PUBLIC_KEYS} ] )
 then
-        /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${DB_IP} > ${DATABASE_PUBLIC_KEYS}    
-        if ( [ "`/bin/cat ${DATABASE_PUBLIC_KEYS}`" = "" ] )
-        then
-                /usr/bin/ssh-keyscan ${DB_IP} > ${DATABASE_PUBLIC_KEYS}    
-        fi
+    /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${DB_IP} > ${DATABASE_PUBLIC_KEYS}    
+    if ( [ "`/bin/cat ${DATABASE_PUBLIC_KEYS}`" = "" ] )
+    then
+        /usr/bin/ssh-keyscan ${DB_IP} > ${DATABASE_PUBLIC_KEYS}    
+    fi
 fi
 
 if ( [ "`/bin/cat ${DATABASE_PUBLIC_KEYS}`" = "" ] )
 then
-        /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
-        /bin/rm ${DATABASE_PUBLIC_KEYS}
-        exit
+    /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
+    /bin/rm ${DATABASE_PUBLIC_KEYS}
+    exit
 fi
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment ] )
 then
-        ALGORITHM="rsa"
+    ALGORITHM="rsa"
 else
-        ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
+    ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 fi
 
 /bin/echo ""
@@ -144,15 +144,15 @@ APPLICATION_DB_REPOSITORY="${identifier}-db-baseline"
 
 if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_DB_REPOSITORY} 2>&1`" = "" ] )
 then
-        /bin/echo "Empty Repository found I can use it for your baseline"
+    /bin/echo "Empty Repository found I can use it for your baseline"
 elif ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_DB_REPOSITORY} | /bin/grep 'HEAD'`" != "" ] )
 then
-        /bin/echo "Repository with data found you will need to either delete it or rename it using the GUI and create a fresh repository for your baseline"
-        exit
+    /bin/echo "Repository with data found you will need to either delete it or rename it using the GUI and create a fresh repository for your baseline"
+    exit
 elif ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_DB_REPOSITORY}`" = "" ] )
 then
-        /bin/echo "Repository not found you will need to create a repository called  using the GUI"
-        exit
+    /bin/echo "Repository not found you will need to create a repository called  using the GUI"
+    exit
 fi
 
 /bin/echo "OK, ready to create baseline - press enter to confirm"
@@ -162,9 +162,9 @@ read x
 
 if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_DB_REPOSITORY} | /bin/grep 'HEAD'`" = "" ] )
 then
-	/bin/echo "I am not sure that your baselined repository ${APPLICATION_DB_REPOSITORY} generated successful, please double check using the GUI account for ${APPLICATION_REPOSITORY_USERNAME} on ${APPLICATION_REPOSITORY_PROVIDER}"
+    /bin/echo "I am not sure that your baselined repository ${APPLICATION_DB_REPOSITORY} generated successful, please double check using the GUI account for ${APPLICATION_REPOSITORY_USERNAME} on ${APPLICATION_REPOSITORY_PROVIDER}"
 else
-	/bin/echo "As far as I can tell the baseline has been generated maybe go check in the repository you created earlier for the code update"
+    /bin/echo "As far as I can tell the baseline has been generated maybe go check in the repository you created earlier for the code update"
 fi
 
 
