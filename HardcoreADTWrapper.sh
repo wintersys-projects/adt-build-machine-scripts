@@ -30,19 +30,19 @@
 actioned="0"
 if ( [ -f /etc/ssh/ssh_config ] && [ "`/bin/grep 'ServerAliveInterval 60' /etc/ssh/ssh_config`" = "" ] )
 then
-    /bin/echo "ServerAliveInterval 60" >> /etc/ssh/ssh_config
-    /bin/echo "ServerAliveCountMax 20" >> /etc/ssh/ssh_config
-    actioned="1"  
+	/bin/echo "ServerAliveInterval 60" >> /etc/ssh/ssh_config
+	/bin/echo "ServerAliveCountMax 20" >> /etc/ssh/ssh_config
+	actioned="1"  
 fi
 
 if ( [ -f /etc/ssh/sshd_config ] && [ "`/bin/grep 'ClientAliveInterval 60' /etc/ssh/sshd_config`" = "" ] )
 then
-    /bin/echo "ClientAliveInterval 60
+	/bin/echo "ClientAliveInterval 60
 TCPKeepAlive yes
 ClientAliveCountMax 10000" >> /etc/ssh/sshd_config
-    BUILD_HOME="`/usr/bin/pwd`"
-    ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
-    actioned="1"
+	BUILD_HOME="`/usr/bin/pwd`"
+	${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
+	actioned="1"
 fi
 
 export HARDCORE="1"
