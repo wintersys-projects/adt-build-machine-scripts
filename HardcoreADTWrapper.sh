@@ -8,6 +8,8 @@
 #This is just a wrapper which adjusts the SSH connection timeouts so that connections are not
 #dropped during the build. Correct me if I am wrong, but, the new SSH settings are picked up
 #when a new shell is started as in /bin/sh ExpeditedAgileDeploymentToolkit.sh
+#This script will be called from a cloud-init script or from a StackScript if you are running
+#on Linode
 ###############################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
