@@ -2,7 +2,7 @@
 ######################################################################################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : This script will connect you to your webserver(s) via ssh
+# Description : This will perform a baseline of your webroot and store it with your git storage provider
 ######################################################################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
