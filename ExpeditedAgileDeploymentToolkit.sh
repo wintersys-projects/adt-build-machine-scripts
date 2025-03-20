@@ -1,7 +1,7 @@
 #!/bin/sh
 ###############################################################################################
-# Description: This is the the expedited version of the top level build script for the 
-# Agile Deployment Toolkit.
+# Description: This is the main script that is called every time there is a build happening using
+# the Agile Deployment Toolkit
 # Author Peter Winter
 # Date 22/9/2020
 ##############################################################################################
