@@ -2,7 +2,7 @@
 ######################################################################################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : This will perform a baselineof your database and store it with your git storage provider
+# Description : This will perform a baseline of your database and store it with your git storage provider
 ######################################################################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
