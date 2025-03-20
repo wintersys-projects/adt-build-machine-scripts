@@ -152,7 +152,8 @@ then
 	/bin/echo "#####################################################################################################################################################################"
 	/bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"   
 	read response
-	if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
+	
+ 	if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
 	then
 		/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${AS_IP} > ${AUTOSCALER_PUBLIC_KEYS}
 	fi
