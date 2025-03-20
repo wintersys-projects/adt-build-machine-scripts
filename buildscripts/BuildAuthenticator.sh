@@ -185,8 +185,8 @@ do
                 read response
             fi
 
-            ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
-            ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
+            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
+            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
 
             ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
