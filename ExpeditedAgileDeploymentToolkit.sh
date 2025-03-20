@@ -5,14 +5,14 @@
 # Author Peter Winter
 # Date 22/9/2020
 ##############################################################################################
-#This is the Expedited Agile Deployment toolkit. It REQUIRES a configuration template which has ALL 
-#the necessary parameters populated within it templates for each cloudhost are stored under 
-#${BUILD_HOME}/templatedconfigurations/<yourcloudhost>/<yourcloudhost>[n].tmpl
-#You can create a new template for selection by naming it 
-#${BUILD_HOME}/templatedconfigurations/<yourcloudhost>/<yourcloudhost>[n+1].tmpl
-#ALL of the configuration parameters must be sane and correct and without errors for a build to complete correctly
-#There's a two ways you can run a build process the expedited way and the hardcore way. You can find out more about
-#these in the wiki of this repository.
+# This is the Expedited Agile Deployment toolkit. It REQUIRES a configuration template which has ALL 
+# the necessary parameters populated within it templates for each cloudhost are stored under 
+# ${BUILD_HOME}/templatedconfigurations/<yourcloudhost>/<yourcloudhost>[n].tmpl
+# ALL of the configuration parameters must be sane and correct and without errors for a build to complete correctly
+# There's a two ways you can run a build process the expedited way and the hardcore way. You can find out more about
+# these in the wiki of this repository.
+# This program can be called from cloud-init (a HARDCORE build) or started from the command line (an EXPEDITED build).
+# You can pass a small set of parameters from the command line or enter then interactively. 
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
 # The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
@@ -29,9 +29,13 @@
 ###############################################################################################
 #set -x
 
-/bin/echo "set mouse=r
-syntax on" > /root/.vimrc
+#Uncomment/ammend as desired
+#/bin/echo "set mouse=r
+#syntax on" > /root/.vimrc
 
+
+#Set up the intial logging  output. This is where the logging messages will be stored when they occur before
+#the main logging configuration has been set up. There is an output log for stdout and and error log for stderr
 if ( [ ! -d /root/logs ] )
 then
     /bin/mkdir /root/logs
@@ -43,12 +47,14 @@ exec 1>>/root/logs/${out_file}
 err_file="initiallogging-err-`/bin/date | /bin/sed 's/ //g'`"
 exec 2>>/root/logs/${err_file}
 
+#Set up a status function that can be called to log the status messages
 status () {
     /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
     script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
     /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
+#Tell the user where the intial log files are so they know where to look if they need to
 status "The initial output log file is located at /root/logs/${out_file}"
 status "The initial error log file is located at /root/logs/${err_file}"
 status "Press <enter> to acknowledge"
@@ -58,12 +64,16 @@ then
     read x
 fi
 
+# It is required that this script is only run directly from the directory it is installed in
 if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
 then
     status "You can only run this script from its own directory"
     exit
 fi
 
+# If parametes have been set from the command line then populate the respective variables
+# which means we don't have to obtain them interactively
+# ./ExpeditedAgileDeploymentToolkit.sh <cloudhost> <buildos> <selected template> <build identifier>
 if ( [ "${1}" != "" ] && [ "${2}" != "" ] && [ "${3}" != "" ] && [ "${4}" != "" ] )
 then
     HARDCORE="1"
@@ -74,6 +84,7 @@ then
     BUILD_IDENTIFIER="$4"
     shift 4
 
+    # Do some basic sanity checks on any parameters that have been given from the command line
     if ( [ "`/bin/echo "digitalocean exoscale linode vultr" | /bin/grep ${CLOUDHOST}`" = "" ] )
     then
         status "Unknown cloudhost passed as a parameter"
@@ -93,8 +104,10 @@ then
     fi
 fi
 
+# Set a name for the PUBLIC KEY which can be used everywhere
 export PUBLIC_KEY_NAME="AGILE_TOOLKIT_PUBLIC_KEY"
 
+# Set a persistent way of letting us know if we are a HARDCORE build or not
 if ( [ "${HARDCORE}" = "1" ] )
 then
     /bin/touch /root/HARDCORE
@@ -105,6 +118,7 @@ else
     fi
 fi
 
+# Set a persistent way of letting us know if we are a PARAMETER build or not
 if ( [ "${PARAMETER}" = "1" ] )
 then
     /bin/touch /root/PARAMETER
@@ -115,21 +129,30 @@ else
     fi
 fi
 
+# Set BUILD_HOME which is the directory where the Agile Deployment Toolkit is
+# Also set a persistent place on the file system where the value of BUILD_HOME is stored 
+# for reference anywhere
 if ( [ "${BUILD_HOME}" = "" ] )
 then
     export BUILD_HOME="`/bin/pwd`"
     /bin/echo ${BUILD_HOME} > /home/buildhome.dat
 fi
 
+# Set the USER value based on what "whoami" tells us
 export USER="`/usr/bin/whoami`"
 /bin/chmod -R 700 ${BUILD_HOME}/.
+
+#Get the IP value of the build machine that the Agile Deployment Toolkit is running on
 export BUILD_CLIENT_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 
+# Set up the runtimedata directory this is where data and information will be stored that is generated at runtime
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
 then
     /bin/mkdir ${BUILD_HOME}/runtimedata 
 fi
 
+#Reminid the user that we likely will be making some changes to whatever machine they are running this script on so if it is their
+#home laptop they need to be aware
 status "##################################################################################################################################"
 status "WARNING, ONLY RUN THIS ON A DEDICATED MACHINE IT WILL INSTALL SOFTWARE AND MAKE MACHINE CHANGES THAT YOU MAY NOT WANT ON YOUR"
 status "DAY TO DAY LAPTOP. YOU CAN RUN THIS FROM A DEDICATED VPS MACHINE OR POSSIBLY FROM A DEDICATED LINUX DISTRO FROM A PERSISTENT"
@@ -143,13 +166,23 @@ then
     read x
 fi
 
+# Make sure that we know which OS this machine is (currently debian or ubuntu
 if ( [ "${BUILDOS}" = "" ] )
 then
     export BUILDOS="`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
 fi
 
+# Make sure that ssh connections to the servers we will build are long lasting. A build can take several minutes over SSH and a short lasting
+# connection might drop during  the build proccess
 ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
+
+# There is a core set of software that is needed by this toolkit. We install the software on the intial build and update the software
+# if its been more than 1 day since this script was run on the current machine
 ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
+
+# Find out which cloudhost we are deploying to. If we are a HARDCORE build then the CLOUDHOST variable value is already in our
+# environment if not we ask the user for it interactively. The value of $CLOUDHOST is persistently stored on the filesystem
+# for reference from anywhere
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
@@ -160,18 +193,30 @@ else
      /bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
 fi
 
+# Certain providers need their Eth1 interface configured for private networking to be possible
 ${BUILD_HOME}/helperscripts/SetupEth1.sh ${CLOUDHOST}
+
+#Run some arbitrary compatibility checks
 ${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
 
 status ""
 status ""
 
+# Find out what the BUILD_IDENTIFER is to be. The BUILD_IDENTIFIER will be written to the filesystem for persistent reference
+# in the file ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
 
+# If we are a HARDCORE build then the BUILD_IDENTIFIER is already in our enviornment, if we are EXPEDITED then we need to remind ourselves
+# of what the BUILD_IDENTIFIER has just been set to from the filesystem
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
      BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 fi
+
+# We now have  all the information we need to switch from our intial logging to the main logging location that is going to be used
+# for the rest of the build. Anything that happens after this point in the build process will be logged to the logging location
+# mentioned below  rather than the initial logging location in the root directory that has been used up until now
+# The main logging also includes a status stream which has the filename included in its output
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ] )
 then
@@ -185,9 +230,21 @@ exec 2>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_fi
 status_file="build_status_stream-`/bin/date | /bin/sed 's/ //g'`"
 exec 4>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_file}
 
+# Tell the user where the logging output can be found
 status "The main output log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}"
 status "The main error log file is located at ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${err_file}"
+status "To refer to the logs you can run the script ${BUILD_HOME}/Log.sh"
 status "Press <enter> to acknowledge"
+
+# We store the entire environment in a file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+# We then reference this file for variable values anywhere we need using the scripts
+#
+#
+# This is a clean way to work rather than passing huge numbers of parameters all over the place to various subscripts
+# and I prefer it to simply exporting all the variables because it is more explicit in the sense that you have to
+# explicitly access a variable to change its value rather than being able to arbitrarily change it
+# Anyway, if we are a HARDCORE build then we already have all our variables set so we store them in our build_environment file
+# here.
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
@@ -197,11 +254,11 @@ else
     /bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 fi
 
+# What we do now is that we load/configure the eniroment based on the values of the template and load it into memory
+# We also store the template name to the filesystem for later reference.
 ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
 template_name="`/bin/cat ${BUILD_HOME}/runtimedata/current_template_name`"
 . ${template_name}
-
-#Take care of special case when a space is input in the website display name
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
