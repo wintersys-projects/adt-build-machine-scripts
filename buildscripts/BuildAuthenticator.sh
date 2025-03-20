@@ -80,7 +80,6 @@ do
         while ( [ "${server_started}" = "0" ] )
         do
             count="0"
-            
             #Actually start the server machine. Following this, there will be an active machine instance running on your cloud provider
             ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AUTH_SERVER_TYPE}" "${authenticator_name}" 
 
@@ -115,7 +114,7 @@ do
 
             if ( [ "${ip}" != "" ] && [ "${private_ip}" != "" ] )
             then
-                 server_started="1"
+                server_started="1"
             elif ( [ "${ip}" != "" ] && [ "${private_ip}" = "" ] )
             then
                 status "Found a public ip address but not a private ip address"
@@ -187,7 +186,6 @@ do
 
             ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
             ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
-
             ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
             #Wait until we are sure that the authentication server is destroyed because of a faulty build
@@ -213,6 +211,6 @@ done
 #If we get to here then we know that the authentication server didn't build properly, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
-     status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
-     /usr/bin/kill -9 $PPID
+    status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
+    /usr/bin/kill -9 $PPID
 fi
