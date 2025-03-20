@@ -22,7 +22,7 @@
 
 DB_IP=""
 
-if ( [ ! -f  ./CopyToWebserver.sh ] )
+if ( [ ! -f  ./CopyToDatabase.sh ] )
 then
     /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
     exit
