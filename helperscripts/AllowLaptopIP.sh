@@ -3,7 +3,11 @@
 # Author: Peter Winter
 # Date  : 13/01/2022
 # Description : You can grant laptop ip addresses access to your build machine using this script.
-# The firewall of your build machine will allow SSH connections from the ip address that you provide
+# The firewall of your build machine will allow SSH connections from the ip address that you provide.
+# You should also manually attach your build machine to a native firewall provided by your VPS vendor
+# configured to allow the IP addresses of your laptop(s) access to your build machine  also.
+# This gives "double firewalling" protection to your build-machine because it will hold a lot of your
+# sensitive credentials on it
 ########################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
