@@ -415,93 +415,92 @@ then
         fi
     fi
 
-        #########################################################################################################
-        #If you are deploying to vultr provide a setting with the following format in your template
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:8:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:14:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
-        #########################################################################################################
+    #########################################################################################################
+    #If you are deploying to vultr provide a setting with the following format in your template
+    #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:8:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
+    #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:14:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
+    #########################################################################################################
 
-        if ( [ "${CLOUDHOST}" = "vultr" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+    if ( [ "${CLOUDHOST}" = "vultr" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+    then
+        if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
         then
-                if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
+            database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
+            label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $8}'`"
+            engine="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $3}'`"
+            engine_version="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $4}'`"
+            db_region="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $5}'`"
+            machine_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $6}'`"
+            db_name="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
+            vpc_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $9}'`"
+
+            cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
+
+            new=""
+            if ( [ "${cluster_id}" = "" ] )
+            then
+                if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
                 then
-                        database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
-                        label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $8}'`"
-                        engine="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $3}'`"
-                        engine_version="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $4}'`"
-                        db_region="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $5}'`"
-                        machine_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $6}'`"
-                        db_name="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
-                        vpc_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $9}'`"
-
-                        cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
-
-                        new=""
-                        if ( [ "${cluster_id}" = "" ] )
-                        then
-                                if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
-                                then
-                                        status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
-                                        status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
-                                        read response
-                                        if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
-                                        then
-                                                BYPASS_DB_LAYER="0"
-                                        else
-                                                /usr/bin/kill -9 $PPID                                        
-                                        fi
-                                fi
-
-                                status "Creating  database ${label}, with engine: ${engine}, in region: ${db_region} and at size: ${machine_type} please wait..."
-                                /usr/bin/vultr database create --database-engine="${engine}" --database-engine-version="${engine_version}" --region="${db_region}" --plan="${machine_type}" --label="${label}" --vpc-id="${vpc_id}"
-
-                                if ( [ "$?" = "0" ] )
-                                then
-                                        new="newly provisioned"
-                                fi
-                        else
-                                new="previously existing"
-                        fi
-
-                        while ( [ "${cluster_id}" = "" ] )
-                        do
-                                cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
-                                /bin/sleep 10
-                                status "Waiting for your new database cluster to be reponsive and online"
-                        done
-
-                        status "A ${new} database cluster is available with id ${cluster_id}"
-
-                        export DB_USERNAME="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").user'`"
-                        export DB_PASSWORD="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").password'`"
-                        export DB_IDENTIFIER="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").host'`"
-                        export DB_PORT="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").port'`"
-                        export DB_NAME="${db_name}"
-
-                        status ""
-                        status "The rest of the settings for your database are as follows:"
-                        status "##########################################################"
-                        status "USERNAME:${DB_USERNAME}"
-                        status "PASSWORD:${DB_PASSWORD}"
-                        status "HOST:${DB_IDENTIFIER}"
-                        status "PORT:${DB_PORT}"
-                        status "DB NAME:${DB_NAME}"
-                        status "##########################################################"
-                        status "If these settings look OK to you, press <enter>"
-                        
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                        then
-                                read x
-                        fi
-
-                        /usr/bin/vultr database update ${cluster_id} --trusted-ips "${VPC_IP_RANGE}"
+                    status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
+                    status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
+                    read response
+                    if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
+                    then
+                        BYPASS_DB_LAYER="0"
+                    else
+                        /usr/bin/kill -9 $PPID                                        
+                    fi
                 fi
+
+                status "Creating  database ${label}, with engine: ${engine}, in region: ${db_region} and at size: ${machine_type} please wait..."
+                /usr/bin/vultr database create --database-engine="${engine}" --database-engine-version="${engine_version}" --region="${db_region}" --plan="${machine_type}" --label="${label}" --vpc-id="${vpc_id}"
+ 
+                if ( [ "$?" = "0" ] )
+                then
+                    new="newly provisioned"
+                fi
+            else
+                new="previously existing"
+            fi
+
+            while ( [ "${cluster_id}" = "" ] )
+            do
+                cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
+                /bin/sleep 10
+                status "Waiting for your new database cluster to be reponsive and online"
+            done
+
+            status "A ${new} database cluster is available with id ${cluster_id}"
+
+            export DB_USERNAME="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").user'`"  
+            export DB_PASSWORD="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").password'`"
+            export DB_IDENTIFIER="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").host'`"
+            export DB_PORT="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").port'`"
+            export DB_NAME="${db_name}"
+
+            status ""
+            status "The rest of the settings for your database are as follows:"
+            status "##########################################################"
+            status "USERNAME:${DB_USERNAME}"
+            status "PASSWORD:${DB_PASSWORD}"
+            status "HOST:${DB_IDENTIFIER}"
+            status "PORT:${DB_PORT}"
+            status "DB NAME:${DB_NAME}"
+            status "##########################################################"
+            status "If these settings look OK to you, press <enter>"
+                        
+             if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+             then
+                 read x
+             fi
+             /usr/bin/vultr database update ${cluster_id} --trusted-ips "${VPC_IP_RANGE}"
         fi
+    fi
 else
-        DB_NAME="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
-        DB_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
-        DB_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"
-        DB_IDENTIFIER="self-managed"
+    DB_NAME="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
+    DB_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
+    DB_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"
+    DB_IDENTIFIER="self-managed"
 fi
       
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_NAME=${DB_NAME}"
