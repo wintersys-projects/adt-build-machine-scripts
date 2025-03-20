@@ -24,51 +24,51 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 if ( [ "${1}" != "" ] && [ "${2}" != "" ] && [ "${3}" != "" ]  && [ "${4}" != "" ] )
 then
-        CLOUDHOST="${1}"
-        BUILD_IDENTIFIER="${2}"
-        response="${3}"
-        response1="${4}"
+    CLOUDHOST="${1}"
+    BUILD_IDENTIFIER="${2}"
+    response="${3}"
+    response1="${4}"
 else
-        /bin/echo "Which cloudhost do you want to view logs for DigitalOcean (do), Exoscale (exo), Linode (lin) or Vultr (vul)"
-        /bin/echo "Please type one of do, exo, lin, vul"
-        read cloudhost
+    /bin/echo "Which cloudhost do you want to view logs for DigitalOcean (do), Exoscale (exo), Linode (lin) or Vultr (vul)"
+    /bin/echo "Please type one of do, exo, lin, vul"
+    read cloudhost
 fi
 
 if ( [ "${cloudhost}" = "do" ] || [ "${CLOUDHOST}" = "do" ] )
 then
-  CLOUDHOST="digitalocean"
+    CLOUDHOST="digitalocean"
 elif ( [ "${cloudhost}" = "exo" ] || [ "${CLOUDHOST}" = "exo" ] )
 then
-  CLOUDHOST="exoscale"
+    CLOUDHOST="exoscale"
 elif ( [ "${cloudhost}" = "lin" ] || [ "${CLOUDHOST}" = "lin" ] )
 then
-  CLOUDHOST="linode" 
+    CLOUDHOST="linode" 
 elif ( [ "${cloudhost}" = "vul" ] || [ "${CLOUDHOST}" = "vul" ] )
 then
-  CLOUDHOST="vultr"
+    CLOUDHOST="vultr"
 fi
 
 if ( [ "${BUILD_IDENTIFIER}" = "" ] )
 then
-        /bin/echo "What is the build identifier you want to connect to?"
-        /bin/echo "You have these builds to choose from: "
+    /bin/echo "What is the build identifier you want to connect to?"
+    /bin/echo "You have these builds to choose from: "
 
-        /bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}
+    /bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}
 
-        /bin/echo "Please enter the name of the build of the server you wish to connect with"
-        read BUILD_IDENTIFIER
+    /bin/echo "Please enter the name of the build of the server you wish to connect with"
+    read BUILD_IDENTIFIER
 fi
 
 if ( [ "${response}" = "" ] )
 then
-        /bin/echo "tail (t) or cat (c) or vim (v)"
-        read response
+    /bin/echo "tail (t) or cat (c) or vim (v)"
+    read response
 fi
 
 if ( [ "${response1}" = "" ] )
 then
-        /bin/echo "Do you want out (1) or err (2) or stat (3)"
-        read response1
+    /bin/echo "Do you want out (1) or err (2) or stat (3)"
+    read response1
 fi
 
 error_stream="`/bin/ls -ltr ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs | /bin/grep build_err | /usr/bin/tail -1 | /usr/bin/awk '{print $NF}'`"
@@ -76,39 +76,39 @@ output_stream="`/bin/ls -ltr ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDEN
 status_stream="`/bin/ls -ltr ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs | /bin/grep build_stat | /usr/bin/tail -1 | /usr/bin/awk '{print $NF}'`"
 if ( [ "${response1}" = "1" ] )
 then
-  if ( [ "${response}" = "t" ] )
-  then
-    /bin/tail -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${output_stream}
-  elif ( [ "${response}" = "c" ] )
-  then
-      /bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${output_stream}
-  elif ( [ "${response}" = "v" ] )
-  then
-      /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${output_stream}
-  fi
+    if ( [ "${response}" = "t" ] )
+    then
+        /bin/tail -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${output_stream}
+    elif ( [ "${response}" = "c" ] )
+    then
+        /bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${output_stream}
+    elif ( [ "${response}" = "v" ] )
+    then
+        /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${output_stream}
+    fi
 elif ( [ "${response1}" = "2" ] )
 then
-  if ( [ "${response}" = "t" ] )
-  then
-    /bin/tail -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${error_stream}
-  elif ( [ "${response}" = "c" ] )
-  then
-      /bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${error_stream}
-  elif ( [ "${response}" = "v" ] )
-  then
-      /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${error_stream}
-  fi
+    if ( [ "${response}" = "t" ] )
+    then
+        /bin/tail -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${error_stream}
+    elif ( [ "${response}" = "c" ] )
+    then
+        /bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${error_stream}
+    elif ( [ "${response}" = "v" ] )
+    then
+        /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${error_stream}
+    fi
 elif ( [ "${response1}" = "3" ] )
 then
-  if ( [ "${response}" = "t" ] )
-  then
-    /bin/tail -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
-  elif ( [ "${response}" = "c" ] )
-  then
-      /bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
-  elif ( [ "${response}" = "v" ] )
-  then
-      /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
-  fi
+    if ( [ "${response}" = "t" ] )
+    then
+        /bin/tail -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
+    elif ( [ "${response}" = "c" ] )
+    then
+        /bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
+    elif ( [ "${response}" = "v" ] )
+    then
+        /usr/bin/vi ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${status_stream}
+    fi
 fi
 
