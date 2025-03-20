@@ -246,8 +246,8 @@ do
                                         read response
                                 fi
 
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
-                                ${HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
+                                ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
+                                ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
 
                                 ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
 
