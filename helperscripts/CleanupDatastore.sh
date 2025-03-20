@@ -2,7 +2,9 @@
 ########################################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : You can use this script to remove buckets from your datastore
+# Description : You can use this script to remove buckets from your datastore. If you run this script
+# it wil ask you which buckets you want to delete in turn. This can be much faster than manually attending to each 
+# bucket if you have a lot of buckets to delete
 ########################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
