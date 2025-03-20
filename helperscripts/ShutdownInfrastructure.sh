@@ -2,7 +2,7 @@
 ########################################################################################################
 # Author : Peter Winter
 # Date   : 13/07/2016
-# Description : This script will shutdown your infrastructure
+# Description : This script will shutdown all the machines of your infrastructure
 #######################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
