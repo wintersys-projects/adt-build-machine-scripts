@@ -29,8 +29,8 @@ read choice
 
 if ( [ "`/bin/echo '1 2' | /bin/grep ${choice}`" = "" ] )
 then
-    /bin/echo "Not a valid option, try again..."
-    read choice
+	/bin/echo "Not a valid option, try again..."
+	read choice
 fi
 
 ${BUILD_HOME}/helperscripts/ExecuteOnAutoscaler.sh "/usr/bin/ls /home/X*X/logs/scaling-events* | /bin/grep webserver"
@@ -40,8 +40,8 @@ read webserver_name
 
 if ( [ "${choice}" = "1" ] )
 then
-    ${BUILD_HOME}/helperscripts/ExecuteOnAutoscaler.sh "/usr/bin/tail -f /home/X*X/logs/scaling-events*/${webserver_name}/*out*"
+	${BUILD_HOME}/helperscripts/ExecuteOnAutoscaler.sh "/usr/bin/tail -f /home/X*X/logs/scaling-events*/${webserver_name}/*out*"
 elif ( [ "${choice}" = "2" ] )
 then
-    ${BUILD_HOME}/helperscripts/ExecuteOnAutoscaler.sh "/usr/bin/tail -f /home/X*X/logs/scaling-events*/${webserver_name}/*err*"
+	${BUILD_HOME}/helperscripts/ExecuteOnAutoscaler.sh "/usr/bin/tail -f /home/X*X/logs/scaling-events*/${webserver_name}/*err*"
 fi
