@@ -6,6 +6,8 @@
 # when using the hardcore or expedited build. You do it by setting the DATABASE_DBaaS_INSTALLATION_TYPE
 # variable in the way described for each provider. When set as described for your provider,
 # when you make the deployment this script will try and spin up a DBaaS system and use that. 
+# Alternative you can pre-provision your DBaaS database using the GUI system if you don't want to wait
+# for it to provision whilst the script is running (which for some providers can take a bit of time)
 ########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -24,9 +26,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+    /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -43,148 +45,144 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
-        #########################################################################################################
-        #If you are deploying to digitalocean provide a setting with the following format in your template
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>:<database_username>"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2:example-username"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2:example-username"
-        #########################################################################################################
+    #########################################################################################################
+    #If you are deploying to digitalocean provide a setting with the following format in your template
+    #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>:<database_username>"
+    #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2:example-username"
+    #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2:example-username"
+    #########################################################################################################
 
 
-        if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+    if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+    then
+        if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
         then
-                if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
+            database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
+            cluster_engine="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
+            cluster_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
+            cluster_nodes="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
+            cluster_size="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
+            cluster_version="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $5}'`"
+            cluster_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
+            db_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $7}'`"
+            adt_vpc="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $8}'`"
+            database_user="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $9}'`"
+
+            status "Configuring database cluster ${cluster_name}, please wait..."
+
+            cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
+
+            if ( [ "${cluster_id}" = "" ] )
+            then
+                if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
                 then
-                        database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
-                        cluster_engine="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
-                        cluster_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
-                        cluster_nodes="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
-                        cluster_size="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
-                        cluster_version="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $5}'`"
-                        cluster_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
-                        db_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $7}'`"
-                        adt_vpc="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $8}'`"
-                        database_user="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $9}'`"
+                    status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
+                    status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
+                    read response
+                    if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
+                    then
+                        BYPASS_DB_LAYER="0"
+                    else
+                        /usr/bin/kill -9 $PPID                                        
+                    fi
+            fi
+            status "Creating the database cluster ${cluster_name}"
 
-
-                        status "Configuring database cluster ${cluster_name}, please wait..."
-
-                        cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
-
-                        if ( [ "${cluster_id}" = "" ] )
-                        then
-
-                                if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
-                                then
-                                        status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
-                                        status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
-                                        read response
-                                        if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
-                                        then
-                                                BYPASS_DB_LAYER="0"
-                                        else
-                                                /usr/bin/kill -9 $PPID                                        
-                                        fi
-                                fi
-                                status "Creating the database cluster ${cluster_name}"
-
-                                /usr/local/bin/doctl databases create ${cluster_name} --engine ${cluster_engine} --region ${cluster_region}  --num-nodes ${cluster_nodes} --size ${cluster_size} --version ${cluster_version} --private-network-uuid ${adt_vpc} 
-                                if ( [ "$?" != "0" ] )
-                                then
-                                        status "I had trouble creating the database cluster will have to exit....."
-                                        /usr/bin/kill -9 $PPID                                
-                                fi
-                        fi
-
-                        while ( [ "${cluster_id}" = "" ] )
-                        do
-                                status "Trying to obtain cluster id for the ${cluster_name} cluster..."
-                                cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
-                                /bin/sleep 30
-                        done
-
-                        status "Tightening the firewall on your database cluster"
-
-                        #uuids="`/usr/local/bin/doctl databases firewalls list ${cluster_id} | /usr/bin/tail -n +2 | /usr/bin/awk '{print $1}'`"
-                        uuids="`/usr/local/bin/doctl databases firewalls list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.cluster_uuid == "'${cluster_id}'").uuid'`"
-
-                        if ( [ "${uuids}" != "" ] )
-                        then
-                                for uuid in ${uuids}  
-                                do
-                                        /usr/local/bin/doctl databases firewalls remove ${cluster_id} --uuid ${uuid}
-                                done
-                        fi
-
-                        status "Creating a database named ${db_name} in cluster: ${cluster_id}"
-
-                        /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
-
-                        while ( [ "`/usr/local/bin/doctl databases db list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`" = "" ] )
-                        do
-                                status "Probing for a database called ${db_name} in the cluster called ${cluster_name} - Please Wait...."
-                                status "Note: you can get a %age progress update by referring to the Digital Ocean GUI for your database cluster as it provisions"
-                                /bin/sleep 30
-                                /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
-                        done
-
-                        database_password=""
-
-                        if ( [ "`/usr/local/bin/doctl database user list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${database_user}'").name'`" = "" ] )
-                        then
-                                database_password="`/usr/local/bin/doctl databases user create  ${cluster_id} ${database_user} -o json | /usr/bin/jq -r '.[].password'`"
-                        else 
-                                database_password="`/usr/local/bin/doctl database user list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${database_user}'").password'`"
-                        fi
-
-                        status "######################################################################################################################################################"
-                        status "You might want to check that a database cluster called ${cluster_name} with a database ${db_name} is present using your Digital Ocean gui system"
-                        status "######################################################################################################################################################"
-                        status "Press <enter> when you are satisfied"
-
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                        then
-                                read x
-                        fi
-
-                        if ( [ "`/usr/local/bin/doctl database firewalls list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.value == "'${VPC_IP_RANGE}'").id'`" = "" ] )
-                        then
-                                /usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${VPC_IP_RANGE}
-                        fi
-
-                        if ( [ "${cluster_engine}" = "mysql" ] )
-                        then
-                                export DATABASE_DBaaS_INSTALLATION_TYPE="MySQL"
-                        elif ( [ "${cluster_engine}" = "postgres" ] )
-                        then
-                                export DATABASE_DBaaS_INSTALLATION_TYPE="Postgres"
-                        fi
-
-                        export DATABASE_INSTALLATION_TYPE="DBaaS"
-                        export DATABASE_DBaaS_INSTALLATION_TYPE="${DATABASE_DBaaS_INSTALLATION_TYPE}:${cluster_id}"
-                        export DB_IDENTIFIER="private-`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.host'`"
-                        export DB_USERNAME="${database_user}"
-                        export DB_PASSWORD="${database_password}"
-                        export DB_NAME="${db_name}"
-                        export DB_PORT="${DB_PORT}"
-
-                        status "The Values I have retrieved for your database setup are:"
-                        status "##########################################################"
-                        status "HOSTNAME:${DB_IDENTIFIER}"
-                        status "USERNAME:${DB_USERNAME}"
-                        status "PASSWORD:${DB_PASSWORD}"
-                        status "DATABASENAME:${DB_NAME}"
-                        status "PORT:${DB_PORT}"
-                        status "##########################################################"
-                        status "If these settings look OK to you, press <enter>"
-
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                        then
-                                read x
-                        fi
-                        /usr/local/bin/doctl databases get-ca ${cluster_id} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
-                fi
+            /usr/local/bin/doctl databases create ${cluster_name} --engine ${cluster_engine} --region ${cluster_region}  --num-nodes ${cluster_nodes} --size ${cluster_size} --version ${cluster_version} --private-network-uuid ${adt_vpc} 
+                                
+            if ( [ "$?" != "0" ] )
+            then
+                status "I had trouble creating the database cluster will have to exit....."
+                /usr/bin/kill -9 $PPID                                
+            fi
         fi
+
+        while ( [ "${cluster_id}" = "" ] )
+        do
+            status "Trying to obtain cluster id for the ${cluster_name} cluster..."
+            cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
+            /bin/sleep 30
+        done
+
+        status "Tightening the firewall on your database cluster"
+        uuids="`/usr/local/bin/doctl databases firewalls list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.cluster_uuid == "'${cluster_id}'").uuid'`"
+
+        if ( [ "${uuids}" != "" ] )
+        then
+            for uuid in ${uuids}  
+            do
+                /usr/local/bin/doctl databases firewalls remove ${cluster_id} --uuid ${uuid}
+            done
+        fi
+
+        status "Creating a database named ${db_name} in cluster: ${cluster_id}"
+        /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
+
+        while ( [ "`/usr/local/bin/doctl databases db list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`" = "" ] )
+        do
+            status "Probing for a database called ${db_name} in the cluster called ${cluster_name} - Please Wait...."
+            status "Note: you can get a %age progress update by referring to the Digital Ocean GUI for your database cluster as it provisions"
+            /bin/sleep 30
+            /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
+        done
+
+        database_password=""
+
+        if ( [ "`/usr/local/bin/doctl database user list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${database_user}'").name'`" = "" ] )
+        then
+            database_password="`/usr/local/bin/doctl databases user create  ${cluster_id} ${database_user} -o json | /usr/bin/jq -r '.[].password'`"
+        else 
+            database_password="`/usr/local/bin/doctl database user list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${database_user}'").password'`"
+        fi
+
+        status "######################################################################################################################################################"
+        status "You might want to check that a database cluster called ${cluster_name} with a database ${db_name} is present using your Digital Ocean gui system"
+        status "######################################################################################################################################################"
+        status "Press <enter> when you are satisfied"
+
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+            read x
+        fi
+
+        if ( [ "`/usr/local/bin/doctl database firewalls list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.value == "'${VPC_IP_RANGE}'").id'`" = "" ] )
+        then
+            /usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${VPC_IP_RANGE}
+        fi
+
+        if ( [ "${cluster_engine}" = "mysql" ] )
+        then
+            export DATABASE_DBaaS_INSTALLATION_TYPE="MySQL"
+        elif ( [ "${cluster_engine}" = "postgres" ] )
+        then
+            export DATABASE_DBaaS_INSTALLATION_TYPE="Postgres"
+        fi
+
+        export DATABASE_INSTALLATION_TYPE="DBaaS"
+        export DATABASE_DBaaS_INSTALLATION_TYPE="${DATABASE_DBaaS_INSTALLATION_TYPE}:${cluster_id}"
+        export DB_IDENTIFIER="private-`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.host'`"
+        export DB_USERNAME="${database_user}"
+        export DB_PASSWORD="${database_password}"
+        export DB_NAME="${db_name}"
+        export DB_PORT="${DB_PORT}"
+
+        status "The Values I have retrieved for your database setup are:"
+        status "##########################################################"
+        status "HOSTNAME:${DB_IDENTIFIER}"
+        status "USERNAME:${DB_USERNAME}"
+        status "PASSWORD:${DB_PASSWORD}"
+        status "DATABASENAME:${DB_NAME}"
+        status "PORT:${DB_PORT}"
+        status "##########################################################"
+        status "If these settings look OK to you, press <enter>"
+
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+            read x
+        fi
+        /usr/local/bin/doctl databases get-ca ${cluster_id} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
+    fi
+fi
 
 
         #########################################################################################################
