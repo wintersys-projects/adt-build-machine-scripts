@@ -95,7 +95,7 @@ read response
 
 if ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] )
 then
-        exit
+    exit
 fi
 
 number_of_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "-as-" "${CLOUDHOST}"`"
