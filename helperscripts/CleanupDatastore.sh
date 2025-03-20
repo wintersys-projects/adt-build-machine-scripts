@@ -24,8 +24,8 @@
 
 if ( [ ! -f  ./CleanupDatastore.sh ] )
 then
-    /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-    exit
+	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+	exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -34,31 +34,31 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 read response
 if ( [ "${response}" = "1" ] )
 then
-    DATASTORE_PROVIDER="digitalocean"
+	DATASTORE_PROVIDER="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-    DATASTORE_PROVIDER="exoscale"
+	DATASTORE_PROVIDER="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-    DATASTORE_PROVIDER="linode"
+	DATASTORE_PROVIDER="linode"
 elif ( [ "${response}" = "4" ] )
 then
-    DATASTORE_PROVIDER="vultr"
+	DATASTORE_PROVIDER="vultr"
 else
-    /bin/echo "Unrecognised  cloudhost. Exiting ...."
-    exit
+	/bin/echo "Unrecognised  cloudhost. Exiting ...."
+	exit
 fi
 
 buckets="`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "" | /usr/bin/awk '{print $NF}' | /bin/sed 's,s3://,,'`"
 
 for bucket in ${buckets}
 do
-    /bin/echo "Have found bucket: ${bucket} do you want to delete it, (Y|N)"
-    read response
+	/bin/echo "Have found bucket: ${bucket} do you want to delete it, (Y|N)"
+	read response
 
-    if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
-    then
-        ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}"
-        ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "${bucket}"
-    fi
+	if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
+	then
+		${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}"
+		${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "${bucket}"
+	fi
 done
