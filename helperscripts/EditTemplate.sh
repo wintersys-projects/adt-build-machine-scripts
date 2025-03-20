@@ -3,6 +3,7 @@
 # Author: Peter Winter
 # Date  : 13/07/2016
 # Description : This will let you edit your template as you choose
+# There is a wrapper script ${BUILD_HOME}/Template.sh that calls this script and is easier to use
 ###########################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
