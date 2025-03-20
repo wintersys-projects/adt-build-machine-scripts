@@ -3,6 +3,7 @@
 # Author: Peter Winter
 # Date  : 13/07/2016
 # Description : This is just a shortcut error script for displaying your output or error logs from your current build
+# There is a wrapper script ${BUILD_HOME}/Log.sh which calls this script and is easier to use
 ###########################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
