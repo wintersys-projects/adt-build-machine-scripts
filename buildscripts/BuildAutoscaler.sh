@@ -113,11 +113,11 @@ do
 
             while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "20" ] )
             do
-                 status "Interrogating for autoscaler ip addresses....."
-                 ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                 private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                 /bin/sleep 10
-                 count="`/usr/bin/expr ${count} + 1`"
+                status "Interrogating for autoscaler ip addresses....."
+                ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+                private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+                /bin/sleep 10
+                count="`/usr/bin/expr ${count} + 1`"
             done
 
             if ( [ "${ip}" != "" ] && [ "${private_ip}" != "" ] )
@@ -154,7 +154,7 @@ do
 
         if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
         then
-            as_active_ips="${ASIPS_PRIVATES_CLEANED}"
+            as_active_ips="${ASIPS_PRIVATES_CLEANED}"    
         elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
         then
             as_active_ips="${ASIPS_CLEANED}"
@@ -194,7 +194,7 @@ do
                                 
             if ( [ "${HARDCORE}" != "1" ] )
             then
-                 read response
+                read response
             fi
                                 
             ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicip
@@ -205,7 +205,7 @@ do
             while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
             do
                 /bin/sleep 30
-            done
+            done    
         else
             done="1"
             if ( [ "${NO_AUTOSCALERS}" -eq "1" ] )
@@ -222,8 +222,8 @@ do
                 then
                     /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/MULTI_AUTOSCALER_BUILT 
                     /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-*
-                fi
-            fi
+                fi   
+            fi    
             counter="0"
         fi
     else
