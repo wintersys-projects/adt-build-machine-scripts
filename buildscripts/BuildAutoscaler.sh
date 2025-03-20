@@ -27,11 +27,11 @@ counter="0"
 count="0"
 
 status () {
-    yellow="`/usr/bin/tput setaf 1`"
-    norm="`/usr/bin/tput sgr0`"
-    /bin/echo "${yellow} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	yellow="`/usr/bin/tput setaf 1`"
+	norm="`/usr/bin/tput sgr0`"
+	/bin/echo "${yellow} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 status ""
@@ -64,177 +64,177 @@ BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${
 # If done=1, then we know that the autoscaler has been successfully built. We try up to 5 times before we give up if it fails
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
-    counter="`/usr/bin/expr ${counter} + 1`"
-    autoscaler_no="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
+	counter="`/usr/bin/expr ${counter} + 1`"
+	autoscaler_no="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
 
-    if ( [ "${autoscaler_no}" = "" ] )
-    then
-        autoscaler_no="1"
-    fi
+	if ( [ "${autoscaler_no}" = "" ] )
+	then
+		autoscaler_no="1"
+	fi
 
-    status "OK... Building autoscaler ${autoscaler_no}. This is the ${counter} attempt of 5"
+	status "OK... Building autoscaler ${autoscaler_no}. This is the ${counter} attempt of 5"
 
-    WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-    WEBSITE_DISPLAY_NAME_FILE="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed 's/ /_/g'`"
+	WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+	WEBSITE_DISPLAY_NAME_FILE="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed 's/ /_/g'`"
 
-    if ( [ "${autoscaler_no}" -le "${NO_AUTOSCALERS}" ] )
-    then
-        ip=""
-        #Set a unique identifier and name for our new autoscaler server
-        RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-        autoscaler_name="NO-${autoscaler_no}-as-${REGION}-${BUILD_IDENTIFIER}-${RND}"
+	if ( [ "${autoscaler_no}" -le "${NO_AUTOSCALERS}" ] )
+	then
+		ip=""
+		#Set a unique identifier and name for our new autoscaler server
+		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
+		autoscaler_name="NO-${autoscaler_no}-as-${REGION}-${BUILD_IDENTIFIER}-${RND}"
 
-        status "Initialising a new server machine, please wait......"
+		status "Initialising a new server machine, please wait......"
 
-        server_started="0"
-        while ( [ "${server_started}" = "0" ] )
-        do
-            count="0"
-            #Actually create the autoscaler machine. If the create fails, keep trying 
-            ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AS_SERVER_TYPE}" "${autoscaler_name}" 
+		server_started="0"
+		while ( [ "${server_started}" = "0" ] )
+		do
+			count="0"
+			#Actually create the autoscaler machine. If the create fails, keep trying 
+			${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AS_SERVER_TYPE}" "${autoscaler_name}" 
 
-            while ( [ "$?" != 0 ] && [ "${count}" -lt "10" ] )
-            do
-                count="`/usr/bin/expr ${count} + 1`"
-                /bin/sleep 10
-                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AS_SERVER_TYPE}" "${autoscaler_name}" 
-            done
+			while ( [ "$?" != 0 ] && [ "${count}" -lt "10" ] )
+			do
+				count="`/usr/bin/expr ${count} + 1`"
+				/bin/sleep 10
+				${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AS_SERVER_TYPE}" "${autoscaler_name}" 
+			done
 
-            if ( [ "${count}" -eq "10" ] )
-            then
-                status "Couldn't autoscaler create server"
-                /usr/bin/kill -9 $PPID                        
-            fi
+			if ( [ "${count}" -eq "10" ] )
+			then
+				status "Couldn't autoscaler create server"
+				/usr/bin/kill -9 $PPID                        
+			fi
 
-            #Get the ip addresses of the server we have just built
-            ip=""
-            private_ip=""
-            count="0"
+			#Get the ip addresses of the server we have just built
+			ip=""
+			private_ip=""
+			count="0"
 
-            while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "20" ] )
-            do
-                status "Interrogating for autoscaler ip addresses....."
-                ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                /bin/sleep 10
-                count="`/usr/bin/expr ${count} + 1`"
-            done
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "20" ] )
+			do
+				status "Interrogating for autoscaler ip addresses....."
+				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+				private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+				/bin/sleep 10
+				count="`/usr/bin/expr ${count} + 1`"
+			done
 
-            if ( [ "${ip}" != "" ] && [ "${private_ip}" != "" ] )
-            then
-                server_started="1"
-            elif ( [ "${ip}" != "" ] && [ "${private_ip}" = "" ] )
-            then
-                status "Found a public ip address but not a private ip address"
-                status "This likely means that there is some sort problem with the VPC"
-            else
-                status "I haven't been able to start your server for you, trying again...."
-            fi
-        done
+			if ( [ "${ip}" != "" ] && [ "${private_ip}" != "" ] )
+			then
+				server_started="1"
+			elif ( [ "${ip}" != "" ] && [ "${private_ip}" = "" ] )
+			then
+				status "Found a public ip address but not a private ip address"
+				status "This likely means that there is some sort problem with the VPC"
+			else
+				status "I haven't been able to start your server for you, trying again...."
+			fi
+		done
           
-        status "It looks like the machine has booted OK"
-        ASIP_PUBLIC=${ip}
-        ASIP_PRIVATE=${private_ip}
+		status "It looks like the machine has booted OK"
+		ASIP_PUBLIC=${ip}
+		ASIP_PRIVATE=${private_ip}
 
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} autoscalerpublicip/${ip}
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} autoscalerip/${private_ip}
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} autoscalerpublicip/${ip}
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} autoscalerip/${private_ip}
 
-        if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-        then
-            as_active_ip="${ASIP_PRIVATE}"
-        elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-        then
-            as_active_ip="${ASIP_PUBLIC}"
-        fi
+		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
+		then
+			as_active_ip="${ASIP_PRIVATE}"
+		elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+		then
+			as_active_ip="${ASIP_PUBLIC}"
+		fi
 
-        ASIPS="${ASIPS}${ASIP_PUBLIC}:"
-        ASIP_PRIVATES="${ASIP_PRIVATES}${ASIP_PRIVATE}:"
-        ASIPS_CLEANED="`/bin/echo ${ASIPS} | /bin/sed 's/\:/ /g'`"
-        ASIPS_PRIVATES_CLEANED="`/bin/echo ${ASIP_PRIVATES} | /bin/sed 's/\:/ /g'`"
+		ASIPS="${ASIPS}${ASIP_PUBLIC}:"
+		ASIP_PRIVATES="${ASIP_PRIVATES}${ASIP_PRIVATE}:"
+		ASIPS_CLEANED="`/bin/echo ${ASIPS} | /bin/sed 's/\:/ /g'`"
+		ASIPS_PRIVATES_CLEANED="`/bin/echo ${ASIP_PRIVATES} | /bin/sed 's/\:/ /g'`"
 
-        if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-        then
-            as_active_ips="${ASIPS_PRIVATES_CLEANED}"    
-        elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-        then
-            as_active_ips="${ASIPS_CLEANED}"
-        fi
+		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
+		then
+			as_active_ips="${ASIPS_PRIVATES_CLEANED}"    
+		elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+		then
+			as_active_ips="${ASIPS_CLEANED}"
+		fi
 
-        status "Have got the ip addresses for your autoscaler (${autoscaler_name})"
-        status "Public IP address: ${ASIP_PUBLIC}"
-        status "Private IP address: ${ASIP_PRIVATE}"
+		status "Have got the ip addresses for your autoscaler (${autoscaler_name})"
+		status "Public IP address: ${ASIP_PUBLIC}"
+		status "Private IP address: ${ASIP_PRIVATE}"
 
-        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
-        then
-            /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
-        fi
+		if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
+		then
+			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
+		fi
 
-        status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
-        status "This is the current time for your reference `/bin/date`"
+		status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
+		status "This is the current time for your reference `/bin/date`"
                         
-        #Wait for the machine to become responsive before we check its integrity
+		#Wait for the machine to become responsive before we check its integrity
 
-        done="0"
-        alive=""
-        count="0"
+		done="0"
+		alive=""
+		count="0"
         
-        while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "300" ] )
-        do
-            count="`/usr/bin/expr ${count} + 1`"
-            /bin/sleep 2
-            alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
-        done
+		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "300" ] )
+		do
+			count="`/usr/bin/expr ${count} + 1`"
+			/bin/sleep 2
+			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
+		done
                    
-        if ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] )
-        then
-            status "#########################################################################################################################"
-            status "Hi, an autoscaler didn't seem to build correctly. I can destroy it and I can try again to build a new autoscaler for you."
-            status "#########################################################################################################################"
-            status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
+		if ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] )
+		then
+			status "#########################################################################################################################"
+			status "Hi, an autoscaler didn't seem to build correctly. I can destroy it and I can try again to build a new autoscaler for you."
+			status "#########################################################################################################################"
+			status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
                                 
-            if ( [ "${HARDCORE}" != "1" ] )
-            then
-                read response
-            fi
+			if ( [ "${HARDCORE}" != "1" ] )
+			then
+				read response
+    		fi
                                 
-            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicip
-            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerip
-            ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicip	
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerip
+			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
 
-            #Wait until we are sure that the autoscaler server(s) are destroyed because of a faulty build
-            while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
-            do
-                /bin/sleep 30
-            done    
-        else
-            done="1"
-            if ( [ "${NO_AUTOSCALERS}" -eq "1" ] )
-            then
-                status "An autoscaler (${autoscaler_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
-            else
-                autoscaler_built_rank="`/bin/ls  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-* | /usr/bin/wc -l 2>/dev/null`"
-                autoscaler_built_rank="`/usr/bin/expr ${autoscaler_built_rank} + 1`"
-                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-${autoscaler_built_rank}
+			#Wait until we are sure that the autoscaler server(s) are destroyed because of a faulty build
+			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
+			do
+				/bin/sleep 30
+			done    
+		else
+			done="1"
+			if ( [ "${NO_AUTOSCALERS}" -eq "1" ] )
+			then
+				status "An autoscaler (${autoscaler_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
+			else
+				autoscaler_built_rank="`/bin/ls  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-* | /usr/bin/wc -l 2>/dev/null`"
+				autoscaler_built_rank="`/usr/bin/expr ${autoscaler_built_rank} + 1`"
+				/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-${autoscaler_built_rank}
 
-                status "An autoscaler (${autoscaler_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
+				status "An autoscaler (${autoscaler_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
 
-                if ( [ "${autoscaler_built_rank}" -eq "${NO_AUTOSCALERS}" ] )
-                then
-                    /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/MULTI_AUTOSCALER_BUILT 
-                    /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-*
-                fi   
-            fi    
-            counter="0"
-        fi
-    else
-        status "Autoscaler is already running. Will use that one..."
-        status "Press Enter if this is OK"
-        if ( [ "${HARDCORE}" != "1" ] )
-        then
-            read response
-        fi
-        done="1"
-    fi
+				if ( [ "${autoscaler_built_rank}" -eq "${NO_AUTOSCALERS}" ] )
+				then
+					/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/MULTI_AUTOSCALER_BUILT 
+					/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-*
+				fi   
+			fi    
+			counter="0"
+		fi
+	else
+		status "Autoscaler is already running. Will use that one..."
+		status "Press Enter if this is OK"
+		if ( [ "${HARDCORE}" != "1" ] )
+		then
+			read response
+		fi
+		done="1"
+	fi
 done
 
 #If our count got to 5, then we know that none of the attempts succeeded in building our autoscaler, so, report this and exit because we can't run without an autoscaler
