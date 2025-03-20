@@ -2,7 +2,7 @@
 ######################################################################################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : This script will connect you to your database(s) via ssh
+# Description : This script will connect you to your database machine through its configured port via ssh
 ######################################################################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
