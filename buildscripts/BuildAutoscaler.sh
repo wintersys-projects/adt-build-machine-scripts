@@ -90,7 +90,7 @@ do
         while ( [ "${server_started}" = "0" ] )
         do
             count="0"
-            #Actually create the autoscaler machine. If the create fails, keep trying again - it must be a provider issue
+            #Actually create the autoscaler machine. If the create fails, keep trying 
             ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AS_SERVER_TYPE}" "${autoscaler_name}" 
 
             while ( [ "$?" != 0 ] && [ "${count}" -lt "10" ] )
@@ -201,7 +201,7 @@ do
             ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerip
             ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
 
-            #Wait until we are sure that the image server(s) are destroyed because of a faulty build
+            #Wait until we are sure that the autoscaler server(s) are destroyed because of a faulty build
             while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
             do
                 /bin/sleep 30
