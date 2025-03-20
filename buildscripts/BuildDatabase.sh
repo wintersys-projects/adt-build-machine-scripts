@@ -195,7 +195,6 @@ do
 
         done="0"
         alive=""
-        count2="0"
         count="0"
         while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "300" ] )
         do
