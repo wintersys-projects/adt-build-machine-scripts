@@ -2,7 +2,7 @@
 ####################################################################################################
 # Author : Peter Winter
 # Date   : 13/07/2016
-# Description : This script will copy a file, passed as a parameter to your selected webserver
+# Description : This script will copy a file, passed as a parameter to your selected database
 ####################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
