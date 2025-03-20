@@ -2,7 +2,7 @@
 ######################################################################################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : This script will connect you to your webserver(s) via ssh
+# Description : This script will connect you to your webserver via ssh and run the command passed as a parameter
 ######################################################################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
