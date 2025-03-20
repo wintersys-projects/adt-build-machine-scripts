@@ -150,4 +150,4 @@ then
 	then
 		/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${DB_IP} > ${DATABASE_PUBLIC_KEYS}
 	fi
- fi
+fi
