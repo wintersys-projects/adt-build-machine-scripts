@@ -79,7 +79,7 @@ then
                         
             if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
             then
-                 read x
+                read x
             fi
             NO_AUTOSCALERS="5"
         else 
