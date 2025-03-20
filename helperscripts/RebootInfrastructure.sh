@@ -23,8 +23,8 @@
 
 if ( [ ! -f  ./RebootInfrastructure.sh ] )
 then
-	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-	exit
+    /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+    exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -38,19 +38,19 @@ read response
 
 if ( [ "${response}" = "1" ] )
 then
-	CLOUDHOST="digitalocean"
+    CLOUDHOST="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-	CLOUDHOST="exoscale"
+    CLOUDHOST="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-	CLOUDHOST="linode"
+    CLOUDHOST="linode"
 elif ( [ "${response}" = "4" ] )
 then
-	CLOUDHOST="vultr"
+    CLOUDHOST="vultr"
 else
-	/bin/echo "Unrecognised  cloudhost. Exiting ...."
-	exit
+    /bin/echo "Unrecognised  cloudhost. Exiting ...."
+    exit
 fi
 
 /bin/echo "What is the build identifier you want to connect to?"
@@ -63,7 +63,7 @@ read BUILD_IDENTIFIER
 
 if ( [ "${CLOUDHOST}" = "vultr" ] )
 then
-        export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
+    export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
 fi
 
 autoscaler_token_to_match="as-`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`-${BUILD_IDENTIFIER}"
@@ -74,30 +74,30 @@ database_token_to_match="db-`${BUILD_HOME}/helperscripts/GetVariableValue.sh REG
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
 then
-	autoscalerips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${autoscaler_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
+    autoscalerips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${autoscaler_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
 else
-	autoscalerips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${autoscaler_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
+    autoscalerips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${autoscaler_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
 fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
 then
-	webserverips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${webserver_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
+    webserverips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${webserver_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
 else
-	webserverips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${webserver_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
+    webserverips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${webserver_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
 fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
 then
-	databaseips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${database_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
+    databaseips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${database_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
 else
-	databaseips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  "${database_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
+    databaseips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  "${database_token_to_match}" ${CLOUDHOST} ${BUILD_HOME}`"
 fi
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment ] )
 then
-        ALGORITHM="rsa"
+    ALGORITHM="rsa"
 else
-        ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
+    ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 fi
 
 /bin/echo "Are you sure you want to reboot the infrastructure? (Y/N)"
@@ -105,7 +105,7 @@ read response
 
 if ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] )
 then
-	exit
+    exit
 fi
 
 SERVER_USERNAME="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
@@ -115,101 +115,97 @@ SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 
 /bin/echo "OK, rebooting your infrastructure"
 
-
 for ip in ${autoscalerips}
 do
-	/bin/echo "Rebooting autoscaler....."
-	/bin/sleep 5
-	AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_${ip}-keys"
+    /bin/echo "Rebooting autoscaler....."
+    /bin/sleep 5
+    AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_${ip}-keys"
 
-	if ( [ ! -f ${AUTOSCALER_PUBLIC_KEYS} ] )
-	then
-		/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${AUTOSCALER_PUBLIC_KEYS}    
-	else
-		/bin/echo "#####################################################################################################################################################################"
-		/bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
-		/bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
-		/bin/echo "#####################################################################################################################################################################"
-		/bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"    
-		read response1
-		if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
-		then
-			/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${AUTOSCALER_PUBLIC_KEYS}
-		fi
-	fi
+    if ( [ ! -f ${AUTOSCALER_PUBLIC_KEYS} ] )
+    then
+        /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${AUTOSCALER_PUBLIC_KEYS}    
+    else
+        /bin/echo "#####################################################################################################################################################################"
+        /bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
+        /bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
+        /bin/echo "#####################################################################################################################################################################"
+        /bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"    
+        read response1
+        if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
+        then
+            /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${AUTOSCALER_PUBLIC_KEYS}
+        fi
+    fi
 
-	if ( [ "`/bin/cat ${AUTOSCALER_PUBLIC_KEYS}`" = "" ] )
-	then
-		/bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
-		/bin/rm ${AUTOSCALER_PUBLIC_KEYS}
-		exit
-	fi
-	
-	/usr/bin/ssh -o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${ip} "${SUDO} /usr/sbin/shutdown -r now" 2>/dev/null
+    if ( [ "`/bin/cat ${AUTOSCALER_PUBLIC_KEYS}`" = "" ] )
+    then
+        /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
+        /bin/rm ${AUTOSCALER_PUBLIC_KEYS}
+        exit
+    fi
+    /usr/bin/ssh -o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${ip} "${SUDO} /usr/sbin/shutdown -r now" 2>/dev/null
 done
 
 for ip in ${webserverips}
 do
-	/bin/echo "Rebooting webserver....."
-	/bin/sleep 5
+    /bin/echo "Rebooting webserver....."
+    /bin/sleep 5
 	
-	WEBSERVER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/webserver_${ip}-keys"
+    WEBSERVER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/webserver_${ip}-keys"
 
-	if ( [ ! -f ${WEBSERVER_PUBLIC_KEYS} ] )
-	then
-		/usr/bin/ssh-keyscan -p ${SSH_PORT} ${ip} > ${WEBSERVER_PUBLIC_KEYS}    
-	else
-		/bin/echo "#####################################################################################################################################################################"
-		/bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
-		/bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
-		/bin/echo "#####################################################################################################################################################################"
-		/bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"   
-		read response1
-		if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
-		then
-			/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${WEBSERVER_PUBLIC_KEYS}
-		fi
-	fi
+    if ( [ ! -f ${WEBSERVER_PUBLIC_KEYS} ] )
+    then
+        /usr/bin/ssh-keyscan -p ${SSH_PORT} ${ip} > ${WEBSERVER_PUBLIC_KEYS}    
+    else
+        /bin/echo "#####################################################################################################################################################################"
+        /bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
+        /bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
+        /bin/echo "#####################################################################################################################################################################"
+        /bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"   
+        read response1
+        if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
+        then
+            /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${WEBSERVER_PUBLIC_KEYS}
+        fi
+    fi
 
-	if ( [ "`/bin/cat ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
-	then
-		/bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
-		/bin/rm ${WEBSERVER_PUBLIC_KEYS}
-		exit
-	fi
-	
-	/usr/bin/ssh -o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${ip} "${SUDO} /usr/sbin/shutdown -r now" 2>/dev/null
+    if ( [ "`/bin/cat ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
+    then
+        /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
+        /bin/rm ${WEBSERVER_PUBLIC_KEYS}
+        exit
+    fi
+    /usr/bin/ssh -o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${ip} "${SUDO} /usr/sbin/shutdown -r now" 2>/dev/null
 done
 
 for ip in ${databaseips}
 do
-	/bin/echo "Rebooting database....."
-	/bin/sleep 5
+    /bin/echo "Rebooting database....."
+    /bin/sleep 5
 
-	DATABASE_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/database_${ip}-keys"
+    DATABASE_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/database_${ip}-keys"
 
-	if ( [ ! -f ${DATABASE_PUBLIC_KEYS} ] )
-	then
-		/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${DATABASE_PUBLIC_KEYS}    
-	else
-		/bin/echo "#####################################################################################################################################################################"
-		/bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
-		/bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
-		/bin/echo "#####################################################################################################################################################################"
-		/bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"    
-		read response1
-		if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
-		then
-			/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${DATABASE_PUBLIC_KEYS}
-		fi
-	fi
+    if ( [ ! -f ${DATABASE_PUBLIC_KEYS} ] )
+    then
+        /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${DATABASE_PUBLIC_KEYS}    
+    else
+        /bin/echo "#####################################################################################################################################################################"
+        /bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
+        /bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
+        /bin/echo "#####################################################################################################################################################################"
+        /bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"    
+        read response1
+        if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
+        then
+            /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${ip} > ${DATABASE_PUBLIC_KEYS}
+        fi
+    fi
 
-	if ( [ "`/bin/cat ${DATABASE_PUBLIC_KEYS}`" = "" ] )
-	then
-		/bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
-		/bin/rm ${DATABASE_PUBLIC_KEYS}
-		exit
-	fi
-	
-	/usr/bin/ssh -o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${databaseips} '${SUDO} /usr/sbin/shutdown -r now' 2>/dev/null
+    if ( [ "`/bin/cat ${DATABASE_PUBLIC_KEYS}`" = "" ] )
+    then
+        /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
+        /bin/rm ${DATABASE_PUBLIC_KEYS}
+        exit
+    fi
+    /usr/bin/ssh -o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${databaseips} '${SUDO} /usr/sbin/shutdown -r now' 2>/dev/null
 done
