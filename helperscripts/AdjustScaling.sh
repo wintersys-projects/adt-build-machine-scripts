@@ -2,7 +2,8 @@
 ########################################################################################################
 # Author: Peter Winter
 # Date  : 13/01/2022
-# Description : This script will adjust the scaling settings for your infrastructure
+# Description : This script will adjust the webserver scaling settings for your autoscaler(s). In other words
+# if you use this script to set a scaling value of "5" then 5 webservers will be provisioned in short order
 ########################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
