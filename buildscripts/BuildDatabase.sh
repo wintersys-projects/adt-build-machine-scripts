@@ -120,7 +120,7 @@ do
                    
             if ( [ "${ip}" != "" ] && [ "${private_ip}" != "" ] )
             then
-                 server_started="1"
+                server_started="1"
             elif ( [ "${ip}" != "" ] && [ "${private_ip}" = "" ] )
             then
                 status "Found a public ip address but not a private ip address"
@@ -137,7 +137,7 @@ do
         #Record the database IP address for later reference because this is a self managed database
         if ( [ "${DB_IDENTIFIER}" = "self-managed" ] )
         then
-             ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DBIP_PRIVATE}"
+            ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DBIP_PRIVATE}"
         fi
 
         ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
@@ -145,20 +145,20 @@ do
 
         if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
         then
-             db_active_ip="${DBIP_PRIVATE}"
+            db_active_ip="${DBIP_PRIVATE}"
         elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
         then
-             db_active_ip="${DBIP_PUBLIC}"
+            db_active_ip="${DBIP_PUBLIC}"
         fi
 
         if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* ] )
         then
-             /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:*
+            /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:*
         fi
      
         if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:* ] )
         then
-             /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:*
+            /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:*
         fi
 
         if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips ] )
@@ -185,14 +185,13 @@ do
 
         if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
         then
-             /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
+            /usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
         fi
 
         status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
         status "This is the current time for your reference `/bin/date`"
 
         #Check that the database is built and ready for action
-
         done="0"
         alive=""
         count="0"
@@ -212,26 +211,26 @@ do
         #If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
         if ( [ "${done}" != "1" ] )
         then
-             status "###########################################################################################################################"
-             status "Hi, a database server didn't seem to build correctly. I can destroy it and try again to build a new database server for you"
-             status "###########################################################################################################################"
-             status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
+            status "###########################################################################################################################"
+            status "Hi, a database server didn't seem to build correctly. I can destroy it and try again to build a new database server for you"
+            status "###########################################################################################################################"
+            status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
 
-             if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-             then
+            if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+            then
                 read response
-             fi
+            fi
 
-             ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
-             ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
-             ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
+            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
+            ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
+            ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
 
-             #Wait until we are sure that the database server(s) are destroyed because of a faulty build
-             while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "${built}" ] )
-             do
-                  /bin/sleep 30
-             done
-             count1="`/usr/bin/expr ${count1} - 1`"
+            #Wait until we are sure that the database server(s) are destroyed because of a faulty build
+            while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "${built}" ] )
+            do
+                /bin/sleep 30
+            done 
+            count1="`/usr/bin/expr ${count1} - 1`"
         else
             status "A database server (${database_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
             counter="`/usr/bin/expr ${counter} - 1`"
@@ -251,6 +250,6 @@ done
 #If we get to here then we know that the database hasn't built correctly, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
-     status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
-     /usr/bin/kill -9 $PPID
+    status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
+    /usr/bin/kill -9 $PPID
 fi
