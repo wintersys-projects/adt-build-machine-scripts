@@ -20,7 +20,7 @@
 #######################################################################################################
 #set -x
 
-WEB_IP=""
+WEB_IP="" 
 
 if ( [ ! -f  ./CopyToWebserver.sh ] )
 then
@@ -155,7 +155,7 @@ then
 	then
 		/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${WEB_IP} > ${WEBSERVER_PUBLIC_KEYS}
 	fi
- 	
+
 	/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${sourcefile} ${SERVER_USER}@${WEB_IP}:${remotedir}
 fi
  
