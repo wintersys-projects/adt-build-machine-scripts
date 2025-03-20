@@ -99,8 +99,8 @@ do
 
             if ( [ "${count}" = "10" ] )
             then
-                 status "Could not create webserver machine"
-                 /usr/bin/kill -9 $PPID                        
+                status "Could not create webserver machine"
+                /usr/bin/kill -9 $PPID                        
             fi
 
             #Check that the server has been assigned its IP addresses and that they are active
@@ -138,10 +138,10 @@ do
 
         if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
         then
-             ws_active_ip="${WSIP_PRIVATE}"
+            ws_active_ip="${WSIP_PRIVATE}"
         elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
         then
-             ws_active_ip="${WSIP_PUBLIC}"
+            ws_active_ip="${WSIP_PUBLIC}"
         fi
 
         status "Have got the ip addresses for your webserver (${webserver_name})"
@@ -187,7 +187,7 @@ do
                                 
             if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
             then
-                 read response
+                read response
             fi
 
             ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
@@ -197,7 +197,7 @@ do
             #Wait until we are sure that the image server(s) are destroyed because of a faulty build
             while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
             do
-                 /bin/sleep 30
+                /bin/sleep 30
             done
         else
             status "A webserver (${webserver_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
@@ -218,6 +218,6 @@ done
 #If we get to here then we know that the webserver didn't build properly, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
-     status "The infrastructure failed to intialise because of a build problem, plese investigate, correct and rebuild"
-     /usr/bin/kill -9 $PPID
+    status "The infrastructure failed to intialise because of a build problem, plese investigate, correct and rebuild"
+    /usr/bin/kill -9 $PPID
 fi
