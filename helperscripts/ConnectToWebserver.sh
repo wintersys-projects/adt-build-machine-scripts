@@ -24,8 +24,8 @@ WEB_IP=""
 
 if ( [ ! -f  ./ConnectToWebserver.sh ] )
 then
-    /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-    exit
+	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+	exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -34,19 +34,19 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 read response
 if ( [ "${response}" = "1" ] )
 then
-    CLOUDHOST="digitalocean"
+	CLOUDHOST="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-    CLOUDHOST="exoscale"
+	CLOUDHOST="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-    CLOUDHOST="linode"
+	CLOUDHOST="linode"
 elif ( [ "${response}" = "4" ] )
 then
-    CLOUDHOST="vultr"
+	CLOUDHOST="vultr"
 else
-    /bin/echo "Unrecognised  cloudhost. Exiting ...."
-    exit
+	/bin/echo "Unrecognised  cloudhost. Exiting ...."
+	exit
 fi
 
 /bin/echo "What is the build Identifer for your build?"
@@ -59,7 +59,7 @@ read BUILD_IDENTIFIER
 
 if ( [ "${CLOUDHOST}" = "vultr" ] )
 then
-    export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
+	export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
 fi
 
 token_to_match="ws-`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`-${BUILD_IDENTIFIER}"
@@ -67,36 +67,36 @@ token_to_match="ws-`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`-${BU
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
 then
-    ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
+	ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
 else
-    ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
+	ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh ${token_to_match} ${CLOUDHOST} ${BUILD_HOME}`"
 fi
 
 if ( [ "${ips}" = "" ] )
 then
-    /bin/echo "There doesn't seem to be any webservers running"
-    exit
+	/bin/echo "There doesn't seem to be any webservers running"
+	exit
 fi
 
 /bin/echo "Which webserver would you like to connect to?"
 count=1
 for ip in ${ips}
 do
-    /bin/echo "${count}:   ${ip}"
-    /bin/echo "Press Y/N to connect..."
-    read response
+	/bin/echo "${count}:   ${ip}"
+	/bin/echo "Press Y/N to connect..."
+	read response
         
-    if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
-    then
-        WEB_IP=${ip}
-        break
-    fi
-    count="`/usr/bin/expr ${count} + 1`"
+	if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
+	then
+		WEB_IP=${ip}
+		break
+	fi
+	count="`/usr/bin/expr ${count} + 1`"
 done
 
 if ( [ "${response}" = "N" ] )
 then
-    exit
+	exit
 fi
 
 SERVER_USERNAME="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
@@ -105,25 +105,25 @@ WEBSERVER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER
 
 if ( [ ! -f ${WEBSERVER_PUBLIC_KEYS} ] )
 then
-    /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${WEB_IP} > ${WEBSERVER_PUBLIC_KEYS}    
-    if ( [ "`/bin/cat ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
-    then
-        /usr/bin/ssh-keyscan ${WEB_IP} > ${WEBSERVER_PUBLIC_KEYS}    
-    fi
+	/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${WEB_IP} > ${WEBSERVER_PUBLIC_KEYS}    
+	if ( [ "`/bin/cat ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
+	then
+		/usr/bin/ssh-keyscan ${WEB_IP} > ${WEBSERVER_PUBLIC_KEYS}    
+	fi
 fi
 
 if ( [ "`/bin/cat ${WEBSERVER_PUBLIC_KEYS}`" = "" ] )
 then
-    /bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
-    /bin/rm ${WEBSERVER_PUBLIC_KEYS}
-    exit
+	/bin/echo "Couldn't initiate ssh key scan please try again (make sure the machine is online"
+	/bin/rm ${WEBSERVER_PUBLIC_KEYS}
+	exit
 fi
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment ] )
 then
-    ALGORITHM="rsa"
+	ALGORITHM="rsa"
 else
-    ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
+	ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 fi
 
 
@@ -134,16 +134,17 @@ runtime="`/usr/bin/expr ${end} - ${start}`"
 
 if ( [ "${runtime}" -lt "3" ] )
 then
-    /bin/echo "#####################################################################################################################################################################"
-    /bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
-    /bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
-    /bin/echo "#####################################################################################################################################################################"
-    /bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"    
-    read response1
-    if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
-    then
-        /usr/bin/ssh-keyscan  -p ${SSH_PORT} ${WEB_IP} > ${WEBSERVER_PUBLIC_KEYS}
-    fi
+	/bin/echo "#####################################################################################################################################################################"
+	/bin/echo "Do you want to initiate a fresh ssh key scan (might be necessary if you can't connect) or  do you want to use previously generated keys"
+	/bin/echo "You should always use previously generated keys unless you can't connect (an previously used ip address might have been reallocated as part of scaling or redeployment"
+	/bin/echo "#####################################################################################################################################################################"
+	/bin/echo "Enter 'Y' to regenerate your SSH public keys anything else to keep the keys you have got. You should only need to regenerate the keys very occassionally if at all"    
+	read response1
+    
+	if ( [ "${response1}" = "Y" ] || [ "${response1}" = "y" ] )
+	then
+		/usr/bin/ssh-keyscan  -p ${SSH_PORT} ${WEB_IP} > ${WEBSERVER_PUBLIC_KEYS}
+	fi
         
-    /usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}
+	/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}
 fi
