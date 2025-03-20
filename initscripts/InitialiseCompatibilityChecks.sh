@@ -22,32 +22,32 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+    /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 #Check that we are 64 bit
 if ( [ "`/usr/bin/dpkg --print-architecture`" = "i386" ] )
 then
-	status "############################################################################################################"
-	status "Darn it. This script requires a 64 bit machine to run on. I have to exit. If you don't have a 64 bit machine"
-	status "To build on of your own, you can spin one up in the cloud (ubuntu 20.04 and up) or (debian 10 and up ) and use that as your build machine to deploy from"
-	status "############################################################################################################"
-	/usr/bin/kill -9 $PPID
+    status "############################################################################################################"
+    status "Darn it. This script requires a 64 bit machine to run on. I have to exit. If you don't have a 64 bit machine"
+    status "To build on of your own, you can spin one up in the cloud (ubuntu 20.04 and up) or (debian 10 and up ) and use that as your build machine to deploy from"
+    status "############################################################################################################"
+    /usr/bin/kill -9 $PPID
 fi
 
 #Check that you are root and if not make some recommendations
 if ( [ "`/usr/bin/id -u`" != "0" ] )
 then
-	status ""
-	status ""
-	status "###################################################################################################################################"
-	status "You need to run this script either directly as root or with the sudo command as it needs to make some installations to your machine"
-	status "If this is a problem and you don't want stuff installed on your machine, I recommend that you spin up a dedicated build machine"
-	status "in the cloud for dedicated use when building/deploying with this toolkit (ubuntu 20.04 and up or debian 10 and up) are suitable build machines to use"
-	status "###################################################################################################################################"
-	/usr/bin/kill -9 $PPID
+    status ""
+    status ""
+    status "###################################################################################################################################"
+    status "You need to run this script either directly as root or with the sudo command as it needs to make some installations to your machine"
+    status "If this is a problem and you don't want stuff installed on your machine, I recommend that you spin up a dedicated build machine"
+    status "in the cloud for dedicated use when building/deploying with this toolkit (ubuntu 20.04 and up or debian 10 and up) are suitable build machines to use"
+    status "###################################################################################################################################"
+    /usr/bin/kill -9 $PPID
 fi
 
 
