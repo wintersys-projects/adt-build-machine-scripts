@@ -29,7 +29,7 @@ then
     BUILD_IDENTIFIER="${2}"
     response="${3}"
     response1="${4}"
-else
+else 
     /bin/echo "Which cloudhost do you want to view logs for DigitalOcean (do), Exoscale (exo), Linode (lin) or Vultr (vul)"
     /bin/echo "Please type one of do, exo, lin, vul"
     read cloudhost
