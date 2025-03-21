@@ -21,33 +21,33 @@
 #set -x
 
 status () {
-    /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 datastore_to_get="`/bin/echo $1 | /usr/bin/cut -c-63`"
 if ( [ "${2}" != "" ] )
 then
-    destination="${2}"
+	destination="${2}"
 else 
-    destination="."
+	destination="."
 fi
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-    datastore_tool="/usr/bin/s3cmd --force --recursive get"
+	datastore_tool="/usr/bin/s3cmd --force --recursive get"
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
-    host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-    datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} cp "
+	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+	datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} cp "
 fi
 
 count="0"
 while ( [ "`${datastore_tool} s3://${datastore_to_get} ${destination} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
 do
-    /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-    /bin/sleep 5
-    count="`/usr/bin/expr ${count} + 1`"
+	/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
+	/bin/sleep 5
+	count="`/usr/bin/expr ${count} + 1`"
 done 
