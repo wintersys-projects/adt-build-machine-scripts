@@ -28,14 +28,14 @@ BUILD_ENVIRONMENT="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/bu
 
 if ( [ "${1}" != "" ] )
 then
-    keyvalue="${1}"
+	keyvalue="${1}"
 fi
 
 key="`/bin/echo ${keyvalue} | /usr/bin/awk -F'=' '{print $1}'`"
 
 if ( [ "`/bin/grep "^${key}=" ${BUILD_ENVIRONMENT}`" = "" ] )
 then
-    /bin/echo "${keyvalue}" >> ${BUILD_ENVIRONMENT}
+	/bin/echo "${keyvalue}" >> ${BUILD_ENVIRONMENT}
 else
-    /bin/sed -i "s/${key}=.*/${keyvalue}/" ${BUILD_ENVIRONMENT}
+	/bin/sed -i "s/${key}=.*/${keyvalue}/" ${BUILD_ENVIRONMENT}
 fi
