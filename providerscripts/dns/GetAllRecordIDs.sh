@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 websiteurl="${2}"
@@ -61,7 +61,6 @@ then
 fi
 
 domain_url="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
-#domain_url="${2}"
 subdomain="`/bin/echo ${2} | /usr/bin/awk -F'.' '{print $1}'`"
 dns="${5}"
 
