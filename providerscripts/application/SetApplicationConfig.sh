@@ -27,16 +27,12 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 database_ip="${1}"
-
-#BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-#CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
-#BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
@@ -50,70 +46,22 @@ database_name="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`"
 db_port="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PORT'`"
 database_identifier="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_IDENTIFIER'`"
 
- 
-#if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_HOSTNAME ] )
-#then
-       # DB_HOSTNAME="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_HOSTNAME`"
-#        db_hostname="`/bin/sed 5!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-#fi
-
-#db_port="`/bin/sed 4!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-
-#db_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-#if ( [ "${DB_PORT}" = "" ] )
-#then
-#     DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
-#fi
-
-#if ( [ "${DB_HOSTNAME}" = "" ] )
-#then
- #       if ( [ "${DBIP_PRIVATE}" = "" ] )
-  #      then
-   #             DBIP_PRIVATE="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:* | /usr/bin/awk -F':' '{print $NF}'`"
-  #      fi
- 
-   #     if ( [ "${DBIP_PUBLIC}" = "" ] )
-   #     then
-   #             DBIP_PUBLIC="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* | /usr/bin/awk -F':' '{print $NF}'`"
-   #     fi
-#fi
-
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] )
 then
-        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-        then
-                /bin/echo "Database name: ${database_name}" 
-                /bin/echo "Database username: ${database_username}" 
-                /bin/echo "Database password: ${database_password}" 
-       # else
-       #         database_name="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-       #         database_username="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-       #         database_password="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-        fi
+	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+	then
+		/bin/echo "Database name: ${database_name}" 
+		/bin/echo "Database username: ${database_username}" 
+		/bin/echo "Database password: ${database_password}" 
+	fi
 else
-        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-        then
-                /bin/echo "Database name: ${database_name}" >&3
-                /bin/echo "Database username: ${database_username}" >&3
-                /bin/echo "Database password: ${database_password}" >&3
-              #  /bin/echo "Database name: `/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
-              #  /bin/echo "Database username: `/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
-              #  /bin/echo "Database password: `/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`" >&3
-       # else
-        #        database_name="`/bin/sed 1!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-        #        database_username="`/bin/sed 3!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-        #        database_password="`/bin/sed 2!d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/db_cred`"
-        fi
+	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+	then
+		/bin/echo "Database name: ${database_name}" >&3
+		/bin/echo "Database username: ${database_username}" >&3
+		/bin/echo "Database password: ${database_password}" >&3
+	fi
 fi
-
-#DBIP_PRIVATE="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBPRIVATEIP:* | /usr/bin/awk -F':' '{print $NF}'`"
-
-#if ( [ "${db_hostname}" != "" ] )
-#then
-#     database_identifier="${db_hostname}"
-#else
-#     database_identifier="${db_ip}"
-#fi
 
 . ${BUILD_HOME}/providerscripts/application/${APPLICATION}/SetApplicationConfig.sh
 
