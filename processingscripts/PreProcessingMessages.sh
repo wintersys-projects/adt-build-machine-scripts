@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -49,158 +49,158 @@ status ""
 
 if ( [ "${PRODUCTION}" = "1" ] )
 then
-        status "############################################"
-        status "Number of autoscalers is set to: ${NO_AUTOSCALERS}"
-        status "############################################"
+	status "############################################"
+	status "Number of autoscalers is set to: ${NO_AUTOSCALERS}"
+	status "############################################"
 fi
 
 if ( [ "${CLOUDHOST}" = "vultr" ] )
 then
-        export ENABLE_DDOS_PROTECION="0"
-        status "You are deploying to the Vultr VPS cloud which has an option to switch on DDOS protection for your machines."
-        status "If you want to switch on DDOS projection, enter 'Y' or 'y' below, anything else and DDOS protection won't be enabled". 
-        status " DDoS Protection adds 10Gbps of mitigation capacity per instance and costs an additional \$10/mo."
-        status "Do you want to enable DDOS protection 'Y' or 'N'"
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-                read response
+	export ENABLE_DDOS_PROTECION="0"
+	status "You are deploying to the Vultr VPS cloud which has an option to switch on DDOS protection for your machines."
+	status "If you want to switch on DDOS projection, enter 'Y' or 'y' below, anything else and DDOS protection won't be enabled". 
+	status " DDoS Protection adds 10Gbps of mitigation capacity per instance and costs an additional \$10/mo."
+	status "Do you want to enable DDOS protection 'Y' or 'N'"
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+	then
+		read response
 
-                if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
-                then
-                   status "DDOS protection has been enabled"
-                   status "Press <enter>"
-                   read x
-                   export ENABLE_DDOS_PROTECION="1"
-                else
-                   status "DDOS protection has not been enabled"
-                   status "Press <enter>"
-                   read x
-                fi
-        fi
+		if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
+		then
+			status "DDOS protection has been enabled"
+			status "Press <enter>"
+			read x
+			export ENABLE_DDOS_PROTECION="1"
+		else
+			status "DDOS protection has not been enabled"
+			status "Press <enter>"
+			read x
+		fi
+	fi
 fi
 
 if ( [ "${APPLICATION}" = "joomla" ] && [ "${APPLICATION_IDENTIFIER}" != "1" ] )
 then
-        status "Your application is set to joomla and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-        status "The application identifier must be set to 1 for joomla otherwise bad things can happen"
-        status "I am setting your application identifier to 1"
-        export APPLICATION_IDENTIFIER="1"
-        export APPLICATION="joomla"
-        status "Press <enter> to accept"
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-                read x
-        fi
+	status "Your application is set to joomla and your application identifier is set to ${APPLICATION_IDENTIFIER}"
+	status "The application identifier must be set to 1 for joomla otherwise bad things can happen"
+	status "I am setting your application identifier to 1"
+	export APPLICATION_IDENTIFIER="1"
+	export APPLICATION="joomla"
+	status "Press <enter> to accept"
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+	then
+		read x
+	fi
 fi
 
 if ( [ "${APPLICATION}" = "wordpress" ] && [ "${APPLICATION_IDENTIFIER}" != "2" ] )
 then
-        status "Your application is set to wordpress and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-        status "The application identifier must be set to 2 for wordpress otherwise bad things can happen"
-        status "I am setting your application identifier to 2"
-        export APPLICATION_IDENTIFIER="2"
-        export APPLICATION="wordpress"
-        status "Press <enter> to accept"
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-                read x
-        fi
+	status "Your application is set to wordpress and your application identifier is set to ${APPLICATION_IDENTIFIER}"
+	status "The application identifier must be set to 2 for wordpress otherwise bad things can happen"
+	status "I am setting your application identifier to 2"
+	export APPLICATION_IDENTIFIER="2"
+	export APPLICATION="wordpress"
+	status "Press <enter> to accept"
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+	then
+		read x
+	fi
 fi
 
 if ( [ "${APPLICATION}" = "drupal" ] && [ "${APPLICATION_IDENTIFIER}" != "3" ] )
 then
-        status "Your application is set to drupal and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-        status "The application identifier must be set to 3 for drupal otherwise bad things can happen"
-        status "I am setting your application identifier to 3"
-        export APPLICATION_IDENTIFIER="3"
-        export APPLICATION="drupal"
-        status "Press <enter> to accept"
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-                read x
-        fi
+	status "Your application is set to drupal and your application identifier is set to ${APPLICATION_IDENTIFIER}"
+	status "The application identifier must be set to 3 for drupal otherwise bad things can happen"
+	status "I am setting your application identifier to 3"
+	export APPLICATION_IDENTIFIER="3"
+	export APPLICATION="drupal"
+	status "Press <enter> to accept"
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+	then
+		read x
+	fi
 fi
 
 if ( [ "${APPLICATION}" = "moodle" ] && [ "${APPLICATION_IDENTIFIER}" != "4" ] )
 then
-        status "Your application is set to moodle and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-        status "The application identifier must be set to 4 for moodle otherwise bad things can happen"
-        status "I am setting your application identifier to 4"
-        export APPLICATION_IDENTIFIER="4"
-        export APPLICATION="moodle"
-        status "Press <enter> to accept"
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-                read x
-        fi
+	status "Your application is set to moodle and your application identifier is set to ${APPLICATION_IDENTIFIER}"
+	status "The application identifier must be set to 4 for moodle otherwise bad things can happen"
+	status "I am setting your application identifier to 4"
+	export APPLICATION_IDENTIFIER="4"
+	export APPLICATION="moodle"
+	status "Press <enter> to accept"
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+	then
+		read x
+	fi
 fi
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
-        PRODUCTION="0"
-        DEVELOPMENT="1"
+	PRODUCTION="0"
+	DEVELOPMENT="1"
 fi
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] && [ "${APPLICATION}" = "wordpress" ] )
 then
-        status "################################################################"
-        status "Apologies, but, Wordpress doesn't support the Postgres Database."
-        status "I am defaulting to mariadb. Press <enter> to acknowledge"
-        status "################################################################"
-        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-        then
-                read x
-        fi
-        DATABASE_INSTALLATION_TYPE="Maria"
+	status "################################################################"
+	status "Apologies, but, Wordpress doesn't support the Postgres Database."
+	status "I am defaulting to mariadb. Press <enter> to acknowledge"
+	status "################################################################"
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+	then
+		read x
+	fi
+	DATABASE_INSTALLATION_TYPE="Maria"
 fi
 
 if ( ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep "Postgres" 2>/dev/null`" != "" ] ) && [ "${APPLICATION}" = "joomla" ] )
 then
-        if ( [ "${DB_PORT}" != "5432" ] )
-        then
-                status "################################################################"
-                status "Sorry, I don't know how to set anything other than the default port - 5432 for the postgres database when using joomla"
-                status "Setting expected postgres port to 5432"
-                status "################################################################"
-                export DB_PORT=5432
-        fi
+	if ( [ "${DB_PORT}" != "5432" ] )
+	then
+		status "################################################################"
+		status "Sorry, I don't know how to set anything other than the default port - 5432 for the postgres database when using joomla"
+		status "Setting expected postgres port to 5432"
+		status "################################################################"
+		export DB_PORT=5432
+	fi
 fi
 
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "Postgres" ] )
 then
-        response=""
+	response=""
 
-        if ( [ "${DB_NAME}" != "" ] )
-        then
-                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                then
-                        /bin/bash -c "[[ '${DB_NAME}' =~ [A-Z] ]] && /bin/touch ${BUILD_HOME}/LOWER && /bin/echo 'I know this is your worst nightmare, but, please read carefully. I have detected that you have some upper case letters in the databse name for your postgres database. By default postgres sets the database names to lower case and so chances are, this is what your postgres has done. Please review this to see if it is the case, but I thought I would give you a chance to change your database name to all lower case.' && /bin/echo && /bin/echo 'Your database name is currently set to: ${DB_NAME}.' && /bin/echo 'enter (Y|y) and I will set the characters  of your database name all to lower case for you...' && /bin/echo 'Press <enter> to leave as it is '"
+	if ( [ "${DB_NAME}" != "" ] )
+	then
+		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+		then
+			/bin/bash -c "[[ '${DB_NAME}' =~ [A-Z] ]] && /bin/touch ${BUILD_HOME}/LOWER && /bin/echo 'I know this is your worst nightmare, but, please read carefully. I have detected that you have some upper case letters in the databse name for your postgres database. By default postgres sets the database names to lower case and so chances are, this is what your postgres has done. Please review this to see if it is the case, but I thought I would give you a chance to change your database name to all lower case.' && /bin/echo && /bin/echo 'Your database name is currently set to: ${DB_NAME}.' && /bin/echo 'enter (Y|y) and I will set the characters  of your database name all to lower case for you...' && /bin/echo 'Press <enter> to leave as it is '"
            
-                        if ( [ -f ${BUILD_HOME}/LOWER ] )
-                        then
-                                read response
-                        fi
+			if ( [ -f ${BUILD_HOME}/LOWER ] )
+			then
+				read response
+			fi
            
-                        if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
-                        then
-                                if ( [ -f ${BUILD_HOME}/LOWER ] )
-                                then
-                                        /bin/rm ${BUILD_HOME}/LOWER
-                                        DB_NAME="`/bin/echo "${DB_NAME}" | /usr/bin/tr '[:upper:]' '[:lower:]'`"
-                                fi
-                        fi
+			if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
+			then
+				if ( [ -f ${BUILD_HOME}/LOWER ] )
+				then
+					/bin/rm ${BUILD_HOME}/LOWER
+					DB_NAME="`/bin/echo "${DB_NAME}" | /usr/bin/tr '[:upper:]' '[:lower:]'`"
+				fi
+			fi
 
-                        if ( [ -f ${BUILD_HOME}/LOWER ] )
-                        then
-                                status "#################################################"
-                                status "Your database name is now set to: ${DB_NAME}"
-                                status "Press <enter> to accept"
-                                status "#################################################"
-                                read x
-                        fi
-                fi
-        fi
+			if ( [ -f ${BUILD_HOME}/LOWER ] )
+			then
+				status "#################################################"
+				status "Your database name is now set to: ${DB_NAME}"
+				status "Press <enter> to accept"
+				status "#################################################"
+				read x
+			fi
+		fi
+	fi
 fi
 
 
