@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-    /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -37,11 +37,11 @@ configbucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-    datastore_tool="/usr/bin/s3cmd"
+	datastore_tool="/usr/bin/s3cmd"
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
-    host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-    datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
+	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+	datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
 fi
 
 ${datastore_tool} ls s3://${configbucket}/${1}
