@@ -28,7 +28,7 @@ BUILD_ENVIRONMENT="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/bu
 
 if ( [ "${1}" = "" ] )
 then
-    exit
+	exit
 fi
 
 /bin/grep "^${1}=" ${BUILD_ENVIRONMENT} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'
