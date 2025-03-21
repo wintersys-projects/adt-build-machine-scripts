@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 if ( [ "${BUILD_HOME}" = "" ] )
@@ -73,22 +73,22 @@ elif ( [ "${firewall}" = "iptables" ] )
 then
 	if ( [ -f /usr/sbin/ufw ] )
  	then
-  		/usr/sbin/ufw disable
-    	fi
-        /usr/sbin/iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-        /usr/sbin/iptables -A INPUT -p tcp --dport ${buildmachine_ssh_port} -j ACCEPT
-        /usr/sbin/iptables -A INPUT -s ${laptop_ip} -p ICMP --icmp-type 8 -j ACCEPT
-        /usr/sbin/iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j DROP
-        /usr/sbin/iptables -I INPUT \! -s ${laptop_ip} -m state --state NEW,INVALID -p tcp --dport ${buildmachine_ssh_port} -j DROP
-        /usr/sbin/iptables -A INPUT ! -s ${laptop_ip} -p icmp -m state --state INVALID,NEW -m icmp --icmp-type 8  -j DROP
-        /usr/sbin/iptables -A INPUT -i lo -j ACCEPT
-        /usr/sbin/iptables -A OUTPUT -o lo -j ACCEPT
-        /usr/sbin/iptables -P INPUT DROP
-        /usr/sbin/iptables -P FORWARD DROP
-        /usr/sbin/iptables -P OUTPUT ACCEPT
-  	/usr/sbin/ip6tables -P INPUT DROP
+		/usr/sbin/ufw disable
+	fi
+	/usr/sbin/iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+	/usr/sbin/iptables -A INPUT -p tcp --dport ${buildmachine_ssh_port} -j ACCEPT
+	/usr/sbin/iptables -A INPUT -s ${laptop_ip} -p ICMP --icmp-type 8 -j ACCEPT
+	/usr/sbin/iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j DROP
+	/usr/sbin/iptables -I INPUT \! -s ${laptop_ip} -m state --state NEW,INVALID -p tcp --dport ${buildmachine_ssh_port} -j DROP
+	/usr/sbin/iptables -A INPUT ! -s ${laptop_ip} -p icmp -m state --state INVALID,NEW -m icmp --icmp-type 8  -j DROP
+	/usr/sbin/iptables -A INPUT -i lo -j ACCEPT
+	/usr/sbin/iptables -A OUTPUT -o lo -j ACCEPT
+	/usr/sbin/iptables -P INPUT DROP
+	/usr/sbin/iptables -P FORWARD DROP
+	/usr/sbin/iptables -P OUTPUT ACCEPT
+	/usr/sbin/ip6tables -P INPUT DROP
 	/usr/sbin/ip6tables -P FORWARD DROP
 	/usr/sbin/ip6tables -P OUTPUT DROP
 	${BUILD_HOME}/helperscripts/RunServiceCommand.sh netfilter-persistent save
-	 /bin/touch /root/FIREWALL-INITIALISED
+	/bin/touch /root/FIREWALL-INITIALISED
  fi
