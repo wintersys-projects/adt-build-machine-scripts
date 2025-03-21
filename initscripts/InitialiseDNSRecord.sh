@@ -23,9 +23,9 @@
 #set -x
 
 status () {
-    /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 ip="${1}"
@@ -42,9 +42,9 @@ DNS_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_REGION`"
 
 if ( [ "${website_url}" != "" ] )
 then
-    WEBSITE_URL="${website_url}"
+	WEBSITE_URL="${website_url}"
 else
-    WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+	WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 fi
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
@@ -52,43 +52,42 @@ SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_I
 
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
-    #If we get to here then we know that the webserver was built correctly
-    #We have to configure it some more and add it to the DNS provider's DNS so we can access the webserver
-    #Please note, we make use of the implicit DNS roundrobin loadbalancing system with our webservers
-    name="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{print $1}'`"
+	#If we get to here then we know that the webserver was built correctly
+	#We have to configure it some more and add it to the DNS provider's DNS so we can access the webserver
+	#Please note, we make use of the implicit DNS roundrobin loadbalancing system with our webservers
+	name="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{print $1}'`"
 
-    #Create  zone if it doesn't already exist
-    zonename="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{$1=""}1' | /bin/sed 's/^ //g' | /bin/sed 's/ /./g'`"
-    zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
+	#Create  zone if it doesn't already exist
+	zonename="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{$1=""}1' | /bin/sed 's/^ //g' | /bin/sed 's/ /./g'`"
+	zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
 		   
-    if ( [ "${zoneid}" = "" ] )
-    then
-        ${BUILD_HOME}/providerscripts/dns/CreateZone.sh "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${DNS_CHOICE}" "${DNS_REGION}"
-    fi
+	if ( [ "${zoneid}" = "" ] )
+	then
+		${BUILD_HOME}/providerscripts/dns/CreateZone.sh "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${DNS_CHOICE}" "${DNS_REGION}"
+	fi
 		   
-    status "We are adding our DNS records to the DNS provider you selected, in this case ${DNS_CHOICE}"
-    zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
+	status "We are adding our DNS records to the DNS provider you selected, in this case ${DNS_CHOICE}"
+	zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
 		   
-    if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
-    then
-        while ( [ "${zoneid}" = "" ] )
-        do
-            status "Attempting to get zone id for the DNS system (this may take a few retries)....if, after some time, I can't get your zone id check that your nameservers are configured correctly. Please wait...."
-            /bin/sleep 30
-            zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
-        done
-    fi
+	if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
+	then
+		while ( [ "${zoneid}" = "" ] )
+		do
+			status "Attempting to get zone id for the DNS system (this may take a few retries)....if, after some time, I can't get your zone id check that your nameservers are configured correctly. Please wait...."
+			/bin/sleep 30
+			zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
+		done
+	fi
 		  
-    recordids="`${BUILD_HOME}/providerscripts/dns/GetAllRecordIDs.sh  "${zoneid}" "${WEBSITE_URL}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
+	recordids="`${BUILD_HOME}/providerscripts/dns/GetAllRecordIDs.sh  "${zoneid}" "${WEBSITE_URL}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}"`"
 
-    if ( [ "${recordids}" != "" ] )
-    then
-        for recordid in ${recordids}
-        do
-            ${BUILD_HOME}/providerscripts/dns/DeleteRecord.sh "${zoneid}" "${recordid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}" "${WEBSITE_URL}"
-        done
-    fi
+	if ( [ "${recordids}" != "" ] )
+	then
+		for recordid in ${recordids}
+		do
+			${BUILD_HOME}/providerscripts/dns/DeleteRecord.sh "${zoneid}" "${recordid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${DNS_REGION}" "${WEBSITE_URL}"
+		done
+	fi
 
-    ${BUILD_HOME}/providerscripts/dns/AddRecord.sh "${zoneid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${ip}" "true" "${DNS_CHOICE}" "${DNS_REGION}" "${WEBSITE_URL}"
-
+	${BUILD_HOME}/providerscripts/dns/AddRecord.sh "${zoneid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${ip}" "true" "${DNS_CHOICE}" "${DNS_REGION}" "${WEBSITE_URL}"
 fi
