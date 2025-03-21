@@ -2,7 +2,7 @@
 # To add this repository please do:
 
 if [ "$(whoami)" != "root" ]; then
-    SUDO=sudo
+    SUDO=/usr/bin/sudo
 fi
 
 ${SUDO} apt-get update
