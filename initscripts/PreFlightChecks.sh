@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -45,9 +45,9 @@ do
 			status "It seems like there is an ${machine_type} already running please close it down and rebuild"
 			status "#####################################################################################"
 			status "Press <enter> to try again (once the ${machine_type} I found is offline"
-   			read x
-  		else
-   			authorised="yes"
+			read x
+		else
+			authorised="yes"
 		fi
  	done
 done
