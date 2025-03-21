@@ -29,7 +29,7 @@
 ###############################################################################################
 #set -x
 
-#Uncomment/ammend as desired
+#Uncomment/amend as desired
 #/bin/echo "set mouse=r
 #syntax on" > /root/.vimrc
 
