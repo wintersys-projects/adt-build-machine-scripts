@@ -40,23 +40,23 @@ install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y inst
 if ( [ "${buildos}" = "ubuntu" ] )
 then	
 	eval ${install_command} jq                       
-        version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
-        /usr/bin/wget -c https://storage.googleapis.com/golang/go${version}.linux-amd64.tar.gz  -O - | /usr/bin/tar -xz -C /usr/local  
+	version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
+	/usr/bin/wget -c https://storage.googleapis.com/golang/go${version}.linux-amd64.tar.gz  -O - | /usr/bin/tar -xz -C /usr/local  
 	
- 	if ( [ ! -L /usr/bin/go ] )
- 	then
-        	/usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
+	if ( [ ! -L /usr/bin/go ] )
+	then
+		/usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
  	fi	
-  fi
+fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
 	eval ${install_command} jq                       
-        version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
-        /usr/bin/wget -c https://storage.googleapis.com/golang/go${version}.linux-amd64.tar.gz  -O - | /usr/bin/tar -xz -C /usr/local   
+	version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
+	/usr/bin/wget -c https://storage.googleapis.com/golang/go${version}.linux-amd64.tar.gz  -O - | /usr/bin/tar -xz -C /usr/local   
  	
-  	if ( [ ! -L /usr/bin/go ] )
- 	then
-        	/usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
- 	fi
+	if ( [ ! -L /usr/bin/go ] )
+	then
+		/usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
+	fi
 fi
