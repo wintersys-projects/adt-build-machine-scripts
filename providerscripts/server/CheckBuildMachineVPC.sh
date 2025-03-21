@@ -1,9 +1,9 @@
 
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -13,24 +13,24 @@ server_ip="${2}"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-        server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} digitalocean`"
-        ${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} digitalocean 
+	server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} digitalocean`"
+	${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} digitalocean 
 fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-        server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} exoscale`"
-        ${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} exoscale 
+	server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} exoscale`"
+	${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} exoscale 
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
-        server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} linode`"
-        ${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} linode 
+	server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} linode`"
+	${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} linode 
 fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
 then
-        server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} vultr`"
-        ${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} vultr 
+	server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} vultr`"
+	${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} vultr 
 fi
