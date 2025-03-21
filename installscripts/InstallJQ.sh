@@ -46,6 +46,6 @@ then
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		eval ${install_command} jq
+		eval ${install_command} jq	
 	fi
 fi
