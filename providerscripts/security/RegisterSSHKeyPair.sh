@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 key_name="${1}"
@@ -53,7 +53,6 @@ fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
 then
-	#export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/TOKEN`"
 	status "About to create ssh key in vultr"
 	/bin/sleep 1
 	/usr/bin/vultr ssh-key create -n "${key_name}" -k "${key_substance}"
