@@ -21,25 +21,25 @@
 #set -x
 
 status () {
-    /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-    script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-    /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 file_to_delete="$1"
 
 if ( [ "${BUILD_HOME}" = "" ] )
 then 
-    BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+	BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 fi
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-    datastore_tool="/usr/bin/s3cmd --recursive --force del "
+	datastore_tool="/usr/bin/s3cmd --recursive --force del "
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
-    host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-    datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} rm "
+	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+	datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} rm "
 fi
 
 ${datastore_tool} s3://${file_to_delete}
