@@ -18,12 +18,12 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #########################################################################################
 #########################################################################################
-set -x
+#set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 pre_build="${1}"
@@ -40,135 +40,128 @@ VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
-        build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
+	build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 
-        status ""
-        status ""
-        status "###############################################################"
-        status "Just adjusting your native firewalling system , please wait...."
-        status "###############################################################"
+	status ""
+	status ""
+	status "###############################################################"
+	status "Just adjusting your native firewalling system , please wait...."
+	status "###############################################################"
 
-        if ( [ "${CLOUDHOST}" = "digitalocean" ] )
-        then
-                if ( [ "${pre_build}" = "0" ] )
-                then
-                        autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+	if ( [ "${CLOUDHOST}" = "digitalocean" ] )
+	then
+		if ( [ "${pre_build}" = "0" ] )
+		then
+			autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
-                        rules=""
+			rules=""
 
-                        if ( [ "${autoscaler_ids}" != "" ] )
-                        then
-                                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-                                then
-                                        rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
-                                fi
+			if ( [ "${autoscaler_ids}" != "" ] )
+			then
+				if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+				then
+					rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+				fi
 
-                                rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
-                                rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
+				rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
+				rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
 
-                                
-                                autoscaler_firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "adt-autoscaler-'${BUILD_IDENTIFIER}'" ).id'`"
-                                 /usr/local/bin/doctl compute firewall add-rules ${autoscaler_firewall_id} --inbound-rules "${rules}"
+				autoscaler_firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "adt-autoscaler-'${BUILD_IDENTIFIER}'" ).id'`"
+				/usr/local/bin/doctl compute firewall add-rules ${autoscaler_firewall_id} --inbound-rules "${rules}"
 
-                                for autoscaler_id in ${autoscaler_ids}
-                                do
-                                        /usr/local/bin/doctl compute firewall add-droplets ${autoscaler_firewall_id} --droplet-ids ${autoscaler_id}                
-                                done
-                        fi
+				for autoscaler_id in ${autoscaler_ids}
+				do
+					/usr/local/bin/doctl compute firewall add-droplets ${autoscaler_firewall_id} --droplet-ids ${autoscaler_id}                
+				done
+			fi
 
-                        webserver_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+			webserver_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
-                        if ( [ "${webserver_id}" != "" ] )
-                        then
-                                rules=""
+			if ( [ "${webserver_id}" != "" ] )
+			then
+				rules=""
 
-                                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-                                then
-                                         rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
-                                fi
+				if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+				then
+					rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+				fi
 
-                                ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
+				${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
 
+				if ( [ "${alldnsproxyips}" != "" ] )
+				then
+					for ip in ${alldnsproxyips}
+					do
+						rules=${rules}" protocol:tcp,ports:443,address:${ip} " 
+					done
+					rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} "
+				else
+					rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} protocol:tcp,ports:443,address:0.0.0.0/0 "
+				fi
+				rules=${rules}"  protocol:tcp,ports:443,address:${VPC_IP_RANGE} " 
+				rules=${rules}" protocol:icmp,address:0.0.0.0/0"
+				rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
 
-                                if ( [ "${alldnsproxyips}" != "" ] )
-                                then
-                                        for ip in ${alldnsproxyips}
-                                        do
-                                                rules=${rules}" protocol:tcp,ports:443,address:${ip} " 
-                                        done
-                                        rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} "
-                                else
-                                        rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} protocol:tcp,ports:443,address:0.0.0.0/0 "
-                                fi
-    
-                                rules=${rules}"  protocol:tcp,ports:443,address:${VPC_IP_RANGE} " 
+				webserver_firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"
+				/usr/local/bin/doctl compute firewall add-rules ${webserver_firewall_id} --inbound-rules "${rules}"
+				/usr/local/bin/doctl compute firewall add-droplets ${webserver_firewall_id} --droplet-ids ${webserver_id}
+			fi
 
-                                rules=${rules}" protocol:icmp,address:0.0.0.0/0"
-                                rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
+			database_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
-                                webserver_firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"
-                                /usr/local/bin/doctl compute firewall add-rules ${webserver_firewall_id} --inbound-rules "${rules}"
-                                /usr/local/bin/doctl compute firewall add-droplets ${webserver_firewall_id} --droplet-ids ${webserver_id}
-                        fi
+			if ( [ "${database_id}" != "" ] )
+			then
+				rules=""
+				if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+				then
+					rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+				fi
 
-                        database_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+				rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:${DB_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
+				rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
 
-                        if ( [ "${database_id}" != "" ] )
-                        then
-                                rules=""
+				database_firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "adt-database-'${BUILD_IDENTIFIER}'" ).id'`"
+				/usr/local/bin/doctl compute firewall add-rules ${database_firewall_id} --inbound-rules "${rules}"
+				/usr/local/bin/doctl compute firewall add-droplets ${database_firewall_id} --droplet-ids ${database_id}                
+			fi
+		elif ( [ "${pre_build}" = "1" ] )
+		then
+			firewall_ids="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-autoscaler")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
+			firewall_ids="${firewall_ids} `/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-webserver")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
+			firewall_ids="${firewall_ids} `/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-database")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
 
-                                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-                                then
-                                        rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
-                                fi
+			if ( [ "${firewall_ids}" != "" ] )
+			then
+				for firewall_id in ${firewall_ids}
+				do
+					if ( [ "`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.id == "'${firewall_id}'").droplet_ids[]'`" = "" ] )
+					then
+						/bin/echo "y" | /usr/local/bin/doctl compute firewall delete ${firewall_id} --force 
+					fi
+				done
+			fi
 
-                                rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:${DB_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
+			if ( [ "`/usr/local/bin/doctl compute firewall list -o json | /usr/bin/jq -r '.[] | select (.name == "adt-autoscaler-'${BUILD_IDENTIFIER}'").id'`" = "" ] )
+			then
+				/usr/local/bin/doctl compute firewall create --name "adt-autoscaler-${BUILD_IDENTIFIER}" --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
+			fi
 
-                                rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
+			if ( [ "`/usr/local/bin/doctl compute firewall list -o json | /usr/bin/jq -r '.[] | select (.name == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`" = "" ] )
+			then
+				/usr/local/bin/doctl compute firewall create --name "adt-webserver-${BUILD_IDENTIFIER}" --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
+			fi
 
-                                database_firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "adt-database-'${BUILD_IDENTIFIER}'" ).id'`"
-                                /usr/local/bin/doctl compute firewall add-rules ${database_firewall_id} --inbound-rules "${rules}"
-                                /usr/local/bin/doctl compute firewall add-droplets ${database_firewall_id} --droplet-ids ${database_id}                
-                        fi
+			if ( [ "`/usr/local/bin/doctl compute firewall list -o json | /usr/bin/jq -r '.[] | select (.name == "adt-database-'${BUILD_IDENTIFIER}'").id'`" = "" ] )
+			then
+				/usr/local/bin/doctl compute firewall create --name "adt-database-${BUILD_IDENTIFIER}" --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
+			fi
+        fi 
+    fi
 
-                elif ( [ "${pre_build}" = "1" ] )
-                then
-                        firewall_ids="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-autoscaler")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
-                        firewall_ids="${firewall_ids} `/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-webserver")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
-                        firewall_ids="${firewall_ids} `/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name | contains ("adt-database")) | select (.name | endswith("'-${BUILD_IDENTIFIER}'") | not).id'`"
-
-                        if ( [ "${firewall_ids}" != "" ] )
-                        then
-                                for firewall_id in ${firewall_ids}
-                                do
-                                        if ( [ "`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.id == "'${firewall_id}'").droplet_ids[]'`" = "" ] )
-                                        then
-                                                /bin/echo "y" | /usr/local/bin/doctl compute firewall delete ${firewall_id} --force 
-                                        fi
-                                done
-                        fi
-
-                        if ( [ "`/usr/local/bin/doctl compute firewall list -o json | /usr/bin/jq -r '.[] | select (.name == "adt-autoscaler-'${BUILD_IDENTIFIER}'").id'`" = "" ] )
-                        then
-                                /usr/local/bin/doctl compute firewall create --name "adt-autoscaler-${BUILD_IDENTIFIER}" --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
-                        fi
-
-                        if ( [ "`/usr/local/bin/doctl compute firewall list -o json | /usr/bin/jq -r '.[] | select (.name == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`" = "" ] )
-                        then
-                                /usr/local/bin/doctl compute firewall create --name "adt-webserver-${BUILD_IDENTIFIER}" --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
-                        fi
-
-                        if ( [ "`/usr/local/bin/doctl compute firewall list -o json | /usr/bin/jq -r '.[] | select (.name == "adt-database-'${BUILD_IDENTIFIER}'").id'`" = "" ] )
-                        then
-                                /usr/local/bin/doctl compute firewall create --name "adt-database-${BUILD_IDENTIFIER}" --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
-                        fi
-                fi 
-        fi
-
-        if ( [ "${CLOUDHOST}" = "exoscale" ] )
-        then
-                if ( [ "${pre_build}" = "0" ] )
-                then
+	if ( [ "${CLOUDHOST}" = "exoscale" ] )
+	then
+		if ( [ "${pre_build}" = "0" ] )
+		then
                         autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
                         if ( [ "${autoscaler_ids}" != "" ] )
