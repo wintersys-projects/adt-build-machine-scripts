@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 server_ip="${1}"
@@ -34,50 +34,49 @@ BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-        server_id="`/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.networks.v4[].ip_address == "'${server_ip}'").id'`"
-        /usr/local/bin/doctl -force compute droplet delete ${server_id}
-        status "Destroyed a server with ip address ${server_ip}"
+	server_id="`/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.networks.v4[].ip_address == "'${server_ip}'").id'`"
+	/usr/local/bin/doctl -force compute droplet delete ${server_id}
+	status "Destroyed a server with ip address ${server_ip}"
 fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-        zone="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/${BUILD_IDENTIFIER}/CURRENTREGION`"
-        server_name="`/usr/bin/exo compute private-network show adt_private_net_${zone} --zone ${zone} -O json | /usr/bin/jq -r '.leases[] | select(.ip_address=="'${server_ip}'") | .instance'`"
-        if ( [ "${server_name}" != "" ] )
-        then
-                server_ip="`/usr/bin/exo compute instance list --zone ${zone} -O json | /usr/bin/jq -r '.[] | select (.name =="'${server_name}'").ip_address'`" 
-        fi
-        server_to_delete="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} ${cloudhost}`"
-        /bin/echo "Y" | /usr/bin/exo compute instance delete ${server_to_delete} --zone ${zone}
+	zone="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/${BUILD_IDENTIFIER}/CURRENTREGION`"
+	server_name="`/usr/bin/exo compute private-network show adt_private_net_${zone} --zone ${zone} -O json | /usr/bin/jq -r '.leases[] | select(.ip_address=="'${server_ip}'") | .instance'`"
+	if ( [ "${server_name}" != "" ] )
+	then
+		server_ip="`/usr/bin/exo compute instance list --zone ${zone} -O json | /usr/bin/jq -r '.[] | select (.name =="'${server_name}'").ip_address'`" 
+	fi
+	server_to_delete="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} ${cloudhost}`"
+	/bin/echo "Y" | /usr/bin/exo compute instance delete ${server_to_delete} --zone ${zone}
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
 	if ( [ "${server_ip}" != "" ] )
 	then
-    		server_id="`/usr/local/bin/linode-cli --json linodes list | /usr/bin/jq -r '.[] | select (.ipv4[] == "'${server_ip}'").id'`"
-    		if ( [ "${server_id}" = "" ] )
-      		then
+		server_id="`/usr/local/bin/linode-cli --json linodes list | /usr/bin/jq -r '.[] | select (.ipv4[] == "'${server_ip}'").id'`"
+		if ( [ "${server_id}" = "" ] )
+		then
 			server_ip="`${BUILD_HOME}/providerscripts/server/GetServerPublicIPAddressByIP.sh ${server_ip} ${cloudhost}`"
-    			server_id="`/usr/local/bin/linode-cli --json linodes list | /usr/bin/jq -r '.[] | select (.ipv4[] == "'${server_ip}'").id'`"
-   		fi
+			server_id="`/usr/local/bin/linode-cli --json linodes list | /usr/bin/jq -r '.[] | select (.ipv4[] == "'${server_ip}'").id'`"
+		fi
 		/usr/local/bin/linode-cli linodes shutdown ${server_id}
 		/usr/local/bin/linode-cli linodes delete ${server_id}
 		status "Destroyed a server with ip address ${server_ip}"
 	fi
 fi
 
-
 if ( [ "${cloudhost}" = "vultr" ] )
 then
 	server_id="`/usr/bin/vultr instance list -o json | /usr/bin/jq -r '.instances[] | select (.main_ip == "'${server_ip}'").id'`"
 		
 	if ( [ "${server_id}" = "" ] )
-  	then
+	then
 		server_id="`/usr/bin/vultr instance list -o json | /usr/bin/jq -r '.instances[] | select (.internal_ip == "'${server_ip}'").id'`"
 	fi        
- 	/usr/bin/vultr instance delete ${server_id}
-        status "Destroyed a server with ip address ${server_ip}"
+	/usr/bin/vultr instance delete ${server_id}
+	status "Destroyed a server with ip address ${server_ip}"
 fi
 
 
