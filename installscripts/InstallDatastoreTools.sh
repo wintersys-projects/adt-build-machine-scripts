@@ -27,7 +27,6 @@ fi
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-
 	apt=""
 	if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 	then
@@ -37,13 +36,12 @@ then
 		apt="/usr/sbin/apt-fast"
 	fi
 
-        if ( [ "${apt}" = "/usr/sbin/apt-fast" ] && [ ! -f /usr/sbin/apt-fast ] )
-        then
-                apt="/usr/bin/apt-get"
-        fi
+	if ( [ "${apt}" = "/usr/sbin/apt-fast" ] && [ ! -f /usr/sbin/apt-fast ] )
+	then
+		apt="/usr/bin/apt-get"
+	fi
 
- 	install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install " 
-
+	install_command="DEBIAN_FRONTEND=noninteractive ${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install " 
 
 	if ( [ "${apt}" != "" ] )
 	then
@@ -59,41 +57,41 @@ then
 	fi
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
-  		if ( [ "${buildos}" = "ubuntu" ] )
-		then
-  			${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu"
-  			if ( [ -d /root/scratch ] )			
-			then						
-        			/bin/rm -r /root/scratch/*		
-			else						
-        			/bin/mkdir /root/scratch		
-			fi						
+	if ( [ "${buildos}" = "ubuntu" ] )
+	then
+		${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu"
+		if ( [ -d /root/scratch ] )			
+		then						
+			/bin/rm -r /root/scratch/*		
+		else						
+			/bin/mkdir /root/scratch		
+		fi						
 
-                        GOBIN=/root/scratch /usr/bin/go install github.com/peak/s5cmd/v2@latest                
-                        if ( [ -f /root/scratch/s5cmd ] )                                                   
-                        then                                                                                    
-                                /bin/mv /root/scratch/s5cmd /usr/bin/s5cmd                                    
-                        fi   											
-     		fi	
+		GOBIN=/root/scratch /usr/bin/go install github.com/peak/s5cmd/v2@latest                
+		if ( [ -f /root/scratch/s5cmd ] )                                                   
+		then                                                                                    
+			/bin/mv /root/scratch/s5cmd /usr/bin/s5cmd                                    
+		fi   											
+	fi	
 
-     		if ( [ "${buildos}" = "debian" ] )
-		then
-    			${BUILD_HOME}/installscripts/InstallGo.sh "debian"
-  			if ( [ -d /root/scratch ] )			
-			then					
-        			/bin/rm -r /root/scratch/*		
-			else					
-        			/bin/mkdir /root/scratch		
-			fi						
-
-                        GOBIN=/root/scratch /usr/bin/go install github.com/peak/s5cmd/v2@latest                
-                        if ( [ -f /root/scratch/s5cmd ] )                                                     
-                        then                                                                                   
-                                /bin/mv /root/scratch/s5cmd /usr/bin/s5cmd                                  
-                        fi 											
-		fi
-  		if ( [ -d /root/scratch ] )
-    		then
-      			/bin/rm -r /root/scratch
-	 	fi
+	if ( [ "${buildos}" = "debian" ] )
+	then
+		${BUILD_HOME}/installscripts/InstallGo.sh "debian"
+		if ( [ -d /root/scratch ] )			
+		then					
+			/bin/rm -r /root/scratch/*		
+		else					
+			/bin/mkdir /root/scratch		
+		fi						
+		GOBIN=/root/scratch /usr/bin/go install github.com/peak/s5cmd/v2@latest                
+		if ( [ -f /root/scratch/s5cmd ] )                                                     
+		then                                                                                   
+			/bin/mv /root/scratch/s5cmd /usr/bin/s5cmd                                  
+		fi 											
+	fi
+ 
+	if ( [ -d /root/scratch ] )
+	then
+		/bin/rm -r /root/scratch
+	fi
 fi
