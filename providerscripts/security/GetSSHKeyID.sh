@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 public_key_name="${1}"
@@ -48,7 +48,6 @@ if ( [ "${cloudhost}" = "vultr" ] )
 then
 	public_key_name="`/bin/echo ${public_key_name} | /usr/bin/cut -c 1-30`"
 	/usr/bin/vultr ssh-key list -o json | /usr/bin/jq -r '.ssh_keys[] | select (.name == "'${public_key_name}'").id'
-
 fi
 
 
