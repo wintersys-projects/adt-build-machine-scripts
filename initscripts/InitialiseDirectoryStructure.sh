@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -38,51 +38,51 @@ build_identifier="${2}"
 #then it shouldn't matter so much
 if ( [ ! -d ~/.ssh ] )
 then
-        /bin/mkdir ~/.ssh
+	/bin/mkdir ~/.ssh
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier} ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}
 else
-        /bin/rm ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/* 2>/dev/null
+	/bin/rm ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/* 2>/dev/null
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/credentials ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/credentials
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/credentials
 else
-        /bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/credentials/* 2>/dev/null
+	/bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/credentials/* 2>/dev/null
 fi
 
 if ( [ -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/keys ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/keys
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/keys
 else
-        /bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/keys/* 2>/dev/null
+	/bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/keys/* 2>/dev/null
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ips ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ips
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ips
 else
-        /bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ips/* 2>/dev/null
+	/bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ips/* 2>/dev/null
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/cloud-init ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/cloud-init
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/cloud-init
 else
-        /bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/cloud-init/* 2>/dev/null
+	/bin/rm -r ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/cloud-init/* 2>/dev/null
 fi
 
 
 if ( [ -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ssl ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ssl
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/ssl
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs ] )
 then
-        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs
+	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/logs
 fi
