@@ -22,72 +22,71 @@
 
 if ( [ "${1}" != "" ] )
 then
-        buildos="${1}"
+	buildos="${1}"
 fi
 
 if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 then
-        if ( [ "${buildos}" = "ubuntu" ] )
-        then
-                /usr/bin/yes | /usr/bin/dpkg --configure -a
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages    
-        fi
+	if ( [ "${buildos}" = "ubuntu" ] )
+	then
+		/usr/bin/yes | /usr/bin/dpkg --configure -a
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages    
+	fi
 
-        if ( [ "${buildos}" = "debian" ] )
-        then
-                /usr/bin/yes | /usr/bin/dpkg --configure -a
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils 
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages    
-        fi
+	if ( [ "${buildos}" = "debian" ] )
+	then
+		/usr/bin/yes | /usr/bin/dpkg --configure -a
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils 
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages    
+	fi
 fi
 
 if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-fast" ] )
 then
-        if ( [ "${buildos}" = "ubuntu" ] )
-        then
-                apt_fast_url='https://raw.githubusercontent.com/ilikenwf/apt-fast/master'
+	if ( [ "${buildos}" = "ubuntu" ] )
+	then
+		apt_fast_url='https://raw.githubusercontent.com/ilikenwf/apt-fast/master'
 
-                if ( [ -f /usr/local/sbin/apt-fast ] )
-                then
-                        /bin/rm -f /usr/local/sbin/apt-fast
-                fi
+		if ( [ -f /usr/local/sbin/apt-fast ] )
+		then
+			/bin/rm -f /usr/local/sbin/apt-fast
+		fi
 
-                /usr/bin/wget "${apt_fast_url}"/apt-fast -O /usr/sbin/apt-fast
-                /bin/chmod +x /usr/sbin/apt-fast
+		/usr/bin/wget "${apt_fast_url}"/apt-fast -O /usr/sbin/apt-fast
+		/bin/chmod +x /usr/sbin/apt-fast
 
-                if ( [ ! -f /etc/apt-fast.conf ] )
-                then
-                        /usr/bin/wget "$apt_fast_url"/apt-fast.conf -O /etc/apt-fast.conf
-                fi
+		if ( [ ! -f /etc/apt-fast.conf ] )
+		then
+			/usr/bin/wget "$apt_fast_url"/apt-fast.conf -O /etc/apt-fast.conf
+		fi
                 
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
-                /usr/bin/snap install aria2c 
-                /bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
-        fi
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
+		/usr/bin/snap install aria2c 
+		/bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
+	fi
 
-        if ( [ "${buildos}" = "debian" ] )
-        then
-        
-                if ( [ -f /usr/local/sbin/apt-fast ] )
-                then
-                        /bin/rm -f /usr/local/sbin/apt-fast
-                fi
+	if ( [ "${buildos}" = "debian" ] )
+	then
+		if ( [ -f /usr/local/sbin/apt-fast ] )
+		then
+			/bin/rm -f /usr/local/sbin/apt-fast
+		fi
 
-                /usr/bin/wget "${apt_fast_url}"/apt-fast -O /usr/sbin/apt-fast
-                /bin/chmod +x /usr/sbin/apt-fast
+		/usr/bin/wget "${apt_fast_url}"/apt-fast -O /usr/sbin/apt-fast
+		/bin/chmod +x /usr/sbin/apt-fast
 
-                if ( [ ! -f /etc/apt-fast.conf ] )
-                then
-                        /usr/bin/wget "$apt_fast_url"/apt-fast.conf -O /etc/apt-fast.conf
-                fi
-                
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
-                DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
-                /usr/bin/snap install aria2c 
-                /bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
+		if ( [ ! -f /etc/apt-fast.conf ] )
+		then
+			/usr/bin/wget "$apt_fast_url"/apt-fast.conf -O /etc/apt-fast.conf
+		fi
+		
+  		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y install snapd
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-fast -o DPkg::Lock::Timeout=-1 -qq -y update
+		/usr/bin/snap install aria2c 
+		/bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
 
-        fi   
+	fi   
 fi
 
