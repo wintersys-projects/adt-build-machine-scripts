@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
@@ -34,12 +34,12 @@ cloudhost="${2}"
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-        /usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.networks.v4[] | select (.ip_address == "'${ip}'")).networks.v4[] | select (.type == "public").ip_address'
+	/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.networks.v4[] | select (.ip_address == "'${ip}'")).networks.v4[] | select (.type == "public").ip_address'
 fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-        zone="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/${BUILD_IDENTIFIER}/CURRENTREGION`"
+	zone="`/bin/cat ${BUILD_HOME}/runtimedata/${cloudhost}/${BUILD_IDENTIFIER}/CURRENTREGION`"
 	server_name="`/usr/bin/exo compute private-network show adt_private_net_${zone} --zone ${zone} -O json | /usr/bin/jq -r '.leases[] | select(.ip_address=="'${ip}'") | .instance'`"
 	/usr/bin/exo compute instance list --zone ${zone} -O json | /usr/bin/jq -r '.[] | select (.name =="'${server_name}'").ip_address' 
 fi
@@ -49,23 +49,23 @@ then
 	linodeids="`/usr/local/bin/linode-cli --json linodes list | /usr/bin/jq '.[].id'`"
         
 	for linodeid in ${linodeids}
-        do
-                /usr/local/bin/linode-cli --json linodes ips-list ${linodeid} | /usr/bin/jq -r '.[].ipv4.vpc[] | select (.address == "'${ip}'").nat_1_1'  
-        done
+	do
+		/usr/local/bin/linode-cli --json linodes ips-list ${linodeid} | /usr/bin/jq -r '.[].ipv4.vpc[] | select (.address == "'${ip}'").nat_1_1'  
+	done
 fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
 then
 	#vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "adt-vpc").id'`"
-        #id="`/usr/bin/vultr vpc2 nodes list ${vpc_id} -o json | /usr/bin/jq -r '.nodes[] | select (.ip_address == "'${ip}'").id'`"
-        #/usr/bin/vultr instance get ${id} -o json | /usr/bin/jq -r '.instance.main_ip'
+	#id="`/usr/bin/vultr vpc2 nodes list ${vpc_id} -o json | /usr/bin/jq -r '.nodes[] | select (.ip_address == "'${ip}'").id'`"
+	#/usr/bin/vultr instance get ${id} -o json | /usr/bin/jq -r '.instance.main_ip'
 	ids="`/usr/bin/vultr instance list -o json | /usr/bin/jq -r '.instances[] | .id'`"
 	for id in ${ids}
 	do
-        	if ( [ "`/usr/bin/vultr instance ipv4 list ${id} -o json | /usr/bin/jq -r '.ipv4s[] | select (.ip == "'${ip}'")'`" != "" ] )
-        	then
-                	machine_id="${id}"
-        	fi
+		if ( [ "`/usr/bin/vultr instance ipv4 list ${id} -o json | /usr/bin/jq -r '.ipv4s[] | select (.ip == "'${ip}'")'`" != "" ] )
+		then
+			machine_id="${id}"
+		fi
 	done
 	/usr/bin/vultr instance list ${machine_id} -o json | /usr/bin/jq -r '.instances[].main_ip'
 fi
