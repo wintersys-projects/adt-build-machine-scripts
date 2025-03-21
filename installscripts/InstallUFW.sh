@@ -49,6 +49,6 @@ then
 	if ( [ "${buildos}" = "debian" ] )
 	then
 		eval ${install_command} ufw	
-  	fi
+	fi
 fi
 
