@@ -21,11 +21,9 @@
 #####################################################################################
 #set -x
 
-#dbprefix="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh ${WEBSITE_URL} DBPREFIX:* | /usr/bin/awk -F':' '{print $NF}'`"
-
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat ] )
 then
- status "Error, cannot find database prefix file"
+	status "Error, cannot find database prefix file"
 fi
 
 dbprefix="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat`"
@@ -34,9 +32,9 @@ dbprefix="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/d
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep 'Postgres'`" != "" ] ) )
 then
-        credentialstring="\$databases ['default']['default'] =array (\n 'database' => '${database_name}', \n 'username' => '${database_username}', \n 'password' => '${database_password}', \n 'host' => '${database_identifier}', \n 'port' => '${db_port}', \n 'driver' => 'pgsql', \n 'prefix' => '${dbprefix}', \n 'collation' => 'utf8mb4_general_ci',\n);"
+	credentialstring="\$databases ['default']['default'] =array (\n 'database' => '${database_name}', \n 'username' => '${database_username}', \n 'password' => '${database_password}', \n 'host' => '${database_identifier}', \n 'port' => '${db_port}', \n 'driver' => 'pgsql', \n 'prefix' => '${dbprefix}', \n 'collation' => 'utf8mb4_general_ci',\n);"
 else
-        credentialstring="\$databases ['default']['default'] =array (\n 'database' => '${database_name}', \n 'username' => '${database_username}', \n 'password' => '${database_password}', \n 'host' => '${database_identifier}', \n 'port' => '${db_port}', \n 'driver' => 'mysql', \n 'prefix' => '${dbprefix}', \n 'collation' => 'utf8mb4_general_ci',\n);"
+	credentialstring="\$databases ['default']['default'] =array (\n 'database' => '${database_name}', \n 'username' => '${database_username}', \n 'password' => '${database_password}', \n 'host' => '${database_identifier}', \n 'port' => '${db_port}', \n 'driver' => 'mysql', \n 'prefix' => '${dbprefix}', \n 'collation' => 'utf8mb4_general_ci',\n);"
 fi
 
 /bin/sed -i "/^\$databases/{:1;/;/!{N;b 1}
@@ -48,20 +46,19 @@ salt="`/bin/cat /var/www/html/salt`"
 
 if ( [ "${salt}" = "" ] )
 then
-        salt="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-16 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
+	salt="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-16 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 fi
 
 /bin/sed -i "/^\$settings\['hash_salt'\]/c\$settings['hash_salt'] = '${salt}';" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
 
-
 if ( [ "`/bin/grep 'ADDED BY CONFIG PROCESS' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default`" = "" ] )
 then
-        /bin/echo "#====ADDED BY CONFIG PROCESS=====" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
-        /bin/echo '$settings["trusted_host_patterns"] = [ ".*" ];' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
-        /bin/echo '$settings["config_sync_directory"] = "/var/www/html/sites/default";'>>  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
-        /bin/echo '$config["system.performance"]["css"]["preprocess"] = FALSE;' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
-        /bin/echo '$config["system.performance"]["js"]["preprocess"] = FALSE;' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
-        /bin/echo '$settings["file_private_path"] = $app_root . "/../private";' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+	/bin/echo "#====ADDED BY CONFIG PROCESS=====" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+	/bin/echo '$settings["trusted_host_patterns"] = [ ".*" ];' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+	/bin/echo '$settings["config_sync_directory"] = "/var/www/html/sites/default";'>>  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+	/bin/echo '$config["system.performance"]["css"]["preprocess"] = FALSE;' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+	/bin/echo '$config["system.performance"]["js"]["preprocess"] = FALSE;' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+	/bin/echo '$settings["file_private_path"] = $app_root . "/../private";' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
 fi
 
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default drupal_settings.php
