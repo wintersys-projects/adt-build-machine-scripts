@@ -29,9 +29,9 @@
 set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
@@ -49,12 +49,12 @@ interrogation_home="${BUILD_HOME}/interrogation"
 
 if ( [ ! -d ${interrogation_home} ] )
 then
-        /bin/mkdir -p ${interrogation_home}
+	/bin/mkdir -p ${interrogation_home}
 fi
 
 if ( [ -d ${interrogation_home} ] )
 then
-        /bin/rm -r ${interrogation_home}/* 1>/dev/null 2>/dev/null
+	/bin/rm -r ${interrogation_home}/* 1>/dev/null 2>/dev/null
 fi
 
 cd ${interrogation_home}
@@ -63,83 +63,79 @@ girepo=""
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
-        gitrepo="0"
-        if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 2>/dev/null`" = "" ] )
-        then
-                status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
-                /usr/bin/kill -9 $PPID        
-        else
-                status "I have found potentially usable baseline sourcecode in your git repo. The build can proceed"
-                gitrepo="1"
-        fi
+	gitrepo="0"
+	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 2>/dev/null`" = "" ] )
+	then
+		status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
+		/usr/bin/kill -9 $PPID        
+	else
+		status "I have found potentially usable baseline sourcecode in your git repo. The build can proceed"
+		gitrepo="1"
+	fi
 fi
 
 periodicity=""
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
-        if ( [ "${BUILD_CHOICE}" = "2" ] )
-        then
-                periodicity="hourly"
-        elif ( [ "${BUILD_CHOICE}" = "3" ] )
-        then
-                periodicity="daily"
-        elif ( [ "${BUILD_CHOICE}" = "4" ] )
-        then
-                periodicity="weekly"
-        elif ( [ "${BUILD_CHOICE}" = "5" ] )
-        then
-                periodicity="monthly"
-        elif ( [ "${BUILD_CHOICE}" = "6" ] )
-        then
-                periodicity="bimonthly"
-        fi
+	if ( [ "${BUILD_CHOICE}" = "2" ] )
+	then
+		periodicity="hourly"
+	elif ( [ "${BUILD_CHOICE}" = "3" ] )
+	then
+		periodicity="daily"
+	elif ( [ "${BUILD_CHOICE}" = "4" ] )
+	then
+		periodicity="weekly"
+	elif ( [ "${BUILD_CHOICE}" = "5" ] )
+	then
+		periodicity="monthly"
+	elif ( [ "${BUILD_CHOICE}" = "6" ] )
+	then
+		periodicity="bimonthly"
+	fi
 
-        if ( [ "${periodicity}" != "" ] )
-        then
-                backuprepository="${website_subdomain}-${WEBSITE_NAME}-webroot-sourcecode-${periodicity}-${BUILD_IDENTIFIER}"
-                backuparchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${periodicity}/applicationsourcecode.tar.gz"
-        else
-                status "Your build kit doesn't seem to have a valid periodicity set"
-                /usr/bin/kill -9 $PPID        
-        fi
+	if ( [ "${periodicity}" != "" ] )
+	then
+		backuprepository="${website_subdomain}-${WEBSITE_NAME}-webroot-sourcecode-${periodicity}-${BUILD_IDENTIFIER}"
+		backuparchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${periodicity}/applicationsourcecode.tar.gz"
+	else
+		status "Your build kit doesn't seem to have a valid periodicity set"
+		/usr/bin/kill -9 $PPID        
+	fi
 
-        datastorebucket="0"
-        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backuparchive}
-        archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
-        archive="${interrogation_home}/${archivename}"
+	datastorebucket="0"
+	${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backuparchive}
+	archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
+	archive="${interrogation_home}/${archivename}"
 
-        if ( [  -f ${archive} ] )
-        then
-                status "I have found potentially usable backup sourcecode in your datastore. The build can proceed"
-                status ""
-                /bin/rm ${archive}
-                datastorebucket="1"
-        else
-                status "Did not find candidate sourcecode in your datastore"
-                /usr/bin/kill -9 $PPID        
-        fi
+	if ( [  -f ${archive} ] )
+	then
+		status "I have found potentially usable backup sourcecode in your datastore. The build can proceed"
+		status ""
+		/bin/rm ${archive}
+		datastorebucket="1"
+	else
+		status "Did not find candidate sourcecode in your datastore"
+		/usr/bin/kill -9 $PPID        
+	fi
 fi
 
 if ( [ "${gitrepo}" = "1" ] )
 then
-        ${BUILD_HOME}/providerscripts/git/GitClone.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}
-        ${BUILD_HOME}/providerscripts/application/WhichApplicationByGitAndBaseline.sh
-        /bin/rm -rf ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 1>/dev/null 2>/dev/null
+	${BUILD_HOME}/providerscripts/git/GitClone.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}
+	${BUILD_HOME}/providerscripts/application/WhichApplicationByGitAndBaseline.sh
+	/bin/rm -rf ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 1>/dev/null 2>/dev/null
 fi
 
 if ( [ "${datastorebucket}" = "1" ] )
 then
-        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backuparchive}
-        archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
-        archive="${interrogation_home}/${archivename}"
-        /bin/tar xvfz ${archive} -C ${interrogation_home}
-        ${BUILD_HOME}/providerscripts/application/WhichApplicationByDatastoreAndBackup.sh
-     #   /bin/rm -rf ${interrogation_home}/tmp 1>/dev/null 2>/dev/null
-     #   /bin/rm ${interrogation_home}/applicationsourcecode.tar.gz 1>/dev/null 2>/dev/null
+	${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backuparchive}
+	archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
+	archive="${interrogation_home}/${archivename}"
+	/bin/tar xvfz ${archive} -C ${interrogation_home}
+	${BUILD_HOME}/providerscripts/application/WhichApplicationByDatastoreAndBackup.sh
 fi
-
-#/bin/rmdir ${interrogation_home}
 
 cd ${BUILD_HOME}
 
