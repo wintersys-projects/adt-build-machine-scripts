@@ -46,7 +46,7 @@ then
 		if ( [ -f /usr/bin/lego ] )                                                                                    
 		then                                                                                                            
 			/bin/rm /usr/bin/lego                                                                                  
-        	fi                                                                                                             
+		fi                                                                                                             
 		/usr/bin/wget -c https://github.com/xenolf/lego/releases/download/${version}/lego_${version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin      
 	fi
 
@@ -57,7 +57,7 @@ then
 		if ( [ -f /usr/bin/lego ] )                                                                                    
 		then                                                                                                            
 			/bin/rm /usr/bin/lego                                                                                  
-        	fi                                                                                                             
+		fi                                                                                                             
 		/usr/bin/wget -c https://github.com/xenolf/lego/releases/download/${version}/lego_${version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin    
 	fi
 fi
