@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 buildos="${1}"
@@ -66,50 +66,22 @@ do
 				1)       
 					cloudhost="digitalocean"
 					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
-					# if ( [ "${BUILDOS}" = "ubuntu" ] )
-					# then
-				#		 DEFAULT_USER="root"
-				#	 elif ( [ "${BUILDOS}" = "debian" ] )
-				#	 then
-				#		 DEFAULT_USER="root"
-				#	 fi
 					;;
 				2)
 					cloudhost="exoscale"
 					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
-				#	if ( [ "${BUILDOS}" = "ubuntu" ] )
-				#	then
-				#		 DEFAULT_USER="ubuntu"
-				#	elif ( [ "${BUILDOS}" = "debian" ] )
-				#	then
-				#		DEFAULT_USER="debian"
-				#	fi
 					;;            
 				3)       
 					cloudhost="linode"
-			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
-				#	if ( [ "${BUILDOS}" = "ubuntu" ] )
-				#	then
-				#		DEFAULT_USER="root"
-				#	 elif ( [ "${BUILDOS}" = "debian" ] )
-				#	 then
-				#		 DEFAULT_USER="root"
-				#	 fi
-					 ;;
+					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
+					;;
 				4)       
 					cloudhost="vultr"
-			${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
-				#	 if ( [ "${BUILDOS}" = "ubuntu" ] )
-				#	 then
-				#		 DEFAULT_USER="root"
-				#	 elif ( [ "${BUILDOS}" = "debian" ] )
-				#	 then
-				#		 DEFAULT_USER="root"
-				#	 fi
-					 ;;
+					${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${cloudhost} ${buildos} 
+					;;
 				*)
-		   esac 
-	   fi
+			esac 
+		fi
 	else
 		status "That was not a valid input, please try again...."
 		read response
