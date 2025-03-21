@@ -26,9 +26,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -56,17 +56,17 @@ do
  
  	if ( [ -d ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier} ] )
   	then
-   		status ""
-     		status "#################################################################################################################"
-   		status "You already have a directory structure matching build identifier ${build_identifier}"
-     		status "If you are VERY sure this is OK and you want to continue enter (Y|y) anything else to select a new build identifier"
-     		status "#################################################################################################################"
-       		read response
-	 	if ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] )
-   		then
-     			build_identifier=""
+		status ""
+		status "#################################################################################################################"
+		status "You already have a directory structure matching build identifier ${build_identifier}"
+		status "If you are VERY sure this is OK and you want to continue enter (Y|y) anything else to select a new build identifier"
+		status "#################################################################################################################"
+		read response
+		if ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] )
+		then
+			build_identifier=""
 		fi
-  	fi
+	fi
 done
 
 build_identifier="`/bin/echo ${build_identifier} | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/cut -c -8`"
