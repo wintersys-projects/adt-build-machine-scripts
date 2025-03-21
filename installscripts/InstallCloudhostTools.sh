@@ -26,33 +26,33 @@ cloudhost="${1}"
 buildos="${2}"
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 if ( [ "${cloudhost}" = "digitalocean" ] )
 then
-        status "Installing/Updating Digital Ocean cloudhost cli tool (doctl)"
-        ${BUILD_HOME}/installscripts/InstallDoctl.sh "${buildos}"
+	status "Installing/Updating Digital Ocean cloudhost cli tool (doctl)"
+	${BUILD_HOME}/installscripts/InstallDoctl.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-        status "Installing/Updating Exoscale cloudhost cli tool (exo)"
-        ${BUILD_HOME}/installscripts/InstallExo.sh "${buildos}"
+	status "Installing/Updating Exoscale cloudhost cli tool (exo)"
+	${BUILD_HOME}/installscripts/InstallExo.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
-        status "Installing/Updating Linode cloudhost cli tool (linode-cli)"
-        ${BUILD_HOME}/installscripts/InstallLinodeCLI.sh "${buildos}"
+	status "Installing/Updating Linode cloudhost cli tool (linode-cli)"
+	${BUILD_HOME}/installscripts/InstallLinodeCLI.sh "${buildos}"
 fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
 then
-        status "Installing/Updating Vultr cloudhost cli tool (vultr-cli)"
-        ${BUILD_HOME}/installscripts/InstallSudo.sh "${buildos}"
-        ${BUILD_HOME}/installscripts/InstallVultrCLI.sh "${buildos}"        
+	status "Installing/Updating Vultr cloudhost cli tool (vultr-cli)"
+	${BUILD_HOME}/installscripts/InstallSudo.sh "${buildos}"
+	${BUILD_HOME}/installscripts/InstallVultrCLI.sh "${buildos}"        
 fi
 
