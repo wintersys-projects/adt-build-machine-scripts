@@ -171,21 +171,21 @@ then
 else
 	for livevariable in ${variables}
 	do
-	   display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
-	   value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
-	   if ( [ "`/bin/echo ${livevariable} | /bin/grep "CLOUDHOST_PASSWORD"`" != "" ] )
-	   then
-		   if ( [ "${value}" = "" ] )
-		   then
-			   value="`/bin/cat /dev/urandom | /usr/bin/tr -dc _A-Z-a-z-0-9 | /usr/bin/head -c${1:-12};echo;`"
-		   fi
-	   fi
-	   if ( ( [ "`/bin/grep 'NOT REQUIRED' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) && ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) )
-	   then 
-		  value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
-		  /bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
-		  /bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
-	   fi
+		display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
+		value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
+		if ( [ "`/bin/echo ${livevariable} | /bin/grep "CLOUDHOST_PASSWORD"`" != "" ] )
+		then
+			if ( [ "${value}" = "" ] )
+			then
+				value="`/bin/cat /dev/urandom | /usr/bin/tr -dc _A-Z-a-z-0-9 | /usr/bin/head -c${1:-12};echo;`"
+			fi
+		fi
+		if ( ( [ "`/bin/grep 'NOT REQUIRED' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) && ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) )
+		then 
+			value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
+			/bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
+			/bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
+		fi
 	done
 fi
 
@@ -208,8 +208,6 @@ fi
 read x
 
 ${BUILD_HOME}/templatedconfigurations/ValidateTemplate.sh ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl ${BUILD_HOME}
-
-
 
 /bin/echo "######################################################################################################################"
 /bin/echo "Cheers. Your configuration has been written to: ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl"
