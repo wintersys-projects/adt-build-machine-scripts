@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 key_name="${1}"
@@ -42,7 +42,7 @@ fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
-        key_id="`/usr/local/bin/linode-cli --json sshkeys list | /usr/bin/jq -r '.[] | select (.label == "'${key_name}'").id'`"
+	key_id="`/usr/local/bin/linode-cli --json sshkeys list | /usr/bin/jq -r '.[] | select (.label == "'${key_name}'").id'`"
 	/usr/local/bin/linode-cli sshkeys delete ${key_id}
 fi
 
