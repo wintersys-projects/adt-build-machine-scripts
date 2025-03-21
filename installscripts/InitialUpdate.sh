@@ -1,6 +1,6 @@
 #!/bin/sh
 ######################################################################################################
-# Description: This script will perform a software update
+# Description: This script will perform a software update it is called during the intial build phase
 # Author: Peter Winter
 # Date: 17/01/2017
 #######################################################################################################
