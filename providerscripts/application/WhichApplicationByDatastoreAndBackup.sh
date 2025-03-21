@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
@@ -53,13 +53,12 @@ then
  	/bin/cp ${interrogation_home}/tmp/backup/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
  	then
-  		status "Error, cannot find db prefix file"
+		status "Error, cannot find db prefix file"
 		/usr/bin/kill -9 $PPID    	
-  	fi
- 	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-  	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
- #################JOOMLA################
-	#################WORDPRESS################
+	fi
+	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
+#################WORDPRESS################
 elif ( [ -f ${interrogation_home}/tmp/backup/wp-login.php ] && [ -d ${interrogation_home}/tmp/backup/wp-content ] && [ -f ${interrogation_home}/tmp/backup/wp-cron.php ] && [ -d ${interrogation_home}/tmp/backup/wp-admin ] && [ -d ${interrogation_home}/tmp/backup/wp-includes ] && [ -f ${interrogation_home}/tmp/backup/wp-settings.php ] )
 then
 	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:wordpress
@@ -74,22 +73,50 @@ then
 	then
 		read x
 	fi
-        if ( [ -f ${interrogation_home}/tmp/backup/wp-config.php.default ] )
-        then
-                /bin/cp ${interrogation_home}/tmp/backup/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
-        else
-                status "Couldn't find joomla default configuration file in baseline webroot"
+	if ( [ -f ${interrogation_home}/tmp/backup/wp-config.php.default ] )
+	then
+		/bin/cp ${interrogation_home}/tmp/backup/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+	else
+		status "Couldn't find joomla default configuration file in baseline webroot"
 		/usr/bin/kill -9 $PPID        
-  	fi
+	fi
 
-        if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
-        then
-                status "Error, cannot find db prefix file"
-        fi
-     
-        /bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
-	#################WORDPRESS################
+	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+	then
+		status "Error, cannot find db prefix file"
+	fi
+	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
+#################DRUPAL################
+elif ( [ -f ${interrogation_home}/tmp/backup/core/misc/drupal.js ] && [ -d ${interrogation_home}/tmp/backup/themes ] && [ -d ${interrogation_home}/tmp/backup/modules ] && [ -d ${interrogation_home}/tmp/backup/profiles ] )
+then
+	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:drupal
+	APPLICATION="drupal"
+	if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
+	then
+		DIRECTORIES_TO_MOUNT="sites.default.files.pictures:sites.default.files.styles:sites.default.files.inline-images"
+	fi
+	status "Discovered you are deploying drupal from a datastore backup"
+	status "Press the <enter> key to accept as true"
+	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+	then
+		read x
+	fi
+	if ( [ -f ${interrogation_home}/tmp/backup/sites/default/settings.php.default ] )
+	then
+		/bin/cp ${interrogation_home}/tmp/backup/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+	else
+		status "Couldn't find drupal default configuration file in backup webroot"
+		/usr/bin/kill -9 $PPID        
+	fi
+
+	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+	then
+		status "Error, cannot find db prefix file"
+	fi
+
+	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 	#################MOODLE################
 elif ( [ -f ${interrogation_home}/tmp/backup/moodle/index.php ] && [ -f ${interrogation_home}/tmp/backup/moodle/version.php ] && [ -d ${interrogation_home}/tmp/backup/moodle/userpix ] && [ -d ${interrogation_home}/tmp/backup/moodle/report ] && [ -d ${interrogation_home}/tmp/backup/moodle/enrol ] && [ -d ${interrogation_home}/tmp/backup/moodle/theme ] )
 then
@@ -106,54 +133,21 @@ then
 		read x
 	fi
 
-        if ( [ -f ${interrogation_home}/tmp/backup/moodle/config.php.default ] )
-        then
-                /bin/cp ${interrogation_home}/tmp/backup/moodle/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
-        else
-                status "Couldn't find moodle default configuration file in backup archive webroot"
+	if ( [ -f ${interrogation_home}/tmp/backup/moodle/config.php.default ] )
+	then
+		/bin/cp ${interrogation_home}/tmp/backup/moodle/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
+	else
+		status "Couldn't find moodle default configuration file in backup archive webroot"
 		/usr/bin/kill -9 $PPID        
-  	fi
+	fi
 
-        if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
-        then
-                status "Error, cannot find db prefix file"
-        fi
+	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+	then
+		status "Error, cannot find db prefix file"
+	fi
      
-        /bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
-
-	#################MOODLE################
-	#################DRUPAL################
-elif ( [ -f ${interrogation_home}/tmp/backup/core/misc/drupal.js ] && [ -d ${interrogation_home}/tmp/backup/themes ] && [ -d ${interrogation_home}/tmp/backup/modules ] && [ -d ${interrogation_home}/tmp/backup/profiles ] )
-then
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:drupal
-	APPLICATION="drupal"
-	if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
-	then
-		DIRECTORIES_TO_MOUNT="sites.default.files.pictures:sites.default.files.styles:sites.default.files.inline-images"
-	fi
-	status "Discovered you are deploying drupal from a datastore backup"
-	status "Press the <enter> key to accept as true"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
-        if ( [ -f ${interrogation_home}/tmp/backup/sites/default/settings.php.default ] )
-        then
-                /bin/cp ${interrogation_home}/tmp/backup/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
-        else
-                status "Couldn't find drupal default configuration file in backup webroot"
-		/usr/bin/kill -9 $PPID        
-  	fi
-
-        if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
-        then
-                status "Error, cannot find db prefix file"
-        fi
-
-        /bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
-	#################DRUPAL################
+	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 fi
 
 if ( [ "${APPLICATION}" = "" ] )
