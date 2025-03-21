@@ -3,7 +3,8 @@
 # Author : Peter Winter
 # Date   : 15/02/2024
 # Description : This script does a rudimentary check to check that your build-machine
-# is connected to a VPC when its supposed to be
+# is connected to a VPC when its supposed to be. If we can't get a private IP address it
+# means that the machine is not connected to a VPC
 ###################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
