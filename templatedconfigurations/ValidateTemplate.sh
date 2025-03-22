@@ -22,9 +22,9 @@
 ####################################################################################
 
 status () {
-        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 quick_specification="${BUILD_HOME}/templatedconfigurations/quick_specification.dat"
@@ -90,13 +90,13 @@ fi
 for host_base in `/bin/echo ${S3_HOST_BASE} | /bin/sed 's/:/ /g'`
 do
 	datastore_choice="`/bin/echo ${DATASTORE_CHOICE} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
-        if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${host_base}" 2>/dev/null `" = "" ] )
-        then
-                if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${host_base}" | /bin/grep ${datastore_choice}`" = "" ] )
-                then
-                        ${log_command} "Your value for the variable S3_HOST_BASE (${host_base}) doesn't appear to be valid please review"
-                fi
-        fi
+	if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${host_base}" 2>/dev/null `" = "" ] )
+	then
+		if ( [ "`/bin/grep "^S3_HOST_BASE " ${quick_specification} | /bin/grep -w "${host_base}" | /bin/grep ${datastore_choice}`" = "" ] )
+		then
+			${log_command} "Your value for the variable S3_HOST_BASE (${host_base}) doesn't appear to be valid please review"
+		fi
+	fi
 done
 
 if ( [ "`/bin/grep "^S3_LOCATION " ${quick_specification} | /bin/grep -w "${S3_LOCATION}" 2>/dev/null `" = "" ] )
@@ -126,7 +126,6 @@ fi
 if ( [ "`/bin/grep "^BUILD_MACHINE_VPC " ${quick_specification} | /bin/grep -w "${BUILD_MACHINE_VPC}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable BUILD_MACHINE_VPC (${BUILD_MACHINE_VPC}) doesn't appear to be valid please review"
-	#export BUILD_MACHINE_VPC="0"
 fi
 
 if ( [ "`/bin/grep "^SYSTEM_EMAIL_PROVIDER " ${quick_specification} | /bin/grep -w "${SYSTEM_EMAIL_PROVIDER}"  2>/dev/null `" = "" ] )
@@ -146,7 +145,7 @@ fi
 
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" != "0" ] || [ "${PRODUCTION}" = "0" ] && [ "${DEVELOPMENT}" != "1" ]  )
 then
-	 ${log_command} "It looks like your values for PRODUCTION ( ${PRODUCTION}) and DEVELOPMENT (${DEVELOPMENT}) are inconsistent"
+	${log_command} "It looks like your values for PRODUCTION ( ${PRODUCTION}) and DEVELOPMENT (${DEVELOPMENT}) are inconsistent"
 fi
 
 if ( [ "`/bin/grep "^AUTHENTICATION_SERVER " ${quick_specification} | /bin/grep -w "${AUTHENTICATION_SERVER}"  2>/dev/null `" = "" ] )
@@ -333,8 +332,8 @@ fi
 
 if ( [ "${APPLICATION}" = "joomla" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
-   joomla_version="`/bin/echo ${JOOMLA_VERSION} | /bin/sed 's/\./-/g'`"
-   joomla_major_version="`/bin/echo ${joomla_version} | /usr/bin/awk -F'-' '{print $1}'`"
+	joomla_version="`/bin/echo ${JOOMLA_VERSION} | /bin/sed 's/\./-/g'`"
+	joomla_major_version="`/bin/echo ${joomla_version} | /usr/bin/awk -F'-' '{print $1}'`"
 
 	if ! /usr/bin/curl --head --silent --fail https://downloads.joomla.org/cms/joomla${joomla_major_version}/${joomla_version}/Joomla_${joomla_version}-Stable-Full_Package.zip 1>&2 >/dev/null 
 	then
@@ -370,24 +369,24 @@ if ( [ "${APPLICATION}" = "joomla" ] )
 then
 	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
-  		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with joomla"
-    	fi
+		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with joomla"
+	fi
 fi
 
 if ( [ "${APPLICATION}" = "wordpress" ] )
 then
 	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
-  		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with wordpress"
-    	fi
+		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with wordpress"
+	fi
 fi
 
 if ( [ "${APPLICATION}" = "drupal" ] )
 then
 	if ( [ "`/bin/echo "8.1 8.2 8.3 8.4" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
-  		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with drupal"
-    	fi
+		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with drupal"
+	fi
 fi
 
 if ( [ "${APPLICATION}" = "moodle" ] )
@@ -395,7 +394,7 @@ then
 	if ( [ "`/bin/echo "8.1 8.2 8.3" | /bin/grep "${PHP_VERSION}"`" = "" ] )
  	then
   		${log_command} "I am suspicious that the version of PHP you are installing isn't compatible with moodle"
-    	fi
+	fi
 fi
 
 if ( [ ! "`echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
@@ -441,7 +440,6 @@ if ( [ "`/bin/echo ${continents} | /bin/grep "${SERVER_TIMEZONE_CONTINENT}"`" = 
 then
 	${log_command} "It looks like your variable SERVER_TIMEZONE_CONTINENT ${SERVER_TIMEZONE_CONTINENT}) doesn't appear to be valid please review"
 fi
-
 
 cities="`cd /usr/share/zoneinfo/${SERVER_TIMEZONE_CONTINENT} && /usr/bin/find * -type f -or -type l | /usr/bin/sort`" 
 
