@@ -189,7 +189,7 @@ do
 			/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
 		fi
 
-    		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
+		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
 		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
 		# When present we can be fairly sure that the newly provisioned machine has completed its database machine type
 		# build process. We check very frequently so there is no wasted time and up to 300 times which means we are willing to 
