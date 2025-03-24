@@ -21,8 +21,8 @@
 #########################################################################################
 #########################################################################################
 #set -x
-done=0
-counter="0"
+done=0 #This will be set to 1 if the build is valid
+counter="0" #This counts how many attempted builds there have been
 count="0"
 
 status () {
@@ -71,7 +71,6 @@ do
 		ip=""
 		#Construct a unique name for this authentication server
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-
 		authenticator_name="auth-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
 
 		status "Initialising a new server machine, please wait......"
@@ -127,9 +126,12 @@ do
 		AUTHIP_PUBLIC=${ip}
 		AUTHIP_PRIVATE=${private_ip}
 
+		#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip/${ip}
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip/${private_ip}
 
+		#If the build machine is without our VPC we want the private ip address to connect with if not within the VPC we want
+		#the public address to connect to
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 		then
 			auth_active_ip="${AUTHIP_PRIVATE}"
@@ -147,10 +149,15 @@ do
 			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
 		fi
 
+  		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
+    		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
+      		# When present we can be fairly sure that the newly provisioned machine has completed its authenticator machine type
+		# build process. We check very frequently so there is no wasted time and up to 300 times which means we are willing to 
+  		# wait for up to ten minutes (which should be more than enough) for the cloud-init script to complete
+
 		status "Waiting for the authenticator machine ${authenticator_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
 		status "This is the current time for your reference `/bin/date`"
 
-		#So, looking good. Now what we have to do is keep monitoring for the build process for our authenticator to complete
 		done="0"
 		alive=""
 		alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTHENTICATOR_READY"`"
@@ -165,8 +172,11 @@ do
 
 		if ( [ "${count}" = "300" ] )
 		then
+  			#If we are here then the build didn't complete correctly
 			done="0"
 		else
+  			#If we are here then we believe that the build completed correctly so the public IP address for the our authenticator machine
+     			#Is added to the DNS provider
 			${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} ${WEBSITE_URL}
 			done="1"
 		fi
@@ -184,6 +194,8 @@ do
 				read response
 			fi
 
+			#Our build failed so we don't want any ip address records stored in the S3 datastore
+   			#We should destroy the server also because it's hosed
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
    			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
@@ -191,13 +203,15 @@ do
 			#Wait until we are sure that the authentication server is destroyed because of a faulty build
 			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
 			do
-				/bin/sleep 30
+				/bin/sleep 5
 			done
 		else
+  			#Happy days, if we are here then we are confident that an authentication server built correctly
 			status "An authentication server (${authenticator_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
 			counter="`/usr/bin/expr ${counter} - 1`"
 		fi
 	else
+ 		#An authentication server is already running in the current region ask if we can use that one
 		status "An authenticator is already running, using that one"
 		status "Press enter if this is OK with you"
 		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
@@ -208,7 +222,7 @@ do
 	fi
 done
 
-#If we get to here then we know that the authentication server didn't build properly, so report it and exit
+#If we get to here then we know that the authentication server didn't build properly after multiple attempts, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
 	status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
