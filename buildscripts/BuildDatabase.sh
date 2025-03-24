@@ -189,6 +189,12 @@ do
 			/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
 		fi
 
+    		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
+		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
+		# When present we can be fairly sure that the newly provisioned machine has completed its database machine type
+		# build process. We check very frequently so there is no wasted time and up to 300 times which means we are willing to 
+		# wait for up to ten minutes (which should be more than enough) for the cloud-init script to complete
+
 		status "Waiting for the database machine ${database_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
 		status "This is the current time for your reference `/bin/date`"
 
@@ -205,12 +211,14 @@ do
 
 		if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/DATABASE_READY" ] )
 		then
+  			#If we are here then it means that the database machine is believed to be built and we set a flag to remind us
 			done=1
 		fi
 
 		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
 		if ( [ "${done}" != "1" ] )
 		then
+  			#If we are here then it means we didn't build successfully and we will have to try again
 			status "###########################################################################################################################"
 			status "Hi, a database server didn't seem to build correctly. I can destroy it and try again to build a new database server for you"
 			status "###########################################################################################################################"
@@ -221,6 +229,7 @@ do
 				read response
 			fi
 
+			#We failed so we don't want the IP addresses in our datastore
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
@@ -228,14 +237,16 @@ do
 			#Wait until we are sure that the database server(s) are destroyed because of a faulty build
 			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "${built}" ] )
 			do
-				/bin/sleep 30
+				/bin/sleep 5
 			done 
 			count1="`/usr/bin/expr ${count1} - 1`"
 		else
+  			#Happy days, if we are here, then it means that the database server is believed to have been built correctly
 			status "A database server (${database_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
 			counter="`/usr/bin/expr ${counter} - 1`"
 		fi
 	else
+ 		#A datatbase server is already running
 		status "A Database is already running, using that one......"
 		status "Press enter if that is OK"
 
@@ -247,7 +258,7 @@ do
 	fi
 done
 
-#If we get to here then we know that the database hasn't built correctly, so report it and exit
+#If we get to here then we know that the database hasn't built correctly after several attmepts, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
 	status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
