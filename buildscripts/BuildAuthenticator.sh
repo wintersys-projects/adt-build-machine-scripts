@@ -23,7 +23,6 @@
 #set -x
 done=0 #This will be set to 1 if the build is valid
 counter="0" #This counts how many attempted builds there have been
-count="0"
 
 status () {
 	yellow="`/usr/bin/tput setaf 11`"
