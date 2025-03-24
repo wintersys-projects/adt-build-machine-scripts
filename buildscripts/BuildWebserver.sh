@@ -180,8 +180,10 @@ do
 
 		if ( [ "${count}" = "300" ] )
 		then
+  			#If we are here then the build didn't succeed
 			done="0"
 		else
+			#If we are here then the build did succeed and we can add the IP address to the DNS system
 			${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
 			done="1"
 		fi
@@ -199,20 +201,23 @@ do
 				read response
 			fi
 
+			#We don't want the IP addresses of a failed build in our S3 datastore
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
 
-			#Wait until we are sure that the image server(s) are destroyed because of a faulty build
+			#Wait until we are sure that the webserver is destroyed because of a faulty build
 			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
 			do
 				/bin/sleep 30
 			done
 		else
+  			#Happy days if we are here. we believe a build has been successful
 			status "A webserver (${webserver_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
 			counter="`/usr/bin/expr ${counter} - 1`"
 		fi
 	else
+ 		#Am appropriate webserver seems to be already running for this reason
 		status "A webserver is already running, using that one"
 		status "Press enter if this is OK with you"
                 
@@ -224,7 +229,7 @@ do
 	fi
 done
 
-#If we get to here then we know that the webserver didn't build properly, so report it and exit
+#If we get to here then we know that the webserver didn't build properly after several attempts, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
 	status "The infrastructure failed to intialise because of a build problem, plese investigate, correct and rebuild"
