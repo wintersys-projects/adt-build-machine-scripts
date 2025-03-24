@@ -22,9 +22,8 @@
 #######################################################################################################
 #set -x
 
-done=0
-counter="0"
-count="0"
+done="0" #If the build succeeds, this will be set to "1"
+counter="0" #This keeps track of how many build attempts there have been
 
 status () {
 	yellow="`/usr/bin/tput setaf 1`"
@@ -65,8 +64,10 @@ BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
+ 	#If we are building multiple autoscalers we see how many autoscalers are running and number our current autoscaler relative to that
 	autoscaler_no="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
 
+	#If no autoscalers are running then we must be building autoscaler number 1
 	if ( [ "${autoscaler_no}" = "" ] )
 	then
 		autoscaler_no="1"
@@ -77,10 +78,11 @@ do
 	WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 	WEBSITE_DISPLAY_NAME_FILE="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed 's/ /_/g'`"
 
+	#As long as this autoscaler number is lower or equal to the number of autoscalers we want, proceed with the build
 	if ( [ "${autoscaler_no}" -le "${NO_AUTOSCALERS}" ] )
 	then
 		ip=""
-		#Set a unique identifier and name for our new autoscaler server
+		#Set a unique identifier and name for our new autoscaler server including which number autoscaler it is
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
 		autoscaler_name="NO-${autoscaler_no}-as-${REGION}-${BUILD_IDENTIFIER}-${RND}"
 
@@ -136,9 +138,12 @@ do
 		ASIP_PUBLIC=${ip}
 		ASIP_PRIVATE=${private_ip}
 
+		#We should record the ip addresses of our new autoscaler in the S3 datastore for future reference
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} autoscalerpublicip/${ip}
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} autoscalerip/${private_ip}
 
+		#If the build machine is attached to the VPC that the servers are in then we need the private IP address to connect to this autoscaler
+  		#with, otherwise we have to use the public IP address
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 		then
 			as_active_ip="${ASIP_PRIVATE}"
@@ -147,11 +152,13 @@ do
 			as_active_ip="${ASIP_PUBLIC}"
 		fi
 
+		#Have all of the autoscaler IP addresses in memory for reference as needed
 		ASIPS="${ASIPS}${ASIP_PUBLIC}:"
 		ASIP_PRIVATES="${ASIP_PRIVATES}${ASIP_PRIVATE}:"
 		ASIPS_CLEANED="`/bin/echo ${ASIPS} | /bin/sed 's/\:/ /g'`"
 		ASIPS_PRIVATES_CLEANED="`/bin/echo ${ASIP_PRIVATES} | /bin/sed 's/\:/ /g'`"
 
+		#We need public or private IP addresses based on the build machine being in the VPC or not
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 		then
 			as_active_ips="${ASIPS_PRIVATES_CLEANED}"    
@@ -172,11 +179,8 @@ do
 		status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
 		status "This is the current time for your reference `/bin/date`"
                         
-		#Wait for the machine to become responsive before we check its integrity
-
 		done="0"
 		alive=""
-		count="0"
         
 		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "300" ] )
 		do
