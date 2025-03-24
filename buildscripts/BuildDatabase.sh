@@ -62,8 +62,6 @@ OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
-
-built="0"
 #If we are done then we can stop otherwise retry up to 5 times
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] && [ "${DATABASE_INSTALLATION_TYPE}" != "None" ] )
 do
@@ -202,7 +200,6 @@ do
 		if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/DATABASE_READY" ] )
 		then
 			done=1
-			built="`/usr/bin/expr ${built} + 1`"
 		fi
 
 		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
