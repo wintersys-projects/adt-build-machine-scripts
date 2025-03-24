@@ -202,17 +202,18 @@ do
 		done="0"
 		alive=""
 		count="0"
-		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -le "300" ] )
+		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -lt "300" ] )
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2
 			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/DATABASE_READY"`"
 		done 
 
-		if ( [ "${alive}" = "/home/${SERVER_USER}/runtime/DATABASE_READY" ] )
+		if ( [ "${count}" = "300" ] )
 		then
-  			#If we are here then it means that the database machine is believed to be built and we set a flag to remind us
-			done=1
+			done="0"
+		else
+			done="1"
 		fi
 
 		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
