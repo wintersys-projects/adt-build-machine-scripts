@@ -84,6 +84,7 @@ then
 	status "It seems like something is not quite right with the build. The database seems not to be running so the website will not function properly."
 fi
 
+#If this is a PRODUCTION build there's some steps to take to get the active IP addresses for all machine types
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] )
 then 
 	no_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
@@ -138,7 +139,7 @@ then
 	fi
 fi
 
-#Do some checks to find out if the build has completed correctly, before we say we are finished
+#Tell all the different machine types that the intial build is completed by placing a marker file on the filesystem of each machine type
 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/INITIAL_BUILD_COMPLETED
 
 if ( [ "${as_active_ips}" != "" ] )
@@ -152,6 +153,7 @@ then
 	test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED"
 fi
 
+#If the build machine is connect to the VPC then we need the private IP address if it is not then we need the public IP address
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
 	ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
@@ -159,12 +161,12 @@ else
 	ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
-#This enables the application to have any post processing done that it needs. There is pre and post processing either side of the build process
+#This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
 /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" >&3
 
 
-#We are satisfied that all is well, so let's try and see if the application is actually online and active
+#We are satisfied that all is well so far so lets do a finally battery of tests to be as sure as we can be that we are on our feet
 
 status ""
 status "##############################################################################################################################"
@@ -174,6 +176,7 @@ status "If you are performing a webserver from source build its likely that any 
 status "##############################################################################################################################"
 status ""
 
+# This checks that the application language (most likely PHP) has been installed correctly
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
 	status "Checking that ${APPLICATION_LANGUAGE} has fully installed...."
@@ -186,6 +189,7 @@ then
 	done
 fi
 
+#This checks that the user's application's configuration settings has been installed correctly and fully
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
 	status "Checking that the application configuration for ${APPLICATION} has fully installed...."
@@ -199,6 +203,7 @@ then
 	done
 fi
 
+#This checks that the webserver itself has been fully installed and is running. 
 status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
 
 while ( [ "${webserver_installed}" = "" ] )
@@ -207,6 +212,7 @@ do
 	/bin/sleep 1
 done
 
+#This checks that our bespoke application (most likely a CMS of some sort) is installed to the best of our knowledge
 status "Checking that the bespoke application has been installed...."
 bespoke_application_installed=""
 
@@ -216,6 +222,7 @@ do
 	/bin/sleep 1
 done
 
+#If we are mounting assets into the webroot of our application from the datastore then this checks that they are mounted correctly
 if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
 then
 	status "Checking that your assets are mounted..."
@@ -229,6 +236,7 @@ then
 	done
 fi
 
+#This passes a check all the way through to the database via the webserver to check that the communication channels are all working freely
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
 	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
@@ -243,6 +251,7 @@ then
 	fi
 fi
 
+#If the webserver isn't actually running try and spark it up
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
 	status "Checking that ${WEBSERVER_CHOICE} is up and running...."
@@ -262,7 +271,8 @@ then
 		status "Failed to start the webserver...you might want to take look into why on the webserver and then press <enter> if it is resolved"
 		read response
 	fi
- 
+
+ 	#Make an actual attempt to access the website, if this goes through we should consider ourselves fully primed
 	. ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
   
 	status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
@@ -271,7 +281,7 @@ then
 	do
 		#This double checks that the webserver came online correctly whilst we test for the website being online
 		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
-	/bin/sleep 1
+  		/bin/sleep 1
 	done
 fi
 
@@ -281,6 +291,7 @@ status "Seeing this message means I am confident that it is 'all systems go' (on
 #Other scripts can then check if the build has completed correctly before they action
 /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY"
 
+#Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh INSTALLED_SUCCESSFULLY INSTALLED_SUCCESSFULLY
 status "Build process fully complete"
 
