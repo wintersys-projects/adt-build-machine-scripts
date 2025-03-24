@@ -188,7 +188,7 @@ do
 		done="0"
 		alive=""
         
-		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -le "300" ] )
+		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -lt "300" ] )
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2
