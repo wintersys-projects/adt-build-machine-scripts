@@ -458,8 +458,10 @@ then
 
 	if ( [ "${CLOUDHOST}" = "vultr" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 	then
+ 		#If we are here then this is a vultr database build
 		if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
 		then
+      			#extract the database's configuration detaila from DATABASE_DBaaS_INSTALLATION_TYPE
 			database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
 			label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $8}'`"
 			engine="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $3}'`"
@@ -469,11 +471,13 @@ then
 			db_name="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
 			vpc_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $9}'`"
 
+			#See if an existing cluster is available
 			cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
 
 			new=""
 			if ( [ "${cluster_id}" = "" ] )
 			then
+   				#There was no existing cluster, so create one
 				if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
 				then
 					status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
@@ -498,6 +502,7 @@ then
 				new="previously existing"
 			fi
 
+			#Wait fot the cluster to be online
 			while ( [ "${cluster_id}" = "" ] )
 			do
 				cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
@@ -507,6 +512,7 @@ then
 
 			status "A ${new} database cluster is available with id ${cluster_id}"
 
+			#Take a not of all our configuration settings
 			export DB_USERNAME="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").user'`"  
 			export DB_PASSWORD="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").password'`"
 			export DB_IDENTIFIER="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").host'`"
@@ -528,16 +534,20 @@ then
 			then
 				read x
 			fi
+   			#Allow connections from our VPC alone
 			/usr/bin/vultr database update ${cluster_id} --trusted-ips "${VPC_IP_RANGE}"
 		fi
 	fi
 else
+	#If we are here then we are self managed so we generate our own username and passwords here which will be used to access
+ 	#our self managed database everywhere in the deployment. These are generated fresh for each deployment
 	DB_NAME="n`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`n"
 	DB_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
 	DB_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"
 	DB_IDENTIFIER="self-managed"
 fi
-      
+
+#Persist our credentials to the file system to be used at will      
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_NAME=${DB_NAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PASSWORD=${DB_PASSWORD}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_USERNAME=${DB_USERNAME}"
