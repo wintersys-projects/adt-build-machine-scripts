@@ -176,6 +176,12 @@ do
 			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
 		fi
 
+  		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
+		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
+		# When present we can be fairly sure that the newly provisioned machine has completed its autoscaler machine type
+		# build process. We check very frequently so there is no wasted time and up to 300 times which means we are willing to 
+		# wait for up to ten minutes (which should be more than enough) for the cloud-init script to complete
+
 		status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
 		status "This is the current time for your reference `/bin/date`"
                         
@@ -188,9 +194,11 @@ do
 			/bin/sleep 2
 			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
 		done
-                   
+
+		#Check that we believe that the build process of our autoscaler completed
 		if ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] )
 		then
+  			#If we are here then we believe that the autoscaler didn't build correctly
 			status "#########################################################################################################################"
 			status "Hi, an autoscaler didn't seem to build correctly. I can destroy it and I can try again to build a new autoscaler for you."
 			status "#########################################################################################################################"
@@ -199,8 +207,9 @@ do
 			if ( [ "${HARDCORE}" != "1" ] )
 			then
 				read response
-    		fi
-                                
+			fi
+
+			#Delete the autoscaler IP addresses from the S3 datastore because they were clearly not needed because of failure
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicip	
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerip
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ASIP_PUBLIC} ${CLOUDHOST}
@@ -208,14 +217,16 @@ do
 			#Wait until we are sure that the autoscaler server(s) are destroyed because of a faulty build
 			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
 			do
-				/bin/sleep 30
+				/bin/sleep 5
 			done    
 		else
 			done="1"
+   			#Happy days, if we are here then the autoscaler has built correctly
 			if ( [ "${NO_AUTOSCALERS}" -eq "1" ] )
 			then
 				status "An autoscaler (${autoscaler_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
 			else
+   				#There's some additional steps in a multi-autoscaler deployment
 				autoscaler_built_rank="`/bin/ls  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-* | /usr/bin/wc -l 2>/dev/null`"
 				autoscaler_built_rank="`/usr/bin/expr ${autoscaler_built_rank} + 1`"
 				/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTOSCALER_BUILT-${autoscaler_built_rank}
@@ -231,6 +242,7 @@ do
 			counter="0"
 		fi
 	else
+ 		#An appropriate looking autoscaler is already running in the current region
 		status "Autoscaler is already running. Will use that one..."
 		status "Press Enter if this is OK"
 		if ( [ "${HARDCORE}" != "1" ] )
