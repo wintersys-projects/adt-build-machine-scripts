@@ -42,7 +42,7 @@ BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYE
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 
-
+#See if we are a managed database or not
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
 	#########################################################################################################
@@ -55,8 +55,10 @@ then
 
 	if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 	then
+ 		#If we are here then this is a digital ocean deployment
 		if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
 		then
+  			#Extract all our configuration values from the DATABASE_DBaaS_INSTALLATION_TYPE setting
 			database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
 			cluster_engine="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
 			cluster_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
@@ -69,11 +71,13 @@ then
 			database_user="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $9}'`"
 
 			status "Configuring database cluster ${cluster_name}, please wait..."
-   
+
+   			#see if a cluster id already exists for the cluster name we have been given
 			cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
 
 			if ( [ "${cluster_id}" = "" ] )
 			then
+   				#if the cluster doesn't exist we need to create one, so, we are here
 				if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
 				then
 					status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
@@ -97,6 +101,7 @@ then
 				fi
 			fi
 
+			#The cluster takes a while to provision, so, wait on it
 			while ( [ "${cluster_id}" = "" ] )
 			do
 				status "Trying to obtain cluster id for the ${cluster_name} cluster..."
@@ -104,6 +109,7 @@ then
 				/bin/sleep 30
 			done
 
+			#tighten the firewall on our cluster whether its a new or pre-existing cluster in the case of a preexisting one ip addresses might already be allowed through the firewall
 			status "Tightening the firewall on your database cluster"
 			uuids="`/usr/local/bin/doctl databases firewalls list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.cluster_uuid == "'${cluster_id}'").uuid'`"
 
@@ -115,9 +121,11 @@ then
 				done
 			fi
 
+			#create the database in the cluster
 			status "Creating a database named ${db_name} in cluster: ${cluster_id}"
 			/usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
 
+			#wait for the database to be ready
 			while ( [ "`/usr/local/bin/doctl databases db list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`" = "" ] )
 			do
 				status "Probing for a database called ${db_name} in the cluster called ${cluster_name} - Please Wait...."
@@ -126,6 +134,7 @@ then
 				/usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
 			done
 
+			#Get the user's password by creating or new user or interrogating an existing one
 			database_password=""
 
 			if ( [ "`/usr/local/bin/doctl database user list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${database_user}'").name'`" = "" ] )
@@ -145,11 +154,13 @@ then
 				read x
 			fi
 
+			#Allow connections from machines that are in the same VPC as the database cluster
 			if ( [ "`/usr/local/bin/doctl database firewalls list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.value == "'${VPC_IP_RANGE}'").id'`" = "" ] )
 			then
 				/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${VPC_IP_RANGE}
 			fi
 
+			#have we actioned a MySQL or a Postgres database engine type
 			if ( [ "${cluster_engine}" = "mysql" ] )
 			then
 				export DATABASE_DBaaS_INSTALLATION_TYPE="MySQL"
@@ -158,6 +169,7 @@ then
 				export DATABASE_DBaaS_INSTALLATION_TYPE="Postgres"
 			fi
 
+			#gather together all the configuration properties of our database cluster
 			export DATABASE_INSTALLATION_TYPE="DBaaS"
 			export DATABASE_DBaaS_INSTALLATION_TYPE="${DATABASE_DBaaS_INSTALLATION_TYPE}:${cluster_id}"
 			export DB_IDENTIFIER="private-`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.host'`"
@@ -180,6 +192,7 @@ then
 			then
 				read x
 			fi
+   			# record a certificate in case we ever need it
 			/usr/local/bin/doctl databases get-ca ${cluster_id} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
 		fi
 	fi
@@ -193,19 +206,23 @@ then
 	#########################################################################################################
 	if ( [ "${CLOUDHOST}" = "exoscale" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 	then
+  		#If we are here then this is an exoscale deployment
 		if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
 		then
+  			#extract the database's configuration detaila from DATABASE_DBaaS_INSTALLATION_TYPE
 			database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
 			database_engine="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $1}'`"
 			database_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
 			database_size="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
 			db_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
 
+			#See if there is an existing database that we can use
 			existing_db_name="`/usr/bin/exo dbaas list -O json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`"
    
 			new=""
 			if ( [ "${existing_db_name}" = "" ] )
 			then
+   				#If we are here there is no existing database and we need to create one
 				if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
 				then
 					status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
@@ -229,8 +246,8 @@ then
 				new="previously existing"
 			fi
 
+			#Wait for the database to be in a "running" state
 			status "Waiting for your new database cluster to be reponsive and online (this may take a little while)"
-
 			while ( [ "`/usr/bin/exo dbaas show ${db_name} -O json | /usr/bin/jq -r 'select (.name == "'${db_name}'").state'`" != "running" ] )
 			do
 				/bin/sleep 10
@@ -239,7 +256,8 @@ then
 			status ""
 			status "Database with name ${db_name} is now running"
 			status ""
-                        
+
+			#Take note of all of the database's configuration details
 			export DB_USERNAME="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.user"`"
 			export DB_PASSWORD="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.password"`"
 			export DATABASE_INSTALLATION_TYPE="DBaaS"
@@ -248,7 +266,7 @@ then
 			export DB_PORT="`/usr/bin/exo -O json dbaas show --zone ${database_region} ${db_name} | /usr/bin/jq -r ".${database_engine}.uri_params.port"`" 
 			export DATABASE_REGION="${database_region}"
                         
-			#Open up fully until we are installed and then tighten up the firewall
+			#Open up fully until we are installed and then tighten up the firewall later on from the autoscaler
 			if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep Postgres`" = "" ] )
 			then 
 				/usr/bin/exo dbaas update --zone ${database_region} ${db_name} --mysql-ip-filter="0.0.0.0/0"
@@ -271,6 +289,7 @@ then
 				read x
 			fi
 
+			#record a certificate in case we need it
 			/usr/bin/exo dbaas ca-certificate > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
 		fi
 	fi
