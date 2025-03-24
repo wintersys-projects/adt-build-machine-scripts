@@ -195,9 +195,15 @@ do
 			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
 		done
 
-		#Check that we believe that the build process of our autoscaler completed
-		if ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] )
+		if ( [ "${count}" = "300" ] )
 		then
+			done="0"
+		else
+			done="1"
+		fi
+
+		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
+		if ( [ "${done}" != "1" ] )
   			#If we are here then we believe that the autoscaler didn't build correctly
 			status "#########################################################################################################################"
 			status "Hi, an autoscaler didn't seem to build correctly. I can destroy it and I can try again to build a new autoscaler for you."
@@ -220,7 +226,6 @@ do
 				/bin/sleep 5
 			done    
 		else
-			done="1"
    			#Happy days, if we are here then the autoscaler has built correctly
 			if ( [ "${NO_AUTOSCALERS}" -eq "1" ] )
 			then
