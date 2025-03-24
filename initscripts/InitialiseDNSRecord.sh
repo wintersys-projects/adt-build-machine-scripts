@@ -4,7 +4,8 @@
 # Author: Peter Winter
 # Date  : 13/07/2016
 # Description : This will create the DNS record for your current domain and is called
-# at the end of building a webserver
+# at the end of building a webserver. Once this is called a webserver will have been
+# added to the DNS system
 ##################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -28,8 +29,8 @@ status () {
 	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
-ip="${1}"
-website_url="${2}"
+ip="${1}" #the IP address of the webserver
+website_url="${2}" #The URL of the website
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
