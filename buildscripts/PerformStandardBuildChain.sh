@@ -3,6 +3,8 @@
 # Author : Peter Winter
 # Date   : 13/07/2016
 # Description : This will perform a standard build chain (autoscaler/webserver/database)
+# You can configure other build chains with alternative workflows to (for example) include
+# caching server and so on. 
 ####################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -43,6 +45,7 @@ SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER
 
 pids=""
 
+#If PRODUCTION=1 then we  need to work out how many autoscalers we want to deploy if we don't already know
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] && [ "${BASELINE_DB_REPOSITORY}" != "VIRGIN" ] )
 then
     if ( [ "${NO_AUTOSCALERS}" = "" ] )
@@ -92,6 +95,8 @@ then
             fi
         fi
     fi
+    # If this isn't a parallelised build, then build each machine type sequentially and in turn with no need to wait
+    # otherwise if it is a parallelised build type then build all the machine types concurrently and wait for them to build
     if ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "0" ] )
     then
         tally="0"
@@ -151,16 +156,21 @@ then
     fi
 fi
 
+# $pids will be empty of its not a parallelised build and this will do nothing if it is a parallelised build then wait on each pid
+# when all pids wait condition is satisified, the build will proceed. 
 for pid in ${pids}
 do
     wait ${pid}
 done
 
+# And so now we have all the information we need to set the application configuration and store it in the datastore. In particular
+# we have the database connection details in all scenarios and so we can set the application's configuration now
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
     ${BUILD_HOME}/providerscripts/application/SetApplicationConfig.sh
 fi
 
+# If the build machine is connected to the VPC then we need the private ip addresses of our machines, if not we need the public ones
 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 then
     AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
@@ -186,10 +196,10 @@ then
     db_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
-AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
-OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
+#AUTOSCALER_PUBLIC_KEYS="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/autoscaler_keys"
+#OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes "
 
-
+# Simply report that so far, so good
 if ( [ "${PRODUCTION}" = "1" ] )
 then
     status "Autoscaler, webserver and database built correctly....."
@@ -198,6 +208,7 @@ then
     status "Webserver and database built correctly....."
 fi
 
+# And tighten the build machine firewall just as a routine process
 /bin/touch ${BUILD_HOME}/runtimedata//PRIME_FIREWALL
 ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh
 
