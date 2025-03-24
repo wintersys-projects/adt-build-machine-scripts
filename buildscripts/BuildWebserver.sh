@@ -153,6 +153,12 @@ do
 			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
 		fi
 
+  		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
+		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
+		# When present we can be fairly sure that the newly provisioned machine has completed its webserver machine type
+		# build process. We check very frequently so there is no wasted time and up to 300 times which means we are willing to 
+		# wait for up to ten minutes (which should be more than enough) for the cloud-init script to complete
+
 		status "Waiting for the webserver machine ${webserver_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
   		status "This is the current time for your reference `/bin/date`"
 
