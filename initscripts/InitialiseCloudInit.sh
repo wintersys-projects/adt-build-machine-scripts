@@ -52,10 +52,12 @@ git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh ${I
 /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
 /bin/cp /dev/null ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/authenticator_configuration_settings.dat
 
+# source in the environment from the filesystem
 set -o allexport
 . ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 set +o allexport
 
+#setup the autoscaler configuration settings
 while read param
 do
 	param1="`eval /bin/echo ${param}`"
@@ -65,8 +67,10 @@ do
 	fi
 done < ${BUILD_HOME}/builddescriptors/autoscaler_descriptor.dat
 
+# get the autoscaler configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 autoscaler_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+#setup the webserver configuration settings
 while read param
 do
 	param1="`eval /bin/echo ${param}`"
@@ -76,8 +80,10 @@ do
 	fi
 done < ${BUILD_HOME}/builddescriptors/webserver_descriptor.dat
 
+# get the webserver configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 webserver_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+#setup the database configuration settings
 while read param
 do
 	param1="`eval /bin/echo ${param}`"
@@ -87,8 +93,10 @@ do
 	fi
 done < ${BUILD_HOME}/builddescriptors/database_descriptor.dat
 
+# get the database configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 database_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+#setup the authenticator configuration settings
 while read param
 do
 	param1="`eval /bin/echo ${param}`"
@@ -98,15 +106,19 @@ do
 	fi
 done < ${BUILD_HOME}/builddescriptors/authenticator_descriptor.dat
 
+# get the authenticator configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 authenticator_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/authenticator_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+# get the build style settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstyles.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+# take the packaged cloud-init scripts and make them live ready
 /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/autoscaler.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
 /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
 /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/database.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
 /bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/authenticator.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
 
+#Configure the cloud-init script for the relevant application language
 APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_LANGUAGE`"
 PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
 
@@ -128,6 +140,8 @@ then
 	fi
 fi
 
+#the way this works is that installation method for each webserver type is commented out with a placeholder token
+#to enable the installastion of the webserver type that you are installing the blocking placeholder is commented out/removed
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
 
 if ( [ "${WEBSERVER_CHOICE}" = "NGINX" ] )
@@ -157,6 +171,7 @@ then
 	fi
 fi
 
+#The same technique is used for database installations as is used for webserver installations
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
 
@@ -199,6 +214,7 @@ then
 	fi
 fi
 
+#Use our source environment to configure each cloud-init script with "live" data
 /bin/sed -i "s/XXXXPHP_MODULESXXXX/${php_modules_list}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
 /bin/sed -i "s/XXXXPHP_MODULESXXXX/${php_modules_list}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
 /bin/sed -i "s/XXXXSSH_PORTXXXX/${SSH_PORT}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
@@ -250,6 +266,8 @@ fi
 /bin/sed -i "s;XXXXDATABASE_CONFIGURATIONXXXX;${database_configuration_settings};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
 /bin/sed -i "s;XXXXAUTHENTICATOR_CONFIGURATIONXXXX;${authenticator_configuration_settings};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
 
+
+# Our cloud-init scripts should be ready, just give then a quick validate and tell the user if there are any issues
 status ""
 status "Validating cloud-init scripts"
 
