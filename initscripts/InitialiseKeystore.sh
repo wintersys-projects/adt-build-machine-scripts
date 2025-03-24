@@ -2,8 +2,7 @@
 #################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : This will initialise our keystore so that we are a bit less unwieldy
-# than we already are with our ssh and scp command lines
+# Description : This will initialise our keystore 
 ##################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
