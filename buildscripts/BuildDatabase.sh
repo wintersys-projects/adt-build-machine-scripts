@@ -21,9 +21,8 @@
 #######################################################################################################
 #######################################################################################################
 #set -x
-done=0
-counter="0"
-count="0"
+done="0" #If the build succeeds, this will be set to 1
+counter="0" #This counts up how many build attempts there has been
 
 status () {
 	red="`/usr/bin/tput setaf 7`"
@@ -32,9 +31,7 @@ status () {
 	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
 	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
-
-#If done=1 then we know that we have build a database correctly so we don't need to run again
-#If databases fail to build, we try again up to 5 times
+s
 status ""
 status ""
 status ""
