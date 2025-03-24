@@ -129,15 +129,18 @@ do
 		DBIP_PRIVATE="${private_ip}"
 		DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_IDENTIFIER`"
 
-		#Record the database IP address for later reference because this is a self managed database
+		#Record the database IP address for later reference if this is a self managed database rather than a DB managed by a cloudhost
 		if ( [ "${DB_IDENTIFIER}" = "self-managed" ] )
 		then
 			${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DBIP_PRIVATE}"
 		fi
 
+  		#Add the IP addresse of the database server to the S3 datastore
+
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} databaseip/${private_ip}
 
+		#If the build machine is attached to the VPC we want the private IP address if it isn't we want the public one
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 		then
 			db_active_ip="${DBIP_PRIVATE}"
@@ -145,6 +148,9 @@ do
 		then
 			db_active_ip="${DBIP_PUBLIC}"
 		fi
+
+
+  		#Store the IP addresses on the filesystem of the build machine in case we need to reference them
 
 		if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/DBIP:* ] )
 		then
