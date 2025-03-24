@@ -22,9 +22,9 @@
 #########################################################################################
 #set -x
 
-done=0
-counter="0"
-count="0"
+done="0" #This will tell us if the build has failed or succeeded done="1" means the build succeeded
+counter="0" #This tracks how many build attempts there has been
+
 
 status () {
 	cyan="`/usr/bin/tput setaf 4`"
@@ -77,7 +77,6 @@ do
 		ip=""
 		#Construct a unique name for this webserver
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-
 		webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
 
 		status "Initialising a new server machine, please wait......"
@@ -133,8 +132,12 @@ do
 		WSIP_PUBLIC=${ip}
 		WSIP_PRIVATE=${private_ip}
 
+  		#Store our IP addresses in the S3 datastore
+
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} webserverpublicips/${ip}
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} webserverips/${private_ip}
+
+  		#If the build machine is attached to the VPC we want the private IP address if not we want the public one 
 
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 		then
