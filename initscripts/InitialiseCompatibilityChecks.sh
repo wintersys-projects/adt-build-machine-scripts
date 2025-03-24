@@ -3,7 +3,8 @@
 # Author: Peter Winter
 # Date  : 13/07/2016
 # Description : This just checks that we are on the right type of machine and that
-# our id is correct
+# our id is correct. The supplied checks are not really necessary but if you have
+# any you need to add you can place them here
 ##################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
