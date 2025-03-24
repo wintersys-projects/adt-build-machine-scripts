@@ -302,8 +302,10 @@ then
 	#########################################################################################################
 	if ( [ "${CLOUDHOST}" = "linode" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 	then
+ 		#If we are here then this is a linode deployment
 		if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
 		then
+    			#extract the database's configuration detaila from DATABASE_DBaaS_INSTALLATION_TYPE
 			database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
 			engine="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $3}'`"
 			cluster_size="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $6}'`" 
@@ -314,11 +316,13 @@ then
 
 			if ( [ "${database_type}" = "MySQL" ] )
 			then
+   				#We are obviously a MYSQL database type so check if there is an existing database
 				status "Your database is being provisioned, please wait....."
 				database_id="`/usr/local/bin/linode-cli --json databases mysql-list | jq '.[] | select(.label | contains ("'${label}'")) | .id'`"
 
 				if ( [ "${database_id}" = "" ] )
 				then
+    					#there is no existing MySQL database so create one
 					if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
 					then
 						status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
@@ -332,8 +336,9 @@ then
 						fi
 					fi
 					/usr/local/bin/linode-cli databases mysql-create --label "${label}" --region "${db_region}" --type "${machine_type}" --cluster_size "${cluster_size}" --engine "${engine}" --ssl_connection "true" --allow_list "0.0.0.0/0"
-					database_id="`/usr/local/bin/linode-cli --json databases mysql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
-
+					
+     					#Wait for the database to be considered available which is once we can get its id
+     					database_id="`/usr/local/bin/linode-cli --json databases mysql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
 					while ( [ "${database_id}" = "" ] )
 					do
 						status "Attempting to get database id...if I am looking for more than a few minutes something must be wrong"
@@ -341,6 +346,8 @@ then
 						database_id="`/usr/local/bin/linode-cli --json databases mysql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
 					done
 
+
+					#Wait until the database has a status of "active" which can take a while
 					status "Have got the database id which is: ${database_id}"
 					status "Its now the long wait for the database to become active (this can take 10s of minutes)"
 					status="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
@@ -351,9 +358,11 @@ then
 						status="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
 					done
 				else
+    					#open up for the build and tighten once the build is complete
 					/usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list "0.0.0.0/0"
 				fi
 
+				#Take a note of all our database details
 				export CLUSTER_NAME="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
 				export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
 				export DB_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
@@ -361,14 +370,17 @@ then
 				export DB_PORT="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
 				export DB_NAME="${db_name}"
 
+				#take a certificate copy in case we need it
 				/bin/echo "`/usr/local/bin/linode-cli --json databases mysql-ssl-cert ${database_id} | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
 			elif ( [ "${database_type}" = "Postgres" ] )
 			then
+   				#if we are here then this is a postgres build
 				status "Your database is being provisioned, please wait (this can take 10s of minutes)....."
 				database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | jq '.[] | select(.label | contains ("'${label}'")) | .id'`"
 
 				if ( [ "${database_id}" = "" ] )
 				then   
+    					#there was no existing database, so, create one
 					if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
 					then
 						status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
@@ -391,6 +403,8 @@ then
 						database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
 					done
 
+
+					#Wait for the database we have provisioned to become active
 					status "Have got the database id which is: ${database_id}"
 					status "Its now the long wait for the database to become active (this can take 10s of minutes)"
 
@@ -402,9 +416,11 @@ then
 						status="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
 					done
 				else
+    					#Open up during the build and tighten up afterwards
 					/usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list "0.0.0.0/0"
 				fi
 
+				#take a note of all our configuration settings
 				export CLUSTER_NAME="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
 				export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
 				export DB_USERNAME="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
@@ -412,6 +428,7 @@ then
 				export DB_PORT="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
 				export DB_NAME="${db_name}"
 
+				#grab the cert, why not, we might need it
 				/bin/echo "`/usr/local/bin/linode-cli --json databases postgresql-ssl-cert ${database_id} | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
 			fi
 
