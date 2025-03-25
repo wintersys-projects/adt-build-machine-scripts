@@ -2,7 +2,7 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Put files into a bucket in the datastore
+# Description: Mount/create the specified bucket
 ##########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
