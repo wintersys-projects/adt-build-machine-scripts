@@ -2,7 +2,11 @@
 ########################################################################################
 # Author: Peter Winter
 # Date  : 12/07/2021
-# Description : This will apply any native firewalling if necessary
+# Description : This will set up the native firewall. 
+# It will allow SSH connections from the build machine and access to port 443 if we are
+# using a proxy service as well as access to the database port that our database server is 
+# run on. There is a firewall type for each class of machine, autoscaler, webserver, database
+# and the appropriate firewall is applied to its corresponding class of machine
 ########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
