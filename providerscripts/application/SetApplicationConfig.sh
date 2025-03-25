@@ -7,6 +7,12 @@
 # to any level of detail right the way up to configuring every configurable setting 
 # if you chose to. What I do here is set the bare minimum to get the application 
 # online which basically means database and hostname/ip address
+# Workflow is:
+# 1. generate a valid configuration file for our application using live values
+# 2. copy the configuration file to the S3 datastore for use anywhere in the build
+# 3. Have each webserver obtain the configuration file that has been set here for its live usage
+# 4. Have the deployer make modifications to the configuration file on the webservers
+# and overwrite the file generated in 2. and have the webservers pull down the mods
 # Date: 07/11/2024
 # Author: Peter Winter
 ####################################################################################
