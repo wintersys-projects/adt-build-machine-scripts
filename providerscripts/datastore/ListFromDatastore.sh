@@ -2,7 +2,8 @@
 ######################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Lists files from a bucket in the datastore
+# Description: Lists a file if it exists in the specified datastore bucket. This is basically 
+# a way of checking if a file exists in a bucket or not.
 ######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
