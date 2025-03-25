@@ -1,8 +1,9 @@
 #!/bin/sh
 ###################################################################################
-# Description : This will validate our template against the quick spec definition
-# its important that I know about new regions that are supported and so on for the
-# supported cloud providers so that the quick spec can be updated and validated against
+# Description : This will validate our template against the quick spec definitions.
+# These are just rudimentary checks and it can't be 100% guaranteed that there is nothing
+# misconfigured in the template if these checks pass, but, we can be more confident that
+# the template is correctly configured. 
 # Author: Peter Winter
 # Date  : 13/07/2020
 ###################################################################################
