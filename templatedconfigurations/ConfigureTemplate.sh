@@ -1,7 +1,8 @@
 #!/bin/sh
 ###################################################################################
 # Description : This script lets the deployer choose a template to deploy from.
-# There are various default templates and those with the skill can craft their own.
+# There are various default templates for different types of build (virgin, baseline
+# temporal) and so on
 # Author: Peter Winter
 # Date  : 13/07/2020
 ###################################################################################
