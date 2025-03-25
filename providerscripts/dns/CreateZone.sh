@@ -1,7 +1,6 @@
 #!/bin/sh
 ########################################################################################
-# Description: This script will create a zone with your DNS provider. With some providers
-# it may be necessary to manually create the initial zone for your domain using their gui
+# Description: This script will create a zone with your DNS provider. 
 # Author: Peter Winter
 # Date: 02/01/2017
 ########################################################################################
