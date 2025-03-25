@@ -40,6 +40,7 @@ DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.
 DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
 DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
 
+#Juat point out what region this deployment is to
 status ""
 status ""
 status "#########################################"
@@ -47,6 +48,7 @@ status "You are deploying to region: ${REGION}"
 status "#########################################"
 status ""
 
+#Let the deployer how many autoscalers are set to be built
 if ( [ "${PRODUCTION}" = "1" ] )
 then
 	status "############################################"
@@ -54,6 +56,7 @@ then
 	status "############################################"
 fi
 
+#If we want DDOS protection on our vultr instance it can be set to "on" in response to these questions
 if ( [ "${CLOUDHOST}" = "vultr" ] )
 then
 	export ENABLE_DDOS_PROTECION="0"
@@ -79,6 +82,7 @@ then
 	fi
 fi
 
+#Put out some messages to make absolutely sure that the APPLICATION_IDENTIFIER is correctly set for the application we are deploying
 if ( [ "${APPLICATION}" = "joomla" ] && [ "${APPLICATION_IDENTIFIER}" != "1" ] )
 then
 	status "Your application is set to joomla and your application identifier is set to ${APPLICATION_IDENTIFIER}"
@@ -135,12 +139,14 @@ then
 	fi
 fi
 
+#We can't be in production mode and also be deploying a virgin or a baseline application
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
 	PRODUCTION="0"
 	DEVELOPMENT="1"
 fi
 
+#We don't support Wordpress running on Postgres
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] && [ "${APPLICATION}" = "wordpress" ] )
 then
 	status "################################################################"
@@ -154,6 +160,7 @@ then
 	DATABASE_INSTALLATION_TYPE="Maria"
 fi
 
+#For Joomla the port has to be 5432 when installing for Postgres
 if ( ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep "Postgres" 2>/dev/null`" != "" ] ) && [ "${APPLICATION}" = "joomla" ] )
 then
 	if ( [ "${DB_PORT}" != "5432" ] )
@@ -166,7 +173,7 @@ then
 	fi
 fi
 
-
+#If the database name has upper case characters in it when deploying to a DBaaS Postgres instance, set the database name to lower case
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "Postgres" ] )
 then
 	response=""
