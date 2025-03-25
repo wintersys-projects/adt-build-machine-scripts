@@ -1,7 +1,6 @@
 #!/bin/sh
 ######################################################################################################
-# Description: Simply add machines to the firwall
-#
+# Description: Simply add the machines to the firewall don't do any configuring
 # Author: Peter Winter
 # Date: 17/01/2021
 #######################################################################################################
