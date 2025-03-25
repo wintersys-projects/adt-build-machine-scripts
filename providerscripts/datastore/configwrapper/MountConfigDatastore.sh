@@ -2,7 +2,7 @@
 ####################################################################################
 # Author: Peter Winter
 # Date :  24/02/2022
-# Description: This will put a particular file to the configuration datastore
+# Description: This will create a particular bucket in our config datastore
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
