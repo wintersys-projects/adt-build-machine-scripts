@@ -3,6 +3,7 @@
 # Author: Peter Winter
 # Date :  24/02/2022
 # Description: This will list a particular file from the configuration datastore
+# This is the same thing as checking if a file exists in the config datastore
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
