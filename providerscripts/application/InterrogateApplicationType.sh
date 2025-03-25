@@ -2,13 +2,9 @@
 ####################################################################################
 # Description: This script will work out what Application we are deploying, if any.
 # There are several scenarios. The 1st is that it is a virgin install of an Application
-# in which case we can discern elsewhere which Application it is. The second is if we
-# are deploying sourcecode from a repository such as bitbucket or github. The 3rd is
-# if we are deploying from a datastore such as Amazon S3 or Google Cloud.  The way things
-# work, the repositories are the primary backup mechanism, but backups are also made to
-# a datastore. In the case when a repository pull fails, the system falls back to the
-# datastore and checks for a copy there. This script is written to deal with all of
-# those scenarios.
+# in which case we can discern elsewhere which Application it is. We can discern our
+# application type based on a baseline or on a datastore backup depending on what
+# type of deployment is being made.
 # Date: 07-11/2016
 # Author: Peter Winter
 ####################################################################################
@@ -61,6 +57,7 @@ cd ${interrogation_home}
 
 girepo=""
 
+#If we are a basseline check then we expect to be able to find the baseline repository available
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
 	gitrepo="0"
@@ -74,8 +71,8 @@ then
 	fi
 fi
 
+#If we are a temporal build, check then we expect to be able to find a backup in the datastore
 periodicity=""
-
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
 	if ( [ "${BUILD_CHOICE}" = "2" ] )
@@ -121,6 +118,7 @@ then
 	fi
 fi
 
+#If we successfully have found the a repository for our baseline then have a go at finding which application it is by baseline
 if ( [ "${gitrepo}" = "1" ] )
 then
 	${BUILD_HOME}/providerscripts/git/GitClone.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}
@@ -128,6 +126,7 @@ then
 	/bin/rm -rf ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 1>/dev/null 2>/dev/null
 fi
 
+#If we successfully have found the a backup for our temporal backup then have a go at finding which application it is by backup
 if ( [ "${datastorebucket}" = "1" ] )
 then
 	${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backuparchive}
