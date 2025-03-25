@@ -1,7 +1,7 @@
 #!/bin/sh
 ####################################################################################
 # Description: This sets up the database credentials and some other configuration
-# settings necessary for the drupal application to be brought online
+# settings necessary for the joomla application to be brought online
 # Date: 07/11/2024
 # Author: Peter Winter
 ####################################################################################
