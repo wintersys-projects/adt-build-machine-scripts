@@ -2,7 +2,8 @@
 ########################################################################################
 # Author: Peter Winter
 # Date  : 12/07/2021
-# Description : List the ip addresses of Cloudflare
+# Description : List the ip addresses of Cloudflare or another proxy provider if you
+# modify the toolkit to suport one
 ########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
