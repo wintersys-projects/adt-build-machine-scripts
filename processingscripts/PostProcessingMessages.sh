@@ -48,6 +48,7 @@ BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${
 
 OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 
+#If the build machine is attached to the VPC then get the private IP addresses, if it isn't, get the public ones
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
     ws_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
@@ -60,6 +61,7 @@ fi
 status "###############################################################################################################################"
 status "`/usr/bin/banner "IMPORTANT"`"
 
+#If this is a virgin build, show the application credentials so that the  application can be installed
 if ( [ "${BASELINE_DB_REPOSITORY}" = "VIRGIN" ] )
 then
     status "###############################################################################################################################"
@@ -92,6 +94,7 @@ then
     status "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')"
     status "#########################################"
 
+    #Remind the deployer to add the port number to the hostname in the application when the database port is not the default port
     if ( [ "${APPLICATION}" = "joomla" ] && [ "${DB_PORT}" != "3306" ] && [ "${DB_PORT}" != "5432" ] )
     then
         status "You are not using the default port for your database"
@@ -106,6 +109,7 @@ then
         status "######################################"
     fi
 
+    #Suggest the correct URL to complete the installation process for different application types
     if ( [ "${APPLICATION}" = "joomla" ] )
     then
         status ""
@@ -139,6 +143,7 @@ then
     fi
 fi
 
+#With the drupal application the cache needs to be truncated (post install) otherwise there tends to be error messages
 if ( [ "${APPLICATION}" = "drupal" ] )
 then
     status "####################################################################"
@@ -159,6 +164,7 @@ then
     status "========================================================================================================================================="
 fi
 
+#Remind the deployer how the firewall is configured
 status "#############################BUILD-MACHINE_FIREWALL###############################################################################################"
 status "Your build machine is looking for its firewall settings in the bucket: `/usr/bin/crontab -l | /bin/grep TightenBuild | /usr/bin/awk '{print $NF}'`"
 status "Please review: https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts/blob/main/doco/AgileToolkitDeployment/TightenBuildMachineAccess.md"
