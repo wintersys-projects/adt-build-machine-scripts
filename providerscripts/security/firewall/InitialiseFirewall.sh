@@ -1,7 +1,7 @@
 #!/bin/sh
 ######################################################################################################
-# Description: Initialise the firewall for the build machine
-#
+# Description: Initialise the firewall for the build machine. This will either be a ufw or an iptables
+# firewall
 # Author: Peter Winter
 # Date: 17/01/2021
 #######################################################################################################
