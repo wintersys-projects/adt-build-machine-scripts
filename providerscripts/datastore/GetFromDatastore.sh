@@ -2,7 +2,8 @@
 ######################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Get a file from a bucket in the datastore
+# Description: Get a file from a bucket in the datastore (donwload it to the specified
+# location on the filesystem)
 ######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
