@@ -1,7 +1,7 @@
 #!/bin/sh
 ####################################################################################
-# Description: This sets the bare minimum config.php values to get the wordpress
-# application online
+# Description: This sets up the database credentials and some other configuration
+# settings necessary for the wordpress application to be brought online
 # Date: 07/11/2024
 # Author: Peter Winter
 ####################################################################################
