@@ -15,10 +15,11 @@
 # this script will be used to generate a new certificate.
 #
 # Something to be aware of. There are limits set on certificate issuance so, if you run
-# scenario 1, several times for some reason - it shouldn't happen in normal usage, then,
-# you will hit the limit and certificates will stop being issued. In this case, it is
-# necessary to wait some days and then the servers will see that you haven't issued
-# certificates for a period and then reallow issuance and so on.
+# scenario 1, several times as you would if you are making "HARDCORE" builds then if you are
+# not issuing staging certificates then you will hit the issuing limit and the certificate
+# will fail to generate. To work around this (but only if you are testing) then set
+# SSL_LIVE_CERT="0" in your template to generate a staging certicate free of issuing limits
+# rather than a live certificate which has issuance constraints. 
 #####################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
