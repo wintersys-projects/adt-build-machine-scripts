@@ -335,8 +335,6 @@ PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFI
 ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
 # Store our scaling requirements in the datastore (how many webservers to provision)
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
-#Intialise the key store
-#${BUILD_HOME}/initscripts/InitialiseKeystore.sh
 #Provision any DBaaS database service that the build requires 
 ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 
