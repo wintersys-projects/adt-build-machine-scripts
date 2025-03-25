@@ -5,6 +5,10 @@
 # Description: If you are deploying a DBaaS system, this will tighten the firewalling system
 # so that the databases are only accessible by ip addresses that we are using. 
 # This is applied towards the end of the build process
+# It depends on whether the DBaaS service is run in the same VPC as our server machines.
+# If it is then access is available through the VPC if it isn't then individual IP addresses
+# have to be granted access. That is why you see some providers with processing needed here
+# when the DBaaS isn't running in the same VPC as the servers are. 
 ########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
