@@ -1,6 +1,6 @@
 #!/bin/sh
 ######################################################################################################
-# Description: By creating a file: s3://authip-adt-allowed-RND/authorised-ips.dat in your S3 style datastore with a list
+# Description: By creating a file: s3://authip-adt-allowed-RND/authorised-ips.dat in your S3 datastore with a list
 # of ipaddresses, you can allow only machines with your listed ip addresses to access your build machine.
 # The file authorised-ips.dat should be formatted with ip addresses on successive lines, for example:
 #
@@ -8,6 +8,7 @@
 # 222.222.222.222
 #
 # Would allow machines with ip addresses 111.111.111.111 and 222.222.222.222 to connect to your build machine
+# over ssh. 
 # Author: Peter Winter
 # Date: 17/01/2021
 #######################################################################################################
