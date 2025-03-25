@@ -99,6 +99,13 @@ then
 fi
 
 number_of_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "-as-" "${CLOUDHOST}"`"
+
+if ( [ "${number_of_autscalers}" = "0" ] )
+then
+	/bin/echo "There doesn't seem to be any autoscalers running it's pointless trying to set a scaling value"
+ 	exit
+fi
+
 number_of_webservers="${new_scale_value}"
 
 /bin/echo "You are running ${number_autoscalers} and you are asking me to build ${new_scale_value} webservers"
