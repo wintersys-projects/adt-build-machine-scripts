@@ -2,7 +2,7 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Delete a datastore bucket 
+# Description: Delete a datastore bucket which has to be already empty
 ##########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
