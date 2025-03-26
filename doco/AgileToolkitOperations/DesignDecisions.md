@@ -58,7 +58,7 @@ And on the autoscaler, there is a script:
 ### ADDITIONAL THOUGHTS  
 
 On both the development mode and production mode temporal application backups can be made from the webservers and the database machines. 
-Cron is used to schedule system processes on all machines and there is a defined process for [application development workflow](https://github.com/wintersys-projects/adt-build-machine-scripts/blob/master/doco/AgileToolkitDeployment/ApplicatonWorkflow.md) starting in development mode and working up towards full production deployments with multiple webservers.
+Cron is used to schedule system processes on all machines and there is a defined process shown in the tutorials for starting in development mode and working up towards full production deployments with multiple webservers.
 Applications can be deployed from baselines or from temporal backups depending on your needs. Temporal backups should always be kept private to your organisation where as baselines can be made public if you wish to share your prebuilt customised bespoke appliction with other developers 
 
 **VERY IMPORTANT: - with appropriate care taken not to have sensitive credentials in the codebase/SQL dump of the baselines you are making public** 
