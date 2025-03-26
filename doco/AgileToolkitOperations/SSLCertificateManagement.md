@@ -23,7 +23,7 @@ As part of the pre-build process on the build-machine a test is made to see if t
 
 If they exist then a check is made to see if they are valid certificates. If the certificates are valid they are copied to the datastore. If they are not valid then new certificates are generated and stored in these same files and then copied to the S3 datastore. A check is made to see that the certificates have copied successfully to the datastore.
 
-What 1. means is that at the end of the pre-build process SSL certificates will be available in the datastore which can be used by any webserver as its SSL certificate. When each webserver is built either the initial build process webserver or a webserver which has been built as part of an autoscaling event the certificate the certificates generated in 1. will be copied to the new webserver from the datastore and can then be used by that webserver as its SSL certificate. Each webserver stores its ssl certificates at
+What this means is that at the end of the pre-build process SSL certificates will be available in the datastore which can be used by any webserver as its SSL certificate. When each webserver is built either the initial build process webserver or a webserver which has been built as part of an autoscaling event the certificate the certificates generated will be copied to the new webserver from the datastore and can then be used by that webserver as its SSL certificate. Each webserver stores its ssl certificates at
 
 >     ${HOME}/ssl/live/${WEBSITE_URL}/*.pem
 
