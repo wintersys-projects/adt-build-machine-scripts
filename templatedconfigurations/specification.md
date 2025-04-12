@@ -559,13 +559,21 @@ This is the region id where you wish to deploy the servers to.
 
 Available region ids to choose from for each provider are:
 
-Digital Ocean: Available region IDs you can set for digital ocean are: "nyc1","sfo1","nyc2","ams2","sgp1","lon1","nyc3","ams3","fra1","tor1","sfo2","blr1","sfo3"  
+Digital Ocean: Available region IDs you can set for digital ocean are:  
 
-Exoscale: Available region IDs you can set for exoscale are:  "ch-gva-2", "ch-dk-2", "at-vie-1", "de-fra-1", "bg-sof-1", "de-muc-1"   
+"nyc1","sfo1","nyc2","ams2","sgp1","lon1","nyc3","ams3","fra1","tor1","sfo2","blr1","sfo3"  
 
-Linode: Available regions you can set for linode are: "ap-west", "ca-central", "ap-southeast", "us-iad", "us-ord", "fr-par", "us-sea", "br-gru", "nl-ams", "se-sto", "es-mad", "in-maa", "jp-osa", "it-mil", "us-mia", "id-cgk", "us-lax", "gb-lon", "au-mel", "us-central", "us-west", "us-southeast", "us-east", "eu-west", "ap-south", "eu-central", "ap-northeast" 
+Exoscale: Available region IDs you can set for exoscale are:   
 
-Vultr: Available regions you can set for vultr are:  "ams","atl","cdg","dfw","ewr","fra","icn","lax","lhr","mex","mia","nrt","ord","sea","sgp","sjc","sto","syd","yto"
+"ch-gva-2", "ch-dk-2", "at-vie-1", "de-fra-1", "bg-sof-1", "de-muc-1"   
+
+Linode: Available regions you can set for linode are:   
+
+"ap-west", "ca-central", "ap-southeast", "us-iad", "us-ord", "fr-par", "us-sea", "br-gru", "nl-ams", "se-sto", "es-mad", "in-maa", "jp-osa", "it-mil", "us-mia", "id-cgk", "us-lax", "gb-lon", "au-mel", "us-central", "us-west", "us-southeast", "us-east", "eu-west", "ap-south", "eu-central", "ap-northeast" 
+
+Vultr: Available regions you can set for vultr are:   
+
+"ams","atl","cdg","dfw","ewr","fra","icn","lax","lhr","mex","mia","nrt","ord","sea","sgp","sjc","sto","syd","yto"
 
 -------
 
