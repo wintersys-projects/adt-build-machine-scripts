@@ -251,16 +251,16 @@ status "Press <enter> to acknowledge"
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
 	read x
+	# What we do now is that we load/configure the eniroment based on the values of the template and load it into memory
+	# We also store the template name to the filesystem for later reference.
+	${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
+	template_name="`/bin/cat ${BUILD_HOME}/runtimedata/current_template_name`"
+	. ${template_name}
+	/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 else
-	/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
 	/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 fi
 
-# What we do now is that we load/configure the eniroment based on the values of the template and load it into memory
-# We also store the template name to the filesystem for later reference.
-${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
-template_name="`/bin/cat ${BUILD_HOME}/runtimedata/current_template_name`"
-. ${template_name}
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
