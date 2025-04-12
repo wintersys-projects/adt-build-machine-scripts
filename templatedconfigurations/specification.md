@@ -52,7 +52,11 @@ If you are deploying a virgin drupal installation, you must give the version num
 
 ### APPLICATION_BASELINE_SOURCECODE_REPOSITORY
 
-If you are deploying a virgin application, you can set this to "JOOMLA:{latest_version}", "WORDPRESS", "DRUPAL:{latest_version}" or "MOODLE"
+If you are deploying a virgin application, you can set this to  
+"JOOMLA:{latest_version}"  
+"WORDPRESS"  
+"DRUPAL:{latest_version}"  
+"MOODLE"
 
 -----
 
