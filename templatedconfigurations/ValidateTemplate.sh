@@ -466,6 +466,21 @@ then
 	${log_command} "It looks like CLOUDHOST_ACCOUNT_ID is blank this should definitely not be the case for ${CLOUDHOST}"
 fi
 
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep pgsql`" = "" ] )
+then
+        ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
+fi
+
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep mysqli`" = "" ] )
+then
+        ${log_command} "It looks like you are trying to install MariaDB without PHP support for mysql (mysqli)"
+fi
+
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "MySQL" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep mysqli`" = "" ] )
+then
+        ${log_command} "It looks like you are trying to install MySQL without PHP support for mysql (mysqli)"
+fi
+
 ${log_command} ""
 ${log_command} "####################TEMPLATE VALIDATION REPORT ENDING####################"
 
