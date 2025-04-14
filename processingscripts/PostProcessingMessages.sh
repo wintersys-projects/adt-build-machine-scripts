@@ -73,14 +73,14 @@ then
     then
         if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
         then
-            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_DBNAME'`" 
+            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" 
             /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" 
             /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" 
         fi
     else
         if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
         then
-            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_DBNAME'`" >&3
+            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" >&3
             /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" >&3
             /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" >&3
         fi
