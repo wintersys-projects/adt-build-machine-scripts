@@ -481,6 +481,16 @@ then
         ${log_command} "It looks like you are trying to install MySQL without PHP support for mysql (mysqli)"
 fi
 
+if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep MySQL`" != "" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep mysqli`" = "" ] )
+then
+        ${log_command} "It looks like you are trying to install MySQL without PHP support for mysql (mysqli)"
+fi
+
+if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep Postgres`" != "" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep pgsql`" = "" ] )
+then
+        ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
+fi
+
 ${log_command} ""
 ${log_command} "####################TEMPLATE VALIDATION REPORT ENDING####################"
 
