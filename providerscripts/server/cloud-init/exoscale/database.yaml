@@ -83,9 +83,7 @@ packages:
   - rsync
   - cron
 #XXXXMARIADB_SERVERXXXX  - mariadb-server
-#XXXXPOSTRGESQL_SERVERXXXX  - postgresql-server
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
-#XXXXPOSTRGESQL_CLIENTXXXX  - postgresql-client
 
 runcmd:
   - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
