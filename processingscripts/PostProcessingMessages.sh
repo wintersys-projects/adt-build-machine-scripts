@@ -73,7 +73,7 @@ then
     then
         if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
         then
-            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" 
+            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_DBNAME'`" 
             /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" 
             /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" 
         fi
