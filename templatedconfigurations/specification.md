@@ -180,15 +180,12 @@ Clearly if you set it to ERROR, you will only get emails if there is a problem i
 
 This will be the username for your nameserver provider
 
-##### cloudflare - the emal address of username of your cloudflare account
+- If you are using cloudflare DNS to provide your DNS services then DNS_USERNAME is  the emal address of your cloudflare account
+- If you are using digitalocean DNS to provide your DNS services then DNS_USERNAME is  the emal address of your digital ocean account
+- If you are using exoscale DNS to provide your DNS services then DNS_USERNAME is  the emal address of your exoscale account
+- If you are using linode DNS to provide your DNS services then DNS_USERNAME is  the emal address of your linode account
+- If you are using vultr DNS to provide your DNS services then DNS_USERNAME is  the emal address of your vultr account
 
-##### digitalocean - your digital ocean account email address
-
-##### exoscale - your exoscale account email address
-
-##### linode - your linode account email address
-
-##### vultr - your vultr account email address
 
 -----
 
