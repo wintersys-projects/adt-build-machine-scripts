@@ -468,27 +468,27 @@ fi
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep pgsql`" = "" ] )
 then
-        ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
+	${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
 fi
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep mysqli`" = "" ] )
 then
-        ${log_command} "It looks like you are trying to install MariaDB without PHP support for mysql (mysqli)"
+	${log_command} "It looks like you are trying to install MariaDB without PHP support for mysql (mysqli)"
 fi
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "MySQL" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep mysqli`" = "" ] )
 then
-        ${log_command} "It looks like you are trying to install MySQL without PHP support for mysql (mysqli)"
+	${log_command} "It looks like you are trying to install MySQL without PHP support for mysql (mysqli)"
 fi
 
 if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep MySQL`" != "" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep mysqli`" = "" ] )
 then
-        ${log_command} "It looks like you are trying to install MySQL without PHP support for mysql (mysqli)"
+	${log_command} "It looks like you are trying to install MySQL without PHP support for mysql (mysqli)"
 fi
 
 if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep Postgres`" != "" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep pgsql`" = "" ] )
 then
-        ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
+	${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
 fi
 
 ${log_command} ""
