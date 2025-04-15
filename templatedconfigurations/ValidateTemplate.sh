@@ -23,9 +23,9 @@
 ####################################################################################
 
 status () {
-	yellow="`/usr/bin/tput setaf 1`"
+	red="`/usr/bin/tput setaf 1`"
 	norm="`/usr/bin/tput sgr0`"
-	/bin/echo "${yellow} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+	/bin/echo "${red} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
 	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
