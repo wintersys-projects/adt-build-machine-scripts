@@ -74,20 +74,21 @@ then
 
 if ( [ "${CLOUDHOST}" = "linode" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
-	webserver_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'ws-' ${CLOUDHOST}`"
- 	database_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'db-' ${CLOUDHOST}`"
-  	#The DBaaS solution from linode is not accessible from the vpc ip address range so we have to allow the public IP addresses individually
+        webserver_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'ws-' ${CLOUDHOST}`"
+        database_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'db-' ${CLOUDHOST}`"
+        #The DBaaS solution from linode is not accessible from the vpc ip address range so we have to allow the public IP addresses individually
 
         allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32"
         database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
+        label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
 
         if ( [ "${database_type}" = "MySQL" ] )
         then
-                database_id="`/usr/local/bin/linode-cli --json databases mysql-list | /usr/bin/jq '.[] | select(.label | contains ("'${CLUSTER_NAME}'")) | .id'`"
+                database_id="`/usr/local/bin/linode-cli --json databases mysql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
                 /usr/local/bin/linode-cli databases mysql-update ${database_id} ${allow_list}
         elif ( [ "${database_type}" = "Postgres" ] )
         then
-                database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | /usr/bin/jq '.[] | select(.label | contains ("'${CLUSTER_NAME}'")) | .id'`"
+                database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | /usr/bin/jq '.[] | select(.label | contains ("'${label}'")) | .id'`"
                 /usr/local/bin/linode-cli databases mysql-update ${database_id} ${allow_list}
         fi
 fi
