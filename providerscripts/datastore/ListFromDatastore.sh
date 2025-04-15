@@ -44,6 +44,11 @@ then
 	datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
 fi
 
-${datastore_tool} ls s3://${file_to_list} 2>/dev/null
+if ( [ "${file_to_list}" = "" ] )
+then
+        ${datastore_tool} ls 2>/dev/null
+else
+        ${datastore_tool} ls s3://${file_to_list} 2>/dev/null
+fi
 
 
