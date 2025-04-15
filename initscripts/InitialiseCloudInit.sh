@@ -24,13 +24,14 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
@@ -60,11 +61,11 @@ set +o allexport
 #setup the autoscaler configuration settings
 while read param
 do
-	param1="`eval /bin/echo ${param}`"
-	if ( [ "${param1}" != "" ] )
-	then
-		/bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat
-	fi
+        param1="`eval /bin/echo ${param}`"
+        if ( [ "${param1}" != "" ] )
+        then
+                /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat
+        fi
 done < ${BUILD_HOME}/builddescriptors/autoscaler_descriptor.dat
 
 # get the autoscaler configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
@@ -73,11 +74,11 @@ autoscaler_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHO
 #setup the webserver configuration settings
 while read param
 do
-	param1="`eval /bin/echo ${param}`"
-	if ( [ "${param1}" != "" ] )
-	then
-		/bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
-	fi
+        param1="`eval /bin/echo ${param}`"
+        if ( [ "${param1}" != "" ] )
+        then
+                /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
+        fi
 done < ${BUILD_HOME}/builddescriptors/webserver_descriptor.dat
 
 # get the webserver configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
@@ -86,11 +87,11 @@ webserver_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOS
 #setup the database configuration settings
 while read param
 do
-	param1="`eval /bin/echo ${param}`"
-	if ( [ "${param1}" != "" ] )
-	then
-		/bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
-	fi
+        param1="`eval /bin/echo ${param}`"
+        if ( [ "${param1}" != "" ] )
+        then
+                /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat
+        fi
 done < ${BUILD_HOME}/builddescriptors/database_descriptor.dat
 
 # get the database configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
@@ -99,11 +100,11 @@ database_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST
 #setup the authenticator configuration settings
 while read param
 do
-	param1="`eval /bin/echo ${param}`"
-	if ( [ "${param1}" != "" ] )
-	then
-		/bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/authenticator_configuration_settings.dat
-	fi
+        param1="`eval /bin/echo ${param}`"
+        if ( [ "${param1}" != "" ] )
+        then
+                /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/authenticator_configuration_settings.dat
+        fi
 done < ${BUILD_HOME}/builddescriptors/authenticator_descriptor.dat
 
 # get the authenticator configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
@@ -124,20 +125,35 @@ PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
 
 if ( [ "${APPLICATION_LANGUAGE}" = "PHP" ] )
 then
-	if ( [ "`/bin/grep ^PHP:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed  -i 's/#XXXXPHPXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed  -i "s/XXXXPHP_VERSIONXXXX/${PHP_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed  -i 's/#XXXXPHPXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-		/bin/sed  -i "s/XXXXPHP_VERSIONXXXX/${PHP_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-		PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
-		php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
-		php_module_list=""
-		for php_module in ${php_modules}
-		do
-			php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
-		done
-	fi
+        if ( [ "`/bin/grep ^PHP:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                if ( [ "${BUILDOS}" = "ubuntu" ] )
+                then
+                        /bin/sed  -i 's/#XXXXPHPUBUNTUXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                elif ( [ "${BUILDOS}" = "debian" ] )
+                then
+                        /bin/sed  -i 's/#XXXXPHPDEBIANXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                fi
+
+                /bin/sed  -i "s/XXXXPHP_VERSIONXXXX/${PHP_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed  -i 's/#XXXXPHPXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+
+                if ( [ "${BUILDOS}" = "ubuntu" ] )
+                then
+                        /bin/sed  -i 's/#XXXXPHPUBUNTUXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+                elif ( [ "${BUILDOS}" = "debian" ] )
+                then
+                        /bin/sed  -i 's/#XXXXPHPDEBIANXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+                fi
+
+                PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
+                php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
+                php_module_list=""
+                for php_module in ${php_modules}
+                do
+                        php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
+                done
+        fi
 fi
 
 #the way this works is that installation method for each webserver type is commented out with a placeholder token
@@ -146,29 +162,29 @@ WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHO
 
 if ( [ "${WEBSERVER_CHOICE}" = "NGINX" ] )
 then
-	if ( [ "`/bin/grep ^NGINX:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-	fi
+        if ( [ "`/bin/grep ^NGINX:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+        fi
 fi
 
 if ( [ "${WEBSERVER_CHOICE}" = "APACHE" ] )
 then
-	if ( [ "`/bin/grep ^APACHE:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-	fi
+        if ( [ "`/bin/grep ^APACHE:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+        fi
 fi
 
 if ( [ "${WEBSERVER_CHOICE}" = "LIGHTTPD" ] )
 then
-	if ( [ "`/bin/grep ^LIGHTTPD:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-	fi
+        if ( [ "`/bin/grep ^LIGHTTPD:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+        fi
 fi
 
 #The same technique is used for database installations as is used for webserver installations
@@ -177,41 +193,41 @@ DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] )
 then
-	if ( [ "`/bin/grep ^MARIADB:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXMARIADB_SERVERXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-	fi
+        if ( [ "`/bin/grep ^MARIADB:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXMARIADB_SERVERXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+        fi
 fi
 
 if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep 'MySQL'`" != "" ] )
 then
-	if ( [ "`/bin/grep ^MARIADB:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-	else
-		/bin/sed -i 's/#XXXXMYSQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXMYSQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-	fi
+        if ( [ "`/bin/grep ^MARIADB:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXMARIADB_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+        else
+                /bin/sed -i 's/#XXXXMYSQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXMYSQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+        fi
 fi
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ]  )
 then
-	if ( [ "`/bin/grep ^POSTGRES:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed -i 's/#XXXXPOSTRGESQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXPOSTRGESQL_SERVERXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-	fi
+        if ( [ "`/bin/grep ^POSTGRES:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXPOSTRGESQL_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXPOSTRGESQL_SERVERXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+        fi
 fi
 
 if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep 'Postgres'`" != "" ] )
 then
-	if ( [ "`/bin/grep ^POSTGRES:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
-	then
-		/bin/sed -i 's/#XXXXPOSTGRES_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i 's/#XXXXPOSTGRES_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-	fi
+        if ( [ "`/bin/grep ^POSTGRES:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXPOSTGRES_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+                /bin/sed -i 's/#XXXXPOSTGRES_CLIENTXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+        fi
 fi
 
 #Use our source environment to configure each cloud-init script with "live" data
@@ -276,20 +292,20 @@ autoscaler_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_
 status "${autoscaler_cloud_init_status}"
 if ( [ "`/bin/echo ${autoscaler_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
 then
-	status "Invalid autoscaler cloud-init configuration found. I have to exit"
-	/usr/bin/kill -9 $PPID
+        status "Invalid autoscaler cloud-init configuration found. I have to exit"
+        /usr/bin/kill -9 $PPID
 fi     
 webserver_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml`"
 status "${webserver_cloud_init_status}"
 if ( [ "`/bin/echo ${webserver_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
 then
-	status "Invalid webserver cloud-init configuration found. I have to exit"
-	/usr/bin/kill -9 $PPID
+        status "Invalid webserver cloud-init configuration found. I have to exit"
+        /usr/bin/kill -9 $PPID
 fi   
 database_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml`"
 status "${database_cloud_init_status}"
 if ( [ "`/bin/echo ${database_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
 then
-	status "Invalid database cloud-init configuration found. I have to exit"
-	/usr/bin/kill -9 $PPID
-fi   
+        status "Invalid database cloud-init configuration found. I have to exit"
+        /usr/bin/kill -9 $PPID
+fi  
