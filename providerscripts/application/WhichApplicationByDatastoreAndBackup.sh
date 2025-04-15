@@ -36,7 +36,7 @@ interrogation_home="${BUILD_HOME}/interrogation"
 APPLICATION=""
 
 #################JOOMLA################
-if ( [ -d ${interrogation_home}/tmp/backup/administrator ] && [ -d ${interrogation_home}/tmp/backup/modules ] && [ -d ${interrogation_home}/tmp/backup/plugins ] && [ -d ${interrogation_home}/tmp/backup/templates ] )
+if ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "JOOMLA" ] )
 then
 	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:joomla
 	APPLICATION="joomla"
@@ -59,7 +59,7 @@ then
 	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 #################WORDPRESS################
-elif ( [ -f ${interrogation_home}/tmp/backup/wp-login.php ] && [ -d ${interrogation_home}/tmp/backup/wp-content ] && [ -f ${interrogation_home}/tmp/backup/wp-cron.php ] && [ -d ${interrogation_home}/tmp/backup/wp-admin ] && [ -d ${interrogation_home}/tmp/backup/wp-includes ] && [ -f ${interrogation_home}/tmp/backup/wp-settings.php ] )
+elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "WORDPRESS" ] )
 then
 	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:wordpress
 	APPLICATION="wordpress"
@@ -88,7 +88,7 @@ then
 	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 #################DRUPAL################
-elif ( [ -f ${interrogation_home}/tmp/backup/core/misc/drupal.js ] && [ -d ${interrogation_home}/tmp/backup/themes ] && [ -d ${interrogation_home}/tmp/backup/modules ] && [ -d ${interrogation_home}/tmp/backup/profiles ] )
+elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "DRUPAL" ] )
 then
 	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:drupal
 	APPLICATION="drupal"
@@ -118,7 +118,7 @@ then
 	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 	#################MOODLE################
-elif ( [ -f ${interrogation_home}/tmp/backup/moodle/index.php ] && [ -f ${interrogation_home}/tmp/backup/moodle/version.php ] && [ -d ${interrogation_home}/tmp/backup/moodle/userpix ] && [ -d ${interrogation_home}/tmp/backup/moodle/report ] && [ -d ${interrogation_home}/tmp/backup/moodle/enrol ] && [ -d ${interrogation_home}/tmp/backup/moodle/theme ] )
+elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "MOODLE" ] )
 then
 	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:moodle
 	APPLICATION="moodle"
