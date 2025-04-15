@@ -204,6 +204,7 @@ do
 
 		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
 		if ( [ "${done}" != "1" ] )
+		then
   			#If we are here then we believe that the autoscaler didn't build correctly
 			status "#########################################################################################################################"
 			status "Hi, an autoscaler didn't seem to build correctly. I can destroy it and I can try again to build a new autoscaler for you."
