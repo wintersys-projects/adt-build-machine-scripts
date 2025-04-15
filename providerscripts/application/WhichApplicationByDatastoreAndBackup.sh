@@ -50,13 +50,16 @@ then
 	then
 		read x
 	fi
- 	/bin/cp ${interrogation_home}/tmp/backup/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+ 	if ( [ -f ${interrogation_home}/configuration.php.default ] )
+	then
+ 		/bin/cp ${interrogation_home}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+	fi
+ 	if ( [ ! -f ${interrogation_home}/dbp.dat ] )
  	then
 		status "Error, cannot find db prefix file"
 		/usr/bin/kill -9 $PPID    	
 	fi
-	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 #################WORDPRESS################
 elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "WORDPRESS" ] )
@@ -73,19 +76,19 @@ then
 	then
 		read x
 	fi
-	if ( [ -f ${interrogation_home}/tmp/backup/wp-config.php.default ] )
+	if ( [ -f ${interrogation_home}/wp-config.php.default ] )
 	then
-		/bin/cp ${interrogation_home}/tmp/backup/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+		/bin/cp ${interrogation_home}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
 	else
 		status "Couldn't find joomla default configuration file in baseline webroot"
 		/usr/bin/kill -9 $PPID        
 	fi
 
-	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+	if ( [ ! -f ${interrogation_home}/dbp.dat ] )
 	then
 		status "Error, cannot find db prefix file"
 	fi
-	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 #################DRUPAL################
 elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "DRUPAL" ] )
@@ -102,20 +105,20 @@ then
 	then
 		read x
 	fi
-	if ( [ -f ${interrogation_home}/tmp/backup/sites/default/settings.php.default ] )
+	if ( [ -f ${interrogation_home}/sites/default/settings.php.default ] )
 	then
-		/bin/cp ${interrogation_home}/tmp/backup/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+		/bin/cp ${interrogation_home}/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
 	else
 		status "Couldn't find drupal default configuration file in backup webroot"
 		/usr/bin/kill -9 $PPID        
 	fi
 
-	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+	if ( [ ! -f ${interrogation_home}/dbp.dat ] )
 	then
 		status "Error, cannot find db prefix file"
 	fi
 
-	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 	#################MOODLE################
 elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "MOODLE" ] )
@@ -133,20 +136,20 @@ then
 		read x
 	fi
 
-	if ( [ -f ${interrogation_home}/tmp/backup/moodle/config.php.default ] )
+	if ( [ -f ${interrogation_home}/moodle/config.php.default ] )
 	then
-		/bin/cp ${interrogation_home}/tmp/backup/moodle/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
+		/bin/cp ${interrogation_home}/moodle/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
 	else
 		status "Couldn't find moodle default configuration file in backup archive webroot"
 		/usr/bin/kill -9 $PPID        
 	fi
 
-	if ( [ ! -f ${interrogation_home}/tmp/backup/dbp.dat ] )
+	if ( [ ! -f ${interrogation_home}/dbp.dat ] )
 	then
 		status "Error, cannot find db prefix file"
 	fi
      
-	/bin/cp ${interrogation_home}/tmp/backup/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 fi
 
