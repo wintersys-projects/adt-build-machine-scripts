@@ -349,7 +349,8 @@ then
 
 					#Wait until the database has a status of "active" which can take a while
 					status "Have got the database id which is: ${database_id}"
-					status "Its now the long wait for the database to become active (this can take 10s of minutes)"
+					status "Its now the wait for the database to become active (this can take a few minutes)"
+     
 					status="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
 
 					while ( [ "${status}" != "active" ] )
@@ -406,7 +407,7 @@ then
 
 					#Wait for the database we have provisioned to become active
 					status "Have got the database id which is: ${database_id}"
-					status "Its now the long wait for the database to become active (this can take 10s of minutes)"
+					status "Its now the wait for the database to become active (this can take a few minutes)"
 
 					status="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').status'`"
 
