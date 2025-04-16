@@ -49,6 +49,9 @@ else
 	log_command="/bin/echo "
 fi
 
+${log_command} ""
+/usr/bin/banner "ATTENTION"
+${log_command} ""
 
 ${log_command} "######################################################################################################################################################################"
 ${log_command} "If you see any warning messages below its because I believe that you might want to double check some values in  your template in some way before you make a deployment"
