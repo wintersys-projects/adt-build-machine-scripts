@@ -376,7 +376,7 @@ then
 			elif ( [ "${database_type}" = "Postgres" ] )
 			then
    				#if we are here then this is a postgres build
-				status "Your database is being provisioned, please wait (this can take 10s of minutes)....."
+				status "Your database is being provisioned, please wait....."
 				database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | jq '.[] | select(.label | contains ("'${label}'")) | .id'`"
 
 				if ( [ "${database_id}" = "" ] )
