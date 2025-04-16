@@ -35,7 +35,7 @@ WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
 if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
 then
-	interrogation_home="${BUILD_HOME}/interrogation/"
+	interrogation_home="${BUILD_HOME}/interrogation"
 	for directory_to_mount in ${DIRECTORIES_TO_MOUNT}
 	do
 		if ( [ "${directory_to_mount}" = "WHOLE-WEBROOT" ] )
