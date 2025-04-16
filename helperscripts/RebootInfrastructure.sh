@@ -30,7 +30,7 @@ fi
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 /bin/echo "I find that with some providers, occassionally, the networking doesn't initialse correctly and you get timeouts between machines"
-/bin/ehco "If you find a situation where everything looks to be running fine but you get a timeout, a simple reboot can sort it out"
+/bin/echo "If you find a situation where everything looks to be running fine but you get a timeout, a simple reboot can sort it out"
 /bin/echo "So, please bear that in mind as something to try if you are getting timeouts...Thanks"
 
 /bin/echo "Which Cloudhost are you using? 1) Digital Ocean 2) Exoscale 3) Linode 4) Vultr. Please Enter the number for your cloudhost"
