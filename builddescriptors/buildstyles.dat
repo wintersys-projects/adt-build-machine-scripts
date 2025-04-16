@@ -11,7 +11,8 @@
 # The set of possible configurations you could have are as follows:
 # If you are building for NGINX (your template webserver is set to NGINX) you can select one of:
 # NGINX:source   (uses default hardcoded settings)
-# APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
+# NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
+# NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
 # NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # NGINX:repo
 # If you are building for APACHE (your templates webserver is set to APACHE) you can select one of:
@@ -82,6 +83,7 @@ NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
 #NGINX:repo
+#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
 #NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX FROM SOURCE#################################################
