@@ -173,17 +173,26 @@ then
 fi
 
 #For Joomla the port has to be 5432 when installing for Postgres
-if ( ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep "Postgres" 2>/dev/null`" != "" ] ) && [ "${APPLICATION}" = "joomla" ] )
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] && [ "${APPLICATION}" = "joomla" ] )
 then
-	if ( [ "${DB_PORT}" != "5432" ] )
-	then
-		status "################################################################"
-		status "Sorry, I don't know how to set anything other than the default port - 5432 for the postgres database when using joomla"
-		status "Setting expected postgres port to 5432"
-		status "################################################################"
-		DB_PORT=5432
-		${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
-	fi
+        if ( [ "${DB_PORT}" != "5432" ] )
+        then
+                status "################################################################"
+                status "Sorry, I don't know how to set anything other than the default port - 5432 for the postgres database when using joomla"
+                status "Setting expected postgres port to 5432"
+                status "################################################################"
+                DB_PORT=5432
+                ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
+        fi
+fi
+
+if ( ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep "Postgres"`" != "" ] ) && [ "${APPLICATION}" = "joomla" ] )
+then
+        if ( [ "${DB_PORT}" != "5432" ] )
+        then
+                status "Sorry, as far as I know, joomla can only run on port 5432 when deploying using Postgres to a managed database"
+                /usr/bin/kill -9 $PPID
+        fi
 fi
 
 #If the database name has upper case characters in it when deploying to a DBaaS Postgres instance, set the database name to lower case
