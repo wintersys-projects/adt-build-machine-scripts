@@ -418,7 +418,7 @@ then
 					done
 				else
     					#Open up during the build and tighten up afterwards
-					/usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list "0.0.0.0/0"
+					/usr/local/bin/linode-cli databases postgresql-update ${database_id} --allow_list "0.0.0.0/0"
 				fi
 
 				#take a note of all our configuration settings
