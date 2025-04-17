@@ -497,7 +497,7 @@ There are three settings you can use:
 
 If set to "0", this means that you are installing a virgin CMS system, for example, Joomla, Wordpress, Moodle or Drupal
 If set to "1", this means that you are deploying a baseline of an application you have customised (see BASELINE_DB_REPOSITORY and APPLICATION_BASELINE_SOURCECODE_REPOSITORY ) also, BUILD_ARCHIVE_CHOICE needs to be set to "baseline
-If set to "2"  this means that you are deploying from an hourly backup of an application (availability dependent on DISABLE_HOURLY)
+If set to "2"  this means that you are deploying from an hourly backup of an application 
 if set to "3", this means that you are deploying from a daily backup of an application
 If set to "4"  this means that you are deploying from a weekly backup of an application
 If set to "5"  this means that you are deploying from a monthly backup of an application
