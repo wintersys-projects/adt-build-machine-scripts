@@ -199,7 +199,12 @@ fi
 # Simply report that so far, so good
 if ( [ "${PRODUCTION}" = "1" ] )
 then
-    status "Autoscaler, webserver and database built correctly....."
+	if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+	then
+		status "Authentication server, autoscaler, webserver and database built correctly....."
+	else
+		status "autoscaler, webserver and database built correctly....."
+	fi
 elif ( [ "${DEVELOPMENT}" = "1" ] )
 then
     status "Webserver and database built correctly....."
