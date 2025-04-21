@@ -1,5 +1,17 @@
 #cloud-config
 
+#write_files:
+#  - path: /etc/netplan/eth1.yaml
+#    content: |
+#      network:
+#        version: 2
+#        ethernets:
+#          eth1:
+#            dhcp4: true
+#
+#runcmd:
+#  - [ netplan, apply ]
+
 write_files:
   - path: /etc/netplan/eth1.yaml
     content: |
@@ -8,9 +20,11 @@ write_files:
         ethernets:
           eth1:
             dhcp4: true
+    owner: 'root:root'
+    permissions: '0644'
 
 runcmd:
-  - [ netplan, apply ]
+  - '/usr/sbin/netplan apply'
 
 manage_resolv_conf: true
 resolv_conf:
