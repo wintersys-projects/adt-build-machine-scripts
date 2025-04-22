@@ -1,17 +1,5 @@
 #cloud-config
 
-write_files:
-  - path: /etc/netplan/eth1.yaml
-    content: |
-      network:
-        version: 2
-        ethernets:
-          eth1:
-            dhcp4: true
-
-#runcmd:
-#  - [ netplan, apply ]
-
 manage_resolv_conf: true
 resolv_conf:
   nameservers:
@@ -45,6 +33,13 @@ keyboard:
   layout: gb
 
 write_files:
+- path: /etc/netplan/eth1.yaml
+  content: |
+    network:
+      version: 2
+      ethernets:
+        eth1:
+          dhcp4: true
 - encoding: b64
   content: XXXXAUTOSCALER_CONFIGURATIONXXXX
   owner: root:root
@@ -94,9 +89,7 @@ packages:
   - whois
 
 runcmd:
-  - '/bin/rm /etc/netplan/50-cloud-init.yaml'
-  - '/usr/sbin/netplan generate'
-  - '/usr/sbin/netplan apply'
+  - [ netplan, apply ]
   - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
   - '/usr/sbin/locale-gen'
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
