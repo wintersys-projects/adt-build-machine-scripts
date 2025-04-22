@@ -9,8 +9,8 @@ write_files:
           eth1:
             dhcp4: true
 
-runcmd:
-  - [ netplan, apply ]
+#runcmd:
+#  - [ netplan, apply ]
 
 manage_resolv_conf: true
 resolv_conf:
@@ -84,6 +84,9 @@ packages:
 #XXXXLIGHTTPDXXXX  - lighttpd
 
 runcmd:
+  - '/bin/rm /etc/netplan/50-cloud-init.yaml'
+  - '/usr/sbin/netplan generate'
+  - '/usr/sbin/netplan apply'
   - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
   - '/usr/sbin/locale-gen'
 #XXXXPHPDEBIANXXXX  - '/usr/bin/curl -sSL https://raw.githubusercontent.com/wintersys-projects/adt-build-machine-scripts/main/installscripts/php-installer.sh | /usr/bin/bash -x'
