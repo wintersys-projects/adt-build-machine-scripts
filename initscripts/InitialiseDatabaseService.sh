@@ -280,6 +280,7 @@ then
                         then 
                                 /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --mysql-ip-filter="0.0.0.0/0"
                         elif ( [ "${db_engine}" = "pg" ] )
+                        then
                                 /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
                         fi
 
