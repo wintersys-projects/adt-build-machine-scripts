@@ -9,8 +9,8 @@ write_files:
           eth1:
             dhcp4: true
 
-runcmd:
-  - [ netplan, apply ]
+#runcmd:
+#  - [ netplan, apply ]
 
 manage_resolv_conf: true
 resolv_conf:
@@ -86,6 +86,9 @@ packages:
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
 
 runcmd:
+  - '/bin/rm /etc/netplan/50-cloud-init.yaml'
+  - '/usr/sbin/netplan generate'
+  - '/usr/sbin/netplan apply'
   - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
   - '/usr/sbin/locale-gen'
   - '/bin/cp /etc/ssh/ssh_host_rsa_key /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
