@@ -9,8 +9,8 @@ write_files:
           eth1:
             dhcp4: true
 
-runcmd:
-  - [ netplan, apply ]
+#runcmd:
+#  - [ netplan, apply ]
 
 manage_resolv_conf: true
 resolv_conf:
