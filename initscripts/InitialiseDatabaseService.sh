@@ -239,10 +239,10 @@ then
                                 admin_username="adt-dbadmin"
                                 admin_password="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-12`"
                                 status "Creating  database ${db_name}, with engine: ${database_engine}, in region: ${database_region} and at size: ${database_size} please wait..."
-                                if ( [ "${db_engine}" = "mysql" ] )
+                                if ( [ "${database_engine}" = "mysql" ] )
                                 then
                                         /usr/bin/exo dbaas create ${database_engine} ${database_size} ${db_name} --zone ${database_region} --mysql-admin-username "${admin_username}" --mysql-admin-password  "${admin_password}"
-                                elif ( [ "${db_engine}" = "pg" ] )
+                                elif ( [ "${database_engine}" = "pg" ] )
                                 then
                                         /usr/bin/exo dbaas create ${database_engine} ${database_size} ${db_name} --zone ${database_region} --pg-admin-username "${admin_username}" --pg-admin-password  "${admin_password}"
                                 fi
@@ -276,10 +276,10 @@ then
                         export DATABASE_REGION="${database_region}"
                         
                         #Open up fully until we are installed and then tighten up the firewall later on from the autoscaler
-                        if ( [ "${db_engine}" = "mysql" ] )
+                        if ( [ "${database_engine}" = "mysql" ] )
                         then 
                                 /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --mysql-ip-filter="0.0.0.0/0"
-                        elif ( [ "${db_engine}" = "pg" ] )
+                        elif ( [ "${database_engine}" = "pg" ] )
                         then
                                 /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
                         fi
