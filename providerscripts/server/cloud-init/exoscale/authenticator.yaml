@@ -35,6 +35,7 @@ write_files:
       ethernets:
         eth1:
           dhcp4: true
+  permissions: '0600'
 - encoding: b64
   content: XXXXAUTHENTICATOR_CONFIGURATIONXXXX
   owner: root:root
