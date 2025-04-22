@@ -44,7 +44,6 @@ then
 	/bin/echo ${salts} >> /tmp/fullfile
 	/bin/echo "/* SALTEDALREADY */" >> /tmp/fullfile
 	/bin/echo "define( 'DISALLOW_FILE_EDIT', true );" >> /tmp/fullfile
-	/bin/echo "define( 'WP_DEBUG', false );" >> /tmp/fullfile
 	/bin/echo "define('WP_CACHE', false);" >> /tmp/fullfile
 	/bin/echo "define('CONCATENATE_SCRIPTS', true);" >> /tmp/fullfile
 	/bin/echo "define('COMPRESS_SCRIPTS', true);" >> /tmp/fullfile
