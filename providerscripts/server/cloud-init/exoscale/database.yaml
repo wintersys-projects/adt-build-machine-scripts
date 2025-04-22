@@ -40,6 +40,7 @@ write_files:
       ethernets:
         eth1:
           dhcp4: true
+  permissions: '0600'
 - encoding: b64
   content: XXXXDATABASE_CONFIGURATIONXXXX
   owner: root:root
