@@ -1,17 +1,18 @@
 #!/bin/sh
-#################################################################################################
-#THIS SCRIPT IS FOR USE ON A DEBIAN OR UBUNTU LINODE SERVER WITH THE LINODE CLOUDHOST EXCLUSIVELY
-#IF YOU WISH TO SUPPORT A DIFFERENT FLAVOUR OF LINUX YOU WILL NEED SEPARATE SCRIPTS
-#SUITABLE FOR THAT PARTICULAR FLAVOUR
 ################################################################################################
-###############################################################################################
-# SET THESE FOR YOUR BUILD CLIENT MACHINE
-# THIS WILL NOT START A BUILD IT WILL JUST SETUP THE TOOLKIT
-# USE THIS IF YOU WANT TO PERFORM AN EXPEDITED OR A FULL BUILD FROM THE COMMAND LINE
-# ssh -i <ssh-private-key> -p ${BUILDCLIENT_SSH_PORT} $BUILDCLIENT_USER@<buildclientip>
-# $BUILDCLIENT_USER>sudo su
-# password:${BUILDCLIENT_PASSWORD}
-# cd adt-build-machine-scripts/logs
+# This script is a preparatory script for your build machine. Your build machine is the machine
+# that is responsible for initiating the build process of your server fleet. 
+# You can use this script as a stack script if you are deploying for Linode. You will then need
+# to populate the "UDF" values that the stack script displays for you that you can see below.
+# You then use it as you would any other stack script to deploy your build machine
+#
+# Once your stack script is deployed you connect to it similar to the following:
+#
+#     > ssh -i <ssh-private-key> -p ${BUILDMACHINE_SSH_PORT} ${BUILDMACHINE_USER}@<buildmachineip>
+#     > sudo su
+#     > password: ${BUILDMACHINE_PASSWORD}
+#     > cd adt-build-machine-scripts
+#
 #################################################################################################
 # <UDF name="SSH" label="SSH Public Key from your laptop" />
 # <UDF name="BUILDMACHINE_USER" label="The username for your build machine" />
@@ -22,7 +23,7 @@
 
 #XXXSTACKYYY
 
-set -x
+#set -x
 
 OUT_FILE="buildmachine-out-`/bin/date | /bin/sed 's/ //g'`"
 exec 1>>/root/${OUT_FILE}
