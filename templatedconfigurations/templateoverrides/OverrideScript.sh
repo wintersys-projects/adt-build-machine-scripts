@@ -1,19 +1,26 @@
 #!/bin/sh
 
-#####################################################################################
-#THIS SCRIPT IS FOR USE ON A DEBIAN OR UBUNTU VPS SERVER WITH YOUR CHOSEN CLOUDHOST
-#IF YOU WISH TO SUPPORT A DIFFERENT FLAVOUR OF LINUX YOU WILL NEED SEPARATE SCRIPTS
-#SUITABLE FOR THAT PARTICULAR FLAVOUR
-######################################################################################
-
-###############################################################################################
-# SET THESE FOR YOUR BUILD CLIENT MACHINE
-# THIS WILL NOT START A BUILD IT WILL JUST SETUP THE TOOLKIT
-# USE THIS IF YOU WANT TO PERFORM AN EXPEDITED OR A FULL BUILD FROM THE COMMAND LINE
-# ssh -i <ssh-private-key> -p ${BUILDCLIENT_SSH_PORT} $BUILDCLIENT_USER@<buildclientip>
-# $BUILDCLIENT_USER>sudo su
-# password:${BUILDCLIENT_PASSWORD}
-# cd adt-build-machine-scripts/logs
+################################################################################################
+# This script is a preparatory script for your build machine. Your build machine is the machine
+# that is responsible for initiating the build process of your server fleet. 
+# As a minimum you will need a copy of this script with the following dynamic or changeable values 
+# set:
+#
+#   BUILDMACHINE_USER
+#   BUILDMACHINE_PASSWORD
+#   BUILDMACHINE_SSH_PORT
+#   LAPTOP_IP
+#   SSH
+#
+# You will then need to pass a copy of the entire script with these values set to the "user data"
+# area of the build machine you are provisioning. How to do this will vary by provider.
+# Once your build machine is provisioned you can SSH onto it in a way similar to this:
+#
+#     > ssh -i <ssh-private-key> -p ${BUILDMACHINE_SSH_PORT} ${BUILDMACHINE_USER}@<buildmachineip>
+#     > sudo su
+#     > password:${BUILDMACHINE_PASSWORD}
+#     > cd adt-build-machine-scripts/logs
+#
 #################################################################################################
 export BUILDMACHINE_USER="agile-user"
 export BUILDMACHINE_PASSWORD="Hjdhfb34hd£" #Make sure any password you choose is strong enough to pass any strength enforcement rules of your OS (vultr is really strict and a weak password will be a problem) also, do not use the dollar symbol in your password
