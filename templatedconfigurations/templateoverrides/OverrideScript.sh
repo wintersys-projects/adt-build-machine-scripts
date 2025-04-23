@@ -19,7 +19,7 @@
 #     > ssh -i <ssh-private-key> -p ${BUILDMACHINE_SSH_PORT} ${BUILDMACHINE_USER}@<buildmachineip>
 #     > sudo su
 #     > password:${BUILDMACHINE_PASSWORD}
-#     > cd adt-build-machine-scripts/logs
+#     > cd adt-build-machine-scripts
 #
 #################################################################################################
 export BUILDMACHINE_USER="agile-user"
