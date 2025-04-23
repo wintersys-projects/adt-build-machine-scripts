@@ -49,7 +49,7 @@ export SELECTED_TEMPLATE=\"\" #set if using hardcore build
 
 #XXXSTACKYYY
 
-set -x
+#set -x
 
 OUT_FILE="buildmachine-out-`/bin/date | /bin/sed 's/ //g'`"
 exec 1>>/root/${OUT_FILE}
