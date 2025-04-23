@@ -238,7 +238,7 @@ then
                                 fi
                                 admin_username="adt-dbadmin"
                                 admin_password="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-12`"
-                                /bin/cp ${BUILD_HOME}/runtimedata/${CLOUDHOST}/DBAAS_CREDENTIALS ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS.$$
+                                /bin/cp ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS.$$
                                 /bin/echo "DB ADMIN USERNAME: ${admin_username}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
                                 /bin/echo "DB ADMIN PASSWORD: ${admin_password}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
                                 status "Creating  database ${db_name}, with engine: ${database_engine}, in region: ${database_region} and at size: ${database_size} please wait..."
