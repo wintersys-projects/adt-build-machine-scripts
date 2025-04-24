@@ -29,8 +29,10 @@ if ( [ "`/bin/ls /root/FIREWALL-BUCKET:*  2>/dev/null`" != "" ] )
 then
 	IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 else
-	auth_bucket="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
-	/bin/touch /root/FIREWALL-BUCKET:${auth_bucket}
+	/bin/echo "You can't run this script until you have performed at least one deployment of your web property"
+ 	/bin/echo "When you make your first deployment this will tell me the access and secret keys that I need to access your datastore"
+  	/bin/echo "Without access to your datastore, this mecahnism won't work"
+	exit
 fi
 
 if ( [ ! -f  ./AllowLaptopIP.sh ] )
