@@ -29,8 +29,8 @@ if ( [ "`/bin/ls /root/FIREWALL-BUCKET:*  2>/dev/null`" != "" ] )
 then
 	IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 else
-        auth_bucket="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
-        /bin/touch /root/FIREWALL-BUCKET:${auth_bucket}
+	auth_bucket="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
+	/bin/touch /root/FIREWALL-BUCKET:${auth_bucket}
 fi
 
 if ( [ ! -f  ./AllowLaptopIP.sh ] )
