@@ -110,6 +110,11 @@ fi
 /bin/touch ${BUILD_HOME}/runtimedata/LAPTOPIP:${LAPTOP_IP}
 /bin/touch ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:${BUILDMACHINE_SSH_PORT}
 
+if ( [ "${BUILD_IDENTIFIER}" != "" ] )
+then
+	/bin/echo ${BUILD_IDENTIFIER} > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
+fi
+
 /bin/sh ${BUILD_HOME}/installscripts/InstallFirewall.sh "`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
 ${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh 
 
