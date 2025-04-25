@@ -120,14 +120,13 @@ To make it clear just setting this value as described to a region chain will get
 
 ### S3_LOCATION
 
-##### digital ocean - the location should always be set to one of nyc1 sfo1 nyc2 ams2 sgp1 lon1 nyc3 ams3 fra1 tor1 sfo2 blr1 sfo3  
+**digital ocean** - the location should always be set to one of nyc1 sfo1 nyc2 ams2 sgp1 lon1 nyc3 ams3 fra1 tor1 sfo2 blr1 sfo3  
 
-##### exoscale - the location should always be set to one of ch-gva-2 ch-dk-2 at-vie-1 de-fra-1 bg-sof-1 de-muc-1  
+**exoscale** - the location should always be set to one of ch-gva-2 ch-dk-2 at-vie-1 de-fra-1 bg-sof-1 de-muc-1  
 
-##### linode - the location should always be set to one of ap-west ca-central ap-southeast us-iad us-ord fr-par us-sea br-gru nl-ams se-sto in-maa jp-osa it-mil us-mia id-cgk us-lax us-central us-west us-southeast us-east eu-west ap-south eu-central ap-northeast   
+**linode** - the location should always be set to one of ap-west ca-central ap-southeast us-iad us-ord fr-par us-sea br-gru nl-ams se-sto in-maa jp-osa it-mil us-mia id-cgk us-lax us-central us-west us-southeast us-east eu-west ap-south eu-central ap-northeast   
 
-##### vultr - the location should always be set to one of ams atl cdg dfw ewr fra icn lax lhr mex mia nrt ord sea sgp sjc sto syd yto  
-
+**vultr** - the location should always be set to one of ams atl cdg dfw ewr fra icn lax lhr mex mia nrt ord sea sgp sjc sto syd yto  
 
 -----
 
@@ -135,14 +134,13 @@ To make it clear just setting this value as described to a region chain will get
 
 Some providers use personal access tokens rather than access keys and secret keys. In such a case, the personal access token can be stored in this variable. If the provider uses a personal access token, you can store it here, basically, othewise presume that an access key and a secret key are utilised.
 
-##### digital ocean - Login to your digital ocean account and go to the API submenu (on the left bottom) and generate a "Digital Ocean Personal Access Token". This will give you a personal access token which you can paste into your template as the value of the TOKEN variable.
+**digital ocean** - Login to your digital ocean account and go to the API submenu (on the left bottom) and generate a "Digital Ocean Personal Access Token". This will give you a personal access token which you can paste into your template as the value of the TOKEN variable.
 
-##### exoscale - exoscale does not need this see ACCESS_KEY and SECRET_KEY
+**exoscale** - exoscale does not need this see ACCESS_KEY and SECRET_KEY
 
-##### linode - Login to your Linode account, go to your Profile (top right) and select "API Tokens" and from there you can generate a "personal access token" to use as your TOKEN
+**linode** - Login to your Linode account, go to your Profile (top right) and select "API Tokens" and from there you can generate a "personal access token" to use as your TOKEN
 
-##### Vultr - Login to your vultr account and go to your account on the top right. Then enable your personal access token and you can set it here.
-
+**vultr** - Login to your vultr account and go to your account on the top right. Then enable your personal access token and you can set it here.
 
 -----
 
@@ -151,13 +149,13 @@ Some providers use personal access tokens rather than access keys and secret key
 
 Some providers use an access key and a secret key to control access to their compute resources. You need to generate an access and secret key for your provider and use them here as ACCESS_KEY and SECRET_KEY respectively
 
-##### digital ocean - Does not use access keys and secret keys, see TOKEN
+**digital ocean** - Does not use access keys and secret keys, see TOKEN
 
-##### exoscale - You can generate access keys and secret keys to control access to your compute resources. Note, this is distinct from the object storage access keys
+**exoscale** - You can generate access keys and secret keys to control access to your compute resources. Note, this is distinct from the object storage access keys
 
-##### linode - Does not use access keys and secret keys, see TOKEN
+**linode** - Does not use access keys and secret keys, see TOKEN
 
-##### Vultr - Does not use access keys and secret keys, see TOKEN
+**Vultr** - Does not use access keys and secret keys, see TOKEN
 
 
 -----
