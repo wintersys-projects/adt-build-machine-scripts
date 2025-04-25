@@ -154,9 +154,9 @@ MARIADB:cloud-init
 #MARIADB:repo:11.5.4
 POSTGRES:repo:17
 BUILDCHAINTYPE:standard
-DATASTORETOOL:s3cmd:repo
-# DATASTORETOOL:s5cmd:binary
+#DATASTORETOOL:s3cmd:repo
+DATASTORETOOL:s5cmd:binary
 PACKAGEMANAGER:apt
-FIREWALL:iptables
+FIREWALL:ufw
 EMAILUTIL:sendemail
 
