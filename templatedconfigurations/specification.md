@@ -191,29 +191,29 @@ This will be the username for your nameserver provider
 
 This is the security key which will enable us to manipulate records as needed with your nameserver provider. You can find this key as follows for each provider:
 
-##### cloudflare - Ths is the Global API key for your cloudflare account which you can find by clicking on your profile at the top right of the screen
+**cloudflare** - Ths is the Global API key for your cloudflare account which you can find by clicking on your profile at the top right of the screen
 
-##### digital ocean - The access token for your digital ocean account, (can be the same as TOKEN)
+**digital ocean** - The access token for your digital ocean account, (can be the same as TOKEN)
 
-##### exoscale  - The access key and secret key for your exoscale account. You need to enter this as ${ACCESS_KEY}:${SECRET_KEY}. You can use the same access key and secret key as your main account or you can create separate ones with only DNS manipulation rights. 
+**exoscale**  - The access key and secret key for your exoscale account. You need to enter this as ${ACCESS_KEY}:${SECRET_KEY}. You can use the same access key and secret key as your main account or you can create separate ones with only DNS manipulation rights. 
 
-##### linode - A personal access token with DNS manipulation rights (can be the same value as TOKEN)
+**linode** - A personal access token with DNS manipulation rights (can be the same value as TOKEN)
 
-##### Vultr - A personal access token with DNS manipulation rights (can be the same as TOKEN)
+**vultr** - A personal access token with DNS manipulation rights (can be the same as TOKEN)
 
 ------
 
 ### DNS_REGION
 
-#### cloudflare - not needed
+**cloudflare** - not needed
 
-#### digitalocean - not needed
+**digitalocean** - not needed
 
-#### exoscale - not needed
+**exoscale** - not needed
 
-#### linode - not needed
+**linode** - not needed
 
-#### vultr - not needed
+**vultr** - not needed
 
 -----
 
@@ -221,11 +221,11 @@ This is the security key which will enable us to manipulate records as needed wi
 
 This can be set to one of these values 
 
-##### "cloudflare" 
-##### "digitalocean" 
-##### "exoscale"
-##### "linode"
-##### "vultr"
+"cloudflare" 
+"digitalocean" 
+"exoscale"
+"linode"
+"vultr"
 
 It defines which of the (supported) DNS service you would like to use with your deployment.
 
