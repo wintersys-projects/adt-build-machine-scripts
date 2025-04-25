@@ -85,13 +85,13 @@ These grant you access to manipulate an object store. Under the principle of lea
 
 You can get your S3_ACCESS_KEY and S3_SECRET KEY as follows:
 
-##### digital ocean - Login to your digital ocean account and go to the API submenu (on the left bottom) and generate "Digital Ocean Spaces Keys". This will give you an access key which you can paste into your template. The first key is the S3_ACCESS_KEY and the second key is the S3_SECRET_KEY
+**digital ocean** - Login to your digital ocean account and go to the API submenu (on the left bottom) and generate "Digital Ocean Spaces Keys". This will give you an access key which you can paste into your template. The first key is the S3_ACCESS_KEY and the second key is the S3_SECRET_KEY
 
-##### exoscale - Login to your exoscale account and go to the IAM menu (on the right) and generate a pair of API keys which have access to object storage capabilities. The first key is the S3_ACCESS_KEY and the second key is the S3_SECRET_KEY which you can post into your template.
+**exoscale** - Login to your exoscale account and go to the IAM menu (on the right) and generate a pair of API keys which have access to object storage capabilities. The first key is the S3_ACCESS_KEY and the second key is the S3_SECRET_KEY which you can post into your template.
 
-##### linode - Login to your Linode account and go to the Object Storage menu on the right then select the Access Key menu and select "Create an Access Key" and that will generate an access key and a secret key which you can copy into your template as S3_ACCESS_KEY and S3_SECRET_KEY.
+**linode** - Login to your Linode account and go to the Object Storage menu on the right then select the Access Key menu and select "Create an Access Key" and that will generate an access key and a secret key which you can copy into your template as S3_ACCESS_KEY and S3_SECRET_KEY.
 
-##### vultr - You need to subscribe to S3 Object Storage and this will grant you a pair of S3 access keys which you can copy and paste into your template. 
+**vultr** - You need to subscribe to S3 Object Storage and this will grant you a pair of S3 access keys which you can copy and paste into your template. 
 
 -----
 
@@ -99,22 +99,22 @@ You can get your S3_ACCESS_KEY and S3_SECRET KEY as follows:
 
 This parameter is the S3 endpoint for your deployment. It should be located as near as possible to where (in the world) you plan to run your VPS systems.
 
-##### digital ocean - Available endpoints to choose from (2020) - nyc3.digitaloceanspaces.com, ams3.digitaloceanspaces.com, sfo2.digitaloceanspaces.com, sgp1.digitaloceanspaces.com, fra1.digitaloceanspaces.com
+**digital ocean** - Available endpoints to choose from (2020) - nyc3.digitaloceanspaces.com, ams3.digitaloceanspaces.com, sfo2.digitaloceanspaces.com, sgp1.digitaloceanspaces.com, fra1.digitaloceanspaces.com
 
-##### exoscale - Available endpoints to choose from (2024) - sos-ch-gva-2.exo.io, sos-ch-dk-2.exo.io, sos-de-fra-1.exo.io, sos-de-muc-1.exo.io, sos-at-vie-1.exo.io, sos-bg-sof-1
+**exoscale** - Available endpoints to choose from (2024) - sos-ch-gva-2.exo.io, sos-ch-dk-2.exo.io, sos-de-fra-1.exo.io, sos-de-muc-1.exo.io, sos-at-vie-1.exo.io, sos-at-vie-2.exo.io, sos-bg-sof-1
 
-##### linode - Available endpoints to choose from (2025) - us-east-1.linodeobjects.com eu-central-1.linodeobjects.com ap-south-1.linodeobjects.com us-southeast-1.linodeobjects.com us-iad-1.linodeobjects.com fr-par-1.linodeobjects.com us-ord-1.linodeobjects.com in-maa-1.linodeobjects.com se-sto-1.linodeobjects.com it-mil-1.linodeobjects.com us-sea-1.linodeobjects.com id-cgk-1.linodeobjects.com jp-osa-1.linodeobjects.com br-gru-1.linodeobjects.com us-lax-1.linodeobjects.com nl-ams-1.linodeobjects.com us-mia-1.linodeobjects.com es-mad-1.linodeobjects.com us-iad-10.linodeobjects.com au-mel-1.linodeobjects.com gb-lon-1.linodeobjects.com sg-sin-1.linodeobjects.com jp-tyo-1.linodeobjects.com 
+**linode** - Available endpoints to choose from (2025) - us-east-1.linodeobjects.com eu-central-1.linodeobjects.com ap-south-1.linodeobjects.com us-southeast-1.linodeobjects.com us-iad-1.linodeobjects.com fr-par-1.linodeobjects.com us-ord-1.linodeobjects.com in-maa-1.linodeobjects.com se-sto-1.linodeobjects.com it-mil-1.linodeobjects.com us-sea-1.linodeobjects.com id-cgk-1.linodeobjects.com jp-osa-1.linodeobjects.com br-gru-1.linodeobjects.com us-lax-1.linodeobjects.com nl-ams-1.linodeobjects.com us-mia-1.linodeobjects.com es-mad-1.linodeobjects.com us-iad-10.linodeobjects.com au-mel-1.linodeobjects.com gb-lon-1.linodeobjects.com sg-sin-1.linodeobjects.com jp-tyo-1.linodeobjects.com 
 
-##### vultr - Available endpints to choose from (2024) - ewr1.vultrobjects.com, ams1.vultrobjects.com, sjc1.vultrobjects.com, sgp1.vultrobjects.com
+**vultr** - Available endpints to choose from (2024) - ewr1.vultrobjects.com, ams1.vultrobjects.com, sjc1.vultrobjects.com, sgp1.vultrobjects.com
 
-You can set your ${S3_HOST_BASE} parameter in your template to one of these listed endpoints depending on who your object storage is hosted with (which will likely be the same provider as your VPS systems).  
+**SPECIAL NOTE:**  
 
-A trick you can use with this value is that you can provide  a chain of values. What this will do is that whenever the system makes a backup it will make backups to all the regions in your region chain and that means you can make backups of your sourcecode/databases to multiple regions therefore making yourself more resilient. If a region for your provider is down you will still have backups in different regions that you can fall back on.
-To make a region chain you just set your template value to be a colon separated list. Using linode as an example your region chain would look like:  
+A trick you can use with this value is that you can provide a "chain" of S3_HOST_BASE values in your template. What this will do is that whenever the system makes a backup it will make backups to all the regions in your s3_HOST_BASE region chain and that means you can make backups of your sourcecode/databases to multiple regions therefore making yourself more resilient. If a region for your provider is down you will still have backups in different regions that you can fall back on.
+To make a region chain you just set your template value to be a colon separated list. Using linode as an example your region chain could look like:  
 
-S3_HOST_BASE="nl-ams-1.linodeobjects.com:us-southeast-1.linodeobjects.com:in-maa-1.linodeobjects.com"   
+**S3_HOST_BASE="nl-ams-1.linodeobjects.com:us-southeast-1.linodeobjects.com:in-maa-1.linodeobjects.com"**   
 
-To make it clear just setting this value as described to a region chain will get you backups to nl-ams-1 us-southeast-1 in-maa-1  
+To make it clear just setting this value as described to a region chain will get you backups to **nl-ams-1,us-southeast-1 and in-maa-1**  
 
 -----
 
