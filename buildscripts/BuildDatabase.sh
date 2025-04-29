@@ -113,13 +113,14 @@ do
 			ip=""
 			private_ip=""
 			count="0"
+			
+			status "Interrogating for database ip address....."
 
-			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "5" ] )
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "10" ] )
 			do
-				status "Interrogating for database ip address....."
 				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${database_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
 				private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${database_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-				/bin/sleep 10
+				/bin/sleep 5
 				count="`/usr/bin/expr ${count} + 1`"
 			done
                
