@@ -192,6 +192,7 @@ then
         then
                 status "Sorry, as far as I know, joomla can only run on port 5432 when deploying using Postgres to a managed database"
                 /usr/bin/kill -9 $PPID
+		exit
         fi
 fi
 
