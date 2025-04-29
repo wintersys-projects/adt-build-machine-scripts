@@ -44,6 +44,7 @@ then
         status "There are no templates available, you will need to configure an appropriate template before the build can proceed"
         status "Terminating this attempt...."
         /usr/bin/kill -9 $PPID
+        exit
     fi
     status "######################################################################"
     status "There are ${numberoftemplates} available template(s) for ${cloudhost}"
@@ -128,7 +129,8 @@ then
     if ( [ "$?" != "0" ] )
     then
         status "There is a problem with your template (${templatefile}) please correct it and try again...."
-        /usr/bin/kill -9 $PPID        
+        /usr/bin/kill -9 $PPID   
+        exit
     fi
 elif ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] && [ ! -f /root/PARAMETER ] )
 then
