@@ -58,7 +58,8 @@ then
 		/bin/sed -i "s/XXXXTOKENXXXX/${TOKEN}/" ${BUILD_HOME}/.config/doctl/config.yaml
 	else 
 		status "Couldn't find your digital ocean account personal access token in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
+		/usr/bin/kill -9 $PPID
+		exit
 	fi
 
 	if ( [ ! -d /root/.config/doctl ] )
@@ -83,7 +84,8 @@ then
 	if ( [ "$?" != "0" ] )
 	then
 		status "Couldn't get the Digitalocean CLI tool to work. Is your personal access token valid in your template?"
-		/usr/bin/kill -9 $PPID	
+		/usr/bin/kill -9 $PPID
+		exit
 	fi 
 fi
 
@@ -104,6 +106,7 @@ then
 	else 
 		status "Couldn't find your exoscale cloud email address in your template, will have to exit"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
       
 	if ( [ "${REGION}" != "" ] )
@@ -112,6 +115,7 @@ then
 	else 
 		status "Couldn't find your region in your template, will have to exit"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
 
 	if ( [ "${ACCESS_KEY}" != "" ] )
@@ -121,6 +125,7 @@ then
 	else 
 		status "Couldn't find your access key in your template, will have to exit"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
 
 	if ( [ "${SECRET_KEY}" != "" ] )
@@ -130,6 +135,7 @@ then
 	else 
 		status "Couldn't find your secret key in your template, will have to exit"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
 
 	if ( [ ! -d /root/.config/exoscale ] )
@@ -152,6 +158,7 @@ then
 	then
 		status "Couldn't get the Exoscale CLI tool to work. Is are your API access keys valid in your template?"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi 
 fi
 
@@ -172,6 +179,7 @@ then
 	else 
 		status "Couldn't find your linode account username in your template, will have to exit"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
 
 	if ( [ "${TOKEN}" != "" ] )
@@ -180,6 +188,7 @@ then
 	else 
 		status "Couldn't find your linode account personal access token in your template, will have to exit"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
 
 	if ( [ "${REGION}" != "" ] )
@@ -188,6 +197,7 @@ then
 	else 
 		status "Couldn't find your region id in your template, will have to exit"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
 
 	if ( [ ! -d /root/.config ] )
@@ -213,6 +223,7 @@ then
 	then
 		status "Couldn't get the Linode CLI tool to work. Is your personal access token valid in your template?"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi 
 	/usr/local/bin/linode-cli region-table >/dev/null 2>/dev/null >&3
 fi
@@ -229,6 +240,7 @@ then
 	else
 		status "Couldn't find your vultr API key from your template - will have to exit...."
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi
  
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
@@ -242,6 +254,7 @@ then
 	then
 		status "Couldn't get the Vultr CLI tool to work. Is your personal access token valid in your template?"
 		/usr/bin/kill -9 $PPID	
+		exit
 	fi 
 fi
 
