@@ -102,7 +102,7 @@ do
 
       			status "Interrogating for database instance being available....if this goes on for ever there is a problem"
 
-			while ( [ "`${BUILD_HOME}/providerscripts/server/HasInstanceRunning.sh "${database_name}" ${CLOUDHOST}`" = "" ] )
+			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${database_name}" ${CLOUDHOST}`" != "running" ] )
    			do
       				/bin/sleep 5
 	  		done
