@@ -60,6 +60,7 @@ then
         else 
                 status "Couldn't find the access key for your datastore, can't go on without it, will have to exit"
                 /usr/bin/kill -9 $PPID  
+				exit
         fi
 
         if ( [ "${S3_SECRET_KEY}" != "" ] )
@@ -68,6 +69,7 @@ then
         else 
                 status "Couldn't find the secret key for your datastore, can't go on without it, will have to exit"
                 /usr/bin/kill -9 $PPID  
+				exit
         fi
 
         if ( [ "${S3_LOCATION}" != "" ] )
@@ -75,7 +77,8 @@ then
                 /bin/sed -i "s/XXXXLOCATIONXXXX/${S3_LOCATION}/" ${BUILD_HOME}/.s3cfg
         else 
                 status "Couldn't find the secret key for your datastore, can't go on without it, will have to exit"  
-                /usr/bin/kill -9 $PPID  
+                /usr/bin/kill -9 $PPID 
+				exit
         fi
 
         if ( [ "${S3_HOST_BASE}" != "" ] )
@@ -85,6 +88,7 @@ then
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
                 /usr/bin/kill -9 $PPID  
+				exit
         fi
   
         if ( [ -f /root/.s3cfg ] )
@@ -109,6 +113,7 @@ then
         else 
                 status "Couldn't find the access key for your datastore, can't go on without it, will have to exit"
                 /usr/bin/kill -9 $PPID  
+				exit
         fi
 
         if ( [ "${S3_SECRET_KEY}" != "" ] )
@@ -117,6 +122,7 @@ then
         else 
                 status "Couldn't find the secret key for your datastore, can't go on without it, will have to exit"
                 /usr/bin/kill -9 $PPID  
+				exit
         fi
 
         if ( [ "${S3_HOST_BASE}" != "" ] )
@@ -127,6 +133,7 @@ then
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
                 /usr/bin/kill -9 $PPID  
+				exit
         fi
 
         if ( [ -f /root/.s5cfg ] )
@@ -145,6 +152,7 @@ then
         status "I can't access your datastore, it isn't possible to continue. Please check the following settings in the template you are using:"
         status "S3_ACCESS_KEY,S3_SECRET_KEY,S3_LOCATION and S3_HOST_BASE"
         /usr/bin/kill -9 $PPID
+		exit
 fi
 
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
