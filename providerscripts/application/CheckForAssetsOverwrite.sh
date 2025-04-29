@@ -113,7 +113,8 @@ then
 				read response
 				if ( [ "${response}" != "YES PROCEED" ] )
 				then
-					/usr/bin/kill -9 $PPID                                
+					/usr/bin/kill -9 $PPID  
+					exit
 				fi
 				${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
 			fi
