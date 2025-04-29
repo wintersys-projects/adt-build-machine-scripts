@@ -116,14 +116,15 @@ do
 			ip=""
 			private_ip=""
 			count="0"
-   
+
+			status "Interrogating for webserver ip address....."
+
 			#Keep trying until we get the ip addresses of our new machine, both public and private ips
-			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "5" ] )
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "10" ] )
 			do
-				status "Interrogating for webserver ip address....."
 				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${webserver_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
 				private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${webserver_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-				/bin/sleep 10
+				/bin/sleep 5
 				count="`/usr/bin/expr ${count} + 1`"
 			done
 
