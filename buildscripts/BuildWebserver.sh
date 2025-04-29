@@ -105,7 +105,7 @@ do
 
          		status "Interrogating for webserver instance being available....if this goes on for ever there is a problem"
 
-			while ( [ "`${BUILD_HOME}/providerscripts/server/HasInstanceRunning.sh "${webserver_name}" ${CLOUDHOST}`" = "" ] )
+			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${webserver_name}" ${CLOUDHOST}`" != "running" ] )
    			do
       				/bin/sleep 5
 	  		done
