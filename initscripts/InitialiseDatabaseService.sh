@@ -87,7 +87,8 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                /usr/bin/kill -9 $PPID                                        
+                                                /usr/bin/kill -9 $PPID 
+												exit
                                         fi
                                 fi
                                 status "Creating the database cluster ${cluster_name}"
@@ -97,7 +98,8 @@ then
                                 if ( [ "$?" != "0" ] )
                                 then
                                         status "I had trouble creating the database cluster will have to exit....."
-                                        /usr/bin/kill -9 $PPID                                
+                                        /usr/bin/kill -9 $PPID  
+										exit
                                 fi
                         fi
 
@@ -233,7 +235,8 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                /usr/bin/kill -9 $PPID                                        
+                                                /usr/bin/kill -9 $PPID  
+												exit
                                         fi
                                 fi
                                 admin_username="adt-dbadmin"
@@ -350,7 +353,8 @@ then
                                                 then
                                                         BYPASS_DB_LAYER="0"
                                                 else 
-                                                        /usr/bin/kill -9 $PPID                                                
+                                                        /usr/bin/kill -9 $PPID
+														exit
                                                 fi
                                         fi
                                         /usr/local/bin/linode-cli databases mysql-create --label "${label}" --region "${db_region}" --type "${machine_type}" --cluster_size "${cluster_size}" --engine "${engine}" --ssl_connection "true" --allow_list "0.0.0.0/0"
@@ -409,7 +413,8 @@ then
                                                 then
                                                         BYPASS_DB_LAYER="0"
                                                 else
-                                                        /usr/bin/kill -9 $PPID                                                
+                                                        /usr/bin/kill -9 $PPID 
+														exit
                                                 fi
                                         fi
                                         /usr/local/bin/linode-cli databases postgresql-create --label "${label}" --region "${db_region}" --type "${machine_type}" --cluster_size "${cluster_size}" --engine "${engine}" --ssl_connection "true" --allow_list "0.0.0.0/0"
@@ -506,7 +511,8 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                /usr/bin/kill -9 $PPID                                        
+                                                /usr/bin/kill -9 $PPID 
+												exit
                                         fi
                                 fi
 
