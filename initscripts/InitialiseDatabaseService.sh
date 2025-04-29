@@ -88,7 +88,7 @@ then
                                                 BYPASS_DB_LAYER="0"
                                         else
                                                 /usr/bin/kill -9 $PPID 
-						exit
+                                                exit
                                         fi
                                 fi
                                 status "Creating the database cluster ${cluster_name}"
@@ -99,7 +99,7 @@ then
                                 then
                                         status "I had trouble creating the database cluster will have to exit....."
                                         /usr/bin/kill -9 $PPID  
-					exit
+                                        exit
                                 fi
                         fi
 
