@@ -38,7 +38,7 @@
 #the main logging configuration has been set up. There is an output log for stdout and and error log for stderr
 if ( [ ! -d /root/logs ] )
 then
-	/bin/mkdir /root/logs
+        /bin/mkdir /root/logs
 fi
 
 exec 3>&1
@@ -49,9 +49,9 @@ exec 2>>/root/logs/${err_file}
 
 #Set up a status function that can be called to log the status messages
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
 #Tell the user where the intial log files are so they know where to look if they need to
@@ -61,14 +61,14 @@ status "Press <enter> to acknowledge"
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-	read x
+        read x
 fi
 
 # It is required that this script is only run directly from the directory it is installed in
 if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
 then
-	status "You can only run this script from its own directory"
-	exit
+        status "You can only run this script from its own directory"
+        exit
 fi
 
 # If parametes have been set from the command line then populate the respective variables
@@ -76,32 +76,32 @@ fi
 # ./ExpeditedAgileDeploymentToolkit.sh <cloudhost> <buildos> <selected template> <build identifier>
 if ( [ "${1}" != "" ] && [ "${2}" != "" ] && [ "${3}" != "" ] && [ "${4}" != "" ] )
 then
-	HARDCORE="1"
-	PARAMETERS="1"
-	CLOUDHOST="$1"
-	BUILDOS="$2"
-	SELECTED_TEMPLATE="$3"
-	BUILD_IDENTIFIER="$4"
-	shift 4
+        export HARDCORE="1"
+        export PARAMETERS="1"
+        export CLOUDHOST="$1"
+        export BUILDOS="$2"
+        export SELECTED_TEMPLATE="$3"
+        export BUILD_IDENTIFIER="$4"
+        shift 4
 
-	# Do some basic sanity checks on any parameters that have been given from the command line
-	if ( [ "`/bin/echo "digitalocean exoscale linode vultr" | /bin/grep ${CLOUDHOST}`" = "" ] )
-	then
-		status "Unknown cloudhost passed as a parameter"
-		exit
-	fi
+        # Do some basic sanity checks on any parameters that have been given from the command line
+        if ( [ "`/bin/echo "digitalocean exoscale linode vultr" | /bin/grep ${CLOUDHOST}`" = "" ] )
+        then
+                status "Unknown cloudhost passed as a parameter"
+                exit
+        fi
 
-	if ( [ "`/bin/echo "ubuntu debian" | /bin/grep ${BUILDOS}`" = "" ] )
-	then
-		status "Unknown build os passed as a parameter"
-		exit
-	fi
+        if ( [ "`/bin/echo "ubuntu debian" | /bin/grep ${BUILDOS}`" = "" ] )
+        then
+                status "Unknown build os passed as a parameter"
+                exit
+        fi
 
-	if ( [ "`/bin/echo "1 2 3" | /bin/grep ${SELECTED_TEMPLATE}`" = "" ] )
-	then
-		status "Unknown template passed as a parameter"
-		exit
-	fi
+        if ( [ "`/bin/echo "1 2 3" | /bin/grep ${SELECTED_TEMPLATE}`" = "" ] )
+        then
+                status "Unknown template passed as a parameter"
+                exit
+        fi
 fi
 
 # Set a name for the PUBLIC KEY which can be used everywhere
@@ -110,23 +110,23 @@ export PUBLIC_KEY_NAME="AGILE_TOOLKIT_PUBLIC_KEY"
 # Set a persistent way of letting us know if we are a HARDCORE build or not
 if ( [ "${HARDCORE}" = "1" ] )
 then
-	/bin/touch /root/HARDCORE
+        /bin/touch /root/HARDCORE
 else
-	if ( [ -f /root/HARDCORE ] )
-	then
-		/bin/rm /root/HARDCORE
-	fi
+        if ( [ -f /root/HARDCORE ] )
+        then
+                /bin/rm /root/HARDCORE
+        fi
 fi
 
 # Set a persistent way of letting us know if we are a PARAMETER build or not
-if ( [ "${PARAMETER}" = "1" ] )
+if ( [ "${PARAMETERS}" = "1" ] )
 then
-	/bin/touch /root/PARAMETER
+        /bin/touch /root/PARAMETER
 else
-	if ( [ -f /root/PARAMETER ] )
-	then
-		/bin/rm /root/PARAMETER
-	fi
+        if ( [ -f /root/PARAMETER ] )
+        then
+                /bin/rm /root/PARAMETER
+        fi
 fi
 
 # Set BUILD_HOME which is the directory where the Agile Deployment Toolkit is
@@ -134,8 +134,8 @@ fi
 # for reference anywhere
 if ( [ "${BUILD_HOME}" = "" ] )
 then
-	export BUILD_HOME="`/bin/pwd`"
-	/bin/echo ${BUILD_HOME} > /home/buildhome.dat
+        export BUILD_HOME="`/bin/pwd`"
+        /bin/echo ${BUILD_HOME} > /home/buildhome.dat
 fi
 
 # Set the USER value based on what "whoami" tells us
@@ -148,7 +148,7 @@ export BUILD_CLIENT_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 # Set up the runtimedata directory this is where data and information will be stored that is generated at runtime
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
 then
-	/bin/mkdir ${BUILD_HOME}/runtimedata 
+        /bin/mkdir ${BUILD_HOME}/runtimedata 
 fi
 
 #Reminid the user that we likely will be making some changes to whatever machine they are running this script on so if it is their
@@ -163,13 +163,13 @@ status "########################################################################
 status "PRESS ENTER KEY TO CONTINUE"
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-	read x
+        read x
 fi
 
 # Make sure that we know which OS this machine is (currently debian or ubuntu
 if ( [ "${BUILDOS}" = "" ] )
 then
-	export BUILDOS="`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
+        export BUILDOS="`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
 fi
 
 # Make sure that ssh connections to the servers we will build are long lasting. A build can take several minutes over SSH and a short lasting
@@ -186,11 +186,11 @@ ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-	${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}
-	CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
+        ${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}
+        CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 else
-	${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
-	/bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
+        ${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
+        /bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
 fi
 
 # Certain providers need their Eth1 interface configured for private networking to be possible
@@ -210,7 +210,7 @@ ${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
 # of what the BUILD_IDENTIFIER has just been set to from the filesystem
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-	BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+        BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
 fi
 
 # We now have  all the information we need to switch from our intial logging to the main logging location that is going to be used
@@ -220,7 +220,7 @@ fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ] )
 then
-	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
 fi
 
 out_file="build_output_stream-`/bin/date | /bin/sed 's/ //g'`"
@@ -248,17 +248,21 @@ status "Press <enter> to acknowledge"
 # Anyway, if we are a HARDCORE build then we already have all our variables set so we store them in our build_environment file
 # here.
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ -f /root/PARAMETER ] )
 then
-	read x
-	# What we do now is that we load/configure the eniroment based on the values of the template and load it into memory
-	# We also store the template name to the filesystem for later reference.
-	${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
-	template_name="`/bin/cat ${BUILD_HOME}/runtimedata/current_template_name`"
-	. ${template_name}
-	/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
+        read x
+        if ( [ -f /root/PARAMETER ] )
+        then
+                /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment
+        fi
+        # What we do now is that we load/configure the eniroment based on the values of the template and load it into memory
+        # We also store the template name to the filesystem for later reference.
+        ${BUILD_HOME}/templatedconfigurations/ConfigureTemplate.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} ${SELECTED_TEMPLATE}
+        template_name="`/bin/cat ${BUILD_HOME}/runtimedata/current_template_name`"
+        . ${template_name}
+        /bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 else
-	/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
+        /bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 fi
 
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
@@ -286,22 +290,22 @@ ${BUILD_HOME}/initscripts/PreFlightChecks.sh
 
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
-	status "Checking for your build machine VPC network"
-	if ( [ "`${BUILD_HOME}/providerscripts/server/CheckBuildMachineVPC.sh ${CLOUDHOST} ${BUILD_CLIENT_IP}`" = "" ] )
-	then
-		status "It looks like the build machine (${server_name}) is not attached to a VPC when BUILD_MACHINE_VPC=1"
-		status "Will have to exit (change BUILD_MACHINE_VPC if necessary in your template)"
-		exit
-	else
-		status "Have successfully verified the presence of a usable VPC network on your build machine"
-	fi
-	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
+        status "Checking for your build machine VPC network"
+        if ( [ "`${BUILD_HOME}/providerscripts/server/CheckBuildMachineVPC.sh ${CLOUDHOST} ${BUILD_CLIENT_IP}`" = "" ] )
+        then
+                status "It looks like the build machine (${server_name}) is not attached to a VPC when BUILD_MACHINE_VPC=1"
+                status "Will have to exit (change BUILD_MACHINE_VPC if necessary in your template)"
+                exit
+        else
+                status "Have successfully verified the presence of a usable VPC network on your build machine"
+        fi
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
 else
-	if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
-	then
-		/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
-	fi
+        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE ] )
+        then
+                /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/VPC-ACTIVE
+        fi
 fi
 
 # If we are installing an application (for example, Joomla or Wordpress) we don't know what application type we are until we check
@@ -309,19 +313,19 @@ fi
 # We also setup the assets datastore if we expect that our application is going to want to store its assets in the datastore
 if ( [ "${BUILD_CHOICE}" -ne "0"  ] )
 then
-	status ""
-	status ""
-	status "#############################################################"
-	status "Interrogating to see what Application you are running, if any"
-	status "#############################################################"
-	${BUILD_HOME}/providerscripts/application/InterrogateApplicationType.sh
-	${BUILD_HOME}/providerscripts/application/CheckForAssetsOverwrite.sh
+        status ""
+        status ""
+        status "#############################################################"
+        status "Interrogating to see what Application you are running, if any"
+        status "#############################################################"
+        ${BUILD_HOME}/providerscripts/application/InterrogateApplicationType.sh
+        ${BUILD_HOME}/providerscripts/application/CheckForAssetsOverwrite.sh
                 
-	status ""
-	status "#############################################################"
-	status "Initialising assets datastore, this may or may not take a while"
-	status "#############################################################"
-	${BUILD_HOME}/initscripts/InitialiseAssetDatastore.sh
+        status ""
+        status "#############################################################"
+        status "Initialising assets datastore, this may or may not take a while"
+        status "#############################################################"
+        ${BUILD_HOME}/initscripts/InitialiseAssetDatastore.sh
 fi
 
 # The native firewal is the firewalling system that is provided by the VPS provider, so we set up the native firewalling here
@@ -341,9 +345,9 @@ ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 # If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
-	WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
-	auth_website_url="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/[^.]*./auth./'`"
-	${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${auth_website_url}
+        WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+        auth_website_url="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/[^.]*./auth./'`"
+        ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${auth_website_url}
 fi
 
 # Generate the SSL certificate that will be used by our webservers
@@ -356,8 +360,8 @@ ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 #Just check that its 'all systems go'
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-	status "Are you happy for the build to proceed? Pressing <enter> now will begin the process of building your server machines"
-	read x
+        status "Are you happy for the build to proceed? Pressing <enter> now will begin the process of building your server machines"
+        read x
 fi
 
 #Set a timestamp so we can tell how long the build took. It various considerably by cloudhost provider.
@@ -378,18 +382,18 @@ status ""
 #This option will perform a standard build process (autoscaler, webserver, database)
 if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "standard" ] )
 then
-	${BUILD_HOME}/buildscripts/PerformStandardBuildChain.sh
+        ${BUILD_HOME}/buildscripts/PerformStandardBuildChain.sh
 fi
 
 #This option will only build a webserver (which you might want if you are building a static site)
 if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "webserver" ] )
 then
-	${BUILD_HOME}/buildscripts/BuildWebserver.sh
+        ${BUILD_HOME}/buildscripts/BuildWebserver.sh
 fi
 #This option will only build a database if you want an easily deployed and secured database to use)
 if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "database" ] )
 then
-	${BUILD_HOME}/buildscripts/BuildDatabase.sh
+        ${BUILD_HOME}/buildscripts/BuildDatabase.sh
 fi
 
 # If there is a DBaaS instance running then we can tighten up its firewall by only allowing connections from machines in the same VPC
