@@ -22,9 +22,6 @@
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
-
-#${BUILD_HOME}/helperscripts/DisplayPassword.sh do test
-
 ${BUILD_HOME}/helperscripts/DisplayPassword.sh ${1} ${2} 
 
 #Defaults to interactive
