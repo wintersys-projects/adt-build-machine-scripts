@@ -103,13 +103,22 @@ do
 				exit
 			fi
 
+         		status "Interrogating for webserver instance being available....if this goes on for ever there is a problem"
+
+			while ( [ "`${BUILD_HOME}/providerscripts/server/HasInstanceRunning.sh "${webserver_name}" ${CLOUDHOST}`" = "" ] )
+   			do
+      				/bin/sleep 5
+	  		done
+     
+			status "Webserver instance is now available"
+
 			#Check that the server has been assigned its IP addresses and that they are active
 			ip=""
 			private_ip=""
 			count="0"
    
 			#Keep trying until we get the ip addresses of our new machine, both public and private ips
-			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "20" ] )
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "5" ] )
 			do
 				status "Interrogating for webserver ip address....."
 				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${webserver_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
