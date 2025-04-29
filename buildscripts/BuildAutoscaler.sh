@@ -109,12 +109,21 @@ do
 				exit
 			fi
 
+   			status "Interrogating for autoscaler instance being available....if this goes on for ever there is a problem"
+
+			while ( [ "`${BUILD_HOME}/providerscripts/server/HasInstanceRunning.sh "${autoscaler_name}" ${CLOUDHOST}`" = "" ] )
+   			do
+      				/bin/sleep 5
+	  		done
+     
+			status "Autoscaler instance is now available"
+
 			#Get the ip addresses of the server we have just built
 			ip=""
 			private_ip=""
 			count="0"
 
-			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "20" ] )
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "5" ] )
 			do
 				status "Interrogating for autoscaler ip addresses....."
 				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${autoscaler_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
