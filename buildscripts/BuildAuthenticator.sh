@@ -92,7 +92,8 @@ do
 			if ( [ "${count}" = "10" ] )
 			then
 				status "Could not create authenticator machine"
-				/usr/bin/kill -9 $PPID                        
+				/usr/bin/kill -9 $PPID  
+				exit
 			fi
 
 			#Check that the server has been assigned its IP addresses and that they are active
@@ -226,4 +227,5 @@ if ( [ "${counter}" = "5" ] )
 then
 	status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
 	/usr/bin/kill -9 $PPID
+	exit
 fi
