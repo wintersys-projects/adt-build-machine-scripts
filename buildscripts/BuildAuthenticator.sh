@@ -96,18 +96,27 @@ do
 				exit
 			fi
 
+			status "Interrogating for authenticator instance being available....if this goes on for ever there is a problem"
+
+			while ( [ "`${BUILD_HOME}/providerscripts/server/HasInstanceRunning.sh "${authenticator_name}" ${CLOUDHOST}`" = "" ] )
+   			do
+      				/bin/sleep 5
+	  		done
+     
+			status "Authenticator instance is now available"
+
 			#Check that the server has been assigned its IP addresses and that they are active
 			ip=""
 			private_ip=""
 			count="0"
    
 			#Keep trying until we get the ip addresses of our new machine, both public and private ips
-			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "20" ] )
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "5" ] )
 			do
 				status "Interrogating for authenticator ip address....."
 				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${authenticator_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
 				private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${authenticator_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-				/bin/sleep 10
+				/bin/sleep 5
 				count="`/usr/bin/expr ${count} + 1`"
 			done
 
