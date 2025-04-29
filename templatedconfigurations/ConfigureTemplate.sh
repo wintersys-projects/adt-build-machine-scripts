@@ -33,7 +33,7 @@ cloudhost="${1}"
 build_identifier="${2}"
 selected_template="${3}"
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] && [ ! -f /root/PARAMETER ] )
 then
     status ""
     status "I have the following templates available for ${cloudhost}"
@@ -130,7 +130,8 @@ then
         status "There is a problem with your template (${templatefile}) please correct it and try again...."
         /usr/bin/kill -9 $PPID        
     fi
-else
+elif ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] && [ ! -f /root/PARAMETER ] )
+then
     . ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/build_environment
     templatefile="${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/${cloudhost}${selectedtemplate}.tmpl"
         
@@ -147,6 +148,9 @@ else
     /bin/cp ${templatefile} ${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates/${cloudhost}${selectedtemplate}.tmpl
     templatefile="${BUILD_HOME}/runtimedata/${cloudhost}/${build_identifier}/hardcoretemplates/${cloudhost}${selectedtemplate}.tmpl"
     . ${BUILD_HOME}/templatedconfigurations/OverrideTemplate.sh
+elif ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] && [ -f /root/PARAMETER ] )
+then
+        templatefile="${BUILD_HOME}/templatedconfigurations/templates/${cloudhost}/${cloudhost}${selected_template}.tmpl"
 fi
 
 /bin/sed -i '/BUILD_IDENTIFIER=/d' ${templatefile}
