@@ -1,6 +1,6 @@
 #!/bin/sh
 ###############################################################################################
-# Description: You can use this script to interact with the logging streams for your chosen build
+# Description: You can use this script to obtain the password for your chosen build
 # Author Peter Winter
 # Date 22/9/2020
 ##############################################################################################
