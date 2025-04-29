@@ -76,12 +76,12 @@ fi
 # ./ExpeditedAgileDeploymentToolkit.sh <cloudhost> <buildos> <selected template> <build identifier>
 if ( [ "${1}" != "" ] && [ "${2}" != "" ] && [ "${3}" != "" ] && [ "${4}" != "" ] )
 then
-        export HARDCORE="1"
-        export PARAMETERS="1"
-        export CLOUDHOST="$1"
-        export BUILDOS="$2"
-        export SELECTED_TEMPLATE="$3"
-        export BUILD_IDENTIFIER="$4"
+        HARDCORE="1"
+        PARAMETERS="1"
+        CLOUDHOST="$1"
+        BUILDOS="$2"
+        SELECTED_TEMPLATE="$3"
+        BUILD_IDENTIFIER="$4"
         shift 4
 
         # Do some basic sanity checks on any parameters that have been given from the command line
