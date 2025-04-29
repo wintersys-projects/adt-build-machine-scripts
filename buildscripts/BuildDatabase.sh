@@ -100,12 +100,21 @@ do
 				exit
 			fi
 
+      			status "Interrogating for database instance being available....if this goes on for ever there is a problem"
+
+			while ( [ "`${BUILD_HOME}/providerscripts/server/HasInstanceRunning.sh "${database_name}" ${CLOUDHOST}`" = "" ] )
+   			do
+      				/bin/sleep 5
+	  		done
+     
+			status "Database instance is now available"
+
 			#Check that the server has been assigned its IP addresses and that they are active
 			ip=""
 			private_ip=""
 			count="0"
 
-			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "20" ] )
+			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) && [ "${count}" -lt "5" ] )
 			do
 				status "Interrogating for database ip address....."
 				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${database_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
