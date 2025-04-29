@@ -54,21 +54,13 @@ status () {
         /bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
-#Tell the user where the intial log files are so they know where to look if they need to
-status "The initial output log file is located at /root/logs/${out_file}"
-status "The initial error log file is located at /root/logs/${err_file}"
-status "Press <enter> to acknowledge"
-
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-then
-        read x
-fi
-
 # It is required that this script is only run directly from the directory it is installed in
 if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
 then
         status "You can only run this script from its own directory"
         exit
+else
+        BUILD_HOME="`/usr/bin/pwd`"
 fi
 
 # If parametes have been set from the command line then populate the respective variables
@@ -127,6 +119,16 @@ else
         then
                 /bin/rm /root/PARAMETER
         fi
+fi
+
+#Tell the user where the intial log files are so they know where to look if they need to
+status "The initial output log file is located at /root/logs/${out_file}"
+status "The initial error log file is located at /root/logs/${err_file}"
+
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+then
+        status "Press <enter> to acknowledge"
+        read x
 fi
 
 # Set BUILD_HOME which is the directory where the Agile Deployment Toolkit is
