@@ -36,6 +36,7 @@ then
 	status "To build on of your own, you can spin one up in the cloud (ubuntu 20.04 and up) or (debian 10 and up ) and use that as your build machine to deploy from"
 	status "############################################################################################################"
 	/usr/bin/kill -9 $PPID
+ 	exit
 fi
 
 #Check that you are root and if not make some recommendations
@@ -49,6 +50,7 @@ then
 	status "in the cloud for dedicated use when building/deploying with this toolkit (ubuntu 20.04 and up or debian 10 and up) are suitable build machines to use"
 	status "###################################################################################################################################"
 	/usr/bin/kill -9 $PPID
+	exit
 fi
 
 
