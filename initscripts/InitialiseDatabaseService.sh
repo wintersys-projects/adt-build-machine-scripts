@@ -176,7 +176,7 @@ then
                         export DB_USERNAME="${database_user}"
                         export DB_PASSWORD="${database_password}"
                         export DB_NAME="${db_name}"
-                        export DB_PORT="${DB_PORT}"
+                        export DB_PORT="`/usr/local/bin/doctl -o json databases connection ${cluster_id} | /usr/bin/jq -r '.port'`"
 
                         status "The Values I have retrieved for your database setup are:"
                         status "##########################################################"
