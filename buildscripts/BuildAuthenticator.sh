@@ -98,7 +98,7 @@ do
 
 			status "Interrogating for authenticator instance being available....if this goes on for ever there is a problem"
 
-			while ( [ "`${BUILD_HOME}/providerscripts/server/HasInstanceRunning.sh "${authenticator_name}" ${CLOUDHOST}`" = "" ] )
+			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${authenticator_name}" ${CLOUDHOST}`" != "running" ] )
    			do
       				/bin/sleep 5
 	  		done
