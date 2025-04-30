@@ -109,7 +109,7 @@ do
 				exit
 			fi
 
-   			status "Interrogating for autoscaler instance being available....if this goes on for ever there is a problem"
+   			status "Interrogating for autoscaler instance being available....if this goes on forever there is a problem"
 
 			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${autoscaler_name}" ${CLOUDHOST}`" != "running" ] )
    			do
