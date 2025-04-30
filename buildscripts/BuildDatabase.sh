@@ -100,7 +100,7 @@ do
 				exit
 			fi
 
-      			status "Interrogating for database instance being available....if this goes on for ever there is a problem"
+      			status "Interrogating for database instance being available....if this goes on forever there is a problem"
 
 			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${database_name}" ${CLOUDHOST}`" != "running" ] )
    			do
