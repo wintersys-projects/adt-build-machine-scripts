@@ -116,7 +116,7 @@ do
       				/bin/sleep 5
 	  		done
      
-			status "Autoscaler instance is now available"
+			status "Autoscaler type VPS instance is now available"
 
 			#Get the ip addresses of the server we have just built
 			ip=""
