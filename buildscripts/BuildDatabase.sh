@@ -107,7 +107,7 @@ do
       				/bin/sleep 5
 	  		done
      
-			status "Database instance is now available"
+			status "Database type VPS instance is now available"
 
 			#Check that the server has been assigned its IP addresses and that they are active
 			ip=""
