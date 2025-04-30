@@ -136,16 +136,6 @@ then
                                 /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
                         done
 
-                        #Get the user's password by creating or new user or interrogating an existing one
-                     #   database_password=""
-
-                     #   if ( [ "`/usr/local/bin/doctl database user list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${database_user}'").name'`" = "" ] )
-                     #   then
-                     #           database_password="`/usr/local/bin/doctl databases user create  ${cluster_id} ${database_user} -o json | /usr/bin/jq -r '.[].password'`"
-                     #   else 
-                     #           database_password="`/usr/local/bin/doctl database user list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${database_user}'").password'`"
-                     #   fi
-
                         status "######################################################################################################################################################"
                         status "You might want to check that a database cluster called ${cluster_name} with a database ${db_name} is present using your Digital Ocean gui system"
                         status "######################################################################################################################################################"
