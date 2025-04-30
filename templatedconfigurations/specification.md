@@ -58,8 +58,9 @@ If you are deploying a virgin application, you can set APPLICATION_BASELINE_SOUR
 
 - "WORDPRESS"   
 
-- "DRUPAL:{latest_version}"   
-NOTE: if you want to install "opensocial" or "drupal cms" you can set latest_version to "DRUPAL:social" and "DRUPAL:cms" and the system will install opensocial or drupal CMS respectively.   
+- "DRUPAL:{latest_version}"
+  
+**NOTE: if you want to install "opensocial" or "drupal cms" you can set latest_version to "DRUPAL:social" and "DRUPAL:cms" and the system will install opensocial or drupal CMS respectively.**  
 
 - "MOODLE"  
 
