@@ -165,9 +165,9 @@ then
                         export DATABASE_INSTALLATION_TYPE="DBaaS"
                         export DATABASE_DBaaS_INSTALLATION_TYPE="${DATABASE_DBaaS_INSTALLATION_TYPE}:${cluster_id}"
                         export DB_IDENTIFIER="private-`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.host'`"
-                        export DB_USERNAME="`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.user'`"
-                        export DB_PASSWORD="`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.password'`"
-                      #  export DB_NAME="`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.database'`"
+                        export DB_USERNAME="doadmin"
+                        #export DB_USERNAME="`/usr/local/bin/doctl databases connection ${cluster_id} -o json | /usr/bin/jq -r '.user'`"
+                        export DB_PASSWORD="`/usr/local/bin/doctl databases user get ${cluster_id} doadmin -o json | /usr/bin/jq -r '.[].password'`"
                         export DB_NAME="${db_name}"
                         export DB_PORT="`/usr/local/bin/doctl -o json databases connection ${cluster_id} | /usr/bin/jq -r '.port'`"
 
