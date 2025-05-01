@@ -47,9 +47,9 @@ if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>:<database_username>"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2:example-username"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:lon1:1:db-s-1vcpu-1gb:17:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2:example-username"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:lon1:1:db-s-1vcpu-1gb:17:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2"
         #########################################################################################################
 
 
@@ -68,7 +68,6 @@ then
                         cluster_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
                         db_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $7}'`"
                         adt_vpc="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $8}'`"
-                        database_user="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $9}'`"
 
                         status "Configuring database cluster ${cluster_name}, please wait..."
 
