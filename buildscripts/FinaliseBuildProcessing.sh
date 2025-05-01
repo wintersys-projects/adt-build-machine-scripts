@@ -282,7 +282,7 @@ then
 	do
 		#This double checks that the webserver came online correctly whilst we test for the website being online
 		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
-  		/bin/sleep 1
+  		/bin/sleep 10
 	done
 fi
 
