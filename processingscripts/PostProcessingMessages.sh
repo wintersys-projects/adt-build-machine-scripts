@@ -32,6 +32,7 @@ CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_BASELINE_SOURCECODE_REPOSITORY`"
 BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
@@ -123,7 +124,12 @@ then
     then
         status ""
         status "####################################################################"
-        status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}/core/install.php"
+        if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:cms" ] )
+        then
+            status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}/core/install.php"
+        else
+            status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}"
+        fi
         status "Use the credentials listed above please"
         status ""
 
