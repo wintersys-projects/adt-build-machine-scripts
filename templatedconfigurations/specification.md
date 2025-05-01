@@ -54,7 +54,7 @@ If you are deploying a virgin drupal installation, you must give the version num
 
 If you are deploying a virgin application, you can set APPLICATION_BASELINE_SOURCECODE_REPOSITORY to   
 
-- "JOOMLA:{latest_version}"  for examole "JOOMLA:5.3.0"  
+- "JOOMLA:{latest_version}"  for example "JOOMLA:5.3.0"  
 
 - "WORDPRESS"   
 
