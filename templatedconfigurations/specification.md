@@ -54,11 +54,11 @@ If you are deploying a virgin drupal installation, you must give the version num
 
 If you are deploying a virgin application, you can set APPLICATION_BASELINE_SOURCECODE_REPOSITORY to   
 
-- "JOOMLA:{latest_version}"    
+- "JOOMLA:{latest_version}"  for examole "JOOMLA:5.3.0"  
 
 - "WORDPRESS"   
 
-- "DRUPAL:{latest_version}"
+- "DRUPAL:{latest_version}" for example "DRUPAL:11.0.1"
   
 **NOTE: if you want to install [opensocial](https://www.getopensocial.com/)  or [drupal cms](https://new.drupal.org/drupal-cms) you can set latest_version to "DRUPAL:social" and "DRUPAL:cms" and the system will install opensocial or drupal CMS respectively.**  
 
