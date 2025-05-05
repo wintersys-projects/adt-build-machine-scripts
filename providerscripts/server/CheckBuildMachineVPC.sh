@@ -54,5 +54,9 @@ fi
 if ( [ "${cloudhost}" = "vultr" ] )
 then
 	server_name="`${BUILD_HOME}/providerscripts/server/GetServerName.sh ${server_ip} vultr`"
+	if ( [ "${server_name}" = "" ] )
+        then
+                server_name="NOT_SET"
+        fi
 	${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh ${server_name} vultr 
 fi
