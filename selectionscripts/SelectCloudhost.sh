@@ -27,6 +27,8 @@ status () {
 	/bin/echo "${script_name}: ${1}" >> /dev/fd/4  2>/dev/null
 }
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 buildos="${1}"
 
 status "####################################################################################"
