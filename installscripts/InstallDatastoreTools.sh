@@ -25,6 +25,8 @@ then
 	buildos="${1}"
 fi
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
 	apt=""
