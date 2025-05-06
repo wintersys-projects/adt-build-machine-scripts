@@ -77,7 +77,7 @@ do
 		ip=""
 		#Construct a unique name for this webserver
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-		webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
+		webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-1-${RND}"
 
 		status "Initialising a new server machine, please wait......"
 
