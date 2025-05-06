@@ -46,6 +46,8 @@ out_file="initiallogging-out-`/bin/date | /bin/sed 's/ //g'`"
 exec 1>>/root/logs/${out_file}
 err_file="initiallogging-err-`/bin/date | /bin/sed 's/ //g'`"
 exec 2>>/root/logs/${err_file}
+status_file="initiallogging-status-`/bin/date | /bin/sed 's/ //g'`"
+exec 4>>/root/logs/${status_file}
 
 #Set up a status function that can be called to log the status messages
 status () {
