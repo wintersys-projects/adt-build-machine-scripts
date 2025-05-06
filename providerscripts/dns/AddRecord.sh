@@ -49,7 +49,7 @@ dns="${7}"
 
 if ( [ "${dns}" = "digitalocean" ] )
 then
-	/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 30 ${domainurl}
+	/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
 fi
 
 authkey="${3}"
@@ -60,7 +60,7 @@ dns="${7}"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
-	/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 30
+	/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
 	#Alternatively:
 	# /usr/bin/curl  -H "X-DNS-Token: ${authkey}" -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d "{\"record\":{\"name\": \"${subdomain}\",\"record_type\": \"A\",\"content\": \"${ip}\",\"ttl\": 120}}" https://api.exoscale.com/dns/v1/domains/${domainurl}/records 1>/dev/null 2>/dev/null
 fi
@@ -74,7 +74,7 @@ dns="${7}"
 if ( [ "${dns}" = "linode" ] )
 then
 	domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
-	/usr/local/bin/linode-cli domains records-create $domain_id --type A --name ${subdomain} --target ${ip} --ttl_sec 30
+	/usr/local/bin/linode-cli domains records-create $domain_id --type A --name ${subdomain} --target ${ip} --ttl_sec 60
 fi
 
 authkey="${3}"
@@ -85,7 +85,7 @@ dns="${7}"
 
 if ( [ "${dns}" = "vultr" ] )
 then
-	/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=30
+	/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
 fi
 
 
