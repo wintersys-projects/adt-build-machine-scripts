@@ -65,13 +65,7 @@ while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
  	#If we are building multiple autoscalers we see how many autoscalers are running and number our current autoscaler relative to that
-	autoscaler_no="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
-
-	#If no autoscalers are running then we must be building autoscaler number 1
-	if ( [ "${autoscaler_no}" = "" ] )
-	then
-		autoscaler_no="1"
-	fi
+	autoscaler_no="${1}"
 
 	status "OK... Building autoscaler ${autoscaler_no}. This is the ${counter} attempt of 5"
 
