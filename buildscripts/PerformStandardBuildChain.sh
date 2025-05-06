@@ -106,17 +106,17 @@ then
         fi
         while ( [ "${tally}" -lt "${NO_AUTOSCALERS}" ] && [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/MULTI_AUTOSCALER_BUILT ] )
         do
-            ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh
             tally="`/usr/bin/expr ${tally} + 1`"
+            ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh ${tally}
         done
     elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "1" ] )
     then
         tally="0"
         while ( [ "${NO_AUTOSCALERS}" -le "5" ] && [ "${tally}" -lt "${NO_AUTOSCALERS}" ] )
         do
-            ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh &
-            pids="${pids} $!"
             tally="`/usr/bin/expr ${tally} + 1`"
+            ${BUILD_HOME}/buildscripts/BuildAutoscaler.sh ${tally} &
+            pids="${pids} $!"
             /bin/sleep 10
         done
     fi
