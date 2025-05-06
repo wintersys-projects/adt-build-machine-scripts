@@ -57,9 +57,9 @@ then
 	server_type="`/bin/echo ${server_type} | /usr/bin/cut -c -25`"
  	if ( [ "`/usr/bin/vultr instance list -o json | /usr/bin/jq -r '.instances[] | select (.label | contains("'${server_type}'")).status' 2>/dev/null`" = "active" ] )
   	then
-   		/bin/echo "running"
-     	else
-      		/bin/echo "not running"
+		/bin/echo "running"
+	else
+		/bin/echo "not running"
 	fi
 fi
 
