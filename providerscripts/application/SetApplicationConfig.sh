@@ -35,7 +35,7 @@
 status () {
 	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" >>&4 2>/dev/null
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee /dev/fd/4 2>/dev/null
 }
 
 database_ip="${1}"
