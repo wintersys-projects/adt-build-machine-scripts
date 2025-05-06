@@ -171,7 +171,7 @@ then
 	${log_command} "Your value for the variable PERSIST_ASSETS_TO_CLOUD (${PERSIST_ASSETS_TO_CLOUD}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^VPC_IP_RANGE " ${quick_specification} 2>/dev/null `" = "" ] )
+if ( [ "${VPC_IP_RANGE}" = "" ] )
 then
 	${log_command} "Your value for the variable VPC_IP_RANGE seems not to be set this is a MANDATORY SETTING"
 fi
