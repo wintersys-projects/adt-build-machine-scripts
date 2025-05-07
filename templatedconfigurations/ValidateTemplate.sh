@@ -343,8 +343,8 @@ then
 	joomla_version="`/bin/echo ${JOOMLA_VERSION} | /bin/sed 's/\./-/g'`"
 	joomla_major_version="`/bin/echo ${joomla_version} | /usr/bin/awk -F'-' '{print $1}'`"
 
-	if ! /usr/bin/curl --head --silent --fail https://downloads.joomla.org/cms/joomla${joomla_major_version}/${joomla_version}/Joomla_${joomla_version}-Stable-Full_Package.zip 1>&2 >/dev/null 
-	then
+	if ( /usr/bin/curl --output /dev/null --silent --head --fail "https://downloads.joomla.org/cms/joomla${joomla_major_version}/${joomla_version}/Joomla_${joomla_version}-Stable-Full_Pack1age.zip" )	
+ 	then
 		${log_command} "I don't seem to be able to find a download link for the joomla version you are wanting to install (${JOOMLA_VERSION})"
 	fi
 	if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "JOOMLA:${JOOMLA_VERSION}" ] )
@@ -355,10 +355,13 @@ fi
 
 if ( [ "${APPLICATION}" = "drupal" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
-	if ! /usr/bin/curl --head --silent --fail https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz 1>&2 >/dev/null
+ 	if ( /usr/bin/curl --output /dev/null --silent --head --fail "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" )	
 	then
-		${log_command} "I don't seem to be able to find a download link for the drupal version you are wanting to install (${DRUPAL_VERSION})"
-	fi
+ 		if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:social ] && [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:cms ] )
+   		then
+			${log_command} "I don't seem to be able to find a download link for the drupal version you are wanting to install (${DRUPAL_VERSION})"
+		fi
+ 	fi
 	if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:${DRUPAL_VERSION}" ] )
 	then
 		${log_command} "Your value for variable APPLICATION_BASELINE_SOURCECODE_REPOSITORY (${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}) doesn't appear to be valid please review"
