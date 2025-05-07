@@ -375,6 +375,11 @@ then
         fi
 fi
 
+if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:social" ] && [ "${PHP_VERSION}" != "8.1" ] )
+then
+	${log_command} "At the time of development, Opensocial requires PHP 8.1. You are trying to install PHP version ${PHP_VERSION}"
+fi
+
 if ( [ "${APPLICATION}" = "moodle" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
         if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "MOODLE" ] )
