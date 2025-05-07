@@ -367,7 +367,10 @@ if ( [ "${APPLICATION}" = "drupal" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ]
 then
         if ! /usr/bin/curl --head --silent --fail https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz 1>&2 >/dev/null
         then
-                ${log_command} "I don't seem to be able to find a download link for the drupal version you are wanting to install (${DRUPAL_VERSION})"
+		if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:social ] && [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:cms ] )
+		then
+			${log_command} "I don't seem to be able to find a download link for the drupal version you are wanting to install (${DRUPAL_VERSION})"
+		fi
         fi
         if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:${DRUPAL_VERSION}" ] )
         then
