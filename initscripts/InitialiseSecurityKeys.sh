@@ -80,8 +80,8 @@ fi
 /bin/chmod 700 ${BUILD_KEY}.pub
 
 key_name="${PUBLIC_KEY_NAME}-${BUILD_IDENTIFIER}"
-${BUILD_HOME}/providerscripts/security/DeleteSSHKeyPair.sh "${key_name}" "${TOKEN}" ${CLOUDHOST}
-${BUILD_HOME}/providerscripts/security/RegisterSSHKeyPair.sh "${key_name}" "${TOKEN}" "`/bin/cat ${BUILD_KEY}.pub`" ${CLOUDHOST}
+${BUILD_HOME}/providerscripts/security/ssh-keys/DeleteSSHKeyPair.sh "${key_name}" "${TOKEN}" ${CLOUDHOST}
+${BUILD_HOME}/providerscripts/security/ssh-keys/RegisterSSHKeyPair.sh "${key_name}" "${TOKEN}" "`/bin/cat ${BUILD_KEY}.pub`" ${CLOUDHOST}
 
 PUBLIC_KEY_ID="`${BUILD_HOME}/providerscripts/security/GetSSHKeyID.sh \"${key_name}\" ${CLOUDHOST}`"
 
