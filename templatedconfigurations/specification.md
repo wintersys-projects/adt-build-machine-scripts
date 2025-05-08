@@ -647,13 +647,6 @@ This will set which (if any) firewalls are active on your machines
  
  NOTE: the UFW firewalls are always active on your build machine regardless of this setting for security reasons  
 
- ------
-
-### CLOUDHOST_USERNAME
-
-This is the username of the for the cloudhost, it can be set - CLOUDHOST_USERNAME="root", for example
-**THIS MUST BE SET FOR ALL LINODE DEPLOYMENTS. THE BUILD WILL FAIL FOR LINODE IF A CLOUDHOST_USERNAME IS NOT SET**
-
 
 ----------
 
