@@ -207,20 +207,6 @@ This is the security key which will enable us to manipulate records as needed wi
 
 **vultr** - A personal access token with DNS manipulation rights (can be the same as TOKEN)
 
-------
-
-### DNS_REGION
-
-**cloudflare** - not needed
-
-**digitalocean** - not needed
-
-**exoscale** - not needed
-
-**linode** - not needed
-
-**vultr** - not needed
-
 -----
 
 ### DNS_CHOICE  
