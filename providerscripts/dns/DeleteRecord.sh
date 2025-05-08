@@ -26,7 +26,7 @@ status () {
 	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
-domain="${7}"
+domain="${6}"
 domainurl="`/bin/echo ${domain} | /usr/bin/cut -d'.' -f2-`"
 recordid="${2}"
 dns="${5}"
@@ -50,7 +50,7 @@ fi
 recordid="${2}"
 authkey="${4}"
 dns="${5}"
-domainurl="`/bin/echo ${7} | /usr/bin/cut -d'.' -f2-`"
+domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
@@ -61,7 +61,7 @@ fi
 
 record_id="${2}"
 dns="${5}"
-domain_url="`/bin/echo ${7} | /usr/bin/cut -d'.' -f2-`"
+domain_url="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 #domain_url="${7}"
 
 if ( [ "${dns}" = "linode" ] )
@@ -73,7 +73,7 @@ fi
 recordid="${2}"
 authkey="${4}"
 dns="${5}"
-domainurl="`/bin/echo ${7} | /usr/bin/cut -d'.' -f2-`"
+domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "vultr" ] )
 then
