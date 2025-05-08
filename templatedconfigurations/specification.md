@@ -654,13 +654,6 @@ This will set which (if any) firewalls are active on your machines
 This is the username of the for the cloudhost, it can be set - CLOUDHOST_USERNAME="root", for example
 **THIS MUST BE SET FOR ALL LINODE DEPLOYMENTS. THE BUILD WILL FAIL FOR LINODE IF A CLOUDHOST_USERNAME IS NOT SET**
 
--------- 
-
-### CLOUDHOST_PASSWORD
-
-This is the password of the for the cloudhost, it can be set - CLOUDHOST_PASSWORD="password", for example
-**THIS MUST BE SET FOR ALL LINODE DEPLOYMENTS. THE BUILD WILL FAIL FOR LINODE IF A CLOUDHOST_PASSWORD IS NOT SET**
-**THIS MUST NOT BE SET FOR ALL DIGITALOCEAN, EXOSCALE AND VULTR DEPLOYMENTS**
 
 ----------
 
