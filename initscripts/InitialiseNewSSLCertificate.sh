@@ -45,7 +45,7 @@ fi
 
 
 ssl_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-ssl"
-${BUILD_HOME}/providerscripts/datastore/MountFromDatastore.sh ${ssl_bucket}
+${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${ssl_bucket}
 
 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/fullchain.pem`" != "" ] && [ [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/privkey.pem`" != "" ] )
 then
