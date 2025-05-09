@@ -45,7 +45,7 @@ fi
 
 
 website_bucket="/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'"
-if ( [ "`${HOME}/
+if ( [ "`${HOME}/providerscripts/datastore/ListFromDatastore.sh 
 
 #IP has been added to the DNS provider and now we have to set up the SSL certificate for this webserver
 
