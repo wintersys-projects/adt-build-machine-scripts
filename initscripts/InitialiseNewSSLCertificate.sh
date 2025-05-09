@@ -43,6 +43,10 @@ else
 	WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 fi
 
+
+website_bucket="/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'"
+if ( [ "`${HOME}/
+
 #IP has been added to the DNS provider and now we have to set up the SSL certificate for this webserver
 
 if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] )
