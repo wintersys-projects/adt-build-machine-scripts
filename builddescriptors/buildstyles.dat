@@ -47,6 +47,7 @@
 # MARIADB:cloud-init
 # MARIADB:repo:<version>
 # MySQL can be installed similarly to mariadb but there is no cloud-init option. You just tell it the version number you want to install and that its not cloud-init
+# You need to get your MySQL version number from https://dev.mysql.com/downloads/mysql (for example, 8.4.5)
 # MYSQL:repo:<version>
 # When installing postgres on your VPS systems you can give a version number to install like this
 # POSTGRES:repo:<version>
