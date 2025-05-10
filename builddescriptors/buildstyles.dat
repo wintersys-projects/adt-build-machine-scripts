@@ -155,7 +155,7 @@ DATASTOREMOUNTTOOL:goof:binary
 #Note, "MySQL" isn't configurable through this file only Maria DB is
 MARIADB:cloud-init
 #MARIADB:repo:11.5.4
-MYSQL:repo:8.4.5
+MYSQL:repo:9.2.0
 POSTGRES:repo:17
 BUILDCHAINTYPE:standard
 #DATASTORETOOL:s3cmd:repo
