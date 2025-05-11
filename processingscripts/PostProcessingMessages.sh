@@ -133,6 +133,8 @@ then
         status "Use the credentials listed above please"
         status ""
 
+        /usr/bin/stty -echoctl
+
         while ( [ "`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/processing/drupal/CheckUser.sh"`" != "USER ADDED" ] )
         do
             /bin/sleep 15
@@ -155,8 +157,6 @@ then
     status "###################################################################################################################"
     status "Attempting to truncate cache ready for the application to be usable <ctrl -c> is disabled as this step is mandatory"
     status "###################################################################################################################"
-
-    /usr/bin/stty -echoctl
     
     while ( [ "`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/processing/drupal/TruncateCache.sh"`" != "TRUNCATED" ] )
     do
