@@ -133,7 +133,8 @@ then
         status "Use the credentials listed above please"
         status ""
 
-        /usr/bin/stty -echoctl
+        trap '' 2
+        status "ctrl-c is disabled until tables are truncated"
 
         while ( [ "`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/processing/drupal/CheckUser.sh"`" != "USER ADDED" ] )
         do
@@ -162,6 +163,7 @@ then
     do
         /bin/sleep 1
     done
+    trap 2
 fi
 
 if ( [ "${APPLICATION}" = "wordpress" ] )
