@@ -54,6 +54,7 @@ fi
 if ( [ "`/bin/grep 'ADDED BY CONFIG PROCESS' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default`" = "" ] )
 then
 	/bin/echo "#====ADDED BY CONFIG PROCESS=====" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+ 	/bin/echo "$config['package_manager.settings']['executables']['composer'] = '/usr/local/bin/composer';" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
 	/bin/echo '$settings["trusted_host_patterns"] = [ ".*" ];' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
 	/bin/echo '$settings["config_sync_directory"] = "/var/www/html/sites/default";'>>  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
 	/bin/echo '$config["system.performance"]["css"]["preprocess"] = FALSE;' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
