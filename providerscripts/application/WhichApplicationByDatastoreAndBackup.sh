@@ -139,9 +139,9 @@ then
 		read x
 	fi
 
-	if ( [ -f ${interrogation_home}/moodle/config.php.default ] )
+	if ( [ -f ${interrogation_home}/config.php.default ] )
 	then
-		/bin/cp ${interrogation_home}/moodle/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
+		/bin/cp ${interrogation_home}/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
 	else
 		status "Couldn't find moodle default configuration file in backup archive webroot"
 		/usr/bin/kill -9 $PPID   
