@@ -48,6 +48,6 @@ then
 	fi
 	if (  [ "${APPLICATION}" = "moodle" ] )
 	then
-		headfile="moodle/index.php"
+		headfile="index.php"
 	fi
 fi
