@@ -146,7 +146,7 @@ then
     then
         status ""
         status "####################################################################"
-        status "Moodle should be available at: https://${WEBSITE_URL}/moodle"
+        status "Moodle should be available at: https://${WEBSITE_URL}"
         status "####################################################################"
         status ""
     fi
