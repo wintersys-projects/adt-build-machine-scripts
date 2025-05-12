@@ -49,7 +49,7 @@ fi
 /bin/sed -i '/->dbpass /c\    $CFG->dbpass    = "'${database_password}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
 /bin/sed -i '/->dbhost /c\    $CFG->dbhost    = "'${database_identifier}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
 /bin/sed -i '/dbport/c\     "dbport" => "'${db_port}'",' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default 
-/bin/sed -i '0,/$CFG->wwwroot/ s/$CFG->wwwroot.*/$CFG->wwwroot = "https:\/\/'${WEBSITE_URL}'\/moodle";/' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
+/bin/sed -i '0,/$CFG->wwwroot/ s/$CFG->wwwroot.*/$CFG->wwwroot = "https:\/\/'${WEBSITE_URL}'\/";/' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
 /bin/sed -i '0,/$CFG->dataroot/ s/$CFG->dataroot.*/$CFG->dataroot = "\/var\/www\/moodledata";/' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default 
 
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default moodle_config.php
