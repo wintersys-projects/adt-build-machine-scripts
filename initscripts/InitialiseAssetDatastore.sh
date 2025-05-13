@@ -38,13 +38,7 @@ then
 	interrogation_home="${BUILD_HOME}/interrogation"
 	for directory_to_mount in ${DIRECTORIES_TO_MOUNT}
 	do
-		if ( [ "${directory_to_mount}" = "WHOLE-WEBROOT" ] )
-		then
-			subdir=""
-		else
-			subdir="${directory_to_mount}"
-		fi
-        
+		subdir="${directory_to_mount}"        
 		directory_to_mount="`/bin/echo ${directory_to_mount} | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 		asset_datastore="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-assets-${directory_to_mount}"
 
