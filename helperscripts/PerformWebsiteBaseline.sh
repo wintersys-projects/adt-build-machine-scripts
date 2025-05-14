@@ -143,19 +143,6 @@ APPLICATION_REPOSITORY_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.s
 APPLICATION_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_OWNER`"
 APPLICATION_BASELINE_SOURCECODE_REPOSITORY="${identifier}-webroot-sourcecode-baseline"
 
-if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 2>&1`" = "" ] )
-then
-	/bin/echo "Empty Repository found I can use it for your baseline"
-elif ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} | /bin/grep 'HEAD'`" != "" ] )
-then
-	/bin/echo "Repository with data found you will need to either delete it or rename it using the GUI and create a fresh repository for your baseline"
-	exit
-elif ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}`" = "" ] )
-then
-	/bin/echo "Repository not found you will need to create a repository called ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} using the GUI"
-	exit
-fi
-
 /bin/echo "OK, ready to create baseline - press enter to confirm"
 read x
 
