@@ -213,12 +213,12 @@ do
 		done="0"
 		alive=""
 		count="0"
-		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/DATABASE_READY" ] && [ "${count}" -lt "300" ] )
+		while ( [ "${alive}" != "DATABASE_READY" ] && [ "${count}" -lt "300" ] )
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2
-			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/DATABASE_READY"`"
-		done 
+			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/DATABASE_READY && /bin/echo 'DATABASE_READY'"`"
+		done
 
 		if ( [ "${count}" = "300" ] )
 		then
