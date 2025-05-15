@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 status ""
@@ -71,72 +71,72 @@ OPTIONS_DB="-o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=
 #Just do some checks to make sure that all the different server types are running correctly
 if ( [ "${PRODUCTION}" = "1" ] && [ "`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`" = "" ] )
 then
-	status "It seems like something is not quite right with the build. The Autoscaler seems not to be running so the website will not function properly."
+        status "It seems like something is not quite right with the build. The Autoscaler seems not to be running so the website will not function properly."
 fi
 
 if ( [ "`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`" = "" ] )
 then
-	status "It seems like something is not quite right with the build. The webserver seems not to be running so the website will not function properly."
+        status "It seems like something is not quite right with the build. The webserver seems not to be running so the website will not function properly."
 fi
 
 if (  [ "${DATABASE_INSTALLATION_TYPE}" != "None" ] && [ "`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`" = "" ] )
 then
-	status "It seems like something is not quite right with the build. The database seems not to be running so the website will not function properly."
+        status "It seems like something is not quite right with the build. The database seems not to be running so the website will not function properly."
 fi
 
 #If this is a PRODUCTION build there's some steps to take to get the active IP addresses for all machine types
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] )
 then 
-	no_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
+        no_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
 
-	if ( [ "${INPARALLEL}" = "1" ] )
-	then
-		if ( [ "${no_autoscalers}" = "1" ] )
-		then
-			if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-			then
-				as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-			else
-				as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-			fi
-		elif ( [ "${no_autoscalers}" != "0" ] )
-		then
-			if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-			then
-				as_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-			else
-				as_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-			fi
-		fi
-	fi
+        if ( [ "${INPARALLEL}" = "1" ] )
+        then
+                if ( [ "${no_autoscalers}" = "1" ] )
+                then
+                        if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
+                        then
+                                as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+                        else
+                                as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+                        fi
+                elif ( [ "${no_autoscalers}" != "0" ] )
+                then
+                        if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
+                        then
+                                as_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+                        else
+                                as_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+                        fi
+                fi
+        fi
 
-	if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-	then
-		if ( [ "${as_active_ip}" = "" ] )
-		then
-			as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-		fi
-	elif ( [ "${as_active_ip}" = "" ] )
-	then
-		as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-	fi
+        if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
+        then
+                if ( [ "${as_active_ip}" = "" ] )
+                then
+                        as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+                fi
+        elif ( [ "${as_active_ip}" = "" ] )
+        then
+                as_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "as-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        fi
 
-	if ( [ "${no_autoscalers}" = "1" ] )
-	then
-		if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ] )
-		then
-			/usr/bin/scp ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 2>/dev/null
-		fi
-	elif ( [ "${no_autoscalers}" != "0" ] )
-	then
-		for as_active_ip in ${as_active_ips}
-		do
-			if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ] )
-			then
-				/usr/bin/scp ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 2>/dev/null
-			fi
-		done
-	fi
+        if ( [ "${no_autoscalers}" = "1" ] )
+        then
+                if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ] )
+                then
+                        /usr/bin/scp -q ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 
+                fi
+        elif ( [ "${no_autoscalers}" != "0" ] )
+        then
+                for as_active_ip in ${as_active_ips}
+                do
+                        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ] )
+                        then
+                                /usr/bin/scp -q ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 
+                        fi
+                done
+        fi
 fi
 
 #Tell all the different machine types that the intial build is completed by placing a marker file on the filesystem of each machine type
@@ -144,26 +144,26 @@ fi
 
 if ( [ "${as_active_ips}" != "" ] )
 then
-	for autoscaler_ip in `/bin/echo ${as_active_ips} | /bin/sed 's/:/ /g'`
-	do
-		test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 2>/dev/null
-	done
+        for autoscaler_ip in `/bin/echo ${as_active_ips} | /bin/sed 's/:/ /g'`
+        do
+                test ${PRODUCTION} -eq 1 && /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 
+        done
 elif ( [ "${as_active_ip}" != "" ] )
 then
-	test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 2>/dev/null
+        test ${PRODUCTION} -eq 1 && /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 
 fi
 
 #If the build machine is connect to the VPC then we need the private IP address if it is not then we need the public IP address
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
-	ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 else
-	ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
 #This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
-/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" >&3 2>/dev/null
+/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" >&3 
 
 
 #We are satisfied that all is well so far so lets do a finally battery of tests to be as sure as we can be that we are on our feet
@@ -179,29 +179,29 @@ status ""
 # This checks that the application language (most likely PHP) has been installed correctly
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
-	status "Checking that ${APPLICATION_LANGUAGE} has fully installed...."
-	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh"`" >&3 2>/dev/null
+        status "Checking that ${APPLICATION_LANGUAGE} has fully installed...."
+        application_language_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh"`" >&3 
 
-	while ( [ "${application_language_installed}" = "" ] )
-	do
-		/bin/sleep 1
-		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
-		application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh"`" 2>&1 > /dev/null
-	done
+        while ( [ "${application_language_installed}" = "" ] )
+        do
+                /bin/sleep 1
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 
+                application_language_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh"`" 
+        done
 fi
 
 #This checks that the user's application's configuration settings has been installed correctly and fully
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
-	status "Checking that the application configuration for ${APPLICATION} has fully installed...."
-	application_configuration_installed=""
+        status "Checking that the application configuration for ${APPLICATION} has fully installed...."
+        application_configuration_installed=""
 
-	while ( [ "${application_configuration_installed}" = "" ] )
-	do
-		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3 2>/dev/null
-		application_configuration_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET"`" 2>&1 > /dev/null
-		/bin/sleep 1
-	done
+        while ( [ "${application_configuration_installed}" = "" ] )
+        do
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3 
+                application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET"`" 2>&1 
+                /bin/sleep 1
+        done
 fi
 
 #This checks that the webserver itself has been fully installed and is running. 
@@ -209,8 +209,8 @@ status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
 
 while ( [ "${webserver_installed}" = "" ] )
 do
-	webserver_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh"`" 2>&1 > /dev/null
-	/bin/sleep 1
+        webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh"`" 2>&1 
+        /bin/sleep 1
 done
 
 #This checks that our bespoke application (most likely a CMS of some sort) is installed to the best of our knowledge
@@ -219,78 +219,78 @@ bespoke_application_installed=""
 
 while ( [ "${bespoke_application_installed}" = "" ] )
 do
-	bespoke_application_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED"`" 2>&1 > /dev/null
-	/bin/sleep 1
+        bespoke_application_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED"`" 2>&1 
+        /bin/sleep 1
 done
 
 #If we are mounting assets into the webroot of our application from the datastore then this checks that they are mounted correctly
 if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
 then
-	status "Checking that your assets are mounted..."
-	assets_mounted=""
+        status "Checking that your assets are mounted..."
+        assets_mounted=""
 
-	while ( [ "${assets_mounted}" = "" ] )
-	do
-		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/datastore/assets/SetupAssetsStore.sh" 2>/dev/null
-  		assets_mounted="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/utilities/status/AreAssetsMounted.sh"`" 2>/dev/null
-		/bin/sleep 1
-	done
+        while ( [ "${assets_mounted}" = "" ] )
+        do
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/datastore/assets/SetupAssetsStore.sh" 
+                assets_mounted="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/utilities/status/AreAssetsMounted.sh"`" 
+                /bin/sleep 1
+        done
 fi
 
 #This passes a check all the way through to the database via the webserver to check that the communication channels are all working freely
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
-	if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
-	then
-		status "Checking that your application is fully responsive...."
-		server_alive=""
-		while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
-		do
-			server_alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`" 2>&1 > /dev/null
-			/bin/sleep 1
-		done
-	fi
+        if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
+        then
+                status "Checking that your application is fully responsive...."
+                server_alive=""
+                while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
+                do
+                        server_alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`" 2>&1 
+                        /bin/sleep 1
+                done
+        fi
 fi
 
 #If the webserver isn't actually running try and spark it up
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
 then
-	status "Checking that ${WEBSERVER_CHOICE} is up and running...."
-	count="0"
-	webserver_running=""
-	while ( [ "${webserver_running}" = "0" ] && [ "${count}" -lt "5" ] )
-	do
-		count="`/usr/bin/expr ${count} + 1`"
-		status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver...this is attempt ${count} of 5"
-		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
-		webserver_running="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`" 2>/dev/null
-		/bin/sleep 10
-	done
+        status "Checking that ${WEBSERVER_CHOICE} is up and running...."
+        count="0"
+        webserver_running=""
+        while ( [ "${webserver_running}" = "0" ] && [ "${count}" -lt "5" ] )
+        do
+                count="`/usr/bin/expr ${count} + 1`"
+                status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver...this is attempt ${count} of 5"
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 
+                webserver_running="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`"
+                /bin/sleep 10
+        done
 
-	if ( [ "${count}" = "5" ] )
-	then
-		status "Failed to start the webserver...you might want to take look into why on the webserver and then press <enter> if it is resolved"
-		read response
-	fi
+        if ( [ "${count}" = "5" ] )
+        then
+                status "Failed to start the webserver...you might want to take look into why on the webserver and then press <enter> if it is resolved"
+                read response
+        fi
 
- 	#Make an actual attempt to access the website, if this goes through we should consider ourselves fully primed
-	. ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
+        #Make an actual attempt to access the website, if this goes through we should consider ourselves fully primed
+        . ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
   
-	status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
+        status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
  
-	while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
-	do
-		#This double checks that the webserver came online correctly whilst we test for the website being online
-		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
-  		/bin/sleep 10
-	done
+        while ( [ "`/usr/bin/curl -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
+        do
+                #This double checks that the webserver came online correctly whilst we test for the website being online
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 
+                /bin/sleep 10
+        done
 fi
 
 status "Seeing this message means I am confident that it is 'all systems go' (once all systems go no more capitalism or communism, right?)"
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
 #Other scripts can then check if the build has completed correctly before they action
-/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY" 2>/dev/null
+/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY"
 
 #Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh INSTALLED_SUCCESSFULLY INSTALLED_SUCCESSFULLY
