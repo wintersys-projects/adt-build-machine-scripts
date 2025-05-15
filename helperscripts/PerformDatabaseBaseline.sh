@@ -161,7 +161,7 @@ else
         then
                 /bin/echo "As far as I can tell the baseline has been generated maybe go check in the repository you created earlier for the code update"
         else
-                /bin/echo "I am not entirely sure that a new baseline generated fully/correctly, please check"
+                /bin/echo "I am not entirely sure that a new baseline generated fully/correctly, please check the error logs"
         fi
 fi
 
