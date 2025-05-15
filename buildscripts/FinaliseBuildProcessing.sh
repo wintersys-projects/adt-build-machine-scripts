@@ -125,7 +125,7 @@ then
 	then
 		if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ] )
 		then
-			/usr/bin/scp ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD
+			/usr/bin/scp ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 2>/dev/null
 		fi
 	elif ( [ "${no_autoscalers}" != "0" ] )
 	then
@@ -133,7 +133,7 @@ then
 		do
 			if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ] )
 			then
-				/usr/bin/scp ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD
+				/usr/bin/scp ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 2>/dev/null
 			fi
 		done
 	fi
@@ -146,11 +146,11 @@ if ( [ "${as_active_ips}" != "" ] )
 then
 	for autoscaler_ip in `/bin/echo ${as_active_ips} | /bin/sed 's/:/ /g'`
 	do
-		test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED"
+		test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 2>/dev/null
 	done
 elif ( [ "${as_active_ip}" != "" ] )
 then
-	test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED"
+	test ${PRODUCTION} -eq 1 && /usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 2>/dev/null
 fi
 
 #If the build machine is connect to the VPC then we need the private IP address if it is not then we need the public IP address
@@ -163,7 +163,7 @@ fi
 
 #This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
-/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" >&3
+/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" >&3 2>/dev/null
 
 
 #We are satisfied that all is well so far so lets do a finally battery of tests to be as sure as we can be that we are on our feet
@@ -180,7 +180,7 @@ status ""
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
 	status "Checking that ${APPLICATION_LANGUAGE} has fully installed...."
-	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh"`" >&3
+	application_language_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh"`" >&3 2>/dev/null
 
 	while ( [ "${application_language_installed}" = "" ] )
 	do
@@ -198,7 +198,7 @@ then
 
 	while ( [ "${application_configuration_installed}" = "" ] )
 	do
-		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3
+		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" >&3 2>/dev/null
 		application_configuration_installed="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET"`" 2>&1 > /dev/null
 		/bin/sleep 1
 	done
@@ -231,8 +231,8 @@ then
 
 	while ( [ "${assets_mounted}" = "" ] )
 	do
-		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/datastore/assets/SetupAssetsStore.sh"
-  		assets_mounted="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/utilities/status/AreAssetsMounted.sh"`"
+		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/datastore/assets/SetupAssetsStore.sh" 2>/dev/null
+  		assets_mounted="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/utilities/status/AreAssetsMounted.sh"`" 2>/dev/null
 		/bin/sleep 1
 	done
 fi
@@ -263,7 +263,7 @@ then
 		count="`/usr/bin/expr ${count} + 1`"
 		status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver...this is attempt ${count} of 5"
 		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
-		webserver_running="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`"
+		webserver_running="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`" 2>/dev/null
 		/bin/sleep 10
 	done
 
