@@ -198,7 +198,7 @@ do
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2
-			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/AUTOSCALER_READY && /bin/echo 'AUTOSCALER_READY'"  2>/dev/null`"
+			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/AUTOSCALER_READY && /bin/echo 'AUTOSCALER_READY'"`"
 		done
 
 		if ( [ "${count}" = "300" ] )
