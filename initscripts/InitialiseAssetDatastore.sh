@@ -43,10 +43,13 @@ then
 		asset_datastore="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-assets-${directory_to_mount}"
 
 		${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${asset_datastore}"
-
-		if ( [ ! -z "`/bin/ls ${interrogation_home}/${subdir}`" ] )
-		then
-			${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${interrogation_home}/${subdir}/ ${asset_datastore}
+  
+		if ( [ -f ${interrogation_home}/${subdir} ] )
+  		then
+			if ( [ ! -z "`/bin/ls ${interrogation_home}/${subdir}`" ] )
+			then
+				${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${interrogation_home}/${subdir}/ ${asset_datastore}
+			fi
 		fi
 	done
 fi
