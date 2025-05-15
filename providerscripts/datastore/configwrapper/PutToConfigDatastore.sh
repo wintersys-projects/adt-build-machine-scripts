@@ -61,8 +61,8 @@ then
 		if ( [ -d ${dir} ] )
 		then
 			/bin/mv ${dir} ${dir}.$$
-			/bin/mkdir -p "${dir}"
 		fi
+  		/bin/mkdir -p "${dir}"
 	fi
 	/bin/touch ${file_to_put}
 fi
