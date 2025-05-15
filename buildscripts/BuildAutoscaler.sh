@@ -190,15 +190,15 @@ do
 		status "Waiting for the autoscaling machine ${autoscaler_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
 		status "This is the current time for your reference `/bin/date`"
                         
-		done="0"
-		alive=""
-        
-		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/AUTOSCALER_READY" ] && [ "${count}" -lt "300" ] )
-		do
-			count="`/usr/bin/expr ${count} + 1`"
-			/bin/sleep 2
-			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/AUTOSCALER_READY"`"
-		done
+                done="0"
+                alive=""
+
+                while ( [ "${alive}" != "AUTOSCALER_READY" ] && [ "${count}" -lt "300" ] )
+                do
+                        count="`/usr/bin/expr ${count} + 1`"
+                        /bin/sleep 2
+                        alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/AUTOSCALER_READY && /bin/echo 'AUTOSCALER_READY'"`"
+                done
 
 		if ( [ "${count}" = "300" ] )
 		then
