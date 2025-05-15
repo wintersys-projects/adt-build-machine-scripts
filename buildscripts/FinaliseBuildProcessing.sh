@@ -278,7 +278,7 @@ then
   
 	status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
  
-	while ( [ "`/usr/bin/curl -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently'`" = "" ] )
+	while ( [ "`/usr/bin/curl -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
 	do
 		#This double checks that the webserver came online correctly whilst we test for the website being online
 		/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 > /dev/null
@@ -290,7 +290,7 @@ status "Seeing this message means I am confident that it is 'all systems go' (on
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
 #Other scripts can then check if the build has completed correctly before they action
-/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY"
+/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY" 2>/dev/null
 
 #Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh INSTALLED_SUCCESSFULLY INSTALLED_SUCCESSFULLY
