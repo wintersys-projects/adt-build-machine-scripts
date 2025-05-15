@@ -260,7 +260,7 @@ then
         fi
         if ( [ -f /root/PARAMETER ] )
         then
-                /usr/bin/env | /bin/egrep -v "(LS_COLORS|not found)" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
+                /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
         fi
         # What we do now is that we load/configure the eniroment based on the values of the template and load it into memory
         # We also store the template name to the filesystem for later reference.
@@ -274,7 +274,7 @@ fi
 
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
-/usr/bin/env | /bin/egrep -v "(LS_COLORS|not found)" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
+/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 
 # Intialise the configuration values for the VPS provider we are using (access tokens/keys) and so on
 ${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh
