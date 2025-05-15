@@ -164,7 +164,7 @@ do
         ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh ${bucket}
 done
 
-${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh 
+#${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh 
 
 status "Creating a new configuration bucket for build (${BUILD_IDENTIFIER})"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/MountConfigDatastore.sh 
