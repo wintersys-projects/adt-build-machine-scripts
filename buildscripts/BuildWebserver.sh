@@ -179,15 +179,14 @@ do
 		#So, looking good. Now what we have to do is keep monitoring for the build process for our webserver to complete
 		done="0"
 		alive="" 
-		alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
-
-		count="0"
-		while ( [ "${alive}" != "/home/${SERVER_USER}/runtime/WEBSERVER_READY" ] && [ "${count}" -lt "300" ] )
-		do
-			count="`/usr/bin/expr ${count} + 1`"
-			/bin/sleep 2
-			alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/bin/ls /home/${SERVER_USER}/runtime/WEBSERVER_READY"`"
-		done
+                count="0"
+		
+                while ( [ "${alive}" != "WEBSERVER_READY" ] && [ "${count}" -lt "300" ] )
+                do
+                        count="`/usr/bin/expr ${count} + 1`"
+                        /bin/sleep 2
+                        alive="`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/WEBSERVER_READY && /bin/echo 'WEBSERVER_READY'"`"
+                done
 
 		if ( [ "${count}" = "300" ] )
 		then
