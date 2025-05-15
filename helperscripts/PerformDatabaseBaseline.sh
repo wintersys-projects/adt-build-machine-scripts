@@ -144,13 +144,25 @@ APPLICATION_DB_REPOSITORY="${identifier}-db-baseline"
 /bin/echo "OK, ready to create baseline - press enter to confirm"
 read x
 
+generated="not ok"
+
 /usr/bin/ssh -o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS}  -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP} "${SUDO} /home/${SERVER_USERNAME}/providerscripts/backupscripts/CreateDBBaseline.sh ${identifier}" 2>/dev/null
+
+if ( [ "$?" = "0" ] )
+then
+        generated="ok"
+fi
 
 if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_DB_REPOSITORY} | /bin/grep 'HEAD'`" = "" ] )
 then
-	/bin/echo "I am not sure that your baselined repository ${APPLICATION_DB_REPOSITORY} generated successful, please double check using the GUI account for ${APPLICATION_REPOSITORY_USERNAME} on ${APPLICATION_REPOSITORY_PROVIDER}"
+        /bin/echo "I am not sure that your baselined repository ${APPLICATION_DB_REPOSITORY} generated successful, please double check using the GUI account for ${APPLICATION_REPOSITORY_USERNAME} on ${APPLICATION_REPOSITORY_PROVIDER}"
 else
-	/bin/echo "As far as I can tell the baseline has been generated maybe go check in the repository you created earlier for the code update"
+        if ( [ "${generated}" = "ok" ] )
+        then
+                /bin/echo "As far as I can tell the baseline has been generated maybe go check in the repository you created earlier for the code update"
+        else
+                /bin/echo "I am not entirely sure that a new baseline generated fully/correctly, please check"
+        fi
 fi
 
 
