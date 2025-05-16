@@ -34,6 +34,7 @@ then
 	headfile="index.html"
 elif ( [ "${APPLICATION_LANGUAGE}" = "PHP" ] )
 then
+        headfile="index.php"
 	if ( [ "${APPLICATION}" = "joomla" ] )
 	then
 		headfile="index.php"
