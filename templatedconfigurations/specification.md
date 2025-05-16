@@ -76,7 +76,7 @@ The APPLICATION_IDENTIFER is defined as follows and MUST be set for the type of 
 
 APPLICATION_IDENTIFIER      |      application (CMS) type  
 
-0                           |        None
+0                           |        None  
 1                           |        Joomla  
 2                           |        Wordpress  
 3                           |        Drupal  
