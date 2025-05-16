@@ -30,26 +30,26 @@ dbprefix="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/d
 secret="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-16 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS'`"
 SYSTEM_TOEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_TOEMAIL_ADDRESS'`"
-WEBSITE_DISPLAY_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_DISPLAY_NAME'`"
+WEBSITE_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_NAME'`"
 SYSTEM_EMAIL_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_EMAIL_USERNAME'`"
 SYSTEM_EMAIL_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_EMAIL_PASSWORD'`"
 SYSTEM_EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_EMAIL_PROVIDER'`"
 
 /bin/sed -i '/$dbprefix /c\        public $dbprefix = "'${dbprefix}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$secret /c\        public $secret = "'${secret}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$user/c\       public $user = "'${database_username}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$password/c\   public $password = "'${database_password}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$db /c\        public $db = "'${database_name}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$user/c\       public $user = "'${DB_USERNAME}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$password/c\   public $password = "'${DB_PASSWORD}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$db /c\        public $db = "'${DB_NAME}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep 'Postgres'`" != "" ] ) )
 then
         /bin/sed -i '/$dbtype /c\        public $dbtype = "pgsql";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
         /bin/sed -i '/$port /d' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        /bin/sed -i '/$host /c\        public $host = "'${database_identifier}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        /bin/sed -i '/$host /a        public $port = "'${db_port}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+        /bin/sed -i '/$host /c\        public $host = "'${DB_IDENTIFIER}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+        /bin/sed -i '/$host /a        public $port = "'${DB_PORT}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 else
         /bin/sed -i '/$dbtype /c\        public $dbtype = "mysqli";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        /bin/sed -i '/$host = /c\   public $host = "'${database_identifier}:${db_port}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+        /bin/sed -i '/$host = /c\   public $host = "'${DB_IDENTIFIER}:${DB_PORT}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 fi
 
 
@@ -68,8 +68,8 @@ fi
 /bin/sed -i '/$mailer /c\        public $mailer = "smtp";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$mailfrom /c\        public $mailfrom = "'${SYSTEM_FROMEMAIL_ADDRESS}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$replyto /c\        public $replyto = "'${SYSTEM_TOEMAIL_ADDRESS}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$fromname /c\        public $fromname = "'${WEBSITE_DISPLAY_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$replytoname /c\        public $replytoname = "'${WEBSITE_DISPLAY_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$fromname /c\        public $fromname = "'${WEBSITE_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$replytoname /c\        public $replytoname = "'${WEBSITE_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$smtpauth /c\        public $smtpauth = "1";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$smtpuser /c\        public $smtpuser = "'${SYSTEM_EMAIL_USERNAME}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$smtppass /c\        public $smtppass = "'${SYSTEM_EMAIL_PASSWORD}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
