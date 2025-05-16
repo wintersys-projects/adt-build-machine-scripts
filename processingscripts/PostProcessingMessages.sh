@@ -65,91 +65,95 @@ status "`/usr/bin/banner "IMPORTANT"`"
 #If this is a virgin build, show the application credentials so that the  application can be installed
 if ( [ "${BASELINE_DB_REPOSITORY}" = "VIRGIN" ] )
 then
-    status "###############################################################################################################################"
-    status "OK, I'll be kind and show you one time your ${APPLICATION} database credentials."
-    status "Please make a note of them but remember to keep them safe and secret"
-    status "You can enter them in the GUI system when you install the application"
-    status "#########################################"
-    if ( [ "${HARDCORE}" = "1" ] )
-    then
-        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-        then
-            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" 
-            /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" 
-            /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" 
-        fi
-    else
-        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-        then
-            /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" >&3
-            /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" >&3
-            /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" >&3
-        fi
-    fi
+	if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "standard" ] || [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "database" ] )
+	then
+		status "###############################################################################################################################"
+		status "OK, I'll be kind and show you one time your ${APPLICATION} database credentials."
+		status "Please make a note of them but remember to keep them safe and secret"
+		status "You can enter them in the GUI system when you install the application"
+		status "#########################################"
+    
+		if ( [ "${HARDCORE}" = "1" ] )
+		then
+			if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+			then
+				/bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" 
+				/bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" 
+				/bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" 
+			fi
+		else
+			if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+			then
+				/bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" >&3
+				/bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" >&3
+				/bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" >&3
+			fi
+		fi
 
-    status "#########################################"
- 
-    status "The database public IP address is: `${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-    status "The database private IP address is: `${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"` (try this one first from your application if it timesout, try the public one)"
-    status "The database port is ${DB_PORT}"
-    status "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')"
-    status "#########################################"
+		status "#########################################"
+ 		status "The database public IP address is: `${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+		status "The database private IP address is: `${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"` (try this one first from your application if it timesout, try the public one)"
+		status "The database port is ${DB_PORT}"
+		status "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')"
+		status "#########################################"
 
-    #Remind the deployer to add the port number to the hostname in the application when the database port is not the default port
-    if ( [ "${APPLICATION}" = "joomla" ] && [ "${DB_PORT}" != "3306" ] && [ "${DB_PORT}" != "5432" ] )
-    then
-        status "You are not using the default port for your database"
-        status "REMEMBER to tell joomla this by putting the database hostname as ${db_ip}:${DB_PORT} when you enter it in the GUI during the install process"
-        status "######################################"
-    fi
+		#Remind the deployer to add the port number to the hostname in the application when the database port is not the default port
+		if ( [ "${APPLICATION}" = "joomla" ] && [ "${DB_PORT}" != "3306" ] && [ "${DB_PORT}" != "5432" ] )
+		then
+			status "You are not using the default port for your database"
+			status "REMEMBER to tell joomla this by putting the database hostname as ${db_ip}:${DB_PORT} when you enter it in the GUI during the install process"
+			status "######################################"
+		fi
 
-    if ( [ "${APPLICATION}" = "wordpress" ] && [ "${DB_PORT}" != "3306" ] )
-    then
-        status "You are not using the default port for your database"
-        status "REMEMBER to tell wordpress this by putting the database hostname as ${db_ip}:${DB_PORT} when you enter it in the GUI during the install process"
-        status "######################################"
-    fi
+		if ( [ "${APPLICATION}" = "wordpress" ] && [ "${DB_PORT}" != "3306" ] )
+		then
+			status "You are not using the default port for your database"
+			status "REMEMBER to tell wordpress this by putting the database hostname as ${db_ip}:${DB_PORT} when you enter it in the GUI during the install process"
+			status "######################################"
+		fi
 
-    #Suggest the correct URL to complete the installation process for different application types
-    if ( [ "${APPLICATION}" = "joomla" ] )
-    then
-        status ""
-        status "##################################################################################################"
-        status "To complete the installation of joomla please go to https://${WEBSITE_URL}/installation/index.php"
-        status "##################################################################################################"
-        status ""
-    fi
+		#Suggest the correct URL to complete the installation process for different application types
+		if ( [ "${APPLICATION}" = "joomla" ] )
+		then
+			status ""
+			status "##################################################################################################"
+			status "To complete the installation of joomla please go to https://${WEBSITE_URL}/installation/index.php"
+			status "##################################################################################################"
+			status ""
+		fi
 
-    if ( [ "${APPLICATION}" = "drupal" ] )
-    then
-        status ""
-        status "####################################################################"
-        if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:cms" ] )
-        then
-            status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}/core/install.php"
-        else
-            status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}"
-        fi
-        status "Use the credentials listed above please"
-        status ""
+		if ( [ "${APPLICATION}" = "drupal" ] )
+		then
+			status ""
+			status "####################################################################"
+        
+			if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:cms" ] )
+			then
+				status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}/core/install.php"
+			else
+				status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}"
+			fi
+			status "Use the credentials listed above please"
+			status ""
 
-        trap '' 2
-        status "ctrl-c is disabled until the application is installed and the caching tables are truncated"
+			trap '' 2
+			status "ctrl-c is disabled until the application is installed and the caching tables are truncated"
 
-        while ( [ "`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/processing/drupal/CheckUser.sh"`" != "USER ADDED" ] )
-        do
-            /bin/sleep 15
-        done
-    fi
+			while ( [ "`/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/processing/drupal/CheckUser.sh"`" != "USER ADDED" ] )
+			do
+				/bin/sleep 15
+			done
+		fi
 
-    if ( [ "${APPLICATION}" = "moodle" ] )
-    then
-        status ""
-        status "####################################################################"
-        status "Moodle should be available at: https://${WEBSITE_URL}"
-        status "####################################################################"
-        status ""
-    fi
+		if ( [ "${APPLICATION}" = "moodle" ] )
+		then
+			status ""
+			status "####################################################################"
+			status "Moodle should be available at: https://${WEBSITE_URL}"
+			status "####################################################################"
+			status ""
+		fi
+	fi
 fi
 
 #With the drupal application the cache needs to be truncated (post install) otherwise there tends to be error messages
