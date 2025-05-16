@@ -107,13 +107,11 @@ then
 	status "Please enter your password (secret key for some providers) for your SMTP provider"
 	read SYSTEM_EMAIL_PASSWORD
 
-	 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_EMAIL_USERNAME=${SYSTEM_EMAIL_USERNAME}"
-  	 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_EMAIL_PASSWORD=${SYSTEM_EMAIL_PASSWORD}"
-      	 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_EMAIL_PROVIDER=${SYSTEM_EMAIL_PROVIDER}"
-  	 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_TOEMAIL_ADDRESS=${SYSTEM_TOEMAIL_ADDRESS}"
-  	 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_FROMEMAIL_ADDRESS=${SYSTEM_FROMEMAIL_ADDRESS}"
-
-
+	${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_EMAIL_USERNAME=${SYSTEM_EMAIL_USERNAME}"
+	${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_EMAIL_PASSWORD=${SYSTEM_EMAIL_PASSWORD}"
+	${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_EMAIL_PROVIDER=${SYSTEM_EMAIL_PROVIDER}"
+	${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_TOEMAIL_ADDRESS=${SYSTEM_TOEMAIL_ADDRESS}"
+	${BUILD_HOME}/helperscripts/SetVariableValue.sh "SYSTEM_FROMEMAIL_ADDRESS=${SYSTEM_FROMEMAIL_ADDRESS}"
 
 	/bin/echo ${SYSTEM_EMAIL_USERNAME} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SYSTEMEMAILUSERNAME.dat
 	/bin/echo ${SYSTEM_EMAIL_PROVIDER} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SYSTEMEMAILPROVIDER.dat
