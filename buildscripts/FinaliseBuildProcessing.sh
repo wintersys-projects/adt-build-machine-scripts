@@ -41,6 +41,7 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
+APPLICATION_ID="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_ID`"
 PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
@@ -49,6 +50,7 @@ INPARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INPARALLEL`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_LANGUAGE`"
+APPLICATION_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_IDENTIFIER`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
@@ -273,17 +275,20 @@ then
                 read response
         fi
 
-        #Make an actual attempt to access the website, if this goes through we should consider ourselves fully primed
-        . ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
+        if ( [ "${APPLICATION_IDENTIFIER}" != "0" ] )
+        then
+                #Make an actual attempt to access the website, if this goes through we should consider ourselves fully primed
+                . ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
   
-        status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
+                status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
  
-        while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
-        do
-                #This double checks that the webserver came online correctly whilst we test for the website being online
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 
-                /bin/sleep 10
-        done
+                while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
+                do
+                        #This double checks that the webserver came online correctly whilst we test for the website being online
+                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>&1 
+                        /bin/sleep 10
+                done
+        fi
 fi
 
 status "Seeing this message means I am confident that it is 'all systems go' (once all systems go no more capitalism or communism, right?)"
