@@ -33,12 +33,10 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
-
-database_ip="${1}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
@@ -46,27 +44,27 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
-database_username="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`"
-database_password="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`"
-database_name="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`"
-db_port="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PORT'`"
-database_identifier="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_IDENTIFIER'`"
+DB_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`"
+DB_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`"
+DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`"
+DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PORT'`"
+DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_IDENTIFIER'`"
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] )
 then
-	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-	then
-		/bin/echo "Database name: ${database_name}" 
-		/bin/echo "Database username: ${database_username}" 
-		/bin/echo "Database password: ${database_password}" 
-	fi
+        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+        then
+                /bin/echo "Database name: ${DB_NAME}" 
+                /bin/echo "Database username: ${DB_USERNAME}" 
+                /bin/echo "Database password: ${DB_PASSWORD}" 
+        fi
 else
-	if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-	then
-		/bin/echo "Database name: ${database_name}" >&3
-		/bin/echo "Database username: ${database_username}" >&3
-		/bin/echo "Database password: ${database_password}" >&3
-	fi
+        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+        then
+                /bin/echo "Database name: ${DB_NAME}" >&3
+                /bin/echo "Database username: ${DB_USERNAME}" >&3
+                /bin/echo "Database password: ${DB_PASSWORD}" >&3
+        fi
 fi
 
 . ${BUILD_HOME}/providerscripts/application/${APPLICATION}/SetApplicationConfig.sh
