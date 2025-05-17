@@ -21,8 +21,10 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ####################################################################################
 ####################################################################################
+#set -x
 
 status () {
+        status_set="1"
         yellow="`/usr/bin/tput setaf 11`"
         norm="`/usr/bin/tput sgr0`"
         /bin/echo "${yellow} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -36,8 +38,17 @@ status1 () {
         /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
+status2 () {
+        cyan="`/usr/bin/tput setaf 6`"
+        norm="`/usr/bin/tput sgr0`"
+        /bin/echo "${cyan} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+}
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 quick_specification="${BUILD_HOME}/templatedconfigurations/quick_specification.dat"
+status_set="0"
 
 if ( [ "${1}" != "" ] )
 then
@@ -45,11 +56,10 @@ then
         . ${templatefile} 2>/dev/null
 fi
 
-status 2>/dev/null
+status1 2>/dev/null
 
 if ( [ "$?" = "0" ] )
 then
-        status ""
         log_command="status "
         log_command1="status1 "
 else
@@ -57,6 +67,8 @@ else
         log_command="/bin/echo "
         log_command1="/bin/echo "
 fi
+
+log_command2="status2 "
 
 ${log_command1} ""
 /usr/bin/banner "ATTENTION"
@@ -380,7 +392,7 @@ fi
 
 if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:social" ] && [ "${PHP_VERSION}" != "8.1" ] )
 then
-	${log_command} "At the time of development, Opensocial requires PHP 8.1. You are trying to install PHP version ${PHP_VERSION}"
+        ${log_command} "At the time of development, Opensocial requires PHP 8.1. You are trying to install PHP version ${PHP_VERSION}"
 fi
 
 if ( [ "${APPLICATION}" = "moodle" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
@@ -514,6 +526,11 @@ fi
 if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep Postgres`" != "" ] && [ "`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep pgsql`" = "" ] )
 then
         ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
+fi
+
+if ( [ "${status_set}" = "0" ] )
+then
+        ${log_command2} "YOUR TEMPLATE LOOKS TO BE FULLY VALIDATED"
 fi
 
 ${log_command1} ""
