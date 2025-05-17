@@ -411,6 +411,9 @@ ${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
 
 #We inform the users of their credentials. Sometimes, depending on the application, the user needs to know more or less
 
+SERVER_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_USER`"
+SERVER_USER_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_USER_PASSWORD`"
+
 status ""
 status "###################################################################################################################"
 status "IMPORTANT, THE USERNAME FOR YOUR SERVERS IS: ${SERVER_USER}"
