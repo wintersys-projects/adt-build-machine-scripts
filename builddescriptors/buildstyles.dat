@@ -63,6 +63,7 @@
 # DATASTORETOOL:s3cmd:repo
 # DATASTORETOOL:s3cmd:source
 # DATASTORETOOL:s5cmd:binary
+# DATASTORETOOL:s5cmd:source
 # You can choose which package manager you want to use. Currently only apt and apt-fast are supported. "Apt-fast" is supposed to be fastet, hence the "fast"
 # PACKAGEMANAGER:apt|apt-fast
 # You can choose what style of firewall you would like to have by setting the FIREWALL. You can choose ufw or iptables
