@@ -47,53 +47,67 @@ then
 
 	if ( [ "${apt}" != "" ] )
 	then
-		if ( [ "${buildos}" = "ubuntu" ] )
+ 		if ( [ "${buildos}" = "ubuntu" ] )
 		then
-			eval ${install_command} s3cmd 2>/dev/null
-		fi
-
-		if ( [ "${buildos}" = "debian" ] )
+ 			if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd:repo`" != "" ] )
+			then
+				eval ${install_command} s3cmd	
+			elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd:source`" != "" ] )
+  			then
+  				eval ${install_command} python3 python3-dateutil
+				/usr/bin/ln -s /usr/bin/python3 /usr/bin/python
+   				/usr/bin/git clone https://github.com/s3tools/s3cmd.git
+				/bin/cp ./s3cmd/s3cmd /usr/bin/s3cmd
+				/bin/cp -r ./s3cmd/S3 /usr/bin/
+				/bin/rm -r ./s3cmd
+			fi
+   		fi
+     		if ( [ "${buildos}" = "debian" ] )
 		then
-			eval ${install_command} s3cmd 2>/dev/null
+   			if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd:repo`" != "" ] )
+			then
+				eval ${install_command} s3cmd	
+			elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd:source`" != "" ] )
+  			then
+  				eval ${install_command} python3 python3-dateutil
+				/usr/bin/ln -s /usr/bin/python3 /usr/bin/python
+   				/usr/bin/git clone https://github.com/s3tools/s3cmd.git
+				/bin/cp ./s3cmd/s3cmd /usr/bin/s3cmd
+				/bin/cp -r ./s3cmd/S3 /usr/bin/
+				/bin/rm -r ./s3cmd
+			fi
 		fi
 	fi
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu"
-		if ( [ -d /root/scratch ] )			
-		then						
-			/bin/rm -r /root/scratch/*		
-		else						
-			/bin/mkdir /root/scratch		
-		fi						
-
-		GOBIN=/root/scratch /usr/bin/go install github.com/peak/s5cmd/v2@latest                
-		if ( [ -f /root/scratch/s5cmd ] )                                                   
-		then                                                                                    
-			/bin/mv /root/scratch/s5cmd /usr/bin/s5cmd                                    
-		fi   											
-	fi	
-
-	if ( [ "${buildos}" = "debian" ] )
-	then
-		${BUILD_HOME}/installscripts/InstallGo.sh "debian"
-		if ( [ -d /root/scratch ] )			
-		then					
-			/bin/rm -r /root/scratch/*		
-		else					
-			/bin/mkdir /root/scratch		
-		fi						
-		GOBIN=/root/scratch /usr/bin/go install github.com/peak/s5cmd/v2@latest                
-		if ( [ -f /root/scratch/s5cmd ] )                                                     
-		then                                                                                   
-			/bin/mv /root/scratch/s5cmd /usr/bin/s5cmd                                  
-		fi 											
+		if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd:binary`" != "" ] )
+ 		then
+			/usr/bin/wget "`/usr/bin/wget -q -O - https://api.github.com/repos/peak/s5cmd/releases/latest  | /usr/bin/jq -r '.assets[] | select (.name | contains ("amd64"))'.browser_download_url`"
+  			/usr/bin/dpkg -i ./s5cmd_*_linux_amd64.deb
+    			/bin/rm ./s5cmd_*_linux_amd64.deb
+		fi
+ 		if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd:source`" != "" ] )
+		then	
+			${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
+			GOBIN=`/usr/bin/pwd` /usr/bin/go install github.com/peak/s5cmd/v2@latest                 
+			/bin/mv ./s5cmd /usr/bin/s5cmd                                      											
+		fi
 	fi
- 
-	if ( [ -d /root/scratch ] )
+ 	if ( [ "${buildos}" = "debian" ] )
 	then
-		/bin/rm -r /root/scratch
+		if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd:binary`" != "" ] )
+ 		then
+			/usr/bin/wget "`/usr/bin/wget -q -O - https://api.github.com/repos/peak/s5cmd/releases/latest  | /usr/bin/jq -r '.assets[] | select (.name | contains ("amd64"))'.browser_download_url`"
+  			/usr/bin/dpkg -i ./s5cmd_*_linux_amd64.deb
+    			/bin/rm ./s5cmd_*_linux_amd64.deb
+		fi
+ 		if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd:source`" != "" ] )
+		then	
+			${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
+			GOBIN=`/usr/bin/pwd` /usr/bin/go install github.com/peak/s5cmd/v2@latest                 
+			/bin/mv ./s5cmd /usr/bin/s5cmd                                      											
+		fi
 	fi
 fi
