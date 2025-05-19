@@ -55,6 +55,11 @@ fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${auth_bucket}"
 
+if ( [ ! -f /var/spool/cron/crontabs/root ] )
+then
+	/bin/touch /var/spool/cron/crontabs/root
+fi
+
 if ( [ "`/usr/bin/crontab -l | /bin/grep TightenBuildMachineFirewall.sh`" = "" ] )
 then
 	/bin/echo "*/1 * * * * ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh" >> /var/spool/cron/crontabs/root
