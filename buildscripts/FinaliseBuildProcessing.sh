@@ -141,8 +141,6 @@ then
         fi
 fi
 
-/bin/ls /tmp/1
-
 #Tell all the different machine types that the intial build is completed by placing a marker file on the filesystem of each machine type
 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/INITIAL_BUILD_COMPLETED
 
@@ -157,8 +155,6 @@ then
         test ${PRODUCTION} -eq 1 && /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 2>/dev/null
 fi
 
-/bin/ls /tmp/2
-
 #If the build machine is connect to the VPC then we need the private IP address if it is not then we need the public IP address
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
@@ -166,8 +162,6 @@ then
 else
         ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
-
-/bin/ls /tmp/3
 
 #This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
@@ -184,8 +178,6 @@ status "If you are performing a webserver from source build its likely that any 
 status "##############################################################################################################################"
 status ""
 
-/bin/ls /tmp/4
-
 # This checks that the application language (most likely PHP) has been installed correctly
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
@@ -199,8 +191,6 @@ then
                 application_language_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh && /bin/echo 'APPLICATION_LANGUAGE'"`" >&3 
         done
 fi
-
-/bin/ls /tmp/5
 
 #This checks that the user's application's configuration settings has been installed correctly and fully
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
@@ -216,8 +206,6 @@ then
         done
 fi
 
-/bin/ls /tmp/6
-
 #This checks that the webserver itself has been fully installed and is running. 
 status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
 
@@ -226,8 +214,6 @@ do
         webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
         /bin/sleep 1
 done
-
-/bin/ls /tmp/7
 
 #This checks that our bespoke application (most likely a CMS of some sort) is installed to the best of our knowledge
 status "Checking that the bespoke application has been installed...."
@@ -239,8 +225,6 @@ do
         /bin/sleep 1
 done
 
-/bin/ls /tmp/8
-
 #If we are mounting assets into the webroot of our application from the datastore then this checks that they are mounted correctly
 if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
 then
@@ -250,12 +234,10 @@ then
         while ( [ "${assets_mounted}" = "" ] )
         do
                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/datastore/assets/SetupAssetsStore.sh"  2>/dev/null
-                assets_mounted="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/utilities/status/AreAssetsMounted.sh"`" 
+                assets_mounted="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/utilities/status/AreAssetsMounted.sh"`" 2>/dev/null
                 /bin/sleep 1
         done
 fi
-
-/bin/ls /tmp/9
 
 #This passes a check all the way through to the database via the webserver to check that the communication channels are all working freely
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
@@ -271,8 +253,6 @@ then
                 done
         fi
 fi
-
-/bin/ls /tmp/10
 
 #If the webserver isn't actually running try and spark it up
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
@@ -311,15 +291,11 @@ then
         fi
 fi
 
-/bin/ls /tmp/11
-
 status "Seeing this message means I am confident that it is 'all systems go' (once all systems go no more capitalism or communism, right?)"
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
 #Other scripts can then check if the build has completed correctly before they action
 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY" 2>/dev/null
-
-/bin/ls /tmp/12
 
 #Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh INSTALLED_SUCCESSFULLY INSTALLED_SUCCESSFULLY
