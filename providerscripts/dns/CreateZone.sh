@@ -69,8 +69,11 @@ else
 	
 	if ( [ "${dns}" = "linode" ] )
 	then
-		/usr/local/bin/linode-cli domains create --type master --domain ${domainurl} --soa_email ${email}
-	fi
+ 		if ( [ "`/usr/local/bin/linode-cli domains list --json | /usr/bin/jq -r '.[] | select ( .domain == "'${domainurl}'").domain'`" = "" ] )
+   		then
+			/usr/local/bin/linode-cli domains create --type master --domain ${domainurl} --soa_email ${email}
+		fi
+ 	fi
 	
 	email="${1}"
 	authkey="${2}"
