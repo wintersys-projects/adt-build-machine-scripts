@@ -178,6 +178,8 @@ status "If you are performing a webserver from source build its likely that any 
 status "##############################################################################################################################"
 status ""
 
+/bin/ls /tmp/11
+
 # This checks that the application language (most likely PHP) has been installed correctly
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
@@ -191,6 +193,9 @@ then
                 application_language_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh && /bin/echo 'APPLICATION_LANGUAGE'"`" >&3 
         done
 fi
+
+/bin/ls /tmp/13
+
 
 #This checks that the user's application's configuration settings has been installed correctly and fully
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
@@ -206,6 +211,9 @@ then
         done
 fi
 
+/bin/ls /tmp/13
+
+
 #This checks that the webserver itself has been fully installed and is running. 
 status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
 
@@ -214,6 +222,8 @@ do
         webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
         /bin/sleep 1
 done
+
+/bin/ls /tmp/14
 
 #This checks that our bespoke application (most likely a CMS of some sort) is installed to the best of our knowledge
 status "Checking that the bespoke application has been installed...."
@@ -224,6 +234,8 @@ do
         bespoke_application_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED && /bin/echo 'BESPOKE_APPLICATION_INSTALLED'"`" >&3
         /bin/sleep 1
 done
+
+/bin/ls /tmp/15
 
 #If we are mounting assets into the webroot of our application from the datastore then this checks that they are mounted correctly
 if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
@@ -239,6 +251,8 @@ then
         done
 fi
 
+/bin/ls /tmp/16
+
 #This passes a check all the way through to the database via the webserver to check that the communication channels are all working freely
 if ( [ "${DNS_CHOICE}" != "NONE" ] )
 then
@@ -253,6 +267,8 @@ then
                 done
         fi
 fi
+
+/bin/ls /tmp/17
 
 #If the webserver isn't actually running try and spark it up
 if ( [ "${WEBSERVER_CHOICE}" != "" ] )
@@ -290,6 +306,9 @@ then
                 done
         fi
 fi
+
+/bin/ls /tmp/18
+
 
 status "Seeing this message means I am confident that it is 'all systems go' (once all systems go no more capitalism or communism, right?)"
 
