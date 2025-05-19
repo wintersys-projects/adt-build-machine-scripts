@@ -248,7 +248,7 @@ then
                 server_alive=""
                 while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
                 do
-                        server_alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh"`" 2>&1 
+                        server_alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh" 2>/dev/null`" 
                         /bin/sleep 1
                 done
         fi
