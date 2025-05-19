@@ -197,7 +197,7 @@ do
 
 		if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
 		then
-			/usr/bin/ssh ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
+			/usr/bin/ssh -q ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/providerscripts/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
 		fi
 
 		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
