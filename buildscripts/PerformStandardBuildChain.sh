@@ -215,6 +215,8 @@ fi
 ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh
 
 export CLOUDHOST="${cloudhost_holder}"
-       
+       /bin/ls /tmp/12
 ##Do the build finalisation procedures
 ${BUILD_HOME}/buildscripts/FinaliseBuildProcessing.sh
+       /bin/ls /tmp/13
+
