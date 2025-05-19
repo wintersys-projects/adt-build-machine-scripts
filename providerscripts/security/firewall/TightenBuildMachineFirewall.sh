@@ -55,16 +55,23 @@ fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${auth_bucket}"
 
+       /bin/ls /tmp/15
+
 if ( [ "`/usr/bin/crontab -l | /bin/grep TightenBuildMachineFirewall.sh`" = "" ] )
 then
 	/bin/echo "*/1 * * * * ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh" >> /var/spool/cron/crontabs/root
 	/usr/bin/crontab -u root /var/spool/cron/crontabs/root
 fi
 
+       /bin/ls /tmp/16
+
+
 if ( [ "`/usr/bin/crontab -l | /bin/grep 'apt' | /bin/grep 'update' | /bin/grep 'upgrade'`" = "" ] )
 then
 	/bin/echo "45 4 * * * /usr/bin/apt -y -qq update && /usr/bin/apt -y -qq upgrade && /usr/sbin/shutdown -r now" >> /var/spool/cron/crontabs/root
 fi
+
+       /bin/ls /tmp/17
 
 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
 then
