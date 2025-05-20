@@ -71,19 +71,6 @@ done < ${BUILD_HOME}/builddescriptors/autoscaler_descriptor.dat
 # get the autoscaler configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 autoscaler_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/autoscaler_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
-#setup the webserver configuration settings
-while read param
-do
-        param1="`eval /bin/echo ${param}`"
-        if ( [ "${param1}" != "" ] )
-        then
-                /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
-        fi
-done < ${BUILD_HOME}/builddescriptors/webserver_descriptor.dat
-
-# get the webserver configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
-webserver_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
-
 #setup the database configuration settings
 while read param
 do
@@ -96,6 +83,29 @@ done < ${BUILD_HOME}/builddescriptors/database_descriptor.dat
 
 # get the database configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 database_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
+
+#setup the webserver configuration settings
+#
+if ( [ "`/bin/echo ${DB_USERNAME} | /bin/grep ':::'`" != "" ] )
+then
+        DB_USERNAME="`/bin/echo ${DB_USERNAME} | /bin/sed 's/.*::://g'`"
+fi
+
+if ( [ "`/bin/echo ${DB_PASSWORD} | /bin/grep ':::'`" != "" ] )
+then
+        DB_PASSWORD="`/bin/echo ${DB_PASSWORD} | /bin/sed 's/.*::://g'`"
+fi
+
+while read param
+do
+        param1="`eval /bin/echo ${param}`"
+        if ( [ "${param1}" != "" ] )
+        then
+                /bin/echo ${param1} >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat
+        fi
+done < ${BUILD_HOME}/builddescriptors/webserver_descriptor.dat
+
+webserver_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/webserver_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
 #setup the authenticator configuration settings
 while read param
@@ -305,4 +315,4 @@ then
         status "Invalid database cloud-init configuration found. I have to exit"
         /usr/bin/kill -9 $PPID
         exit
-fi  
+fi 
