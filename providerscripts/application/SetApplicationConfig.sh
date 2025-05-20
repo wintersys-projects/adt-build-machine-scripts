@@ -50,14 +50,14 @@ DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`"
 DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PORT'`"
 DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_IDENTIFIER'`"
 
-if ( [ "`/bin/echo ${DB_USERNAME} | /bin/grep '||'`" != "" ] )
+if ( [ "`/bin/echo ${DB_USERNAME} | /bin/grep ':::'`" != "" ] )
 then
-        DB_USERNAME="`/bin/echo ${DB_USERNAME} | /bin/sed 's/||/ /g' | /usr/bin/awk '{print $NF}'`"
+        DB_USERNAME="`/bin/echo ${DB_USERNAME} | /bin/sed 's/:::/ /g' | /usr/bin/awk '{print $NF}'`"
 fi
 
-if ( [ "`/bin/echo ${DB_PASSWORD} | /bin/grep '||'`" != "" ] )
+if ( [ "`/bin/echo ${DB_PASSWORD} | /bin/grep ':::'`" != "" ] )
 then
-        DB_PASSWORD="`/bin/echo ${DB_PASSWORD} | /bin/sed 's/||/ /g' | /usr/bin/awk '{print $NF}'`"
+        DB_PASSWORD="`/bin/echo ${DB_PASSWORD} | /bin/sed 's/:::/ /g' | /usr/bin/awk '{print $NF}'`"
 fi
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] )
