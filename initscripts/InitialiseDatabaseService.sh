@@ -306,10 +306,10 @@ then
         fi
 
         #########################################################################################################
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<engine>:<region>:<machine_type>:<cluster_size>:<cluster_label>:<db_name>
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql/8:nl-ams:g6-nanode-1:1:test-cluster:testdb1"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:<engine>:<region>:<machine_type>:<cluster_size>:<cluster_label>:<db_name>
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:postgresql/14.4:nl-ams:g6-nanode-1:1:test-cluster:testdb1"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<engine>:<region>:<machine_type>:<cluster_size>:<cluster_label>:<db_name>:<db_username>:<db_password>
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql/8:nl-ams:g6-nanode-1:1:test-cluster:testdb1:testdbuser:gdhf76gdfgsh"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:<engine>:<region>:<machine_type>:<cluster_size>:<cluster_label>:<db_name>:<db_username>:<db_password>
+        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:postgresql/14.4:nl-ams:g6-nanode-1:1:test-cluster:testdb1:testdbuser:gdhf76gdfgsh"
         #########################################################################################################
         if ( [ "${CLOUDHOST}" = "linode" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
         then
@@ -324,6 +324,9 @@ then
                         machine_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $5}'`"
                         label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
                         db_name="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $8}'`"
+                        db_username="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $9}'`"
+                        db_password="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $10}'`"
+
 
                         if ( [ "${database_type}" = "MySQL" ] )
                         then
@@ -437,8 +440,10 @@ then
                                 #take a note of all our configuration settings
                                 export CLUSTER_NAME="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
                                 export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
-                                export DB_USERNAME="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
-                                export DB_PASSWORD="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
+                                DB_USERNAME="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
+                                export DB_USERNAME="${DB_USERNAME}||${db_username}"
+                                DB_PASSWORD="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
+                                export DB_PASSWORD="${DB_PASSWORD}||${db_password}"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases postgresql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
                                 export DB_NAME="${db_name}"
 
