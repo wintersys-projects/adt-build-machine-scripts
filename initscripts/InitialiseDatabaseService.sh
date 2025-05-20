@@ -381,8 +381,10 @@ then
                                 #Take a note of all our database details
                                 export CLUSTER_NAME="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
                                 export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
-                                export DB_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
-                                export DB_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
+                                DB_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
+                                export DB_USERNAME="${DB_USERNAME}||${db_username}"
+                                DB_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
+                                export DB_PASSWORD="${DB_PASSWORD}||${db_password}"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
                                 export DB_NAME="${db_name}"
 
