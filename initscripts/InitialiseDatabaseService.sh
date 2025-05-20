@@ -170,20 +170,6 @@ then
                         export DB_NAME="${db_name}"
                         export DB_PORT="`/usr/local/bin/doctl -o json databases connection ${cluster_id} | /usr/bin/jq -r '.port'`"
 
-                        status "The Values I have retrieved for your database setup are:"
-                        status "##########################################################"
-                        status "HOSTNAME:${DB_IDENTIFIER}"
-                        status "USERNAME:${DB_USERNAME}"
-                        status "PASSWORD:${DB_PASSWORD}"
-                        status "DATABASENAME:${DB_NAME}"
-                        status "PORT:${DB_PORT}"
-                        status "##########################################################"
-                        status "If these settings look OK to you, press <enter>"
-
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                        then
-                                read x
-                        fi
                         # record a certificate in case we ever need it
                         /usr/local/bin/doctl databases get-ca ${cluster_id} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                 fi
@@ -283,21 +269,6 @@ then
                         elif ( [ "${database_engine}" = "pg" ] )
                         then
                                 /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
-                        fi
-
-                        status "The Values I have retrieved for your database setup are:"
-                        status "##########################################################"
-                        status "HOSTNAME:${DB_IDENTIFIER}"
-                        status "USERNAME:${DB_USERNAME}"
-                        status "PASSWORD:${DB_PASSWORD}"
-                        status "DATABASENAME:${DB_NAME}"
-                        status "PORT:${DB_PORT}"
-                        status "##########################################################"
-                        status "If these settings look OK to you, press <enter>"
-
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                        then
-                                read x
                         fi
 
                         #record a certificate in case we need it
@@ -448,22 +419,6 @@ then
                                 #grab the cert, why not, we might need it
                                 /bin/echo "`/usr/local/bin/linode-cli --json databases postgresql-ssl-cert ${database_id} | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                         fi
-
-                        status "The Values I have retrieved for your database setup are:"
-                        status "##########################################################"
-                        status "CLUSTERNAME:${CLUSTER_NAME}"
-                        status "HOSTNAME:${DB_IDENTIFIER}"
-                        status "USERNAME:${DB_USERNAME}"
-                        status "PASSWORD:${DB_PASSWORD}"
-                        status "DATABASENAME:${DB_NAME}"
-                        status "PORT:${DB_PORT}"
-                        status "##########################################################"
-                        status "If these settings look OK to you, press <enter>"
-
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                        then
-                                read x
-                        fi
                 fi
         fi
 
@@ -537,27 +492,29 @@ then
                         export DB_PORT="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.id == "'${cluster_id}'").port'`"
                         export DB_NAME="${db_name}"
 
-                        status ""
-                        status "The rest of the settings for your database are as follows:"
-                        status "##########################################################"
-                        status "USERNAME:${DB_USERNAME}"
-                        status "PASSWORD:${DB_PASSWORD}"
-                        status "HOST:${DB_IDENTIFIER}"
-                        status "PORT:${DB_PORT}"
-                        status "DB NAME:${DB_NAME}"
-                        status "##########################################################"
-                        status "If these settings look OK to you, press <enter>"
-                        
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                        then
-                                read x
-                        fi
                         #Allow connections from our VPC alone
                         /usr/bin/vultr database update ${cluster_id} --trusted-ips "${VPC_IP_RANGE}"
                 fi
         fi
+
         export DB_USERNAME="${DB_USERNAME}:::${db_username}"
         export DB_PASSWORD="${DB_PASSWORD}:::${db_password}"
+
+        status ""
+        status "The rest of the settings for your database are as follows:"
+        status "##########################################################"
+        status "USERNAME:${DB_USERNAME}"
+        status "PASSWORD:${DB_PASSWORD}"
+        status "HOST:${DB_IDENTIFIER}"
+        status "PORT:${DB_PORT}"
+        status "DB NAME:${DB_NAME}"
+        status "##########################################################"
+        status "If these settings look OK to you, press <enter>"
+
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+                read x
+        fi
 else
         #If we are here then we are self managed so we generate our own username and passwords here which will be used to access
         #our self managed database everywhere in the deployment. These are generated fresh for each deployment
