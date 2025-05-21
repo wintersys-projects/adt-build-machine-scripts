@@ -157,35 +157,6 @@ then
 	${BUILD_HOME}/helperscripts/SetVariableValue.sh "DEVELOPMENT=${DEVELOPMENT}"
 fi
 
-#We don't support Wordpress running on Postgres
-if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] && [ "${APPLICATION}" = "wordpress" ] )
-then
-	status "################################################################"
-	status "Apologies, but, Wordpress doesn't support the Postgres Database."
-	status "I am defaulting to mariadb. Press <enter> to acknowledge"
-	status "################################################################"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
-	DATABASE_INSTALLATION_TYPE="Maria"
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "DATABASE_INSTALLATION_TYPE=${DATABASE_INSTALLATION_TYPE}"
-fi
-
-#For Joomla the port has to be 5432 when installing for Postgres
-if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] && [ "${APPLICATION}" = "joomla" ] )
-then
-        if ( [ "${DB_PORT}" != "5432" ] )
-        then
-                status "################################################################"
-                status "Sorry, I don't know how to set anything other than the default port - 5432 for the postgres database when using joomla"
-                status "Setting expected postgres port to 5432"
-                status "################################################################"
-                DB_PORT=5432
-                ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
-        fi
-fi
-
 if ( ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep "Postgres"`" != "" ] ) && [ "${APPLICATION}" = "joomla" ] )
 then
         if ( [ "${DB_PORT}" != "5432" ] )
