@@ -157,16 +157,6 @@ then
 	${BUILD_HOME}/helperscripts/SetVariableValue.sh "DEVELOPMENT=${DEVELOPMENT}"
 fi
 
-if ( ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep "Postgres"`" != "" ] ) && [ "${APPLICATION}" = "joomla" ] )
-then
-        if ( [ "${DB_PORT}" != "5432" ] )
-        then
-                status "Sorry, as far as I know, joomla can only run on port 5432 when deploying using Postgres to a managed database"
-                /usr/bin/kill -9 $PPID
-		exit
-        fi
-fi
-
 #If the database name has upper case characters in it when deploying to a DBaaS Postgres instance, set the database name to lower case
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "${DATABASE_DBaaS_INSTALLATION_TYPE}" = "Postgres" ] )
 then
