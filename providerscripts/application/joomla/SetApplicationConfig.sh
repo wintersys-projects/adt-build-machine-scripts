@@ -44,9 +44,7 @@ SYSTEM_EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep 'Postgres'`" != "" ] ) )
 then
         /bin/sed -i '/$dbtype /c\        public $dbtype = "pgsql";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        /bin/sed -i '/$port /d' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        /bin/sed -i '/$host /c\        public $host = "'${DB_IDENTIFIER}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-        /bin/sed -i '/$host /a        public $port = "'${DB_PORT}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+        /bin/sed -i '/$host /c\        public $host = "'${DB_IDENTIFIER}:${DB_PORT}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 else
         /bin/sed -i '/$dbtype /c\        public $dbtype = "mysqli";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
         /bin/sed -i '/$host = /c\   public $host = "'${DB_IDENTIFIER}:${DB_PORT}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
