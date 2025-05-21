@@ -245,7 +245,7 @@ then
 
                         #Wait for the database to be in a "running" state
                         status "Waiting for your new database cluster to be reponsive and online (this may take a little while)"
-                        while ( [ "`/usr/bin/exo dbaas show ${db_name} -O json | /usr/bin/jq -r 'select (.name == "'${db_name}'").state'`" != "running" ] )
+                        while ( [ "`/usr/bin/exo dbaas show ${db_name} -O json | /usr/bin/jq -r 'select (.name == "'${db_name}'" and .type=="'${database_engine}'").state'`" != "running" ] )
                         do
                                 /bin/sleep 10
                         done
