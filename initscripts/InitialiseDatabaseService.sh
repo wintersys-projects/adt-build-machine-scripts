@@ -198,8 +198,7 @@ then
                         db_password="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
 
                         #See if there is an existing database that we can use
-                        existing_db_name="`/usr/bin/exo dbaas list -O json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`"
-   
+                        existing_db_name="`/usr/bin/exo dbaas list -O json | /usr/bin/jq -r '.[]  | select (.name=="'${db_name}'" and .type=="'${database_engine}'").name'`"   
                         new=""
                         if ( [ "${existing_db_name}" = "" ] )
                         then
