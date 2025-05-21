@@ -177,8 +177,8 @@ then
 
         #########################################################################################################
         #If you are deploying to exoscale provide a setting with the following format in your template
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:ch-gva-2:hobbyist-2:testdb1"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:ch-gva-2:hobbyist-2:testdb1"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:ch-gva-2:hobbyist-2:testdb1:testuser1:testpassword1"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:ch-gva-2:hobbyist-2:testdb1:testuser1:testpassword1"
         #If you need to you can turn off termination protection as in the following example:
         #exo dbaas update testdb1 -z ch-gva-2 --termination-protection=false
         #########################################################################################################
@@ -194,6 +194,8 @@ then
                         database_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
                         database_size="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $3}'`"
                         db_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $4}'`"
+                        db_username="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $5}'`"
+                        db_password="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
 
                         #See if there is an existing database that we can use
                         existing_db_name="`/usr/bin/exo dbaas list -O json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`"
