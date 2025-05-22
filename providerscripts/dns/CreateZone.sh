@@ -59,7 +59,10 @@ else
 
 	if ( [ "${dns}" = "exoscale" ] )
 	then
-		/usr/bin/exo dns create ${domainurl}    
+		if ( [ "`/usr/bin/exo dns list -O json | /usr/bin/jq -r '.[] | select (.name ="'${domainurl}'").id'`" = "" ] )
+  		then
+			/usr/bin/exo dns create ${domainurl}
+   		fi
 		#Alternatively:
 		# /usr/bin/curl -H "X-DNS-Token: ${apikey}" -H 'Accept: application/json' -X DELETE https://api.exoscale.com/dns/v1/domains/${domainurl}/zone 1>/dev/null 2>/dev/null
 		# /bin/sleep 5
