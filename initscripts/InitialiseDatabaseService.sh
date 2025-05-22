@@ -125,17 +125,23 @@ then
                         fi
 
                         #create the database in the cluster
-                        status "Creating a database named ${db_name} in cluster: ${cluster_id}"
-                        /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
+                      #  status "Creating a database named ${db_name} in cluster: ${cluster_id}"
+                      #  /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
 
                         status "Probing for a database called ${db_name} in the cluster called ${cluster_name} - Please Wait...."
                         status "Note: you can get a %age progress update by referring to the Digital Ocean GUI for your database cluster as it provisions"
                         status "If this goes on forever, there is a problem and you will need to hold an investigation"
                         #wait for the database to be ready
-                        while ( [ "`/usr/local/bin/doctl databases db list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`" = "" ] )
+                      #  while ( [ "`/usr/local/bin/doctl databases db list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`" = "" ] )
+                      #  do
+                      #          /bin/sleep 5
+                      #          /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
+                      #  done
+
+
+                        while ( [ "`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'" and .engine == "'${cluster_engine}'").status'`" != "online" ] )
                         do
                                 /bin/sleep 5
-                                /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
                         done
 
                         status "######################################################################################################################################################"
