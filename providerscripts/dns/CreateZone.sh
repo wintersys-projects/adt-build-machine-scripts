@@ -45,8 +45,11 @@ else
 	
 	if ( [ "${dns}" = "digitalocean" ] )
 	then
-		/usr/local/bin/doctl compute domain create ${domainurl}
-	fi
+		if ( [ "`/usr/local/bin/doctl compute domain list -o json | /usr/bin/jq -r '.[] | select ( .name == "'${domainurl}'").name'`" != "" ] )
+  		then
+			/usr/local/bin/doctl compute domain create ${domainurl}
+		fi
+ 	fi
 
 	email="${1}"
 	apikey="${2}"
