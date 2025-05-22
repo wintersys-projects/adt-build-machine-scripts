@@ -503,7 +503,7 @@ then
         fi
 
         status "...Waiting for the database to be in a running state"
-        while ( [ "`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select ( .label == "'${database_name}'").status'`" != "Running" ] )
+        while ( [ "`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select ( .label == "'${label}'").status'`" != "Running" ] )
         do
                 /bin/sleep 10
         done
