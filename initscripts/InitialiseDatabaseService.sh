@@ -449,7 +449,7 @@ then
                         vpc_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $11}'`"
 
                         #See if an existing cluster is available
-                        cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
+                        cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'" and .database_engine == "'${engine}'").id'`"
 
                         new=""
                         if ( [ "${cluster_id}" = "" ] )
