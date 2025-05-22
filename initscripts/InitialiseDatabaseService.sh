@@ -427,8 +427,8 @@ then
 
         #########################################################################################################
         #If you are deploying to vultr provide a setting with the following format in your template
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:8:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:testuser1:testpassword1:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:17:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:testuser1:testpassword1:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:8:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:testuser1:testpassword1:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:17:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:testuser1:testpassword1:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1"
         #########################################################################################################
 
         if ( [ "${CLOUDHOST}" = "vultr" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
