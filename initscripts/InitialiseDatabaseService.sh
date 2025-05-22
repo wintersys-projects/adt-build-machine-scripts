@@ -500,13 +500,14 @@ then
                         #Allow connections from our VPC alone
                         /usr/bin/vultr database update ${cluster_id} --trusted-ips "${VPC_IP_RANGE}"
                 fi
+                status "...Waiting for the database to be in a running state"
+                while ( [ "`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select ( .label == "'${label}'" and .database_engine == "'${engine}'").status'`" != "Running" ] )
+                do
+                        /bin/sleep 10
+                done
         fi
 
-        status "...Waiting for the database to be in a running state"
-        while ( [ "`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select ( .label == "'${label}'" and .database_engine == "'${engine}'").status'`" != "Running" ] )
-        do
-                /bin/sleep 10
-        done
+
 
         status "Database considered to be in a running state"
                 
