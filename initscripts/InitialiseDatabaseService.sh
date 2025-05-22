@@ -74,7 +74,7 @@ then
                         status "Configuring database cluster ${cluster_name}, please wait..."
 
                         #see if a cluster id already exists for the cluster name we have been given
-                        cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
+                        cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'" and .engine == "'${cluster_engine}'").id'`"
 
                         if ( [ "${cluster_id}" = "" ] )
                         then
