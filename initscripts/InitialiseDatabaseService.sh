@@ -47,9 +47,9 @@ if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<vpc_id>"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2"
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:lon1:1:db-s-1vcpu-1gb:17:testdbcluster1:testdb1:e265abcb-1295-1d8b-af36-0129f89456c2"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:<cluster_engine>:<cluster_region>:<cluster_nodes>:<cluster_size>:<cluster_version>:<cluster_name>:<db_name>:<db_username>:<db_password>:<vpc_id>"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:lon1:1:db-s-1vcpu-1gb:8:testdbcluster1:testdb1:testuser1:testpassword1:e265abcb-1295-1d8b-af36-0129f89456c2"
+        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:lon1:1:db-s-1vcpu-1gb:17:testdbcluster1:testdb1:testuser1:testpassword1:e265abcb-1295-1d8b-af36-0129f89456c2"
         #########################################################################################################
 
 
@@ -67,7 +67,9 @@ then
                         cluster_version="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $5}'`"
                         cluster_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
                         db_name="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $7}'`"
-                        adt_vpc="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $8}'`"
+                        db_username="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $8}'`"
+                        db_password="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $9}'`"
+                        adt_vpc="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $10}'`"
 
                         status "Configuring database cluster ${cluster_name}, please wait..."
 
@@ -425,8 +427,8 @@ then
 
         #########################################################################################################
         #If you are deploying to vultr provide a setting with the following format in your template
-        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:8:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
-        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:14:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
+        #DATABASE_DBaaS_INSTALLATION_TYPE="MySQL:DBAAS:mysql:8:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:testuser1:testpassword1:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
+        #DATABASE_DBaaS_INSTALLATION_TYPE="Postgres:DBAAS:pg:14:lhr:vultr-dbaas-hobbyist-cc-1-25-1:testdb:testuser1:testpassword1:TestDatabase:2fb13fd1-3145-3127-7132-13f28f1912c1
         #########################################################################################################
 
         if ( [ "${CLOUDHOST}" = "vultr" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
@@ -436,13 +438,15 @@ then
                 then
                         #extract the database's configuration detaila from DATABASE_DBaaS_INSTALLATION_TYPE
                         database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
-                        label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $8}'`"
+                        label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $10}'`"
                         engine="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $3}'`"
                         engine_version="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $4}'`"
                         db_region="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $5}'`"
                         machine_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $6}'`"
                         db_name="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
-                        vpc_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $9}'`"
+                        db_username="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $8}'`"
+                        db_password="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $9}'`"
+                        vpc_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $11}'`"
 
                         #See if an existing cluster is available
                         cluster_id="`/usr/bin/vultr database list -o json | /usr/bin/jq -r '.databases[] | select (.label == "'${label}'").id'`"
