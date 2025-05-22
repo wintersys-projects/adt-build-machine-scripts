@@ -74,8 +74,16 @@ then
                         status "Configuring database cluster ${cluster_name}, please wait..."
 
                         #see if a cluster id already exists for the cluster name we have been given
-                        cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'" and .engine == "'${cluster_engine}'").id'`"
+                        cluster_id1="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'" and .engine == "'${cluster_engine}'").id'`"
+                        cluster_id="`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
 
+                        if ( [ "${cluster_id1}" = "" ] && [ "${cluster_id}" != "" ] )
+                        then
+                                status "A cluster with the name ${cluster_name} exists for a different database engine. You are trying to deploy with a ${cluster_engine} engine"
+                                status "Please choose a different name by updating your template with a distinct name for the new cluster you are trying to deploy"
+                                /usr/bin/kill -9 $PPID
+                                exit
+                        fi
                         if ( [ "${cluster_id}" = "" ] )
                         then
                                 #if the cluster doesn't exist we need to create one, so, we are here
