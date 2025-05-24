@@ -44,7 +44,7 @@ VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
-	build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
+	build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 	status ""
 	status ""
