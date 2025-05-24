@@ -129,7 +129,7 @@ then
 		/usr/local/bin/linode-cli vpcs create --label ${VPC_NAME} --region ${REGION} --subnets.label adt-subnet --subnets.ipv4 ${VPC_IP_RANGE}
 	fi
  
-	if ( [ "`/bin/echo ${server_name} | /bin/grep -E "^as-"`" != "" ] )
+	if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
 	then
  		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-autoscaler-'${BUILD_IDENTIFIER}'").id'`"
 	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] || [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
