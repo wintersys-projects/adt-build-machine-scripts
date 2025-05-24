@@ -147,7 +147,7 @@ export USER="`/usr/bin/whoami`"
 /bin/chmod -R 700 ${BUILD_HOME}/.
 
 #Get the IP value of the build machine that the Agile Deployment Toolkit is running on
-export BUILD_CLIENT_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
+export BUILD_MACHINE_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
 
 # Set up the runtimedata directory this is where data and information will be stored that is generated at runtime
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
@@ -162,7 +162,7 @@ status "WARNING, ONLY RUN THIS ON A DEDICATED MACHINE IT WILL INSTALL SOFTWARE A
 status "DAY TO DAY LAPTOP. YOU CAN RUN THIS FROM A DEDICATED VPS MACHINE OR POSSIBLY FROM A DEDICATED LINUX DISTRO FROM A PERSISTENT"
 status "USB WHICH YOU CARRY AROUND AS YOUR DEPLOYMENT IMAGE"
 status "##################################################################################################################################"
-status "Build Machine IP Address has been found as: ${BUILD_CLIENT_IP}"
+status "Build Machine IP Address has been found as: ${BUILD_MACHINE_IP}"
 status "##################################################################################################################################"
 status "PRESS ENTER KEY TO CONTINUE"
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
@@ -298,7 +298,7 @@ ${BUILD_HOME}/initscripts/PreFlightChecks.sh
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
         status "Checking for your build machine VPC network"
-        if ( [ "`${BUILD_HOME}/providerscripts/server/CheckBuildMachineVPC.sh ${CLOUDHOST} ${BUILD_CLIENT_IP}`" = "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/server/CheckBuildMachineVPC.sh ${CLOUDHOST} ${BUILD_MACHINE_IP}`" = "" ] )
         then
                 status "It looks like the build machine (${server_name}) is not attached to a VPC when BUILD_MACHINE_VPC=1"
                 status "Will have to exit (change BUILD_MACHINE_VPC if necessary in your template)"
