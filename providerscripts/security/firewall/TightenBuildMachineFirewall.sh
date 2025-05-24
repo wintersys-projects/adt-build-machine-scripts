@@ -41,7 +41,7 @@ fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
-ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
+ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 ${BUILD_HOME}/providerscripts/server/GetServerName.sh ${ip} "${CLOUDHOST}"
 CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 
