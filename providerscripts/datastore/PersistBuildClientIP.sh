@@ -42,6 +42,6 @@ fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "adt-${BUILD_IDENTIFIER}"
 ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "adt-${BUILD_IDENTIFIER}/*" 
-build_client_ip="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
-/bin/touch /tmp/${build_client_ip}
-${datastore_tool} /tmp/${build_client_ip} s3://adt-${BUILD_IDENTIFIER}
+build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
+/bin/touch /tmp/${build_machine_ip}
+${datastore_tool} /tmp/${build_machine_ip} s3://adt-${BUILD_IDENTIFIER}
