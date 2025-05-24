@@ -147,7 +147,7 @@ export USER="`/usr/bin/whoami`"
 /bin/chmod -R 700 ${BUILD_HOME}/.
 
 #Get the IP value of the build machine that the Agile Deployment Toolkit is running on
-export BUILD_MACHINE_IP="`${BUILD_HOME}/helperscripts/GetBuildClientIP.sh`"
+export BUILD_MACHINE_IP="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 # Set up the runtimedata directory this is where data and information will be stored that is generated at runtime
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
