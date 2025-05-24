@@ -128,7 +128,19 @@ then
 	then
 		/usr/local/bin/linode-cli vpcs create --label ${VPC_NAME} --region ${REGION} --subnets.label adt-subnet --subnets.ipv4 ${VPC_IP_RANGE}
 	fi
+ 
+	if ( [ "`/bin/echo ${server_name} | /bin/grep -E "^as-"`" != "" ] )
+	then
+ 		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-autoscaler-'${BUILD_IDENTIFIER}'").id'`"
+	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] || [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+	then
+ 		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"
+   	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
+	then
+  		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-database-'${BUILD_IDENTIFIER}'").id'`"
+	fi
 
+ 
 	vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`"
 	subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
 	#/usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} --image "${OS_CHOICE}" --type ${server_size} --label "${server_name}" --no-defaults --interfaces.primary true --interfaces.purpose vpc --interfaces.subnet_id ${subnet_id} --interfaces.ipv4.nat_1_1 any --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
