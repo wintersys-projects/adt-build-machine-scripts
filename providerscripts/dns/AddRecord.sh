@@ -39,6 +39,10 @@ if ( [ "${dns}" = "cloudflare" ] )
 then
 	#This is the raw command to add a DNS record the the cloudflare dns
 	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data "{\"type\":\"A\",\"name\":\"${websiteurl}\",\"content\":\"${ip}\",\"ttl\":120,\"proxiable\":true,\"proxied\":${proxied},\"ttl\":120}"
+	if ( [ "$?" != "0" ] )
+	then
+        	exit 1
+	fi
 fi
 
 websiteurl="${4}"
@@ -50,6 +54,10 @@ dns="${7}"
 if ( [ "${dns}" = "digitalocean" ] )
 then
 	/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
+	if ( [ "$?" != "0" ] )
+	then
+        	exit 1
+	fi
 fi
 
 authkey="${3}"
@@ -61,7 +69,11 @@ dns="${7}"
 if ( [ "${dns}" = "exoscale" ] )
 then
 	/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
-	#Alternatively:
+	if ( [ "$?" != "0" ] )
+	then
+        	exit 1
+	fi
+ 	#Alternatively:
 	# /usr/bin/curl  -H "X-DNS-Token: ${authkey}" -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d "{\"record\":{\"name\": \"${subdomain}\",\"record_type\": \"A\",\"content\": \"${ip}\",\"ttl\": 120}}" https://api.exoscale.com/dns/v1/domains/${domainurl}/records 1>/dev/null 2>/dev/null
 fi
 
@@ -75,6 +87,10 @@ if ( [ "${dns}" = "linode" ] )
 then
 	domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
 	/usr/local/bin/linode-cli domains records-create $domain_id --type A --name ${subdomain} --target ${ip} --ttl_sec 60
+	if ( [ "$?" != "0" ] )
+	then
+        	exit 1
+	fi
 fi
 
 authkey="${3}"
@@ -86,6 +102,10 @@ dns="${7}"
 if ( [ "${dns}" = "vultr" ] )
 then
 	/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
+	if ( [ "$?" != "0" ] )
+	then
+        	exit 1
+	fi
 fi
 
 
