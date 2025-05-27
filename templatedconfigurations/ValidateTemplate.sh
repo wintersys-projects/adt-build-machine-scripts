@@ -449,6 +449,17 @@ then
         fi
 fi
 
+php_version="`/bin/echo ${PHP_VERSION} | /bin/sed 's/\.//g'`"
+if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] && [ "${php_version}" -lt "82" ] )
+then
+        ${log_command} "At the time of development, Drupal CMS requires PHP 8.2 or higher. You are trying to install PHP version ${PHP_VERSION}"
+fi
+
+if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] && [ "${php_version}" -lt "81" ] )
+then
+        ${log_command} "At the time of development, Drupal Opensocial requires PHP 8.1 or higher. You are trying to install PHP version ${PHP_VERSION}"
+fi
+
 if ( [ ! "`echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
 then
         ${log_command} "It looks to me like the email address for the variable DNS_USERNAME (${DNS_USERNAME}) doesn't appear to be valid please review"
