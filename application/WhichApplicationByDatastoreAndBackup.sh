@@ -35,17 +35,27 @@ interrogation_home="${BUILD_HOME}/interrogation"
 
 APPLICATION=""
 
+if ( [ -f ${interrogation_home}/applicationDB.sql ] )
+then
+        db_type="sql"
+elif ( [ -f ${interrogation_home}/applicationDB.sql ] )
+then
+        db_type="postgres"
+fi
+
 #################JOOMLA################
 if ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "JOOMLA" ] )
 then
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:joomla
-	APPLICATION="joomla"
-	if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
-	then
-		DIRECTORIES_TO_MOUNT="images"
-	fi
-	status "Discovered you are deploying joomla from a datastore backup"
-	status "Press the <enter> key to accept as true"
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:joomla
+        APPLICATION="joomla"
+        if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
+        then
+                DIRECTORIES_TO_MOUNT="images"
+        fi
+
+        status "Discovered you are deploying joomla from a datastore backup with ${db_type} database type"
+        status "Press the <enter> key to accept as true"
+	
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
 		read x
@@ -71,7 +81,7 @@ then
 	then
 		DIRECTORIES_TO_MOUNT="wp-content.uploads"
 	fi
-	status "Discovered you are deploying wordpress from a datastore backup"
+	status "Discovered you are deploying wordpress from a datastore backup with ${db_type} database type"
 	status "Press the <enter> key to accept as true"
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
@@ -101,7 +111,7 @@ then
 	then
 		DIRECTORIES_TO_MOUNT="sites.default.files.pictures:sites.default.files.styles:sites.default.files.inline-images"
 	fi
-	status "Discovered you are deploying drupal from a datastore backup"
+	status "Discovered you are deploying drupal from a datastore backup with ${db_type} database type"
 	status "Press the <enter> key to accept as true"
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
@@ -132,7 +142,7 @@ then
 	then
 		DIRECTORIES_TO_MOUNT="moodledata.filedir"
 	fi
-	status "Discovered you are deploying moodle from a datastore backup"
+	status "Discovered you are deploying moodle from a datastore backup with ${db_type} database type"
 	status "Press the <enter> key to accept as true"
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 	then
