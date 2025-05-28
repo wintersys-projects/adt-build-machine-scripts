@@ -63,15 +63,13 @@ fi
 if ( [ -f ${interrogation_home}/applicationDB.sql ] && [ "${db_type}" != "sql" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
-        /usr/bin/kill -9 $PPID
-        exit
+    	/bin/touch /tmp/END_IT_ALL
 fi
 
 if ( [ -f ${interrogation_home}/applicationDB.psql ] && [ "${db_type}" != "postgres" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
-        /usr/bin/kill -9 $PPID
-        exit
+    	/bin/touch /tmp/END_IT_ALL
 fi
 
 #################JOOMLA################
@@ -98,8 +96,7 @@ then
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
         then
                 status "Error, cannot find db prefix file"
-                /usr/bin/kill -9 $PPID
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
         /bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
         ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
@@ -123,8 +120,7 @@ then
                 /bin/cp ${interrogation_home}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
         else
                 status "Couldn't find joomla default configuration file in baseline webroot"
-                /usr/bin/kill -9 $PPID    
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
 
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
@@ -153,8 +149,7 @@ then
                 /bin/cp ${interrogation_home}/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         else
                 status "Couldn't find drupal default configuration file in backup webroot"
-                /usr/bin/kill -9 $PPID   
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
 
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
@@ -185,8 +180,7 @@ then
                 /bin/cp ${interrogation_home}/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
         else
                 status "Couldn't find moodle default configuration file in backup archive webroot"
-                /usr/bin/kill -9 $PPID   
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
 
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
