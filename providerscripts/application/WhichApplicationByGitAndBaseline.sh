@@ -19,16 +19,17 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ########################################################################################
 ########################################################################################
-#set -x
+set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
 APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_BASELINE_SOURCECODE_REPOSITORY`"
+BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT`"
@@ -36,149 +37,188 @@ interrogation_home="${BUILD_HOME}/interrogation"
 
 APPLICATION=""
 
+if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat ] )
+then
+        status "NOTICE: couldn't detect the database type for your application"
+else
+        if ( [ "`/bin/grep Maria ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
+        then
+                database_type="sql"
+        fi
+        if ( [ "`/bin/grep MySQL ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
+        then
+                database_type="sql"
+        fi
+        if ( [ "`/bin/grep postgres ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
+        then
+                database_type="postgres"
+        fi
+fi
+
+if ( [ ! -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.sql ] && [ ! -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.psql ] )
+then
+        status "NOTICE: Can't find a suitable database dump file for your application"
+        status "Press <enter> to acknowledge and accept <ctrl-c> to exit and investigate"
+        read x
+fi
+
+if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.sql ] && [ "${database_type}" != "sql" ] )
+then
+        status "It seems like there is a mismatch between the type of database and thw webroot type"
+        /usr/bin/kill -9 $PPID
+        exit
+fi
+
+if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.psql ] && [ "${database_type}" != "postgres" ] )
+then
+        status "It seems like there is a mismatch between the type of database and thw webroot type"
+        /usr/bin/kill -9 $PPID
+        exit
+fi
+
 #################JOOMLA################
 if ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "JOOMLA" ] )
 then
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:joomla
-	APPLICATION="joomla"
-	interrogated="1"
-	if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
-	then
-		DIRECTORIES_TO_MOUNT="images"
-	fi
-	status "Discovered you are deploying joomla from a git repo baseline"
-	status "Press the <enter> key to accept as true"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
- 
-	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ] )
-	then
- 		/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-	else
- 		status "Couldn't find joomla default configuration file in baseline webroot"
-		/usr/bin/kill -9 $PPID  #
-		exit
-	fi
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:joomla
+        APPLICATION="joomla"
+        interrogated="1"
+        if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
+        then
+                DIRECTORIES_TO_MOUNT="images"
+        fi
+        status "Discovered you are deploying joomla from a git repo baseline"
+        status "Press the <enter> key to accept as true"
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+                read x
+        fi
+
+        if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ] )
+        then
+                /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+        else
+                status "Couldn't find joomla default configuration file in baseline webroot"
+                /usr/bin/kill -9 $PPID  #
+                exit
+        fi
     
-	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
-	then
-		status "Error, cannot find db prefix file"
-		/usr/bin/kill -9 $PPID  
-		exit
-	fi
+        if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+                /usr/bin/kill -9 $PPID  
+                exit
+        fi
      
-	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}	
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
-	#################WORDPRESS################
+        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
+        #################WORDPRESS################
 elif ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "WORDPRESS" ] )
 then
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:wordpress
-	APPLICATION="wordpress"
-	interrogated="1"
-	if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
-	then
-		DIRECTORIES_TO_MOUNT="wp-content.uploads"
-	fi
-	status "Discovered you are deploying wordpress from a git repo baseline"
-	status "Press the <enter> key to accept as true"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
- 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/wp-config.php.default ] )
-  	then
-		/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
-	else
-		status "Couldn't find joomla default configuration file in baseline webroot"
-		/usr/bin/kill -9 $PPID	
-		exit
-	fi
-	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
-	then
-		status "Error, cannot find db prefix file"
-		/usr/bin/kill -9 $PPID 
-		exit
-	fi
-	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:wordpress
+        APPLICATION="wordpress"
+        interrogated="1"
+        if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
+        then
+                DIRECTORIES_TO_MOUNT="wp-content.uploads"
+        fi
+        status "Discovered you are deploying wordpress from a git repo baseline"
+        status "Press the <enter> key to accept as true"
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+                read x
+        fi
+        if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/wp-config.php.default ] )
+        then
+                /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+        else
+                status "Couldn't find joomla default configuration file in baseline webroot"
+                /usr/bin/kill -9 $PPID
+                exit
+        fi
+        if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+                /usr/bin/kill -9 $PPID 
+                exit
+        fi
+        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 #################DRUPAL################
 elif ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "DRUPAL" ] )
 then
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:drupal
-	APPLICATION="drupal"
-	interrogated="1"
-	if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
-	then
-		DIRECTORIES_TO_MOUNT="sites.default.files.pictures:sites.default.files.styles:sites.default.files.inline-images"
-	fi
-	status "Discovered you are deploying drupal from a git repo baseline"
-	status "Press the <enter> key to accept as true"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:drupal
+        APPLICATION="drupal"
+        interrogated="1"
+        if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
+        then
+                DIRECTORIES_TO_MOUNT="sites.default.files.pictures:sites.default.files.styles:sites.default.files.inline-images"
+        fi
+        status "Discovered you are deploying drupal from a git repo baseline"
+        status "Press the <enter> key to accept as true"
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+                read x
+        fi
   
- 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/default.settings.php ] )
-  	then
-		/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/default.settings.php ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
-	else
-		status "Couldn't find drupal default configuration file in baseline webroot"
-		/usr/bin/kill -9 $PPID	
-		exit
-	fi
-	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
-	then
-		status "Error, cannot find db prefix file"
-		/usr/bin/kill -9 $PPID   
-		exit
-	fi
+        if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/default.settings.php ] )
+        then
+                /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/default.settings.php ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+        else
+                status "Couldn't find drupal default configuration file in baseline webroot"
+                /usr/bin/kill -9 $PPID
+                exit
+        fi
+        if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+                /usr/bin/kill -9 $PPID   
+                exit
+        fi
         
-	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
+        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 
-	#################MOODLE################
+        #################MOODLE################
 elif ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "MOODLE" ] )
 then
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:moodle
-	APPLICATION="moodle"
-	interrogated="1"
-	if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
-	then
-		DIRECTORIES_TO_MOUNT="moodledata.filedir"
-	fi
-	status "Discovered you are deploying moodle from a git repo baseline"
-	status "Press the <enter> key to accept as true"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/APPLICATION:moodle
+        APPLICATION="moodle"
+        interrogated="1"
+        if ( [ "${DIRECTORIES_TO_MOUNT}" = "" ] )
+        then
+                DIRECTORIES_TO_MOUNT="moodledata.filedir"
+        fi
+        status "Discovered you are deploying moodle from a git repo baseline"
+        status "Press the <enter> key to accept as true"
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+                read x
+        fi
 
- 	if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/config.php.default ] )
-  	then
-		/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
-	else
-		status "Couldn't find moodle default configuration file in baseline webroot"
-		/usr/bin/kill -9 $PPID	
-		exit
-	fi
-	if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
-	then
-		status "Error, cannot find db prefix file"
-		/usr/bin/kill -9 $PPID  
-		exit
-  	fi
-	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
+        if ( [ -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/config.php.default ] )
+        then
+                /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
+        else
+                status "Couldn't find moodle default configuration file in baseline webroot"
+                /usr/bin/kill -9 $PPID
+                exit
+        fi
+        if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
+        then
+                status "Error, cannot find db prefix file"
+                /usr/bin/kill -9 $PPID  
+                exit
+        fi
+        /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
 fi
 
 if ( [ "${APPLICATION}" = "" ] )
 then
-	status "Couldn't find a recognised application type. If you are sure you are OK with this, hit <enter> otherwise <ctrl-c> and have a look into what is going on"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
+        status "Couldn't find a recognised application type. If you are sure you are OK with this, hit <enter> otherwise <ctrl-c> and have a look into what is going on"
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+                read x
+        fi
 fi
 
