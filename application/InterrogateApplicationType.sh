@@ -66,8 +66,7 @@ then
         if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 2>/dev/null`" = "" ] )
         then
                 status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
-                /usr/bin/kill -9 $PPID 
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         else
                 status "I have found potentially usable webroot baseline sourcecode in your git repo."
                 gitrepo="1"
@@ -76,8 +75,8 @@ then
         if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${BASELINE_DB_REPOSITORY} 2>/dev/null`" = "" ] )
         then
                 status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
-                /usr/bin/kill -9 $PPID 
-                exit
+    		/bin/touch /tmp/END_IT_ALL
+
         else
                 status "I have found potentially usable database baseline sourcecode in your git repo."
         fi
@@ -111,8 +110,7 @@ then
                 backupdbarchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-db-${periodicity}/${WEBSITE_NAME}-DB-backup.tar.gz"
         else
                 status "Your build kit doesn't seem to have a valid periodicity set"
-                /usr/bin/kill -9 $PPID   
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
 
         datastorebucket="0"
@@ -129,9 +127,9 @@ then
                 datastorebucket="1"
         else
                 status "Did not find candidate sourcecode in your datastore"
-                /usr/bin/kill -9 $PPID 
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
+        
         if ( [  -f ${archivedb} ] )
         then
                 status "I have found potentially usable backup db dump in your datastore. The build can proceed"
