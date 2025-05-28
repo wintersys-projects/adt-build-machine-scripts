@@ -331,8 +331,7 @@ then
                                                 then
                                                         BYPASS_DB_LAYER="0"
                                                 else 
-                                                        /usr/bin/kill -9 $PPID
-                                                        exit
+    					                /bin/touch /tmp/END_IT_ALL
                                                 fi
                                         fi
                                         /usr/local/bin/linode-cli databases mysql-create --label "${label}" --region "${db_region}" --type "${machine_type}" --cluster_size "${cluster_size}" --engine "${engine}" --ssl_connection "true" --allow_list "0.0.0.0/0"
