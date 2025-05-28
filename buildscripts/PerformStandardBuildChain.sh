@@ -167,7 +167,7 @@ done
 # we have the database connection details in all scenarios and so we can set the application's configuration now
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
-    ${BUILD_HOME}/providerscripts/application/SetApplicationConfig.sh
+    ${BUILD_HOME}/application/SetApplicationConfig.sh
 fi
 
 # If the build machine is connected to the VPC then we need the private ip addresses of our machines, if not we need the public ones
