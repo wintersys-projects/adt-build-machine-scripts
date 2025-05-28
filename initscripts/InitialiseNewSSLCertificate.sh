@@ -138,8 +138,7 @@ then
                                         else
                                                 status "Something seems to be a bit wrong. We were trying to generate a new SSL ceritificate on the webserver, but, it doesn't seem to have been generated"
                                                 status "Can't operate without it, this is a secure system, so have to exit. Please investigate in ${BUILD_HOME}/logs"
-                                                /usr/bin/kill -9 $PPID
-                                                exit
+                                                /bin/touch /tmp/END_IT_ALL
                                         fi
                                 fi
                         else
@@ -169,8 +168,8 @@ then
                                         else
                                                 status "Something seems to be a bit wrong. We were trying to generate a new SSL ceritificate on the webserver, but, it doesnt seem to have been generated"
                                                 status "Cant operate without it, this is a secure system, so have to quit. Please investigate ${BUILD_HOME}/logs"
-                                                /usr/bin/kill -9 $PPID
-                                                exit
+                                                /bin/touch /tmp/END_IT_ALL
+
                                         fi
                                 fi
                         fi
@@ -239,15 +238,14 @@ then
         if ( [ "`/usr/bin/diff ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/privkey.pem.verify ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/privkey.pem`" != "" ] )
         then
                 status "SSL Certificate Verification failed for ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/privkey.pem"
-                /usr/bin/kill -9 $PPID
-                exit
+                /bin/touch /tmp/END_IT_ALL
+
         fi
 
         if ( [ "`/usr/bin/diff ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem.verify ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem`" != "" ] )
         then
                 status "SSL Certificate Verification failed for ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/fullchain.pem"
-                /usr/bin/kill -9 $PPID
-                exit
+                /bin/touch /tmp/END_IT_ALL
         fi
 
         /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${WEBSITE_URL}/privkey.pem.verify 
