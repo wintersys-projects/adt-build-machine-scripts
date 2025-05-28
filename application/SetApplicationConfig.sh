@@ -77,5 +77,5 @@ else
         fi
 fi
 
-. ${BUILD_HOME}/providerscripts/application/${APPLICATION}/SetApplicationConfig.sh
+. ${BUILD_HOME}/application/${APPLICATION}/SetApplicationConfig.sh
 
