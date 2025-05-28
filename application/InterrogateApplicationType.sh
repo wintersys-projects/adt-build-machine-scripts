@@ -126,7 +126,6 @@ then
         then
                 status "I have found potentially usable backup webroot sourcecode in your datastore. The build can proceed"
                 status ""
-                /bin/rm ${archive}
                 datastorebucket="1"
         else
                 status "Did not find candidate sourcecode in your datastore"
@@ -137,7 +136,6 @@ then
         then
                 status "I have found potentially usable backup db dump in your datastore. The build can proceed"
                 status ""
-                /bin/rm ${archivedb}
                 datastoredbbucket="1"
         else
                 status "Notice: did not find candidate db sourcecode in your datastore"
@@ -157,10 +155,8 @@ fi
 #If we successfully have found the a backup for our temporal backup then have a go at finding which application it is by backup
 if ( [ "${datastorebucket}" = "1" ] )
 then
-        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backuparchive}
-        archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
-        archive="${interrogation_home}/${archivename}"
         /bin/tar xvfz ${archive} -C ${interrogation_home}
+        /bin/tar xvfz ${archivedb} -C ${interrogation_home}
         ${BUILD_HOME}/application/WhichApplicationByDatastoreAndBackup.sh
 fi
 
