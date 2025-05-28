@@ -96,8 +96,7 @@ do
 			if ( [ "${count}" = "10" ] )
 			then
 				status "Couldn't create database server"
-				/usr/bin/kill -9 $PPID   
-				exit
+    				/bin/touch /tmp/END_IT_ALL
 			fi
 
       			status "Interrogating for database instance being available....if this goes on forever there is a problem"
@@ -274,6 +273,5 @@ done
 if ( [ "${counter}" = "5" ] )
 then
 	status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
-	/usr/bin/kill -9 $PPID
-	exit
+    	/bin/touch /tmp/END_IT_ALL
 fi
