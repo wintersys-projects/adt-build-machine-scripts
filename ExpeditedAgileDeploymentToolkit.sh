@@ -34,6 +34,25 @@
 #syntax on" > /root/.vimrc
 
 
+end_it_all() {
+        if ( [ -f /tmp/END_IT_ALL ] )
+        then
+                /bin/rm /tmp/END_IT_ALL
+        fi
+        while ( [ 1 ] )
+        do
+                /bin/sleep 1
+                if ( [ -f /tmp/END_IT_ALL ] )
+                then
+                        /bin/echo "TERMINATING BECAUSE OF FAILURE PLEASE CHECK THE ERROR LOGS"
+                        /usr/bin/kill -9 $$
+                        exit
+                fi
+        done
+}
+
+end_it_all &
+
 #Set up the intial logging  output. This is where the logging messages will be stored when they occur before
 #the main logging configuration has been set up. There is an output log for stdout and and error log for stderr
 if ( [ ! -d /root/logs ] )
