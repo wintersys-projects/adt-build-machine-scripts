@@ -165,7 +165,7 @@ fi
 
 #This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
-/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/providerscripts/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" 3>&1 2>/dev/null
+/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" 3>&1 2>/dev/null
 
 
 #We are satisfied that all is well so far so lets do a finally battery of tests to be as sure as we can be that we are on our feet
@@ -200,7 +200,7 @@ then
 
         while ( [ "${application_configuration_installed}" = "" ] )
         do
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/configuration/SetApplicationConfiguration.sh" 2>/dev/null
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/SetApplicationConfiguration.sh" 2>/dev/null
                 application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
                 /bin/sleep 1
         done
@@ -248,7 +248,7 @@ then
                 server_alive=""
                 while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
                 do
-                        server_alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/application/monitoring/CheckServerAlive.sh" 2>/dev/null`" 
+                        server_alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/monitoring/CheckServerAlive.sh" 2>/dev/null`" 
                         /bin/sleep 1
                 done
         fi
