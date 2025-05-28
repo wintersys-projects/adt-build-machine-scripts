@@ -138,7 +138,7 @@ if ( [ "${gitrepo}" = "1" ] )
 then
         ${BUILD_HOME}/providerscripts/git/GitClone.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}
         ${BUILD_HOME}/providerscripts/git/GitClone.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${BASELINE_DB_REPOSITORY}
-        ${BUILD_HOME}/providerscripts/application/WhichApplicationByGitAndBaseline.sh
+        ${BUILD_HOME}/application/WhichApplicationByGitAndBaseline.sh
 fi
 
 #If we successfully have found the a backup for our temporal backup then have a go at finding which application it is by backup
@@ -148,7 +148,7 @@ then
         archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
         archive="${interrogation_home}/${archivename}"
         /bin/tar xvfz ${archive} -C ${interrogation_home}
-        ${BUILD_HOME}/providerscripts/application/WhichApplicationByDatastoreAndBackup.sh
+        ${BUILD_HOME}/application/WhichApplicationByDatastoreAndBackup.sh
 fi
 
 cd ${BUILD_HOME}
