@@ -49,7 +49,7 @@ else
         then
                 database_type="sql"
         fi
-        if ( [ "`/bin/grep postgres ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
+        if ( [ "`/bin/grep Postgres ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
         then
                 database_type="postgres"
         fi
