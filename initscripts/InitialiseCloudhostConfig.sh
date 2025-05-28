@@ -58,8 +58,7 @@ then
 		/bin/sed -i "s/XXXXTOKENXXXX/${TOKEN}/" ${BUILD_HOME}/.config/doctl/config.yaml
 	else 
 		status "Couldn't find your digital ocean account personal access token in your template, will have to exit"
-		/usr/bin/kill -9 $PPID
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
 
 	if ( [ ! -d /root/.config/doctl ] )
@@ -84,8 +83,7 @@ then
 	if ( [ "$?" != "0" ] )
 	then
 		status "Couldn't get the Digitalocean CLI tool to work. Is your personal access token valid in your template?"
-		/usr/bin/kill -9 $PPID
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi 
 fi
 
@@ -105,8 +103,7 @@ then
 		/bin/sed -i "s/XXXXCLOUDEMAILADDRESSXXXX/${CLOUDHOST_ACCOUNT_ID}/" ${BUILD_HOME}/.exoscale.toml
 	else 
 		status "Couldn't find your exoscale cloud email address in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
       
 	if ( [ "${REGION}" != "" ] )
@@ -114,8 +111,7 @@ then
 		/bin/sed -i "s/XXXXREGIONXXXX/${REGION}/" ${BUILD_HOME}/.exoscale.toml
 	else 
 		status "Couldn't find your region in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
 
 	if ( [ "${ACCESS_KEY}" != "" ] )
@@ -124,8 +120,7 @@ then
 		/bin/echo "${ACCESS_KEY}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ACCESS_KEY
 	else 
 		status "Couldn't find your access key in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
 
 	if ( [ "${SECRET_KEY}" != "" ] )
@@ -134,8 +129,7 @@ then
 		/bin/echo "${SECRET_KEY}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SECRET_KEY
 	else 
 		status "Couldn't find your secret key in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
 
 	if ( [ ! -d /root/.config/exoscale ] )
@@ -157,8 +151,7 @@ then
 	if ( [ "$?" != "0" ] )
 	then
 		status "Couldn't get the Exoscale CLI tool to work. Is are your API access keys valid in your template?"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi 
 fi
 
@@ -178,8 +171,7 @@ then
 		/bin/sed -i "s/XXXXLINODEACCOUNTUSERNAMEXXXX/${CLOUDHOST_ACCOUNT_ID}/" ${BUILD_HOME}/.linode-cli
 	else 
 		status "Couldn't find your linode account username in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
 
 	if ( [ "${TOKEN}" != "" ] )
@@ -187,8 +179,7 @@ then
 		/bin/sed -i "s/XXXXTOKENXXXX/${TOKEN}/" ${BUILD_HOME}/.linode-cli
 	else 
 		status "Couldn't find your linode account personal access token in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
 
 	if ( [ "${REGION}" != "" ] )
@@ -196,8 +187,7 @@ then
 		/bin/sed -i "s/XXXXREGIONXXXX/${REGION}/" ${BUILD_HOME}/.linode-cli
 	else 
 		status "Couldn't find your region id in your template, will have to exit"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
 
 	if ( [ ! -d /root/.config ] )
@@ -222,8 +212,7 @@ then
 	if ( [ "$?" != "0" ] )
 	then
 		status "Couldn't get the Linode CLI tool to work. Is your personal access token valid in your template?"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi 
 	/usr/local/bin/linode-cli region-table >/dev/null 2>/dev/null >&3
 fi
@@ -239,8 +228,7 @@ then
 		/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN ${BUILD_HOME}/.vultr-cli.yaml /root/.vultr-cli.yaml
 	else
 		status "Couldn't find your vultr API key from your template - will have to exit...."
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi
  
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
@@ -253,8 +241,7 @@ then
 	if ( [ "$?" != "0" ] )
 	then
 		status "Couldn't get the Vultr CLI tool to work. Is your personal access token valid in your template?"
-		/usr/bin/kill -9 $PPID	
-		exit
+    		/bin/touch /tmp/END_IT_ALL
 	fi 
 fi
 
