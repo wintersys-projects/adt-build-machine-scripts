@@ -173,6 +173,5 @@ if ( [ "${count}" = "5" ] )
 then
     status "FAILED TO ISSUE SSL CERTIFICATE  (what is SSL_LIVE_CERT set to and have you hit an issuance limit for ${WEBSITE_URL}?)"
     status "Will have to exit, can't continue without the SSL certificate being set up"
-    /usr/bin/kill -9 $PPID
-    exit
+    /bin/touch /tmp/END_IT_ALL
 fi
