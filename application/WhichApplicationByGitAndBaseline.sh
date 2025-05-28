@@ -65,15 +65,13 @@ fi
 if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.sql ] && [ "${database_type}" != "sql" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
-        /usr/bin/kill -9 $PPID
-        exit
+    	/bin/touch /tmp/END_IT_ALL
 fi
 
 if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.psql ] && [ "${database_type}" != "postgres" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
-        /usr/bin/kill -9 $PPID
-        exit
+    	/bin/touch /tmp/END_IT_ALL
 fi
 
 #################JOOMLA################
@@ -98,15 +96,13 @@ then
                 /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/configuration.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
         else
                 status "Couldn't find joomla default configuration file in baseline webroot"
-                /usr/bin/kill -9 $PPID  #
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
     
         if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
         then
                 status "Error, cannot find db prefix file"
-                /usr/bin/kill -9 $PPID  
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
      
         /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
@@ -132,14 +128,12 @@ then
                 /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
         else
                 status "Couldn't find joomla default configuration file in baseline webroot"
-                /usr/bin/kill -9 $PPID
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
         if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
         then
                 status "Error, cannot find db prefix file"
-                /usr/bin/kill -9 $PPID 
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
         /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
         ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
@@ -165,14 +159,12 @@ then
                 /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/sites/default/default.settings.php ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         else
                 status "Couldn't find drupal default configuration file in baseline webroot"
-                /usr/bin/kill -9 $PPID
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
         if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
         then
                 status "Error, cannot find db prefix file"
-                /usr/bin/kill -9 $PPID   
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
         
         /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
@@ -200,14 +192,12 @@ then
                 /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
         else
                 status "Couldn't find moodle default configuration file in baseline webroot"
-                /usr/bin/kill -9 $PPID
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
         if ( [ ! -f ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ] )
         then
                 status "Error, cannot find db prefix file"
-                /usr/bin/kill -9 $PPID  
-                exit
+    		/bin/touch /tmp/END_IT_ALL
         fi
         /bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
         ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
