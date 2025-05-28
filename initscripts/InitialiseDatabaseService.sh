@@ -81,8 +81,7 @@ then
                         then
                                 status "A cluster with the name ${cluster_name} exists for a different database engine. You are trying to deploy with a ${cluster_engine} engine"
                                 status "Please choose a different name by updating your template with a distinct name for the new cluster you are trying to deploy"
-                                /usr/bin/kill -9 $PPID
-                                exit
+                                /bin/touch /tmp/END_IT_ALL
                         fi
                         if ( [ "${cluster_id}" = "" ] )
                         then
@@ -96,8 +95,7 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                /usr/bin/kill -9 $PPID 
-                                                exit
+                                                /bin/touch /tmp/END_IT_ALL
                                         fi
                                 fi
                                 status "Creating the database cluster ${cluster_name}"
@@ -107,8 +105,7 @@ then
                                 if ( [ "$?" != "0" ] )
                                 then
                                         status "I had trouble creating the database cluster will have to exit....."
-                                        /usr/bin/kill -9 $PPID  
-                                        exit
+    					/bin/touch /tmp/END_IT_ALL
                                 fi
                         fi
 
@@ -229,8 +226,7 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                /usr/bin/kill -9 $PPID  
-                                                exit
+                                            /bin/touch /tmp/END_IT_ALL
                                         fi
                                 fi
                                 admin_username="adt-dbadmin"
@@ -395,8 +391,7 @@ then
                                                 then
                                                         BYPASS_DB_LAYER="0"
                                                 else
-                                                        /usr/bin/kill -9 $PPID 
-                                                        exit
+                                                        /bin/touch /tmp/END_IT_ALL
                                                 fi
                                         fi
                                         /usr/local/bin/linode-cli databases postgresql-create --label "${label}" --region "${db_region}" --type "${machine_type}" --cluster_size "${cluster_size}" --engine "${engine}" --ssl_connection "true" --allow_list "0.0.0.0/0"
@@ -479,8 +474,7 @@ then
                                         then
                                                 BYPASS_DB_LAYER="0"
                                         else
-                                                /usr/bin/kill -9 $PPID 
-                                                exit
+    					        /bin/touch /tmp/END_IT_ALL
                                         fi
                                 fi
 
