@@ -325,8 +325,8 @@ then
         status "#############################################################"
         status "Interrogating to see what Application you are running, if any"
         status "#############################################################"
-        ${BUILD_HOME}/providerscripts/application/InterrogateApplicationType.sh
-        ${BUILD_HOME}/providerscripts/application/CheckForAssetsOverwrite.sh
+        ${BUILD_HOME}/application/InterrogateApplicationType.sh
+        ${BUILD_HOME}/application/CheckForAssetsOverwrite.sh
                 
         status ""
         status "#############################################################"
