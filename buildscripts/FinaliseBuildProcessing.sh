@@ -278,7 +278,7 @@ then
         if ( [ "${APPLICATION_IDENTIFIER}" != "0" ] )
         then
                 #Make an actual attempt to access the website, if this goes through we should consider ourselves fully primed
-                . ${BUILD_HOME}/providerscripts/application/SetHeadFile.sh
+                . ${BUILD_HOME}/application/SetHeadFile.sh
   
                 status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
  
