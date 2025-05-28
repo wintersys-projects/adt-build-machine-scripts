@@ -107,8 +107,8 @@ then
 
         if ( [ "${periodicity}" != "" ] )
         then
-                backuprepository="${website_subdomain}-${WEBSITE_NAME}-webroot-sourcecode-${periodicity}-${BUILD_IDENTIFIER}"
                 backuparchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${periodicity}/applicationsourcecode.tar.gz"
+                backupdbarchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-db-${periodicity}/${WEBSITE_NAME}-DB-backup.tar.gz"
         else
                 status "Your build kit doesn't seem to have a valid periodicity set"
                 /usr/bin/kill -9 $PPID   
@@ -116,13 +116,15 @@ then
         fi
 
         datastorebucket="0"
+        datastoredbbucket="0"
         ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backuparchive}
-        archivename="`/bin/echo ${backuparchive} | /usr/bin/awk -F'/' '{print $NF}'`"
-        archive="${interrogation_home}/${archivename}"
+        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${backupdbarchive}
+        archive="${interrogation_home}/applicationsourcecode.tar.gz"
+        archivedb="${interrogation_home}/${WEBSITE_NAME}-DB-backup.tar.gz"
 
         if ( [  -f ${archive} ] )
         then
-                status "I have found potentially usable backup sourcecode in your datastore. The build can proceed"
+                status "I have found potentially usable backup webroot sourcecode in your datastore. The build can proceed"
                 status ""
                 /bin/rm ${archive}
                 datastorebucket="1"
@@ -131,6 +133,21 @@ then
                 /usr/bin/kill -9 $PPID 
                 exit
         fi
+        if ( [  -f ${archivedb} ] )
+        then
+                status "I have found potentially usable backup db dump in your datastore. The build can proceed"
+                status ""
+                /bin/rm ${archivedb}
+                datastoredbbucket="1"
+        else
+                status "Notice: did not find candidate db sourcecode in your datastore"
+                status "Press <enter> to acknowledge and continue, otherwise, ctrl-c to exit"
+                read x
+        fi
+fi
+
+#If we successfully have found the a repository for our baseline then have a go at finding which application it is by baseline
+if ( [ "${gitrepo}" = "1" ] )
 fi
 
 #If we successfully have found the a repository for our baseline then have a go at finding which application it is by baseline
