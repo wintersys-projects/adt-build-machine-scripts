@@ -52,7 +52,7 @@ exec 2>>/root/${ERR_FILE}
 
 if ( [ "${BUILDMACHINE_SSH_PORT}" = "" ] )
 then
-        BUILDMACHINE_SSH_PORT="22"
+	BUILDMACHINE_SSH_PORT="22"
 fi
 
 /bin/sed -i "s/^Port.*$/Port ${BUILDMACHINE_SSH_PORT}/g" /etc/ssh/sshd_config
@@ -65,9 +65,9 @@ cd /home/${BUILDMACHINE_USER}
 
 if ( [ "${INFRASTRUCTURE_REPOSITORY_OWNER}" != "" ] )
 then
-        /usr/bin/git clone https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts.git
+	/usr/bin/git clone https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts.git
 else
-        /usr/bin/git clone https://github.com/wintersys-projects/adt-build-machine-scripts.git
+	/usr/bin/git clone https://github.com/wintersys-projects/adt-build-machine-scripts.git
 fi
 
 /usr/bin/find /home/${BUILDMACHINE_USER} -type d -exec chmod 755 {} \;
