@@ -27,19 +27,19 @@ export BUILDMACHINE_PASSWORD="Hjdhfb34hd£" #Make sure any password you choose i
 export BUILDMACHINE_SSH_PORT="1035"
 export LAPTOP_IP=""
 
-/bin/echo "
+/bin/echo '
 #BASE OVERRIDES
-export SSH=\"\" #paste your public key here
-export SELECTED_TEMPLATE=\"\" #set if using hardcore build
+export SSH="" #paste your public key here
+export SELECTED_TEMPLATE="" #set if using hardcore build
 #################################################################
 #MODIFY THESE VALUES IF YOU ARE DEPLOYING FROM A FORKED REPOSITORY
 #################################################################
-#export INFRASTRUCTURE_REPOSITORY_PROVIDER=\"github\"
-#export INFRASTRUCTURE_REPOSITORY_OWNER=\"adt-demos\"
-#export INFRASTRUCTURE_REPOSITORY_USERNAME=\"adt-demos\"
-#export INFRASTRUCTURE_REPOSITORY_PASSWORD=\"none\"
+#export INFRASTRUCTURE_REPOSITORY_PROVIDER="github"
+#export INFRASTRUCTURE_REPOSITORY_OWNER="adt-demos"
+#export INFRASTRUCTURE_REPOSITORY_USERNAME="adt-demos"
+#export INFRASTRUCTURE_REPOSITORY_PASSWORD="none"
 ####################################################################################
-" > /root/Environment.env
+' > /root/Environment.env
 
 #XXXECHOZZZ
 #XXXYYYZZZ
@@ -56,7 +56,7 @@ exec 1>>/root/${OUT_FILE}
 ERR_FILE="buildmachine-err-`/bin/date | /bin/sed 's/ //g'`"
 exec 2>>/root/${ERR_FILE}
 
-/usr/sbin/adduser --disabled-password --gecos \"\" ${BUILDMACHINE_USER} 
+/usr/sbin/adduser --disabled-password --gecos "" ${BUILDMACHINE_USER} 
 /bin/sed -i '$ a\ ClientAliveInterval 60\nTCPKeepAlive yes\nClientAliveCountMax 10000' /etc/ssh/sshd_config
 /bin/echo ${BUILDMACHINE_USER}:${BUILDMACHINE_PASSWORD} | /usr/bin/sudo -S -E /usr/sbin/chpasswd 
  /usr/bin/gpasswd -a ${BUILDMACHINE_USER} sudo 
