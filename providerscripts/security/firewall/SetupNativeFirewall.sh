@@ -266,16 +266,16 @@ then
                         
 			if ( [ "${autoscaler_firewall_id}" = "" ] )
 			then
-				/usr/local/bin/linode-cli firewalls create --label "adt-autoscaler-${BUILD_IDENTIFIER}" --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT
+				/usr/local/bin/linode-cli firewalls create --label "adt-autoscaler-${BUILD_IDENTIFIER}" --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT
 				autoscaler_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label == "adt-autoscaler-'${BUILD_IDENTIFIER}'").id'`"
 			fi
 
 			if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 			then
-				/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${autoscaler_firewall_id}
+				/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${autoscaler_firewall_id}
 			elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 			then
-				/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${autoscaler_firewall_id}
+				/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${autoscaler_firewall_id}
 			fi
 
 			webserver_firewall_id="`/usr/local/bin/linode-cli --json firewalls list | /usr/bin/jq -r '.[] | select (.label == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"
@@ -294,17 +294,17 @@ then
 			then
 				if ( [ "${alldnsproxyips}" = "" ] )
 				then
-					/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}                                
+					/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}                                
 				else 
-					/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":['${alldnsproxyips}']},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}
+					/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":['${alldnsproxyips}']},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}
 				fi
 			elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
    			then
 				if ( [ "${alldnsproxyips}" = "" ] )
 				then
-					/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}                                
+					/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}                                
 				else 
-					/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":['${alldnsproxyips}']},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}                                
+					/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":['${alldnsproxyips}']},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${webserver_firewall_id}                                
 				fi
 			fi
 
@@ -320,10 +320,10 @@ then
 
 			if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 			then
-				/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${database_firewall_id}
+				/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${database_firewall_id}
 			elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 			then
-				/usr/local/bin/linode-cli firewalls rules-update --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${database_firewall_id}
+				/usr/local/bin/linode-cli firewalls rules-update  --rules.inbound_policy DROP   --rules.outbound_policy ACCEPT --inbound  '[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${database_firewall_id}
 			fi
 
 			for autoscaler_id in ${autoscaler_ids}
