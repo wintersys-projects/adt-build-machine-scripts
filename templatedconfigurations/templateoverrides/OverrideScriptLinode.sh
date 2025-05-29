@@ -30,7 +30,7 @@ exec 1>>/root/${OUT_FILE}
 ERR_FILE="buildmachine-err-`/bin/date | /bin/sed 's/ //g'`"
 exec 2>>/root/${ERR_FILE}
 
-/usr/sbin/adduser --disabled-password --gecos \"\" ${BUILDMACHINE_USER} 
+/usr/sbin/adduser --disabled-password --gecos "" ${BUILDMACHINE_USER} 
 /bin/sed -i '$ a\ ClientAliveInterval 60\nTCPKeepAlive yes\nClientAliveCountMax 10000' /etc/ssh/sshd_config
 /bin/echo ${BUILDMACHINE_USER}:${BUILDMACHINE_PASSWORD} | /usr/bin/sudo -S -E /usr/sbin/chpasswd 
  /usr/bin/gpasswd -a ${BUILDMACHINE_USER} sudo 
