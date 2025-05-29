@@ -212,6 +212,14 @@ then
         ${log_command} "Your value for the variable PERSIST_ASSETS_TO_CLOUD (${PERSIST_ASSETS_TO_CLOUD}) doesn't appear to be valid please review"
 fi
 
+existing_build_identifiers="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}`"
+
+if ( [ "`/bin/echo ${existing_build_identifiers} | /bin/grep -w "${BUILD_IDENTIFIER}"`" = "" ] && [ "`/bin/echo ${existing_build_identifiers} | /bin/grep -Eo "${BUILD_IDENTIFIER}"`" != "" ] )
+then
+        ${log_command} "Your BUILD_IDENTIFIER {${BUILD_IDENTIFIER}) seems to be a substring of an existing BUILD_IDENTIFIER this is NOT recommended"
+        ${log_command} "For example, if you have BUILD_IDENTIFIERis such as '1test' or 'test2' then 'test' is not a valid BUILD_IDENTIFIER"
+fi
+
 if ( [ "${VPC_IP_RANGE}" = "" ] )
 then
         ${log_command} "Your value for the variable VPC_IP_RANGE seems not to be set this is a MANDATORY SETTING"
