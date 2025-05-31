@@ -188,7 +188,7 @@ do
 			done="1"
 		fi
 
-		#If $done != 1, then the authenticator didn't build properly, so, destroy the machine
+		#If $done != 1, then the reverse proxy didn't build properly, so, destroy the machine
 		if ( [ "${done}" != "1" ] )
 		then
 			status "################################################################################################################"		
@@ -205,7 +205,7 @@ do
    			#We should destroy the server also because it's hosed
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicip
    			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyip
-			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
+			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${RPIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the authentication server is destroyed because of a faulty build
 			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
