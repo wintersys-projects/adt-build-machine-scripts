@@ -56,8 +56,8 @@ OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev
 PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 
-#If "done" is set to 1, then we know that a authentication server has been successfully built and is running.
-#Try up to 5 times if the authenticator is failing to complete its build
+#If "done" is set to 1, then we know that a reverse proxy server has been successfully built and is running.
+#Try up to 5 times if the reverse proxy is failing to complete its build
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
@@ -67,9 +67,9 @@ do
 	if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
 	then
 		ip=""
-		#Construct a unique name for this authentication server
+		#Construct a unique name for this reverse proxy server
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-		authenticator_name="auth-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
+		reverseproxy_name="auth-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
 
 		status "Initialising a new server machine, please wait......"
 
@@ -78,43 +78,43 @@ do
 		do
 			count="0"
 			#Actually start the server machine. Following this, there will be an active machine instance running on your cloud provider
-			${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AUTH_SERVER_TYPE}" "${authenticator_name}" 
+			${BUILD_HOME}/providerscripts/server/CreateServer.sh "${RP_SERVER_TYPE}" "${reverseproxy_name}" 
 
 			#Keep trying if the first time wasn't successful
 			while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
 			do
 				count="`/usr/bin/expr ${count} + 1`"
 				/bin/sleep 10
-				${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AUTH_SERVER_TYPE}" "${authenticator_name}" 
+				${BUILD_HOME}/providerscripts/server/CreateServer.sh "${RP_SERVER_TYPE}" "${reverseproxy_name}" 
 			done
 
 			if ( [ "${count}" = "10" ] )
 			then
-				status "Could not create authenticator machine"
+				status "Could not create reverse proxy machine"
     				/bin/touch /tmp/END_IT_ALL
 			fi
 
-			status "Interrogating for authenticator instance being available....if this goes on forever there is a problem"
+			status "Interrogating for reverse proxy instance being available....if this goes on forever there is a problem"
 
-			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${authenticator_name}" ${CLOUDHOST}`" != "running" ] )
+			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${reverseproxy_name}" ${CLOUDHOST}`" != "running" ] )
    			do
       				/bin/sleep 5
 	  		done
      
-			status "Authenticator type VPS instance is now available"
+			status "Reverse Proxy type VPS instance is now available"
 
 			#Check that the server has been assigned its IP addresses and that they are active
 			ip=""
 			private_ip=""
 			count="0"
 
-   			status "Interrogating for authenticator ip address....."
+   			status "Interrogating for reverse proxy ip address....."
 
 			#Keep trying until we get the ip addresses of our new machine, both public and private ips
 			while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "10" ] )
 			do
-				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${authenticator_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-				private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${authenticator_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+				ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${reverseproxy_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
+				private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${reverseproxy_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
 				/bin/sleep 5
 				count="`/usr/bin/expr ${count} + 1`"
 			done
