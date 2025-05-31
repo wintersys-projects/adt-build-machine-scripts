@@ -131,8 +131,8 @@ do
 			fi
 		done
     
-		AUTHIP_PUBLIC=${ip}
-		AUTHIP_PRIVATE=${private_ip}
+		RPIP_PUBLIC=${ip}
+		RPIP_PRIVATE=${private_ip}
 
 		#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip/${ip}
@@ -142,15 +142,15 @@ do
 		#the public address to connect to
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 		then
-			auth_active_ip="${AUTHIP_PRIVATE}"
+			rp_active_ip="${RPIP_PRIVATE}"
 		elif ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 		then
-			auth_active_ip="${AUTHIP_PUBLIC}"
+			rp_active_ip="${RPIP_PUBLIC}"
 		fi
 
-		status "Have got the ip addresses for your authenticator (${authenticator_name})"
-		status "Public IP address: ${AUTHIP_PUBLIC}"
-		status "Private IP address: ${AUTHIP_PRIVATE}"
+		status "Have got the ip addresses for your reverse proxy (${reverseproxy_name})"
+		status "Public IP address: ${RPIP_PUBLIC}"
+		status "Private IP address: ${RPIP_PRIVATE}"
 
 		if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
 		then
@@ -163,18 +163,18 @@ do
 		# build process. We check very frequently so there is no wasted time and up to 300 times which means we are willing to 
 		# wait for up to ten minutes (which should be more than enough) for the cloud-init script to complete
 
-		status "Waiting for the authenticator machine ${authenticator_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
+		status "Waiting for the reverse proxy machine ${reverseproxy_name} to complete its build. If you are waiting on this for more than 10 minutes, something is likely wrong"
 		status "This is the current time for your reference `/bin/date`"
 
 		done="0"
 		alive=""
 		count="0"
 		
-		while ( [ "${alive}" != "AUTHENTICATOR_READY" ] && [ "${count}" -lt "300" ] )
+		while ( [ "${alive}" != "REVERSEPROXY_READY" ] && [ "${count}" -lt "300" ] )
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2                        
-			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/AUTHENTICATOR_READY && /bin/echo 'AUTHENTICATOR_READY'"`"
+			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/REVERSEPROXY_READY && /bin/echo 'REVERSEPROXY_READY'"`"
 		done
 
 		if ( [ "${count}" = "300" ] )
@@ -182,7 +182,7 @@ do
   			#If we are here then the build didn't complete correctly
 			done="0"
 		else
-  			#If we are here then we believe that the build completed correctly so the public IP address for the our authenticator machine
+  			#If we are here then we believe that the build completed correctly so the public IP address for the our reverseproxy machine
 			#Is added to the DNS provider
 			${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} ${WEBSITE_URL}
 			done="1"
@@ -203,23 +203,23 @@ do
 
 			#Our build failed so we don't want any ip address records stored in the S3 datastore
    			#We should destroy the server also because it's hosed
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
-   			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicip
+   			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyip
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the authentication server is destroyed because of a faulty build
-			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
+			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
 			do
 				/bin/sleep 5
 			done
 		else
   			#Happy days, if we are here then we are confident that an authentication server built correctly
-			status "An authentication server (${authenticator_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
+			status "A reverse proxy server (${reverseproxy_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
 			counter="`/usr/bin/expr ${counter} - 1`"
 		fi
 	else
  		#An authentication server is already running in the current region ask if we can use that one
-		status "An authenticator is already running, using that one"
+		status "An reverse proxy is already running, using that one"
 		status "Press enter if this is OK with you"
 		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 		then
