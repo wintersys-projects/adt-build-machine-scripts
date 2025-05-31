@@ -28,6 +28,14 @@ keyboard:
   layout: gb
 
 write_files:
+- path: /etc/netplan/eth1.yaml
+  content: |
+    network:
+      version: 2
+      ethernets:
+        eth1:
+          dhcp4: true
+  permissions: '0600'
 - encoding: b64
   content: XXXXAUTHENTICATOR_CONFIGURATIONXXXX
   owner: root:root
