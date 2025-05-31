@@ -53,6 +53,7 @@ WS_SERVER_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WS_SERVER_TYPE`
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
 BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
+REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 
@@ -193,7 +194,10 @@ do
 			done="0"
 		else
 			#If we are here then the build did succeed and we can add the IP address to the DNS system
-			${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
+   			if ( [ "${REVERSE_PROXY}" != "1" ] )
+      			then
+				${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
+			fi
 			done="1"
 		fi
 
