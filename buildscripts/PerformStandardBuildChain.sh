@@ -130,6 +130,10 @@ then
     then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh
     fi
+    if ( [ "${REVERSE_PROXY}" = "1" ] )
+    then
+	${BUILD_HOME}/buildscripts/BuildReverseProxy.sh
+    fi
 elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "1" ]  )
 then
     ${BUILD_HOME}/buildscripts/BuildWebserver.sh &
@@ -139,6 +143,11 @@ then
     if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
     then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
+        pids="${pids} $!"
+    fi
+    if ( [ "${REVERSE_PROXY}" = "1" ] )
+    then
+	${BUILD_HOME}/buildscripts/BuildReverseProxy.sh &
         pids="${pids} $!"
     fi
 fi
