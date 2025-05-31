@@ -57,6 +57,7 @@ WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHO
 PERSIST_ASSETS_TO_CLOUD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PERSIST_ASSETS_TO_CLOUD`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
@@ -111,7 +112,7 @@ then
                         fi
                 fi
         fi
-
+                        
         if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
         then
                 if ( [ "${as_active_ip}" = "" ] )
@@ -153,6 +154,21 @@ then
 elif ( [ "${as_active_ip}" != "" ] )
 then
         test ${PRODUCTION} -eq 1 && /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INITIAL_BUILD_COMPLETED" 2>/dev/null
+fi
+
+#See if we need to know the ip address for a reverse proxy or not
+if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
+then
+        if ( [ "${REVERSE_PROXY}" = "1" ] )
+        then
+                if ( [ "${rp_active_ip}" = "" ] )
+                then
+                        rp_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "rp-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+                fi
+        fi
+elif ( [ "${rp_active_ip}" = "" ] )
+then
+        rp_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "rp-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
 #If the build machine is connect to the VPC then we need the private IP address if it is not then we need the public IP address
@@ -252,6 +268,13 @@ then
                         /bin/sleep 1
                 done
         fi
+        if ( [ "${REVERSE_PROXY}" = "1" ] )
+        then
+                if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] )
+                then
+                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
+                fi
+        fi
 fi
 
 #If the webserver isn't actually running try and spark it up
@@ -281,11 +304,18 @@ then
                 . ${BUILD_HOME}/application/SetHeadFile.sh
   
                 status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
- 
-                while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ws_active_ip}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
+
+                if ( [ "${REVERSE_PROXY}" = "1" ] )
+                then
+                        ip_to_check="${rs_active_ip}"
+                else
+                        ip_to_check="${ws_active_ip}"
+                fi
+                
+                while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ip_to_check}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
                 do
                         #This double checks that the webserver came online correctly whilst we test for the website being online
-                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
+                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ip_to_check} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
                         /bin/sleep 10
                 done
         fi
