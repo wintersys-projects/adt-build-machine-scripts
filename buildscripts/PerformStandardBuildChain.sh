@@ -163,6 +163,10 @@ then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
         pids="${pids} $!"
     fi
+    if ( [ "${REVERSE_PROXY}" = "1" ] )
+    then
+	${BUILD_HOME}/buildscripts/BuildReverseProxy.sh &
+    fi
 fi
 
 # $pids will be empty of its not a parallelised build and this will do nothing if it is a parallelised build then wait on each pid
