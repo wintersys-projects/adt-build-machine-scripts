@@ -2,8 +2,8 @@
 ########################################################################################
 # Author: Peter Winter
 # Date  : 01/03/2025
-# Description : This is the script which will build a functioning authentication server. It contains
-# all the configuration settings and remote calls to the authentication server we are building to ensure
+# Description : This is the script which will build a functioning reverse proxy server. It contains
+# all the configuration settings and remote calls to the reverse proxy server we are building to ensure
 # that it is built correctly and functions as it is supposed to.
 ########################################################################################
 # License Agreement:
