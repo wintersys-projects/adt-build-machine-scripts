@@ -25,7 +25,7 @@ done=0 #This will be set to 1 if the build is valid
 counter="0" #This counts how many attempted builds there have been
 
 status () {
-	green="`/usr/bin/tput setaf 32`"
+	green="`/usr/bin/tput setaf 2`"
 	norm="`/usr/bin/tput sgr0`"
 	/bin/echo "${green} ${1} ${norm}" | /usr/bin/tee /dev/fd/3 2>/dev/null
 	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
@@ -35,7 +35,7 @@ status () {
 status ""
 status ""
 status ""
-status "#########################REVERSE PROXY BUILD MESSAGES ARE IN YELLOW#######################"
+status "#########################REVERSE PROXY BUILD MESSAGES ARE IN GREEN#######################"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
