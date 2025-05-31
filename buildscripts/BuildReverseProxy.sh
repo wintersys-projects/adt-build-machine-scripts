@@ -159,7 +159,7 @@ do
 
 		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
 		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
-		# When present we can be fairly sure that the newly provisioned machine has completed its authenticator machine type
+		# When present we can be fairly sure that the newly provisioned machine has completed its reverse proxy machine type
 		# build process. We check very frequently so there is no wasted time and up to 300 times which means we are willing to 
 		# wait for up to ten minutes (which should be more than enough) for the cloud-init script to complete
 
