@@ -21,7 +21,7 @@ ssh_pwauth: false
 
 
 timezone: 'XXXXTIMEZONEXXXX'
-hostname: XXXXAUTHENTICATOR_HOSTNAMEXXXX
+hostname: XXXXREVERSEPROXY_HOSTNAMEXXXX
 manage_etc_hosts: true
 
 keyboard:
@@ -29,9 +29,9 @@ keyboard:
 
 write_files:
 - encoding: b64
-  content: XXXXAUTHENTICATOR_CONFIGURATIONXXXX
+  content: XXXXREVERSEPROXY_CONFIGURATIONXXXX
   owner: root:root
-  path: /home/XXXXSERVER_USERXXXX/.ssh/authenticator_configuration_settings.dat.gz
+  path: /home/XXXXSERVER_USERXXXX/.ssh/reverseproxy_configuration_settings.dat.gz
   permissions: '0644'
 - encoding: b64
   content: XXXXBUILDSTYLES_SETTINGSXXXX
@@ -82,8 +82,8 @@ runcmd:
   - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX.pub'
   - '/usr/bin/git clone https://XXXXGIT_PROVIDER_DOMAINXXXX/XXXXINFRASTRUCTURE_REPOSITORY_OWNERXXXX/adt-webserver-scripts.git /home/XXXXSERVER_USERXXXX/clone'
   - '/bin/mv /home/XXXXSERVER_USERXXXX/clone/* /home/XXXXSERVER_USERXXXX && /bin/rm -r /home/XXXXSERVER_USERXXXX/clone'
-  - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/authenticator_configuration_settings.dat.gz'
-  - '/bin/cp /home/XXXXSERVER_USERXXXX/.ssh/authenticator_configuration_settings.dat /home/XXXXSERVER_USERXXXX/runtime/webserver_configuration_settings.dat'
+  - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/reverseproxy_configuration_settings.dat.gz'
+  - '/bin/cp /home/XXXXSERVER_USERXXXX/.ssh/reverseproxy_configuration_settings.dat /home/XXXXSERVER_USERXXXX/runtime/webserver_configuration_settings.dat'
   - '/usr/bin/gzip -d /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat.gz'
   - '/bin/cp /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat /home/XXXXSERVER_USERXXXX/runtime/buildstyles.dat'
   - '/usr/bin/find /home/XXXXSERVER_USERXXXX -type d -exec chmod 755 {} \;' 
@@ -101,7 +101,7 @@ runcmd:
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallFirewall.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallDatastoreTools.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallWebserver.sh'
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallAuthenticator.sh'
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallReverseProxy.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh &'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallEmailUtil.sh' 
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/auth.sh'
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/rp.sh'
