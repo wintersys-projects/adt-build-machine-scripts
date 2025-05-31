@@ -69,7 +69,7 @@ do
 		ip=""
 		#Construct a unique name for this reverse proxy server
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-		reverseproxy_name="auth-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
+		reverseproxy_name="rp-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
 
 		status "Initialising a new server machine, please wait......"
 
