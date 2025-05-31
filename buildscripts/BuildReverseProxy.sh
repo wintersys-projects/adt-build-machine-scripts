@@ -207,18 +207,18 @@ do
    			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyip
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${RPIP_PUBLIC} ${CLOUDHOST}
 
-			#Wait until we are sure that the authentication server is destroyed because of a faulty build
+			#Wait until we are sure that the reverse proxy server is destroyed because of a faulty build
 			while ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" != "0" ] )
 			do
 				/bin/sleep 5
 			done
 		else
-  			#Happy days, if we are here then we are confident that an authentication server built correctly
+  			#Happy days, if we are here then we are confident that an reverse proxy server built correctly
 			status "A reverse proxy server (${reverseproxy_name}) has built correctly (`/usr/bin/date`) and is accepting connections"
 			counter="`/usr/bin/expr ${counter} - 1`"
 		fi
 	else
- 		#An authentication server is already running in the current region ask if we can use that one
+ 		#An reverse proxy server is already running in the current region ask if we can use that one
 		status "An reverse proxy is already running, using that one"
 		status "Press enter if this is OK with you"
 		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
