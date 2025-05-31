@@ -134,9 +134,9 @@ do
 		RPIP_PUBLIC=${ip}
 		RPIP_PRIVATE=${private_ip}
 
-		#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip/${ip}
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip/${private_ip}
+		#Store the public and private ip addresses of the reverse proxy machine in the datastore for access elsewhere
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} reverseproxypublicip/${ip}
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} reverseproxyip/${private_ip}
 
 		#If the build machine is without our VPC we want the private ip address to connect with if not within the VPC we want
 		#the public address to connect to
