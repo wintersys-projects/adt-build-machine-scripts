@@ -307,7 +307,7 @@ then
 
                 if ( [ "${REVERSE_PROXY}" = "1" ] )
                 then
-                        ip_to_check="${rs_active_ip}"
+                        ip_to_check="${rp_active_ip}"
                 else
                         ip_to_check="${ws_active_ip}"
                 fi
