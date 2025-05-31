@@ -150,6 +150,12 @@ then
    	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
 	then
   		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-database-'${BUILD_IDENTIFIER}'").id'`"
+   	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+	then
+  		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-database-'${BUILD_IDENTIFIER}'").id'`"
+       	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^rp-"`" != "" ] )
+	then
+  		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-database-'${BUILD_IDENTIFIER}'").id'`"
 	fi
 
  
