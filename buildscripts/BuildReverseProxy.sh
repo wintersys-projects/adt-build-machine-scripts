@@ -174,7 +174,7 @@ do
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2                        
-			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/REVERSEPROXY_READY && /bin/echo 'REVERSEPROXY_READY'"`"
+			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/REVERSEPROXY_READY && /bin/echo 'REVERSEPROXY_READY'"`"
 		done
 
 		if ( [ "${count}" = "300" ] )
@@ -192,7 +192,7 @@ do
 		if ( [ "${done}" != "1" ] )
 		then
 			status "################################################################################################################"		
-			status "Hi, an authenticator server didn't seem to build correctly. I can destroy it and I can try to build a new authentication server for you"
+			status "Hi, a reverse proxy server didn't seem to build correctly. I can destroy it and I can try to build a new reverse proxy server for you"
 			status "################################################################################################################"
 			status "Press the <enter> key to be continue with the next attempt <ctrl - c> to exit"
                                 
