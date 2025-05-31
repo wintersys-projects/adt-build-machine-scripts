@@ -21,7 +21,7 @@ ssh_pwauth: false
 
 
 timezone: 'XXXXTIMEZONEXXXX'
-hostname: XXXXAUTHENTICATOR_HOSTNAMEXXXX
+hostname: XXXXREVERSEPROXY_HOSTNAMEXXXX
 manage_etc_hosts: true
 
 keyboard:
@@ -29,9 +29,9 @@ keyboard:
 
 write_files:
 - encoding: b64
-  content: XXXXAUTHENTICATOR_CONFIGURATIONXXXX
+  content: XXXXREVERSEPROXY_CONFIGURATIONXXXX
   owner: root:root
-  path: /home/XXXXSERVER_USERXXXX/.ssh/authenticator_configuration_settings.dat.gz
+  path: /home/XXXXSERVER_USERXXXX/.ssh/reverseproxy_configuration_settings.dat.gz
   permissions: '0644'
 - encoding: b64
   content: XXXXBUILDSTYLES_SETTINGSXXXX
