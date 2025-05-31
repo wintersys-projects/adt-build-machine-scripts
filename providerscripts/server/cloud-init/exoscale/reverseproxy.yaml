@@ -21,7 +21,7 @@ ssh_pwauth: false
 
 
 timezone: 'XXXXTIMEZONEXXXX'
-hostname: XXXXAUTHENTICATOR_HOSTNAMEXXXX
+hostname: XXXXREVERSEPROXY_HOSTNAMEXXXX
 manage_etc_hosts: true
 
 keyboard:
