@@ -229,7 +229,7 @@ do
 	fi
 done
 
-#If we get to here then we know that the authentication server didn't build properly after multiple attempts, so report it and exit
+#If we get to here then we know that the reverse proxy server didn't build properly after multiple attempts, so report it and exit
 if ( [ "${counter}" = "5" ] )
 then
 	status "The infrastructure failed to intialise because of a build problem, please investigate, correct and rebuild"
