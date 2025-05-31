@@ -185,7 +185,7 @@ do
 		else
   			#If we are here then we believe that the build completed correctly so the public IP address for the our reverseproxy machine
 			#Is added to the DNS provider
-   			if ( [ "${REVERSE_PROXY}" != "1" ] )
+   			if ( [ "${REVERSE_PROXY}" = "1" ] )
       			then
 				${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} ${WEBSITE_URL}
     			fi
