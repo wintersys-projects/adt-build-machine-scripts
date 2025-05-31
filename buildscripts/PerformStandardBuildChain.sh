@@ -41,6 +41,7 @@ BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHIN
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
+REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
 pids=""
@@ -214,13 +215,17 @@ if ( [ "${PRODUCTION}" = "1" ] )
 then
 	if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 	then
-		status "Authentication server, autoscaler, webserver and database built correctly....."
-	else
-		status "autoscaler, webserver and database built correctly....."
+		status "Authentication server, Autoscaler, Webserver and Database built correctly....."
+	elif ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "${REVERSE_PROXY}" = "1" ] )
+ 	then
+  		status "Authentication server, Reverse proxy, Autoscaler, Webserver and Database built correctly....."
+	elif ( [ "${REVERSE_PROXY}" = "1" ] )
+ 	then
+		status "Reverse Proxy, Autoscaler, Webserver and Database built correctly....."
 	fi
 elif ( [ "${DEVELOPMENT}" = "1" ] )
 then
-    status "Webserver and database built correctly....."
+    status "Webserver and Database built correctly....."
 fi
 
 # And tighten the build machine firewall just as a routine process
