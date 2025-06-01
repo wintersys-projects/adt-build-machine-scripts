@@ -187,7 +187,7 @@ do
 			#Is added to the DNS provider
    			if ( [ "${REVERSE_PROXY}" = "1" ] )
       			then
-				${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} ${WEBSITE_URL}
+				${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
     			fi
 			done="1"
 		fi
