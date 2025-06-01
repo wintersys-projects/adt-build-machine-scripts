@@ -106,6 +106,5 @@ runcmd:
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallDatastoreTools.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallWebserver.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallReverseProxy.sh'
-#  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh &'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallEmailUtil.sh' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/rp.sh'
