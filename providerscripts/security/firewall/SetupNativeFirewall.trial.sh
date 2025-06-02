@@ -41,6 +41,8 @@ BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHIN
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
 VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
+REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY`"
+AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
 
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
@@ -261,6 +263,21 @@ then
         then       
                 if ( [ "${pre_build}" = "0" ] )
                 then
+                        ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
+
+                        ruleset=""
+                        rule_vpc='{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"}'
+                        rule_build_machine='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"}'
+                        rule_icmp='{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}'
+                        rule_ssl='{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"}'
+
+                        if ( [ "${alldnsproxyips}" = "" ] )
+                        then
+                                rule_ssl='{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"}'
+                        else
+                                rule_ssl='{"addresses":{"ipv4":['${alldnsproxyips}']},"action":"ACCEPT","protocol":"TCP","ports":"443"}'
+                        fi
+
                         autoscaler_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
                         autoscaler_firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-autoscaler"`"
@@ -275,72 +292,125 @@ then
 
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                         then
-                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]'
+                                ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}']'
                         elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                         then
-                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' ${autoscaler_firewall_id}
+                                ruleset='['${rule_vpc}','${rule_icmp}']'
                         fi
 
                         ${BUILD_HOME}/providerscripts/security/firewall/utilities/UpdateNativeFirewall.sh "${autoscaler_firewall_id}" DROP ACCEPT ${ruleset}
 
                         webserver_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        proxyserver_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        authenticator_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
                         webserver_firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-webserver"`"
+                        proxyserver_firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-proxyserver"`"
+                        authenticator_firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-authenticator"`"
 
                         if ( [ "${webserver_firewall_id}" = "" ] )
                         then
                                 ${BUILD_HOME}/providerscripts/security/firewall/utilities/CreateNativeFirewall.sh "adt-webserver" DROP ACCEPT
-                                autoscaler_firewall_id"`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-webserver"`"
+                                webserver_firewall_id"`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-webserver"`"
+                        fi
+
+                        if ( [ "${proxyserver_firewall_id}" = "" ] )
+                        then
+                                ${BUILD_HOME}/providerscripts/security/firewall/utilities/CreateNativeFirewall.sh "adt-proxyserver" DROP ACCEPT
+                                proxyserver_firewall_id"`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-proxyserver"`"
+                        fi
+
+                        if ( [ "${authenticator_firewall_id}" = "" ] )
+                        then
+                                ${BUILD_HOME}/providerscripts/security/firewall/utilities/CreateNativeFirewall.sh "adt-authenticator" DROP ACCEPT
+                                authenticator_firewall_id"`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-authenticator"`"
                         fi
                         
-                        ${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh
+#                       ips="`/bin/echo ${ips} | /bin/sed 's/,$//g'`"
 
-                        ips="`/bin/echo ${ips} | /bin/sed 's/,$//g'`"
-
-                        ruleset=""
-
-                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                         then
-                                if ( [ "${alldnsproxyips}" = "" ] )
-                                then
-                                        if ( [ "${REVERSE_PROXY}" = "1" ] )
-                                        then
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]'
-                                        else
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]'
-                                        fi
-                                else 
-                                        if ( [ "${REVERSE_PROXY}" = "1" ] )
-                                        then
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' 
-                                        else
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":['${alldnsproxyips}']},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' 
-                                        fi
-                                fi
-                        elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
-                        then
-                                if ( [ "${alldnsproxyips}" = "" ] )
-                                then
-                                        if ( [ "${REVERSE_PROXY}" = "1" ] )
-                                        then
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]'
-                                        else
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]'
-                                        fi
-                                else 
-                                        if ( [ "${REVERSE_PROXY}" = "1" ] )
-                                        then
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' 
-                                        else
-                                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":['${alldnsproxyips}']},"action":"ACCEPT","protocol":"TCP","ports":"443"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' 
-                                        fi
-                                fi
+                                rule_build_machine=""
                         fi
 
-                        ${BUILD_HOME}/providerscripts/security/firewall/utilities/UpdateNativeFirewall.sh "${webserver_firewall_id}" DROP ACCEPT ${ruleset}
+                        firewall_names="adt-webserver adt-proxyserver adt-authenticator"
+
+                        for firewall_name in ${firewall_names}
+                        do
+                                if ( [ "${alldnsproxyips}" = "" ] )
+                                then
+                                        if ( [ "${REVERSE_PROXY}" = "1" ] )
+                                        then
+                                                if ( "${rule_build_machine}" != "" ] )
+                                                then
+                                                        if ( [ "${firewall_name}" = "adt-webserver" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}']'
+                                                        elif ( [ "${firewall_name}" = "adt-proxyserver" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${rule_ssl}']'
+                                                        elif ( [ "${firewall_name}" = "adt-authenticator" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${rule_ssl}']'
+                                                        fi
+                                                else
+                                                        if ( [ "${firewall_name}" = "adt-webserver" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_icmp}']'
+                                                        elif ( [ "${firewall_name}" = "adt-proxyserver" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}']'
+                                                        elif ( [ "${firewall_name}" = "adt-authenticator" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}']'
+                                                        fi
+                                                fi
+                                        else
+                                                if ( "${rule_build_machine}" != "" ] )
+                                                then
+                                                        if ( [ "${firewall_name}" = "adt-webserver" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${rule_ssl}']'
+                                                        elif ( [ "${firewall_name}" = "adt-authenticator" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${rule_ssl}']'
+                                                        fi
+                                                else
+                                                        if ( [ "${firewall_name}" = "adt-webserver" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}']'
+                                                        elif ( [ "${firewall_name}" = "adt-authenticator" ] )
+                                                        then
+                                                                ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}']'
+                                                        fi
+                                                fi
+                                        fi
+                                fi
+
+                                if ( [ "${firewall_name}" = "adt-webserver" ] )
+                                then
+                                        ${BUILD_HOME}/providerscripts/security/firewall/utilities/UpdateNativeFirewall.sh "${webserver_firewall_id}" DROP ACCEPT ${ruleset}
+                                elif ( [ "${firewall_name}" = "adt-proxyserver" ] && [ "${REVERSE_PROXY}" = "1" ] )
+                                then
+                                        if ( [ "${REVERSE_PROXY}" = "1" ] )
+                                        then
+                                                ${BUILD_HOME}/providerscripts/security/firewall/utilities/UpdateNativeFirewall.sh "${proxyserver_firewall_id}" DROP ACCEPT ${ruleset}
+                                        else
+                                                ${BUILD_HOME}/providerscripts/security/firewall/utilities/DeleteNativeFirewall.sh "${proxyserver_firewall_id}"
+                                        fi
+                                elif ( [ "${firewall_name}" = "adt-authenticator" ] )
+                                then
+                                        if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+                                        then
+                                                ${BUILD_HOME}/providerscripts/security/firewall/utilities/UpdateNativeFirewall.sh "${authenticator_firewall_id}" DROP ACCEPT ${ruleset}
+                                        else
+                                                ${BUILD_HOME}/providerscripts/security/firewall/utilities/DeleteNativeFirewall.sh "${authenticator_firewall_id}"
+                                        fi
+                                fi
+                        done
+
 
                         database_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
-
                         database_firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/utilities/GetNativeFirewallID.sh "adt-database"`"
 
                         if ( [ "${database_firewall_id}" = "" ] )
@@ -353,10 +423,10 @@ then
 
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                         then
-                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' 
+                                ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}']'
                         elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
                         then
-                                ruleset='[{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"},{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}]' 
+                                ruleset='['${rule_vpc}','${rule_icmp}']'
                         fi
 
                         ${BUILD_HOME}/providerscripts/security/firewall/utilities/UpdateNativeFirewall.sh "${database_firewall_id}" DROP ACCEPT ${ruleset}
@@ -364,6 +434,16 @@ then
                         for autoscaler_id in ${autoscaler_ids}
                         do
                                 /usr/local/bin/linode-cli firewalls device-create --id ${autoscaler_id} --type linode ${autoscaler_firewall_id} 2>/dev/null
+                        done
+
+                        for proxyserver_id in ${proxyserver_ids}
+                        do
+                                /usr/local/bin/linode-cli firewalls device-create --id ${proxyserver_id} --type linode ${proxyserver_firewall_id} 2>/dev/null
+                        done
+
+                        for authenticator_id in ${authenticator_ids}
+                        do
+                                /usr/local/bin/linode-cli firewalls device-create --id ${authenticator_id} --type linode ${authenticator_firewall_id} 2>/dev/null
                         done
 
                         /usr/local/bin/linode-cli firewalls device-create --id ${webserver_id} --type linode ${webserver_firewall_id} 
