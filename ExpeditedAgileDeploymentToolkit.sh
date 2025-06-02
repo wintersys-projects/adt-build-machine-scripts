@@ -246,6 +246,15 @@ then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
 fi
 
+if ( [ "`/usr/bin/find ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs -type d -empty`" != "" ] )
+then
+        if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/archive ] )
+        then
+             /bin/mkdir ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/archive
+        fi
+        /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/archive
+fi
+
 out_file="build_output_stream-`/bin/date | /bin/sed 's/ //g'`"
 exec 1>>${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/${out_file}
 err_file="build_error_stream-`/bin/date | /bin/sed 's/ //g'`"
