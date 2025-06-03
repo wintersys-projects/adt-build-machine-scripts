@@ -364,7 +364,7 @@ then
 fi
 
 # The native firewal is the firewalling system that is provided by the VPS provider, so we set up the native firewalling here
-${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "1"
+#${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "1"
 
 # Initialise all of our security keys and store the PUBLIC_KEY_ID on the filesystem for reference from anywhere
 ${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
@@ -460,7 +460,7 @@ runtime="`/usr/bin/expr ${end} - ${start}`"
 status "This script completed at `/bin/date` and took `/bin/date -u -d @${runtime} +\"%T\"` to complete"
 
 # Complete the setting up of the native firewall
-${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
+#${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 
 /usr/sbin/shutdown -r now
 
