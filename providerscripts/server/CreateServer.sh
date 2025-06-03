@@ -157,7 +157,6 @@ then
         then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-remoteproxy" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         fi
-
  
         vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`"
         subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
