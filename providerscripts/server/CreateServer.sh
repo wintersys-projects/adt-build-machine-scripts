@@ -132,36 +132,36 @@ fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
-	key="`/usr/local/bin/linode-cli --json sshkeys view ${KEY_ID} | /usr/bin/jq -r '.[].ssh_key'`"
-	emergency_password="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-30`"
-	/bin/echo "${emergency_password}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD
+        key="`/usr/local/bin/linode-cli --json sshkeys view ${KEY_ID} | /usr/bin/jq -r '.[].ssh_key'`"
+        emergency_password="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-30`"
+        /bin/echo "${emergency_password}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD
 
-	if ( [ "`/usr/local/bin/linode-cli --json vpcs list | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`" = "" ] )
-	then
-		/usr/local/bin/linode-cli vpcs create --label ${VPC_NAME} --region ${REGION} --subnets.label adt-subnet --subnets.ipv4 ${VPC_IP_RANGE}
-	fi
- 
-	if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
-	then
- 		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-autoscaler-'${BUILD_IDENTIFIER}'").id'`"
-	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] || [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
-	then
- 		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"
-   	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
-	then
-  		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-database-'${BUILD_IDENTIFIER}'").id'`"
-   	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
-	then
-  		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"
-       	elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^rp-"`" != "" ] )
-	then
-  		firewall_id="`/usr/local/bin/linode-cli firewalls list --json | /usr/bin/jq -r '.[] | select ( .label == "adt-webserver-'${BUILD_IDENTIFIER}'").id'`"
-	fi
+        if ( [ "`/usr/local/bin/linode-cli --json vpcs list | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`" = "" ] )
+        then
+                /usr/local/bin/linode-cli vpcs create --label ${VPC_NAME} --region ${REGION} --subnets.label adt-subnet --subnets.ipv4 ${VPC_IP_RANGE}
+        fi
+
+        if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-webserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-database" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-authenticator" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^rp-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-remoteproxy" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        fi
 
  
-	vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`"
-	subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
-	/usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} --image "${OS_CHOICE}" --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+        vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`"
+        subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
+        /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} --image "${OS_CHOICE}" --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
 fi
 
 if (  [ "${CLOUDHOST}" = "vultr" ] )
