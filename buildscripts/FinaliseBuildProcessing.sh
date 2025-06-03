@@ -157,18 +157,19 @@ then
 fi
 
 #See if we need to know the ip address for a reverse proxy or not
+rp_active_ips=""
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
         if ( [ "${REVERSE_PROXY}" = "1" ] )
         then
-                if ( [ "${rp_active_ip}" = "" ] )
+                if ( [ "${rp_active_ips}" = "" ] )
                 then
-                        rp_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "rp-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+                        rp_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "rp-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
                 fi
         fi
-elif ( [ "${rp_active_ip}" = "" ] )
+elif ( [ "${rp_active_ips}" = "" ] )
 then
-        rp_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "rp-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        rp_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "rp-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
 #If the build machine is connect to the VPC then we need the private IP address if it is not then we need the public IP address
@@ -272,7 +273,10 @@ then
         then
                 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] )
                 then
-                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
+                        for rp_active_ip in ${rp_active_ips}
+                        do
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
+                        done
                 fi
         fi
 fi
