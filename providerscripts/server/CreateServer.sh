@@ -143,19 +143,19 @@ then
 
         if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
         then
-                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
         then
-                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-webserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-webserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
         then
-                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-database" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-database" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
         then
-                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-authenticator" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-authenticator" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^rp-"`" != "" ] )
         then
-                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigurreNativeFirewall.sh "adt-remoteproxy" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-remoteproxy" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         fi
  
         vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`"
