@@ -19,12 +19,12 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #########################################################################################
 #########################################################################################
-#set -x
+set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -33,44 +33,46 @@ DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-	if ( [ "${CLOUDHOST}" = "digitalocean" ] )
-	then
-		#dynamic
-		alldnsproxyips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  -r '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ' '`"
-		
-		#hardcoded
-		if ( [ "${alldnsproxyips}" = "" ] || [ "${alldnsproxyips}" = "null" ] )
-		then
-			alldnsproxyips="103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 104.16.0.0/13 104.24.0.0/14 108.162.192.0/18 141.101.64.0/18 162.158.0.0/15 172.64.0.0/13 173.245.48.0/20 188.114.96.0/20 190.93.240.0/20 197.234.240.0/22 198.41.128.0/17 131.0.72.0/22 199.27.128.0/21"
-		fi
-	fi
-	if ( [ "${CLOUDHOST}" = "exoscale" ] )
-	then
-		#dynamic
-		alldnsproxyips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  -r '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ','`"
-		#hardcoded
-		if ( [ "${alldnsproxyips}" = "\"\"" ] || [ "${alldnsproxyips}" = "null" ] )
-		then
-			alldnsproxyips="103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/13,104.24.0.0/14,108.162.192.0/18,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,131.0.72.0/22,199.27.128.0/21"
-		fi
-	fi
-	if ( [ "${CLOUDHOST}" = "linode" ] )
-	then
-		#dynamic
-		alldnsproxyips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ',' | /bin/sed 's/.$//'`"		 #hardcoded
-		if ( [ "${alldnsproxyips}" = "" ] || [ "${alldnsproxyips}" = "null" ] )
-		then
-			alldnsproxyips='"103.21.244.0/22","103.22.200.0/22","103.31.4.0/22","104.16.0.0/13","104.24.0.0/14","108.162.192.0/18","141.101.64.0/18","162.158.0.0/15","172.64.0.0/13","173.245.48.0/20","188.114.96.0/20","190.93.240.0/20","197.234.240.0/22","198.41.128.0/17","131.0.72.0/22","199.27.128.0/21"'		
-		fi
-	fi
-	if ( [ "${CLOUDHOST}" = "vultr" ] )
-	then
-		#dynamic
-		alldnsproxyips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  -r '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ' '`"
-		#hardcoded
-		if ( [ "${alldnsproxyips}" = "\"\"" ] || [ "${alldnsproxyips}" = "null" ] )
-		then
-			alldnsproxyips="103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 104.16.0.0/13 104.24.0.0/14 108.162.192.0/18 141.101.64.0/18 162.158.0.0/15 172.64.0.0/13 173.245.48.0/20 188.114.96.0/20 190.93.240.0/20 197.234.240.0/22 198.41.128.0/17 131.0.72.0/22 199.27.128.0/21"
-		fi
-	fi
+        if ( [ "${CLOUDHOST}" = "digitalocean" ] )
+        then
+                #dynamic
+                all_proxy_dns_ips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  -r '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ' '`"
+
+                #hardcoded
+                if ( [ "${all_proxy_dns_ips}" = "" ] || [ "${all_proxy_dns_ips}" = "null" ] )
+                then
+                        all_proxy_dns_ips="103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 104.16.0.0/13 104.24.0.0/14 108.162.192.0/18 141.101.64.0/18 162.158.0.0/15 172.64.0.0/13 173.245.48.0/20 188.114.96.0/20 190.93.240.0/20 197.234.240.0/22 198.41.128.0/17 131.0.72.0/22 199.27.128.0/21"
+                fi
+        fi
+        if ( [ "${CLOUDHOST}" = "exoscale" ] )
+        then
+                #dynamic
+                all_proxy_dns_ips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  -r '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ','`"
+                #hardcoded
+                if ( [ "${all_proxy_dns_ips}" = "\"\"" ] || [ "${all_proxy_dns_ips}" = "null" ] )
+                then
+                        all_proxy_dns_ips="103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/13,104.24.0.0/14,108.162.192.0/18,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,131.0.72.0/22,199.27.128.0/21"
+                fi
+        fi
+        if ( [ "${CLOUDHOST}" = "linode" ] )
+        then
+                #dynamic
+                all_proxy_dns_ips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ',' | /bin/sed 's/.$//'`"          #hardcoded
+                if ( [ "${all_proxy_dns_ips}" = "" ] || [ "${all_proxy_dns_ips}" = "null" ] )
+                then
+                        all_proxy_dns_ips='"103.21.244.0/22","103.22.200.0/22","103.31.4.0/22","104.16.0.0/13","104.24.0.0/14","108.162.192.0/18","141.101.64.0/18","162.158.0.0/15","172.64.0.0/13","173.245.48.0/20","188.114.96.0/20","190.93.240.0/20","197.234.240.0/22","198.41.128.0/17","131.0.72.0/22","199.27.128.0/21"'
+                fi
+        fi
+        if ( [ "${CLOUDHOST}" = "vultr" ] )
+        then
+                #dynamic
+                all_proxy_dns_ips="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/ips" | /usr/bin/jq  -r '.result.ipv4_cidrs[]'  | /usr/bin/tr '\n' ' '`"
+                #hardcoded
+                if ( [ "${all_proxy_dns_ips}" = "\"\"" ] || [ "${all_proxy_dns_ips}" = "null" ] )
+                then
+                        all_proxy_dns_ips="103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 104.16.0.0/13 104.24.0.0/14 108.162.192.0/18 141.101.64.0/18 162.158.0.0/15 172.64.0.0/13 173.245.48.0/20 188.114.96.0/20 190.93.240.0/20 197.234.240.0/22 198.41.128.0/17 131.0.72.0/22 199.27.128.0/21"
+                fi
+        fi
 fi
+
+/bin/echo ${all_proxy_dns_ips}
