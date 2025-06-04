@@ -192,9 +192,14 @@ do
 
                         if ( [ "${reverse_proxy_no}" != "1" ] )
                         then
+                                while ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIMARY_DNS_SET ] )
+                                do
+                                        /bin/sleep 1
+                                done
                                 ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary"
                         else
                                 ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
+                                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIMARY_DNS_SET
                         fi
 
                         done="1"
