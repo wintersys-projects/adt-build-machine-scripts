@@ -42,6 +42,7 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
 REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY`"
+NO_REVERSE_PROXIES="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXIES`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
 pids=""
@@ -149,9 +150,17 @@ then
     fi
     if ( [ "${REVERSE_PROXY}" = "1" ] )
     then
-	${BUILD_HOME}/buildscripts/BuildReverseProxy.sh &
-        pids="${pids} $!"
-    fi
+	if ( [ "${NO_REVERSE_PROXIES}" -ne "0" ] && [ "${INPARALLEL}" = "1" ] )
+    	then
+        	tally="0"
+        	while ( [ "${NO_REVERSE_PROXIES}" -le "5" ] && [ "${tally}" -lt "${NO_REVERSE_PROXIES}" ] )
+        	do
+            		tally="`/usr/bin/expr ${tally} + 1`"
+            		${BUILD_HOME}/buildscripts/BuildAutoscaler.sh ${tally} &
+            		pids="${pids} $!"
+            		/bin/sleep 10
+        	done
+	fi
 fi
 
 if ( [ "${NO_AUTOSCALERS}" -eq "0" ] && [ "${INPARALLEL}" = "1" ]  && [ "${DEVELOPMENT}" = "1" ] )
