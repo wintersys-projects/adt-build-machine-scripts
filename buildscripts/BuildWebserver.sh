@@ -73,7 +73,7 @@ do
 	WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
  
 	#Check if there is a webserver already running. If there is, then skip building the webserver
-	if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
+         if ( [ "${webserver_no}" -le "${NO_WEBSERVERS}" ] )
 	then
 		ip=""
 		#Construct a unique name for this webserver
