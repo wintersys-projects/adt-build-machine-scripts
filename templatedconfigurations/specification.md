@@ -411,7 +411,7 @@ These settings must be altered as a pair. When in production, an autoscaler or a
 
 -----
 
-### NUMBER_WS
+### NO_WEBSERVERS
 
 This will set the number of webservers to deploy by default. If you set this to 3, for example, then 3 webservers will be spun up by default
 
