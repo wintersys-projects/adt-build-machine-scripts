@@ -71,6 +71,8 @@ do
 	counter="`/usr/bin/expr ${counter} + 1`"
 	status "OK... Building a webserver. This is the ${counter} attempt of 5"
 	WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+
+ 	webserver_no="${1}"
  
 	#Check if there is a webserver already running. If there is, then skip building the webserver
          if ( [ "${webserver_no}" -le "${NO_WEBSERVERS}" ] )
