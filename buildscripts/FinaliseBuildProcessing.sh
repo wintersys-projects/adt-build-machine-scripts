@@ -19,7 +19,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ####################################################################################
 ####################################################################################
-set -x
+#set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -175,14 +175,17 @@ fi
 #If the build machine is connect to the VPC then we need the private IP address if it is not then we need the public IP address
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
-        ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        ws_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 else
-        ws_active_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        ws_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
 #This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
-/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" 3>&1 2>/dev/null
+for ws_active_ip in ${ws_active_ips}
+do
+        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" 3>&1 2>/dev/null
+done
 
 
 #We are satisfied that all is well so far so lets do a finally battery of tests to be as sure as we can be that we are on our feet
@@ -199,13 +202,21 @@ status ""
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
 then
         status "Checking that ${APPLICATION_LANGUAGE} has fully installed...."
-        application_language_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh && /bin/echo 'APPLICATION_LANGUAGE'"`" >&3 
-        
+        application_language_installed="" 
         while ( [ "${application_language_installed}" = "" ] )
         do
                 /bin/sleep 1
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null 
-                application_language_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh && /bin/echo 'APPLICATION_LANGUAGE'"`" >&3 
+                for ws_active_ip in ${ws_active_ips}
+                do
+                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null 
+                        application_language_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallApplicationLanguage.sh && /bin/echo 'APPLICATION_LANGUAGE'"`" >&3 
+
+                        if ( [ "${application_language_installed}" = "" ] )
+                        then
+                                application_language_installed=""
+                        fi
+
+                done
         done
 fi
 
@@ -217,9 +228,17 @@ then
 
         while ( [ "${application_configuration_installed}" = "" ] )
         do
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/SetApplicationConfiguration.sh" 2>/dev/null
-                application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
                 /bin/sleep 1
+                for ws_active_ip in ${ws_active_ips}
+                do
+                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/SetApplicationConfiguration.sh" 2>/dev/null
+                        application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
+
+                        if ( [ "${application_configuration_installed}" = "" ] )
+                        then
+                                application_configuration_installed=""
+                        fi
+                done
         done
 fi
 
@@ -228,8 +247,15 @@ status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
 
 while ( [ "${webserver_installed}" = "" ] )
 do
-        webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
         /bin/sleep 1
+        for ws_active_ip in ${ws_active_ips}
+        do
+                webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
+                if ( [ "${webserver_installed}" = "" ] )
+                then
+                        webserver_installed=""
+                fi
+        done
 done
 
 #This checks that our bespoke application (most likely a CMS of some sort) is installed to the best of our knowledge
@@ -238,8 +264,15 @@ bespoke_application_installed=""
 
 while ( [ "${bespoke_application_installed}" = "" ] )
 do
-        bespoke_application_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED && /bin/echo 'BESPOKE_APPLICATION_INSTALLED'"`" >&3
         /bin/sleep 1
+        for ws_active_ip in ${ws_active_ips}
+        do
+                bespoke_application_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/BESPOKE_APPLICATION_INSTALLED && /bin/echo 'BESPOKE_APPLICATION_INSTALLED'"`" >&3
+                if ( [ "${bespoke_application_installed}" = "" ] )
+                then
+                        bespoke_application_installed=""
+                fi
+        done
 done
 
 #If we are mounting assets into the webroot of our application from the datastore then this checks that they are mounted correctly
@@ -247,12 +280,21 @@ if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
 then
         status "Checking that your assets are mounted..."
         assets_mounted=""
-
         while ( [ "${assets_mounted}" = "" ] )
         do
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/datastore/assets/SetupAssetsStore.sh"  2>/dev/null
-                assets_mounted="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/status/AreAssetsMounted.sh"`" 2>/dev/null
                 /bin/sleep 1
+                for ws_active_ip in ${ws_active_ips}
+                do
+                        while ( [ "${assets_mounted}" = "" ] )
+                        do
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/datastore/assets/SetupAssetsStore.sh"  2>/dev/null
+                                assets_mounted="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/status/AreAssetsMounted.sh"`" 2>/dev/null
+                                if ( [ "${assets_mounted}" = "" ] )
+                                then
+                                        assets_mounted=""
+                                fi
+                        done
+                done
         done
 fi
 
@@ -265,8 +307,15 @@ then
                 server_alive=""
                 while ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
                 do
-                        server_alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/monitoring/CheckServerAlive.sh" 2>/dev/null`" 
                         /bin/sleep 1
+                        for ws_active_ip in ${ws_active_ips}
+                        do
+                                server_alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/monitoring/CheckServerAlive.sh" 2>/dev/null`" 
+                                if ( [ "`/bin/echo ${server_alive} | /bin/grep ALIVE`" = "" ] )
+                                then
+                                        server_alive=""
+                                fi
+                        done
                 done
         fi
         if ( [ "${REVERSE_PROXY}" = "1" ] )
@@ -275,7 +324,10 @@ then
                 then
                         for rp_active_ip in ${rp_active_ips}
                         do
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
+                                for ws_active_ip in ${ws_active_ips}
+                                do
+                                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
+                                done
                         done
                 fi
         fi
@@ -289,11 +341,18 @@ then
         webserver_running=""
         while ( [ "${webserver_running}" = "0" ] && [ "${count}" -lt "5" ] )
         do
+                /bin/sleep 5
                 count="`/usr/bin/expr ${count} + 1`"
                 status "Webserver not running yet, trying to start the ${WEBSERVER_CHOICE} webserver...this is attempt ${count} of 5"
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
-                webserver_running="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`"
-                /bin/sleep 10
+                for ws_active_ip in ${ws_active_ips}
+                do
+                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
+                        webserver_running="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/IsAWebserverRunning.sh"`"
+                        if ( [ "${webserver_running}" = "0" ] )
+                        then
+                                webserver_running="0"
+                        fi
+                done
         done
 
         if ( [ "${count}" = "5" ] )
@@ -311,16 +370,25 @@ then
 
                 if ( [ "${REVERSE_PROXY}" = "1" ] )
                 then
-                        ip_to_check="${rp_active_ip}"
+                        ips_to_check="${rp_active_ips}"
                 else
-                        ip_to_check="${ws_active_ip}"
+                        ips_to_check="${ws_active_ips}"
                 fi
-                
-                while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ip_to_check}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
+
+                online="no"
+
+                while ( [ "${online}" = "no" ] )
                 do
-                        #This double checks that the webserver came online correctly whilst we test for the website being online
-                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ip_to_check} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
-                        /bin/sleep 10
+                        online="yes"
+                        for ip_to_check in ${ips_to_check}
+                        do
+                                while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ip_to_check}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
+                                do
+                                        #This double checks that the webserver came online correctly whilst we test for the website being online
+                                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ip_to_check} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
+                                        online="no"
+                                done
+                        done
                 done
         fi
 fi
@@ -329,7 +397,10 @@ status "Seeing this message means I am confident that it is 'all systems go' (on
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
 #Other scripts can then check if the build has completed correctly before they action
-/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY" 2>/dev/null
+for ws_active_ip in ${ws_active_ips}
+do
+        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY" 2>/dev/null
+done
 
 #Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh INSTALLED_SUCCESSFULLY INSTALLED_SUCCESSFULLY
