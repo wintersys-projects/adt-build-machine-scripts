@@ -129,7 +129,12 @@ then
     fi
     if ( [ "${REVERSE_PROXY}" = "1" ] )
     then
-	${BUILD_HOME}/buildscripts/BuildReverseProxy.sh
+        tally="0"
+        while ( [ "${tally}" -lt "${NO_AUTOSCALERS}" ] )
+        do
+            tally="`/usr/bin/expr ${tally} + 1`"
+            ${BUILD_HOME}/buildscripts/BuildReverseProxy.sh ${tally}
+        done	
     fi
 elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "1" ]  )
 then
