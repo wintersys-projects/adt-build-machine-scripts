@@ -189,7 +189,7 @@ do
                         then
                                 ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary"
                         else
-                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
+                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
                         fi
 
                         done="1"
