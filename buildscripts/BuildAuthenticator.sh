@@ -185,7 +185,7 @@ do
 		else
   			#If we are here then we believe that the build completed correctly so the public IP address for the our authenticator machine
 			#Is added to the DNS provider
-			${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} ${WEBSITE_URL}
+			${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary" ${WEBSITE_URL}
 			done="1"
 		fi
 
