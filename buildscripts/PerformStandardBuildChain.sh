@@ -35,6 +35,7 @@ PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 DEVELOPMENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEVELOPMENT`"
 BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
+NO_WEBSERVERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_WEBSERVERS`"
 INPARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INPARALLEL`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
@@ -122,7 +123,14 @@ fi
 
 if ( [ "${INPARALLEL}" = "0" ] )
 then
-    ${BUILD_HOME}/buildscripts/BuildWebserver.sh 
+        tally="0"
+        while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
+        do
+                tally="`/usr/bin/expr ${tally} + 1`"
+                ${BUILD_HOME}/buildscripts/BuildWebserver.sh ${tally} 
+                /bin/sleep 10
+        done
+
     ${BUILD_HOME}/buildscripts/BuildDatabase.sh 
     if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
     then
@@ -139,8 +147,14 @@ then
     fi
 elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "1" ]  )
 then
-    ${BUILD_HOME}/buildscripts/BuildWebserver.sh &
-    pids="${pids} $!"
+        tally="0"
+        while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
+        do
+                tally="`/usr/bin/expr ${tally} + 1`"
+                ${BUILD_HOME}/buildscripts/BuildWebserver.sh ${tally} &
+                pids="${pids} $!"
+                /bin/sleep 10
+        done
     ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
     pids="${pids} $!"
     if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
@@ -166,8 +180,15 @@ fi
 
 if ( [ "${NO_AUTOSCALERS}" -eq "0" ] && [ "${INPARALLEL}" = "1" ]  && [ "${DEVELOPMENT}" = "1" ] )
 then
-    ${BUILD_HOME}/buildscripts/BuildWebserver.sh &
-    pids="${pids} $!"
+        tally="0"
+        while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
+        do
+                tally="`/usr/bin/expr ${tally} + 1`"
+                ${BUILD_HOME}/buildscripts/BuildWebserver.sh ${tally} &
+                pids="${pids} $!"
+                /bin/sleep 10
+        done
+
     ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
     pids="${pids} $!"
     if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
