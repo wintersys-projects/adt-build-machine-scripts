@@ -153,7 +153,7 @@ then
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
         then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-authenticator" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
-        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^rp-"`" != "" ] )
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
         then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-proxyserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         fi
