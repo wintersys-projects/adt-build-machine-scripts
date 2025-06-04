@@ -63,7 +63,7 @@ BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${
 while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
         counter="`/usr/bin/expr ${counter} + 1`"
-        reverse_proxxy_no="${1}"
+        reverse_proxy_no="${1}"
 
         status "OK... Building an reverse proxy ${reverse_proxy_no}. This is the ${counter} attempt of 5"
  
