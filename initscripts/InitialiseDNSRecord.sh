@@ -29,8 +29,8 @@ status () {
 }
 
 ip="${1}" #the IP address of the webserver
-website_url="${2}" #The URL of the website
-secondary_record="${3}"
+record="${2}"
+website_url="${3}" #The URL of the website
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
@@ -82,7 +82,7 @@ then
         recordids="`${BUILD_HOME}/providerscripts/dns/GetAllRecordIDs.sh  "${zoneid}" "${WEBSITE_URL}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
 
 
-        if ( [ "${secondary_record}" != "secondary" ] )
+        if ( [ "${record}" = "primary" ] )
         then
                 if ( [ "${recordids}" != "" ] )
                 then
