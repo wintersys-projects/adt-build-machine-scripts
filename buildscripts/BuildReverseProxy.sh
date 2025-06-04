@@ -50,7 +50,6 @@ BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
-REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY`"
 NO_REVERSE_PROXIES="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXIES`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
@@ -185,10 +184,14 @@ do
                 else
                         #If we are here then we believe that the build completed correctly so the public IP address for the our reverseproxy machine
                         #Is added to the DNS provider
-                        if ( [ "${REVERSE_PROXY}" = "1" ] )
+
+                        if ( [ "${reverse_proxy_no}" != "1" ] )
                         then
+                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary"
+                        else
                                 ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip}
                         fi
+
                         done="1"
                 fi
 
