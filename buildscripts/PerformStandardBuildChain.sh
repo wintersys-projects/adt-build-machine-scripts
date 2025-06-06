@@ -271,7 +271,11 @@ then
 fi
 
 # And tighten the build machine firewall just as a routine process
-/bin/touch ${BUILD_HOME}/runtimedata//PRIME_FIREWALL
+if ( [ ! -f /root/FIRST_EVER_BUILD ] )
+then
+        /bin/touch /root/FIRST_EVER_BUILD
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIME_FIREWALL
+fi
 ${BUILD_HOME}/providerscripts/security/firewall/TightenBuildMachineFirewall.sh
 
 export CLOUDHOST="${cloudhost_holder}"
