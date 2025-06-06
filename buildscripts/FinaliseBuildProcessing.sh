@@ -320,6 +320,7 @@ then
         fi
         if ( [ "${REVERSE_PROXY}" = "1" ] )
         then
+                status "Enabling webserver(s) ip address(es) in the reverse proxy/proxies"
                 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] )
                 then
                         for rp_active_ip in ${rp_active_ips}
