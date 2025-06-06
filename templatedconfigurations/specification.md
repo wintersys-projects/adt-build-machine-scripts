@@ -429,6 +429,22 @@ You have a choice of webserver that you want to deploy to. You can set this to "
 
 -----
 
+REVERSE_PROXY
+
+if you want to deploy reverse proxy/proxies then you can set REVERSE_PROXY to "1" in your template. So, this setting has two options
+ 
+ 
+- "1" - Deploy reverse proxy/proxies
+- "0" - Do not deploy reverse proxy/proxies
+ 
+When this is set to "0" any reverse proxies in the build chain will be omitted
+
+----------
+ 
+NO_REVERSE_PROXIES
+ 
+This tells the system how many reverse proxy servers to deploy this can be up to 5 servers. So, you set this value to any integer between 1 and 5
+
 ### DATABASE_INSTALLATION_TYPE
 
 If you are installing a database on a VPS system, you have three types of database you can choose from by default. Obviously, your choice here has to be supported by your CMS system. The choices are: "Maria", "MySQL", and "Postgres" and if you are installing a managed darabase you will want to set this to DBaaS
