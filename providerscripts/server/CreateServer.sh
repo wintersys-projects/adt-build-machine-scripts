@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 server_size="${1}"
@@ -47,94 +47,94 @@ KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cre
 
 if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
 then
-	from_backup=""
-	if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
- 	then
-  		from_backup="-by-archive"
-    	fi
-  		
-	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${by-archive}.yaml ] )
-	then
-		/bin/sed -i "s/XXXXAUTOSCALER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${by-archive}.yaml
+        from_backup=""
+        if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
+        then
+                from_backup="-by-archive"
+        fi
+  
+        if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${from_backup}.yaml ] )
+        then
+                /bin/sed -i "s/XXXXAUTOSCALER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${from_backup}.yaml
 
-		if ( [ "${CLOUDHOST}" = "linode" ] )
-		then
-			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${by-archive}.yaml | /usr/bin/base64 -w 0`"
-		else 
-			cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${by-archive}.yaml"
-		fi
-	fi
+                if ( [ "${CLOUDHOST}" = "linode" ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${from_backup}.yaml | /usr/bin/base64 -w 0`"
+                else 
+                        cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${from_backup}.yaml"
+                fi
+        fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
 then
-	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${by-archive}.yaml ] )
-	then
-		/bin/sed -i "s/XXXXWEBSERVER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${by-archive}.yaml
-		if ( [ "${CLOUDHOST}" = "linode" ] )
-		then
-			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${by-archive}.yaml | /usr/bin/base64 -w 0`"
-		else 
-			cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${by-archive}.yaml"
-		fi       
+        if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${from_backup}.yaml ] )
+        then
+                /bin/sed -i "s/XXXXWEBSERVER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${from_backup}.yaml
+                if ( [ "${CLOUDHOST}" = "linode" ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${from_backup}.yaml | /usr/bin/base64 -w 0`"
+                else 
+                        cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver${from_backup}.yaml"
+                fi       
     fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
 then
-	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${by-archive}.yaml ] )
-	then
-		/bin/sed -i "s/XXXXDATABASE_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${by-archive}.yaml
-		if ( [ "${CLOUDHOST}" = "linode" ] )
-		then
-			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${by-archive}.yaml | /usr/bin/base64 -w 0`"
-		else 
-			cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${by-archive}.yaml"
-		fi           
-	fi
+        if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${from_backup}.yaml ] )
+        then
+                /bin/sed -i "s/XXXXDATABASE_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${from_backup}.yaml
+                if ( [ "${CLOUDHOST}" = "linode" ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${from_backup}.yaml | /usr/bin/base64 -w 0`"
+                else 
+                        cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database${from_backup}.yaml"
+                fi           
+        fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
 then
-	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${by-archive}.yaml ] )
-	then
-		/bin/sed -i "s/XXXXAUTHENTICATOR_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${by-archive}.yaml
-		if ( [ "${CLOUDHOST}" = "linode" ] )
-		then
-			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${by-archive}.yaml | /usr/bin/base64 -w 0`"
-		else 
-			cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${by-archive}.yaml"
-		fi           
-	fi
+        if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${from_backup}.yaml ] )
+        then
+                /bin/sed -i "s/XXXXAUTHENTICATOR_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${from_backup}.yaml
+                if ( [ "${CLOUDHOST}" = "linode" ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${from_backup}.yaml | /usr/bin/base64 -w 0`"
+                else 
+                        cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator${from_backup}.yaml"
+                fi           
+        fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
 then
-	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${by-archive}.yaml ] )
-	then
-		/bin/sed -i "s/XXXXREVERSEPROXY_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${by-archive}.yaml
-		if ( [ "${CLOUDHOST}" = "linode" ] )
-		then
-			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${by-archive}.yaml | /usr/bin/base64 -w 0`"
-		else 
-			cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${by-archive}.yaml"
-		fi           
-	fi
+        if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${from_backup}.yaml ] )
+        then
+                /bin/sed -i "s/XXXXREVERSEPROXY_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${from_backup}.yaml
+                if ( [ "${CLOUDHOST}" = "linode" ] )
+                then
+                        cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${from_backup}.yaml | /usr/bin/base64 -w 0`"
+                else 
+                        cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy${from_backup}.yaml"
+                fi           
+        fi
 fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
-	if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'${VPC_NAME}'")).id'`" ] )
-	then
-		/usr/local/bin/doctl vpcs create --name "${VPC_NAME}" --region "${REGION}" --ip-range "${VPC_IP_RANGE}"
-	fi
+        if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'${VPC_NAME}'")).id'`" ] )
+        then
+                /usr/local/bin/doctl vpcs create --name "${VPC_NAME}" --region "${REGION}" --ip-range "${VPC_IP_RANGE}"
+        fi
 
-	vpc_id="`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'${VPC_NAME}'")).id'`"
- 	/usr/local/bin/doctl compute droplet create "${server_name}" --size "${server_size}" --image "${OS_CHOICE}"  --region "${REGION}" --ssh-keys "${KEY_ID}" --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
+        vpc_id="`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'${VPC_NAME}'")).id'`"
+        /usr/local/bin/doctl compute droplet create "${server_name}" --size "${server_size}" --image "${OS_CHOICE}"  --region "${REGION}" --ssh-keys "${KEY_ID}" --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
 fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
-	template_visibility=" --template-visibility public "
-	/usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibilty} --cloud-init "${cloud_config}"
+        template_visibility=" --template-visibility public "
+        /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibilty} --cloud-init "${cloud_config}"
         
-	if ( [ "`/usr/bin/exo compute private-network list -O json | /usr/bin/jq -r '.[] | select (.name == "adt_private_net_'${REGION}'").id'`" = "" ] )
-	then
-		/usr/bin/exo compute private-network create adt_private_net_${REGION} --zone ${REGION} --start-ip 10.0.0.20 --end-ip 10.0.0.200 --netmask 255.255.255.0
-	fi
-	/usr/bin/exo compute instance private-network attach  ${server_name} adt_private_net_${REGION} --zone ${REGION} 
+        if ( [ "`/usr/bin/exo compute private-network list -O json | /usr/bin/jq -r '.[] | select (.name == "adt_private_net_'${REGION}'").id'`" = "" ] )
+        then
+                /usr/bin/exo compute private-network create adt_private_net_${REGION} --zone ${REGION} --start-ip 10.0.0.20 --end-ip 10.0.0.200 --netmask 255.255.255.0
+        fi
+        /usr/bin/exo compute instance private-network attach  ${server_name} adt_private_net_${REGION} --zone ${REGION} 
 fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
@@ -172,23 +172,23 @@ fi
 
 if (  [ "${CLOUDHOST}" = "vultr" ] )
 then
-	if ( [ "`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`" = "" ] )
-	then
-		# ip_block="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
-		# /usr/bin/vultr vpc2 create --region="${REGION}" --description="adt-vpc" --ip-type="v4" --ip-block="${ip_block}" --prefix-length="16"
-		subnet="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
-		size="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $2}'`"
-		/usr/bin/vultr vpc create --region="${REGION}" --description="${VPC_NAME}" --subnet="${subnet}" --size="${size}"
-	fi
+        if ( [ "`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`" = "" ] )
+        then
+                # ip_block="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
+                # /usr/bin/vultr vpc2 create --region="${REGION}" --description="adt-vpc" --ip-type="v4" --ip-block="${ip_block}" --prefix-length="16"
+                subnet="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
+                size="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $2}'`"
+                /usr/bin/vultr vpc create --region="${REGION}" --description="${VPC_NAME}" --subnet="${subnet}" --size="${size}"
+        fi
 
-	# vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
-	vpc_id="`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
-	OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
+        # vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
+        vpc_id="`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
+        OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
    
-	if ( [ "${DDOS_PROTECTION}" = "1" ] )
-	then
-		/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
-	else
-		/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
-	fi    
+        if ( [ "${DDOS_PROTECTION}" = "1" ] )
+        then
+                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
+        else
+                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
+        fi    
 fi
