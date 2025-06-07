@@ -209,8 +209,10 @@ do
                 then
                         if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ] )
                         then
-                                status "Copying to the webserver type machine the appropriate whole machine backup"
+                                status "Copying the appropriate whole machine backup to the webserver machine"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ${SERVER_USER}@${ws_active_ip}:/tmp
+                                status "Extracting the whole machine backup onto the webserver machine"
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/webserver_backup.tar.gz --keep-newer-files -C /"
                         else
                                 status "Failed to locate whole machine backup to build webserver from when BUILD_FROM_BACKUP is set to 1"
                         fi
