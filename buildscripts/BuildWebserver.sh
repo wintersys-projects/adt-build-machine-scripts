@@ -170,16 +170,6 @@ do
 		then
 			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
 		fi
-
-  		if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
-    		then
-      			if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ] )
-	 		then
-      				/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ${SERVER_USER}@${ws_active_ip}:/tmp
-	 		else
-    				status "Failed to locate whole machine backup to build webserver from when BUILD_FROM_BACKUP is set to 1"
-			fi
-   		fi
       
   		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
 		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
