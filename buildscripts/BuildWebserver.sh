@@ -56,6 +56,7 @@ BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
 REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
@@ -170,6 +171,16 @@ do
 			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
 		fi
 
+  		if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
+    		then
+      			if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ] )
+	 		then
+      				/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz /tmp
+	 		else
+    				status "Failed to locate whole machine backup to build webserver from when BUILD_FROM_BACKUP is set to 1"
+			fi
+   		fi
+      
   		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
 		# This script takes a certain amount of time to run, so, what I do here is just check for a completion flag which 
 		# When present we can be fairly sure that the newly provisioned machine has completed its webserver machine type
