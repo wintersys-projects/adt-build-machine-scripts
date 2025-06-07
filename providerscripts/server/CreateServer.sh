@@ -47,11 +47,7 @@ KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cre
 
 if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
 then
-        from_backup=""
-        if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
-        then
-                from_backup="-by-archive"
-        fi
+
   
         if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler${from_backup}.yaml ] )
         then
