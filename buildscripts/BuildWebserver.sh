@@ -175,7 +175,7 @@ do
     		then
       			if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ] )
 	 		then
-      				/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz /tmp
+      				/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ${SERVER_USER}@${ws_active_ip}:/tmp
 	 		else
     				status "Failed to locate whole machine backup to build webserver from when BUILD_FROM_BACKUP is set to 1"
 			fi
