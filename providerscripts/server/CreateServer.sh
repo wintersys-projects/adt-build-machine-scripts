@@ -40,12 +40,18 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 DDOS_PROTECTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ENABLE_DDOS_PROTECTION`"
 VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 VPC_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_NAME`"
+BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
 
 OS_CHOICE="`${BUILD_HOME}/providerscripts/cloudhost/GetOperatingSystemVersion.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION} | /bin/sed "s/'//g"`"
 KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 
 if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
 then
+	from_backup=""
+	if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
+ 	then
+  		from_backup="-
+  		
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml ] )
 	then
 		/bin/sed -i "s/XXXXAUTOSCALER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
