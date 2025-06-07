@@ -118,9 +118,9 @@ else
         ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 fi
 
-if ( [ ! -d ${BUILD_HOME}/wholemachinebackups/runtimedata/autoscalers/${WEBSITE_URL} ] )
+if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinebackups/autoscalers/${WEBSITE_URL} ] )
 then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/autoscalers/${WEBSITE_URL}
 fi
 
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP}:/home/${SERVER_USERNAME}/machinedump/autoscaler_backup.tar.gz ${BUILD_HOME}/wholemachinebackups/runtimedata/autoscalers/${WEBSITE_URL}
+/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP}:/home/${SERVER_USERNAME}/machinedump/autoscaler_backup.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/autoscalers/${WEBSITE_URL}
