@@ -43,6 +43,7 @@ SSH_PUBLIC_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIF
 SSH_PRIVATE_KEY_TRIMMED="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} | /bin/grep -v '^----' | /usr/bin/tr -d '\n'`"
 TIMEZONE_CONTINENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_TIMEZONE_CONTINENT`"
 TIMEZONE_CITY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_TIMEZONE_CITY`"
+BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
 TIMEZONE="${TIMEZONE_CONTINENT}/${TIMEZONE_CITY}"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 
@@ -137,12 +138,18 @@ reverseproxy_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUD
 # get the build style settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstyles.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+from_backup=""
+if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
+then
+        from_backup="-by-archive"
+fi
+
 # take the packaged cloud-init scripts and make them live ready
-/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/autoscaler.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
-/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/database.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/authenticator.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/reverseproxy.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/autoscaler${from_backup}.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
+/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/webserver${from_backup}.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/database${from_backup}.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
+/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/authenticator${from_backup}.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+/bin/cp ${BUILD_HOME}/providerscripts/server/cloud-init/${CLOUDHOST}/reverseproxy${from_backup}.yaml ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
 
 #Configure the cloud-init script for the relevant application language
 APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_LANGUAGE`"
