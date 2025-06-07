@@ -195,8 +195,10 @@ do
                 then
                         if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/autoscalers/${WEBSITE_URL}/autoscaler_backup.tar.gz ] )
                         then
-                                status "Copying to the autoscaler type machine the appropriate whole machine backup"
+                                status "Copying the appropriate whole machine backup to the autoscaler machine"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/autoscalers/${WEBSITE_URL}/autoscaler_backup.tar.gz ${SERVER_USER}@${as_active_ip}:/tmp
+                                status "Extracting the whole machine backup onto the autoscaler machine"
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/autoscaler_backup.tar.gz --keep-newer-files -C /"
                         else
                                 status "Failed to locate whole machine backup to build autoscaler from when BUILD_FROM_BACKUP is set to 1"
                         fi
