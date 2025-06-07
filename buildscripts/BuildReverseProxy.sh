@@ -205,6 +205,17 @@ do
                         done="1"
                 fi
 
+                if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
+                then
+                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/reverseproxies/${WEBSITE_URL}/reverseproxy_backup.tar.gz ] )
+                        then
+                                status "Copying to the reverseproxy type machine the appropriate whole machine backup"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/reverseproxies/${WEBSITE_URL}/reverseproxy_backup.tar.gz ${SERVER_USER}@${ws_active_ip}:/tmp
+                        else
+                                status "Failed to locate whole machine backup to build reverseproxy from when BUILD_FROM_BACKUP is set to 1"
+                        fi
+                fi
+
                 #If $done != 1, then the reverse proxy didn't build properly, so, destroy the machine
                 if ( [ "${done}" != "1" ] )
                 then
