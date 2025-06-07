@@ -2,7 +2,7 @@
 ######################################################################################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : This will perform a baseline of your webserver and store it with your git storage provider
+# Description : This will obtain the tar archive of a whole reverseproxy machine if it available
 ######################################################################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -20,7 +20,7 @@
 #######################################################################################################
 #set -x
 
-if ( [ ! -f  ./PerformDatabaseBaseline.sh ] )
+if ( [ ! -f  ./ObtainWholeMachineBackupFromWebserverMachine.sh ] )
 then
         /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
         exit
