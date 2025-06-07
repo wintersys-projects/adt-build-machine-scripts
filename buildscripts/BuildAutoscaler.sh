@@ -53,6 +53,7 @@ INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.s
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 AS_SERVER_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AS_SERVER_TYPE`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
