@@ -193,10 +193,10 @@ do
 
                 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
                 then
-                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/autoscalers/${WEBSITE_URL}/autoscaler_backup.tar.gz ] )
+                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar.gz ] )
                         then
                                 status "Copying the appropriate whole machine backup to the autoscaler machine"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/autoscalers/${WEBSITE_URL}/autoscaler_backup.tar.gz ${SERVER_USER}@${as_active_ip}:/tmp
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar.gz ${SERVER_USER}@${as_active_ip}:/tmp
                                 status "Extracting the whole machine backup onto the autoscaler machine"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/autoscaler_backup.tar.gz --keep-newer-files -C /"
                         else
