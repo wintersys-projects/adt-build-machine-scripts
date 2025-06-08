@@ -212,8 +212,13 @@ do
                 then
                         if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_backup.tar.gz ] )
                         then
-                                status "Copying to the reverseproxy type machine the appropriate whole machine backup"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_backup.tar.gz ${SERVER_USER}@${ws_active_ip}:/tmp
+                                status "Copying the appropriate whole machine backup to the reverseproxy machine"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_backup.tar ${SERVER_USER}@${rp_active_ip}:/tmp
+
+                                status "Extracting the whole machine backup onto the reverseproxy machine"
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/webserver_backup.tar --keep-newer-files -C /"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_runtime.tar ${SERVER_USER}@${rp_active_ip}:/tmp
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/reverseproxy_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                         else
                                 status "Failed to locate whole machine backup to build reverseproxy from when BUILD_FROM_BACKUP is set to 1"
                         fi
