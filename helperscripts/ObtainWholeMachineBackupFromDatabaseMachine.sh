@@ -18,7 +18,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-set -x
+#set -x
 
 if ( [ ! -f  ./ObtainWholeMachineBackupFromDatabaseMachine.sh ] )
 then
@@ -121,7 +121,7 @@ fi
 /bin/echo "About to attempt a whole machine backup of an database class machine. Press <enter> to have the backup process begin"
 read x
 
-/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP} "${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/GenerateWholeMachineBackup.sh"
+/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP} "${SUDO} /bin/rm /home/${SERVER_USERNAME}/machinedump/database_runtime.tar 2>/dev/null ; ${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/GenerateWholeMachineBackup.sh"
 
 DB_U="`/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP} "${SUDO} /home/${SERVER_USERNAME}/utilities/config/ExtractConfigValue.sh 'DBUSERNAME'"`"
 DB_P="`/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP} "${SUDO} /home/${SERVER_USERNAME}/utilities/config/ExtractConfigValue.sh 'DBPASSWORD'"`"
@@ -136,11 +136,11 @@ then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database
 fi
 
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP}:/home/${SERVER_USERNAME}/machinedump/database_runtime.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP}:/home/${SERVER_USERNAME}/machinedump/database_backup.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database
+/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP}:/home/${SERVER_USERNAME}/machinedump/database_runtime.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database
+/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${DB_IP}:/home/${SERVER_USERNAME}/machinedump/database_backup.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database
 
-/bin/echo "Verifying archive I have created for you at ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar.gz"
-/usr/bin/tar tvfz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar.gz 2>&1 > /dev/null
+/bin/echo "Verifying archive I have created for you at ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar"
+/usr/bin/tar tvf ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar 2>&1 > /dev/null
 
 if ( [ "$?" = "0" ] )
 then
