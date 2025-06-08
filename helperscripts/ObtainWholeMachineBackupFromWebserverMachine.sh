@@ -121,18 +121,18 @@ fi
 /bin/echo "About to attempt a whole machine backup of a webserver class machine. Press <enter> to have the backup process begin"
 read x
 
-/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP} "${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/GenerateWholeMachineBackup.sh"
+/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP} "${SUDO} /bin/rm /home/${SERVER_USERNAME}/machinedump/webserver_runtime.tar 2>/dev/null ; ${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/GenerateWholeMachineBackup.sh"
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/wesberver ] )
 then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver
 fi
 
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/webserver_runtime.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/webserver_backup.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver
+/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/webserver_runtime.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver
+/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/webserver_backup.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver
 
-/bin/echo "Verifying archive I have created for you at ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar.gz"
-/usr/bin/tar tvfz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar.gz 2>&1 > /dev/null
+/bin/echo "Verifying archive I have created for you at ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar"
+/usr/bin/tar tvf ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar 2>&1 > /dev/null
 
 if ( [ "$?" = "0" ] )
 then
