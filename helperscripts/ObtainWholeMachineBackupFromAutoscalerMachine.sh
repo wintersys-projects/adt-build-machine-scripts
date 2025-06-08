@@ -1,9 +1,9 @@
 #!/bin/sh
-######################################################################################################################################################
+########################################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
 # Description : This will obtain the tar archive of a whole autoscaler machine if it available
-######################################################################################################################################################
+#######################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
 # The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
@@ -121,18 +121,18 @@ fi
 /bin/echo "About to attempt a whole machine backup of an autoscaler class machine. Press <enter> to have the backup process begin"
 read x
 
-/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP} "${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/GenerateWholeMachineBackup.sh"
+/usr/bin/ssh -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP} "${SUDO} /bin/rm /home/${SERVER_USERNAME}/machinedump/autoscaler_runtime.tar 2>/dev/null && ${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/GenerateWholeMachineBackup.sh"
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler ] )
 then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler
 fi
 
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP}:/home/${SERVER_USERNAME}/machinedump/autoscaler_runtime.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP}:/home/${SERVER_USERNAME}/machinedump/autoscaler_backup.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler
+/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP}:/home/${SERVER_USERNAME}/machinedump/autoscaler_runtime.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler
+/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${AS_IP}:/home/${SERVER_USERNAME}/machinedump/autoscaler_backup.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler
 
-/bin/echo "Verifying archive I have created for you at ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar.gz"
-/usr/bin/tar tvfz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar.gz 2>&1 > /dev/null
+/bin/echo "Verifying archive I have created for you at ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar"
+/usr/bin/tar tvf ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar 2>&1 > /dev/null
 
 if ( [ "$?" = "0" ] )
 then
