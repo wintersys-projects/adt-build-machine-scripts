@@ -124,3 +124,13 @@ then
 fi
 
 /usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${REVERSE_PROXY_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${RP_IP}:/home/${SERVER_USERNAME}/machinedump/reverseproxy_backup.tar.gz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy
+
+/bin/echo "Verifying archive I have created for you at ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_backup.tar.gz"
+/usr/bin/tar tvfz ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxyreverseproxy_backup.tar.gz 2>&1 > /dev/null
+
+if ( [ "$?" = "0" ] )
+then
+        /bin/echo "Archive Verified"
+else
+        /bin/echo "Archive Not Verified and is not usable"
+fi
