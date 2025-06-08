@@ -195,14 +195,14 @@ do
 
                 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
                 then
-                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar.gz ] )
+                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar ] )
                         then
                                 status "Copying the appropriate whole machine backup to the autoscaler machine"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar.gz ${SERVER_USER}@${as_active_ip}:/tmp
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_backup.tar ${SERVER_USER}@${as_active_ip}:/tmp
                                 status "Extracting the whole machine backup onto the autoscaler machine"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/autoscaler_backup.tar.gz --keep-newer-files -C /"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_runtime.tar.gz ${SERVER_USER}@${as_active_ip}:/tmp
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/autoscaler_runtime.tar.gz --keep-newer-files -C /home/${SERVER_USER}/runtime"
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/autoscaler_backup.tar --keep-newer-files -C /"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_runtime.tar ${SERVER_USER}@${as_active_ip}:/tmp
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/autoscaler_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                         else
                                 status "Failed to locate whole machine backup to build autoscaler from when BUILD_FROM_BACKUP is set to 1"
                         fi
