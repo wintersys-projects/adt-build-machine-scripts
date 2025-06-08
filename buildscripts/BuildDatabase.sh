@@ -234,12 +234,12 @@ do
                         if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar.gz ] )
                         then
                                 status "Copying the appropriate whole machine backup to the database machine"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar.gz ${SERVER_USER}@${db_active_ip}:/tmp
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar ${SERVER_USER}@${db_active_ip}:/tmp
                                 status "Extracting the whole machine backup onto the database machine"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/database_backup.tar.gz --keep-newer-files -C /"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_runtime.tar.gz ${SERVER_USER}@${db_active_ip}:/tmp
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/database_runtime.tar.gz --keep-newer-files -C /home/${SERVER_USER}/runtime"
-			else
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_backup.tar --keep-newer-files -C /"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_runtime.tar ${SERVER_USER}@${db_active_ip}:/tmp
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
+                        else
                                 status "Failed to locate whole machine backup to build database from when BUILD_FROM_BACKUP is set to 1"
                         fi
                 fi
