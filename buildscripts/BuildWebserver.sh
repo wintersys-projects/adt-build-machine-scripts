@@ -207,10 +207,10 @@ do
 
                 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
                 then
-                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ] )
+                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar.gz ] )
                         then
                                 status "Copying the appropriate whole machine backup to the webserver machine"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/webservers/${WEBSITE_URL}/webserver_backup.tar.gz ${SERVER_USER}@${ws_active_ip}:/tmp
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar.gz ${SERVER_USER}@${ws_active_ip}:/tmp
                                 status "Extracting the whole machine backup onto the webserver machine"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /usr/bin/tar xvfz /tmp/webserver_backup.tar.gz --keep-newer-files -C /"
                         else
