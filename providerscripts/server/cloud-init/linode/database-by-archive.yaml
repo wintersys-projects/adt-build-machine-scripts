@@ -65,6 +65,8 @@ package_upgrade: true
 
 packages:
   - git
+#XXXXMARIADB_SERVERXXXX  - mariadb-server
+#XXXXMARIADB_CLIENTXXXX  - mariadb-client
 
 runcmd:
   - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
@@ -91,4 +93,5 @@ runcmd:
   - '/bin/sed -i -e "s/^ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g" -e "s/^#ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i -e "s/^AddressFamily.*/AddressFamily inet/g" -e "s/^#AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
   - '/home/XXXXSERVER_USERXXXX/utilities/processing/RunServiceCommand.sh "ssh" restart'
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/arch.sh'
   - '/bin/mkdir -p /home/XXXXSERVER_USERXXXX/runtime/ && /bin/touch /home/XXXXSERVER_USERXXXX/runtime/DATABASE_READY'
