@@ -240,7 +240,8 @@ do
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_runtime.tar ${SERVER_USER}@${db_active_ip}:/tmp
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /bin/rm /home/${SERVER_USER}/runtime/DB_APPLICATION_INSTALLED ; ${SUDO} /home/${SERVER_USER}/application/db/InstallApplicationDB.sh"
-			else
+				/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /bin/mv /home/${SERVER_USER} /home/${SERVER_USER}.holder ; ${SUDO} /bin/rm -r /home/X*X ; ${SUDO} /bin/mv /home/${SERVER_USER}.holder /home/${SERVER_USER}"
+   			else
                                 status "Failed to locate whole machine backup to build database from when BUILD_FROM_BACKUP is set to 1"
                         fi
                 fi
