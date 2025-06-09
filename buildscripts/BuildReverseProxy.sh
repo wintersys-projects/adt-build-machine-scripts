@@ -219,7 +219,7 @@ do
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/webserver_backup.tar --keep-newer-files -C /"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_runtime.tar ${SERVER_USER}@${rp_active_ip}:/tmp
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/reverseproxy_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /bin/mv /home/${SERVER_USER} /home/${SERVER_USER}.holder ; ${SUDO} /bin/rm -r /home/X*X ; ${SUDO} /bin/mv /home/${SERVER_USER}.holder /home/${SERVER_USER}"
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/PrimeWebserver.sh"
                         else
                                 status "Failed to locate whole machine backup to build reverseproxy from when BUILD_FROM_BACKUP is set to 1"
                         fi
