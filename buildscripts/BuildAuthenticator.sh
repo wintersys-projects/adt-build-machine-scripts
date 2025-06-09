@@ -191,6 +191,23 @@ do
 			done="1"
 		fi
 
+                if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
+                then
+                	if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_backup.tar.gz ] )
+                        then
+                                status "Copying the appropriate whole machine backup to the authenticator machine"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_backup.tar ${SERVER_USER}@${auth_active_ip}:/tmp
+                                status "Extracting the whole machine backup onto the authenticator machine"
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/authenticator_backup.tar --keep-newer-files -C /"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_runtime.tar ${SERVER_USER}@${auth_active_ip}:/tmp
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/authenticator_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /home/${SERVER_USER}/application/InstallApplication.sh"
+			        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /bin/mv /home/${SERVER_USER} /home/${SERVER_USER}.holder ; ${SUDO} /bin/rm -r /home/X*X ; ${SUDO} /bin/mv /home/${SERVER_USER}.holder /home/${SERVER_USER}"
+   			else
+                                status "Failed to locate whole machine backup to build webserver from when BUILD_FROM_BACKUP is set to 1"
+                        fi
+                fi
+
 		#If $done != 1, then the authenticator didn't build properly, so, destroy the machine
 		if ( [ "${done}" != "1" ] )
 		then
