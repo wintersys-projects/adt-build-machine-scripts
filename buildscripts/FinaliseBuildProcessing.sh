@@ -388,6 +388,7 @@ then
                                         #This double checks that the webserver came online correctly whilst we test for the website being online
                                         /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ip_to_check} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
                                         online="no"
+                                        /bin/sleep 5
                                 done
                         done
                 done
