@@ -193,7 +193,7 @@ do
 
                 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
                 then
-                	if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_backup.tar.gz ] )
+                	if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_backup.tar ] )
                         then
                                 status "Copying the appropriate whole machine backup to the authenticator machine"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_backup.tar ${SERVER_USER}@${auth_active_ip}:/tmp
