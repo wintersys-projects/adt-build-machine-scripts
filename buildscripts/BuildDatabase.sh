@@ -231,7 +231,7 @@ do
 
                 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
                 then
-                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar.gz ] )
+                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar ] )
                         then
                                 status "Copying the appropriate whole machine backup to the database machine"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar ${SERVER_USER}@${db_active_ip}:/tmp
