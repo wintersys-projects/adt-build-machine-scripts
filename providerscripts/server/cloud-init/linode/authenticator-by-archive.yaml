@@ -29,7 +29,7 @@ keyboard:
 
 write_files:
 - encoding: b64
-  content: XXXXREVERSEPROXY_CONFIGURATIONXXXX
+  content: XXXXAUTHENTICATOR_CONFIGURATIONXXXX
   owner: root:root
   path: /home/XXXXSERVER_USERXXXX/.ssh/webserver_configuration_settings.dat.gz
   permissions: '0644'
