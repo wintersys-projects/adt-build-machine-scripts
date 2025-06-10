@@ -135,7 +135,7 @@ then
     then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh
     fi
-    if ( [ "${REVERSE_PROXY}" = "1" ] )
+    if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
     then
         tally="0"
         while ( [ "${tally}" -lt "${NO_AUTOSCALERS}" ] )
