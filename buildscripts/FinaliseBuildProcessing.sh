@@ -369,7 +369,7 @@ then
   
                 status "The Website isn't online yet. It can take a minute for the software on your machines to settle down post install. I will try again...please wait"
 
-                if ( [ "${REVERSE_PROXY}" = "1" ] )
+                if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
                 then
                         ips_to_check="${rp_active_ips}"
                 else
