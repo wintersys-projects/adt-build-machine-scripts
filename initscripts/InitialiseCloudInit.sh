@@ -328,8 +328,18 @@ fi
 status ""
 status "Validating cloud-init scripts"
 
-autoscaler_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml`"
+if ( [ "${AUTHENTICATOR_SERVER}" = "1" ] )
+then
+        authenticator_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml`"
+        status "${authenticator_cloud_init_status}"
+        if ( [ "`/bin/echo ${authenticator_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
+        then
+                status "Invalid authenticator cloud-init configuration found. I have to exit"
+                /bin/touch /tmp/END_IT_ALL
+        fi   
+fi
 
+autoscaler_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml`"
 status "${autoscaler_cloud_init_status}"
 if ( [ "`/bin/echo ${autoscaler_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
 then
