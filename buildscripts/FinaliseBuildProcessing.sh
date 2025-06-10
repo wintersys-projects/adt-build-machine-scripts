@@ -318,7 +318,7 @@ then
                         done
                 done
         fi
-        if ( [ "${REVERSE_PROXY}" = "1" ] )
+        if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
         then
                 status "Enabling webserver(s) ip address(es) in the reverse proxy/proxies"
                 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] )
