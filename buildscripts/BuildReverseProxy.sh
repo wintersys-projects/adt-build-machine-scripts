@@ -51,7 +51,7 @@ BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
-NO_REVERSE_PROXIES="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXIES`"
+NO_REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXY`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
 BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
@@ -76,7 +76,7 @@ do
         status "OK... Building an reverse proxy ${reverse_proxy_no}. This is the ${counter} attempt of 5"
  
         #Check if there is an reverse proxy already running. If there is, then skip building the reverse proxy
-        if ( [ "${reverse_proxy_no}" -le "${NO_REVERSE_PROXIES}" ] )
+        if ( [ "${reverse_proxy_no}" -le "${NO_REVERSE_PROXY}" ] )
         then
                 ip=""
                 #Construct a unique name for this reverse proxy server
