@@ -200,7 +200,7 @@ do
 			done="0"
 		else
 			#If we are here then the build did succeed and we can add the IP address to the DNS system
-   			if ( [ "${REVERSE_PROXY}" != "1" ] )
+   			if ( [ "${NO_REVERSE_PROXY}" = "0" ] )
       			then
 				${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
 			fi
