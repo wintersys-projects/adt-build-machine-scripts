@@ -47,7 +47,7 @@ CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 
 if ( [ "`/bin/ls /root/FIREWALL-BUCKET:* 2>/dev/null`" = "" ] )
 then
-	auth_bucket="authip-adt-allowed-`/usr/bin/tr -dc a-z0-9 </dev/urandom | /usr/bin/head -c 6; echo`"
+	auth_bucket="authip-adt-allowed-`/bin/echo ${ip} | /bin/sed 's/\./-/g'`"
 	/bin/touch /root/FIREWALL-BUCKET:${auth_bucket}
 else
 	auth_bucket="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
