@@ -253,10 +253,10 @@ then
         if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
         then
                 status "Authentication server, Autoscaler, Webserver and Database built correctly....."
-        elif ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "${REVERSE_PROXY}" = "1" ] )
+        elif ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "${NO_REVERSE_PROXY}" != "0" ] )
         then
                 status "Authentication server, Reverse proxy, Autoscaler, Webserver and Database built correctly....."
-        elif ( [ "${REVERSE_PROXY}" = "1" ] )
+        elif ( [ "${NO_REVERSE_PROXY}" != "0" ] )
         then
                 status "Reverse Proxy, Autoscaler, Webserver and Database built correctly....."
         fi
