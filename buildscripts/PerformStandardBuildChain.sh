@@ -193,12 +193,11 @@ then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
         pids="${pids} $!"
     fi
-    if ( [ "${REVERSE_PROXY}" = "1" ] )
-    then
-        if ( [ "${NO_REVERSE_PROXIES}" -ne "0" ] )
+
+        if ( [ "${NO_REVERSE_PROXY}" -ne "0" ] )
         then
                 tally="0"
-                while ( [ "${NO_REVERSE_PROXIES}" -le "5" ] && [ "${tally}" -lt "${NO_REVERSE_PROXIES}" ] )
+                while ( [ "${NO_REVERSE_PROXY}" -le "5" ] && [ "${tally}" -lt "${NO_REVERSE_PROXY}" ] )
                 do
                         tally="`/usr/bin/expr ${tally} + 1`"
                         ${BUILD_HOME}/buildscripts/BuildReverseProxy.sh ${tally} &
@@ -206,7 +205,6 @@ then
                         /bin/sleep 10
                 done
         fi
-    fi
 fi
 
 # $pids will be empty of its not a parallelised build and this will do nothing if it is a parallelised build then wait on each pid
