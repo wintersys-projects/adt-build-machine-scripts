@@ -26,6 +26,13 @@ then
         exit
 fi
 
+if ( [ "`/usr/bin/df . | /usr/bin/tail -1 | /usr/bin/awk -F'%' '{print $1}' | /usr/bin/awk '{print $NF}'`" -gt "90" ] )
+then
+        /bin/echo "Low disk space detected. This script will produce a large file you might want to free up some space"
+        /bin/echo "Press <enter> to carry on <ctri-c> to quit and take action"
+        read x
+fi
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 /bin/echo "Which Cloudhost are you using? 1) Digital Ocean 2) Exoscale 3) Linode 4)Vultr. Please Enter the number for your cloudhost"
