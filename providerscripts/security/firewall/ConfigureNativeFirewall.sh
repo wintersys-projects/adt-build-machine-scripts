@@ -54,7 +54,7 @@ then
                         fi
                 fi
 
-                if ( ( [ "${REVERSE_PROXY}" != "1" ] && [ "${firewall_name}" = "adt-webserver" ] ) ||  [ "${firewall_name}" = "adt-authenticator" ]  ||  [ "${firewall_name}" = "adt-proxyserver" ] )
+                if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) ||  [ "${firewall_name}" = "adt-authenticator" ]  ||  [ "${firewall_name}" = "adt-proxyserver" ] )
                 then
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                         then
