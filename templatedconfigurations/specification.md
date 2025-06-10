@@ -441,7 +441,7 @@ When this is set to "0" any reverse proxies in the build chain will be omitted
 
 ----------
  
-NO_REVERSE_PROXIES
+### NO_REVERSE_PROXY
  
 This tells the system how many reverse proxy servers to deploy this can be up to 5 servers. So, you set this value to any integer between 1 and 5
 
