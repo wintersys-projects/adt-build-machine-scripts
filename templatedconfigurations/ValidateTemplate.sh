@@ -281,6 +281,16 @@ then
         ${log_command} "Your value for the variable NO_AUTOSCALERS (${NO_AUTOSCALERS}) doesn't appear to be valid please review"
 fi
 
+if ( [ "`/bin/grep "^NO_WEBSERVERS " ${quick_specification} | /bin/grep -w "${NO_WEBSERVERS}"  2>/dev/null `" = "" ] )
+then
+        ${log_command} "Your value for the variable NO_WEBSERVERS (${NO_WEBSERVERS}) doesn't appear to be valid please review"
+fi
+
+if ( [ "`/bin/grep "^NO_REVERSE_PROXY " ${quick_specification} | /bin/grep -w "${NO_REVERSE_PROXY}"  2>/dev/null `" = "" ] )
+then
+        ${log_command} "Your value for the variable NO_REVERSE_PROXY (${NO_REVERSE_PROXY}) doesn't appear to be valid please review"
+fi
+
 if ( [ "${DEVELOPMENT}" = "1" ] && [ "${NO_AUTOSCALERS}" != "0" ] )
 then
         ${log_command} "You are in development mode, NO_AUTOSCALERS should be 0 not  (${NO_AUTOSCALERS}) and so doesn't appear to be valid please review"
