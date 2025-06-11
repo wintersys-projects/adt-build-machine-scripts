@@ -342,6 +342,17 @@ then
         fi   
 fi
 
+if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
+then
+        reverseproxy_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml`"
+        status "${reverseproxy_cloud_init_status}"
+        if ( [ "`/bin/echo ${reverseproxy_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
+        then
+                status "Invalid reverseproxy cloud-init configuration found. I have to exit"
+                /bin/touch /tmp/END_IT_ALL
+        fi   
+fi
+
 autoscaler_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml`"
 status "${autoscaler_cloud_init_status}"
 if ( [ "`/bin/echo ${autoscaler_cloud_init_status} | /bin/grep 'Invalid'`" != "" ] )
