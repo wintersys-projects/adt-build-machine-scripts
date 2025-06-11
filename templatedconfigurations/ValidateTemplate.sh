@@ -248,7 +248,7 @@ fi
 
 if ( ! [ `/usr/bin/expr match "${MAX_WEBSERVERS}" '^\([0-9]\+\)$'` ] )
 then
-        ${log_command} "Your value for the variable MAXWEBSERVERS (${MAX_WEBSERVERS}) doesn't appear to be valid please review"
+        ${log_command} "Your value for the variable MAX_WEBSERVERS (${MAX_WEBSERVERS}) doesn't appear to be valid please review"
 fi
 
 if ( [ "${APPLICATION}" = "joomla" ] && [ "${APPLICATION_IDENTIFIER}" != "1" ] )
