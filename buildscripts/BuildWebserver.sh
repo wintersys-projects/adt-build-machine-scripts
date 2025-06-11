@@ -218,7 +218,7 @@ do
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_runtime.tar ${SERVER_USER}@${ws_active_ip}:/tmp
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/webserver_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/InstallApplication.sh"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/PrimeWebserver.sh"   			
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/ResetClonedWebserver.sh"   			
 			else
                                 status "Failed to locate whole machine backup to build webserver from when BUILD_FROM_BACKUP is set to 1"
                         fi
