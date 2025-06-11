@@ -221,6 +221,7 @@ do
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/ResetClonedWebserver.sh"   			
 			else
                                 status "Failed to locate whole machine backup to build webserver from when BUILD_FROM_BACKUP is set to 1"
+			        /bin/touch /tmp/END_IT_ALL
                         fi
                 fi
 
