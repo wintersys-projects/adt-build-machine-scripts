@@ -19,6 +19,12 @@ users:
 
 ssh_pwauth: false
 
+ssh_keys:
+  XXXXALGORITHMXXXX_private: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      XXXXSSH_PRIVATE_KEYXXXX
+      -----END OPENSSH PRIVATE KEY-----
+
 
 timezone: 'XXXXTIMEZONEXXXX'
 hostname: XXXXREVERSEPROXY_HOSTNAMEXXXX
