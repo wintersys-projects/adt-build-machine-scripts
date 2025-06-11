@@ -243,6 +243,7 @@ do
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/PrimeDatabase.sh"
 			else
                                 status "Failed to locate whole machine backup to build database from when BUILD_FROM_BACKUP is set to 1"
+				/bin/touch /tmp/END_IT_ALL
                         fi
                 fi
 
