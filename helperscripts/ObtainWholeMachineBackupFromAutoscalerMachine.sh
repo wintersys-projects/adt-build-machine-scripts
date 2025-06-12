@@ -79,7 +79,7 @@ fi
 
 DIR="`/bin/pwd`"
 
-/bin/echo "Which Database server would you like to connect to?"
+/bin/echo "Which Autoscaler server would you like to connect to?"
 count=1
 for ip in ${ips}
 do
