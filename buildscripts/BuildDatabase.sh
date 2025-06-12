@@ -149,7 +149,8 @@ do
 		fi
 
   		#Add the IP addresse of the database server to the S3 datastore
-
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip/${ip}
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} databaseip/${private_ip}
 
