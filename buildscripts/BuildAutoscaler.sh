@@ -203,9 +203,15 @@ do
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/autoscaler_backup.tar --keep-newer-files -C /"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_hidden.tar ${SERVER_USER}@${as_active_ip}:/tmp
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/autoscaler_hidden.tar --keep-newer-files -C /"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/autoscaler/autoscaler_runtime.tar ${SERVER_USER}@${as_active_ip}:/tmp
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/autoscaler_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/ResetClonedAutoscaler.sh"                        
+                                if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ] )
+    				then
+					/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ${SERVER_USER}@${as_active_ip}:/tmp
+     				else
+	 				status "Counldn't find the required credentials to clone your server successfully"
+      					/bin/touch /tmp/END_IT_ALL
+				fi
+                        
                         else
                                 status "Failed to locate whole machine backup to build autoscaler from when BUILD_FROM_BACKUP is set to 1"
                                 /bin/touch /tmp/END_IT_ALL
