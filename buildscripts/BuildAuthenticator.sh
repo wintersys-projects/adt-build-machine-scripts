@@ -199,6 +199,8 @@ do
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_backup.tar ${SERVER_USER}@${auth_active_ip}:/tmp
                                 status "Extracting the whole machine backup onto the authenticator machine"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/authenticator_backup.tar --keep-newer-files -C /"
+				/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_hidden.tar ${SERVER_USER}@${auth_active_ip}:/tmp
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/authenticator_hidden.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_runtime.tar ${SERVER_USER}@${auth_active_ip}:/tmp
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/authenticator_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /home/${SERVER_USER}/installscripts/InstallAuthenticator.sh"
