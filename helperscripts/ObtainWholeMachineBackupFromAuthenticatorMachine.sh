@@ -136,7 +136,10 @@ then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator
 fi
 
-/usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/authenticator_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator
+if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ] )
+then
+        /usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/authenticator_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}
+fi
 /usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/authenticator_hidden.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator
 /usr/bin/scp -o ConnectTimeout=5 -o ConnectionAttempts=2 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes -P ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} ${SERVER_USERNAME}@${WEB_IP}:/home/${SERVER_USERNAME}/machinedump/authenticator_backup.tar ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator
 
