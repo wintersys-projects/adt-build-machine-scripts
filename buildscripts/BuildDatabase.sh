@@ -239,11 +239,16 @@ do
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_backup.tar --keep-newer-files -C /"
 			        /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_hidden.tar ${SERVER_USER}@${db_active_ip}:/tmp
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_hidden.tar --keep-newer-files -C /"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_runtime.tar ${SERVER_USER}@${db_active_ip}:/tmp
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_runtime.tar --keep-newer-files -C /home/${SERVER_USER}/runtime"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /bin/rm /home/${SERVER_USER}/runtime/DB_APPLICATION_INSTALLED ; ${SUDO} /home/${SERVER_USER}/application/db/InstallApplicationDB.sh"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/ResetClonedDatabase.sh"
-			else
+				if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ] )
+    				then
+					/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ${SERVER_USER}@${db_active_ip}:/tmp
+     				else
+	 				status "Counldn't find the required credentials to clone your server successfully"
+      					/bin/touch /tmp/END_IT_ALL
+				fi
+   			else
                                 status "Failed to locate whole machine backup to build database from when BUILD_FROM_BACKUP is set to 1"
 				/bin/touch /tmp/END_IT_ALL
                         fi
