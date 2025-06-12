@@ -202,7 +202,6 @@ do
 				/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/authenticator/authenticator_hidden.tar ${SERVER_USER}@${auth_active_ip}:/tmp
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/authenticator_hidden.tar --keep-newer-files -C /"
                                 /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /home/${SERVER_USER}/installscripts/InstallAuthenticator.sh"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/ResetClonedWebserver.sh"  
 				if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ] )
     				then
 					/usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ${SERVER_USER}@${auth_active_ip}:/tmp
@@ -210,6 +209,7 @@ do
 	 				status "Counldn't find the required credentials to clone your server successfully"
       					/bin/touch /tmp/END_IT_ALL
 				fi
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/ResetClonedWebserver.sh"  
 			else
                                 status "Failed to locate whole machine backup to build authenticator from when BUILD_FROM_BACKUP is set to 1"
 				/bin/touch /tmp/END_IT_ALL
