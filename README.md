@@ -34,4 +34,7 @@ Scripts that prompt for selection between particular service options when there 
 **${BUILD_HOME}/adt-build-machine-scripts/templatedconfigurations**  
 Scripts related to the templating system of the current build
 
+**${BUILD_HOME}/adt-build-machine-scripts/utilities**
+Scripts thst provide general utility functions needed by the tooling
+
 
