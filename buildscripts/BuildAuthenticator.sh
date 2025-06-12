@@ -138,6 +138,8 @@ do
 		AUTHIP_PRIVATE=${private_ip}
 
 		#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
+   		${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip/${ip}
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip/${private_ip}
 
