@@ -31,14 +31,18 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
+WEBSITE_URLP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
 
- #Set a username and password which we can set on all our servers. Once the machines are built, password authentication is
+#Set a username and password which we can set on all our servers. Once the machines are built, password authentication is
 #switched off and you can find some ssh key based helper scripts here that will enable you to authenticate to your machines.
-if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && 
+if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ] )
 then
-
-SERVER_USER="X`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`X"
-SERVER_USER_PASSWORD="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`"
+    SERVER_USER="`/bin/grep 'SERVERUSER' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk '{print $NF}'`"
+    SERVER_USER_PASSWORD="`/bin/grep 'SERVERUSERPASSWORD' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk '{print $NF}'`"
+else
+    SERVER_USER="X`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`X"
+    SERVER_USER_PASSWORD="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`"
+fi
 /bin/echo "${SERVER_USER}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER
 /bin/echo "${SERVER_USER_PASSWORD}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SERVER_USER=${SERVER_USER}"
