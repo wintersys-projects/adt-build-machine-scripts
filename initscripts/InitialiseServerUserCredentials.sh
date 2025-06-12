@@ -37,8 +37,8 @@ WEBSITE_URLP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
 #switched off and you can find some ssh key based helper scripts here that will enable you to authenticate to your machines.
 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ] )
 then
-    SERVER_USER="`/bin/grep 'SERVERUSER' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk '{print $NF}'`"
-    SERVER_USER_PASSWORD="`/bin/grep 'SERVERUSERPASSWORD' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk '{print $NF}'`"
+    SERVER_USER="`/bin/grep 'USERNAME' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+    SERVER_USER_PASSWORD="`/bin/grep 'PASSWORD' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
 else
     SERVER_USER="X`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`X"
     SERVER_USER_PASSWORD="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`"
