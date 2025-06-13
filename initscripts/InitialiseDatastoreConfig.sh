@@ -151,7 +151,7 @@ fi
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 identifier="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-for bucket in `${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh | /bin/grep "${website_bucket}-config"  | /bin/grep -v "${identifier}" | /usr/bin/awk '{print  $NF}' | /bin/sed 's,s3://,,'`
+for bucket in `${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh | /bin/grep "${website_bucket}-config" | /usr/bin/awk '{print  $NF}' | /bin/sed 's,s3://,,'`
 do
         ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${bucket}/*
         ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh ${bucket}
