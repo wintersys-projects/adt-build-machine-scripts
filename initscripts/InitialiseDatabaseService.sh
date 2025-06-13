@@ -41,6 +41,7 @@ DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
 BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDFROMBACKUP`"
 
 #See if we are a managed database or not
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
@@ -546,9 +547,19 @@ else
         DB_IDENTIFIER="self-managed"
 fi
 
+if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat ] )
+then
+        DB_USERNAME="`/bin/grep USERNAME ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+        PASSWORD="`/bin/grep PASSWORD ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+        DBNAME="`/bin/grep DBNAME ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+fi
+
 #Persist our credentials to the file system to be used at will      
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_NAME=${DB_NAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PASSWORD=${DB_PASSWORD}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_USERNAME=${DB_USERNAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PORT=${DB_PORT}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DB_IDENTIFIER}"
+
+
+
