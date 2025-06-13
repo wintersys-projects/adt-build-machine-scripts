@@ -144,6 +144,8 @@ do
                 done
     
                 #Store the public and private ip addresses of the reverse proxy machine in the datastore for access elsewhere
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicip/*
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyip/*
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} reverseproxypublicip/${ip}
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} reverseproxyip/${private_ip}
 
