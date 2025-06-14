@@ -142,7 +142,7 @@ do
 		/bin/rm ${AUTOSCALER_PUBLIC_KEYS}
 		exit
 	fi
-	/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} -o ConnectTimeout=5 -o ConnectionAttempts=6 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes ${SERVER_USERNAME}@${ip} "${SUDO} /home/${SERVER_USERNAME}/providerscripts/utilities/housekeeping/ShutdownThisAutoscaler.sh halt" 2>/dev/null
+	/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} -o ConnectTimeout=5 -o ConnectionAttempts=6 -o UserKnownHostsFile=${AUTOSCALER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes ${SERVER_USERNAME}@${ip} "${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/ShutdownThisAutoscaler.sh halt" 2>/dev/null
 done
 
 first="1"
@@ -172,7 +172,7 @@ do
 		/bin/rm ${WEBSERVER_PUBLIC_KEYS}
 		exit
 	fi
-	/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} -o ConnectTimeout=5 -o ConnectionAttempts=6 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes ${SERVER_USERNAME}@${ip} "${SUDO} /home/${SERVER_USERNAME}/providerscripts/utilities/housekeeping/ShutdownThisWebserver.sh halt"
+	/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} -o ConnectTimeout=5 -o ConnectionAttempts=6 -o UserKnownHostsFile=${WEBSERVER_PUBLIC_KEYS} -o StrictHostKeyChecking=yes ${SERVER_USERNAME}@${ip} "${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/ShutdownThisWebserver.sh halt"
 done
 
 for ip in ${databaseips}
@@ -201,7 +201,7 @@ do
 		/bin/rm ${DATABASE_PUBLIC_KEYS}
 		exit
 	fi
-	/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} -o ConnectTimeout=5 -o ConnectionAttempts=6 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes ${SERVER_USERNAME}@${ip} "${SUDO} /home/${SERVER_USERNAME}/providerscripts/utilities/housekeeping/ShutdownThisDatabase.sh halt" 2>/dev/null
+	/usr/bin/ssh -p ${SSH_PORT} -i ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER} -o ConnectTimeout=5 -o ConnectionAttempts=6 -o UserKnownHostsFile=${DATABASE_PUBLIC_KEYS} -o StrictHostKeyChecking=yes ${SERVER_USERNAME}@${ip} "${SUDO} /home/${SERVER_USERNAME}/utilities/housekeeping/ShutdownThisDatabase.sh halt" 2>/dev/null
 done
 
 /bin/echo "Do you want to destroy the actual machines as well? This is totally non-recoverable (Y/N)"
