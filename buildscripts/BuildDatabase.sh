@@ -286,13 +286,10 @@ do
 		fi
 	else
  		#A datatbase server is already running
-		status "A Database is already running, using that one......"
-		status "Press enter if that is OK"
-
-		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-		then
-			read response
-		fi
+   		status "It looks like you already have a database running in your specified region"
+                status "The database you are asking me to build looks like it's excess to the configured requirements"
+                status "Will not be creating database"
+                /bin/touch /tmp/END_IT_ALL
 		done=1
 	fi
 done
