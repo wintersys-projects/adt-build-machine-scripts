@@ -31,6 +31,8 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT`"
+DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
 interrogation_home="${BUILD_HOME}/interrogation"
 
 APPLICATION=""
@@ -63,13 +65,32 @@ fi
 if ( [ -f ${interrogation_home}/applicationDB.sql ] && [ "${db_type}" != "sql" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
-    	/bin/touch /tmp/END_IT_ALL
+        /bin/touch /tmp/END_IT_ALL
 fi
+
+if ( [  "${DATABASE_INSTALLATION_TYPE}" = "MySQL" ] || [  "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] || [ "`/bin/echo "${DATABASE_DBaaS_INSTALLATION_TYPE}" | /bin/grep 'MySQL'`" != "" ] ) 
+then
+        if ( [ "${db_type}" != "sql" ] )
+        then
+                status "It seems like there is a mismatch between the type of database you are installing and the database type that is configured in the template"
+                /bin/touch /tmp/END_IT_ALL
+        fi
+fi
+
 
 if ( [ -f ${interrogation_home}/applicationDB.psql ] && [ "${db_type}" != "postgres" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
-    	/bin/touch /tmp/END_IT_ALL
+        /bin/touch /tmp/END_IT_ALL
+fi
+
+if ( [  "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || [ "`/bin/echo "${DATABASE_DBaaS_INSTALLATION_TYPE}" | /bin/grep 'Postgres'`" != "" ] )
+then
+        if ( [ "${db_type}" != "postgres" ] )
+        then
+                status "It seems like there is a mismatch between the type of database you are installing and the database type that is configured in the template"
+                /bin/touch /tmp/END_IT_ALL
+        fi
 fi
 
 #################JOOMLA################
@@ -96,7 +117,7 @@ then
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
         then
                 status "Error, cannot find db prefix file"
-    		/bin/touch /tmp/END_IT_ALL
+                /bin/touch /tmp/END_IT_ALL
         fi
         /bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
         ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat
@@ -120,7 +141,7 @@ then
                 /bin/cp ${interrogation_home}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
         else
                 status "Couldn't find joomla default configuration file in baseline webroot"
-    		/bin/touch /tmp/END_IT_ALL
+                /bin/touch /tmp/END_IT_ALL
         fi
 
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
@@ -149,7 +170,7 @@ then
                 /bin/cp ${interrogation_home}/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         else
                 status "Couldn't find drupal default configuration file in backup webroot"
-    		/bin/touch /tmp/END_IT_ALL
+                /bin/touch /tmp/END_IT_ALL
         fi
 
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
@@ -180,7 +201,7 @@ then
                 /bin/cp ${interrogation_home}/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default
         else
                 status "Couldn't find moodle default configuration file in backup archive webroot"
-    		/bin/touch /tmp/END_IT_ALL
+                /bin/touch /tmp/END_IT_ALL
         fi
 
         if ( [ ! -f ${interrogation_home}/dbp.dat ] )
