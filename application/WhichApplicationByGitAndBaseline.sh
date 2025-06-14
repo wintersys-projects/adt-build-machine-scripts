@@ -68,6 +68,15 @@ then
     	/bin/touch /tmp/END_IT_ALL
 fi
 
+if ( [  "${DATABASE_INSTALLATION_TYPE}" = "MySQL" ] || [  "${DATABASE_INSTALLATION_TYPE}" = "Maria" ] ) 
+then
+        if ( [ "${db_type}" != "sql" ] )
+        then
+                status "It seems like there is a mismatch between the type of database you are installing and the database type that is configured in the template"
+                /bin/touch /tmp/END_IT_ALL
+        fi
+fi
+
 if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.psql ] && [ "${database_type}" != "postgres" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
