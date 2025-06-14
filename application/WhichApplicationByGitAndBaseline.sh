@@ -83,6 +83,15 @@ then
     	/bin/touch /tmp/END_IT_ALL
 fi
 
+if ( [  "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] )
+then
+        if ( [ "${db_type}" != "postgres" ] )
+        then
+                status "It seems like there is a mismatch between the type of database you are installing and the database type that is configured in the template"
+                /bin/touch /tmp/END_IT_ALL
+        fi
+fi
+
 #################JOOMLA################
 if ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "JOOMLA" ] )
 then
