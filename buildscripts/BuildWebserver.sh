@@ -265,13 +265,10 @@ do
 		fi
 	else
  		#Am appropriate webserver seems to be already running for this reason
-		status "A webserver is already running, using that one"
-		status "Press enter if this is OK with you"
-                
-		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-		then
-			read response
-		fi
+                status "Configured to use ${NO_WEBSERVERS} webservers and found ${webserver_no} running whilst trying to build more"
+                status "The webserver you are asking me to build looks like it's excess to the configured requirements"
+                status "Will not be creating webserver"
+                /bin/touch /tmp/END_IT_ALL
 		done=1
 	fi
 done
