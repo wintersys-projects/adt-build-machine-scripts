@@ -268,12 +268,10 @@ do
                 fi
         else
                 #An reverse proxy server is already running in the current region ask if we can use that one
-                status "An reverse proxy is already running, using that one"
-                status "Press enter if this is OK with you"
-                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-                then
-                        read response
-                fi
+                status "Configured to use ${NO_REVERSE_PROXY} reverse proxies and found ${reverse_proxy_no} running whilst trying to build more"
+                status "The reverse proxy you are asking me to build looks like it's excess to the configured requirements"
+                status "Will not be creating reverse proxy"
+                /bin/touch /tmp/END_IT_ALL
                 done=1
         fi
 done
