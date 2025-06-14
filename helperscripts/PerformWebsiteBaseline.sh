@@ -135,6 +135,12 @@ read x
 /bin/echo "If you haven't got one please create one and then tell me the <identifier> part by entering it below:"
 read identifier
 
+if ( [ "${identifier}" = "" ] )
+then
+	/bin/echo "Identifier can't be blank"
+ 	exit
+fi
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 APPLICATION_REPOSITORY_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_PROVIDER`"
