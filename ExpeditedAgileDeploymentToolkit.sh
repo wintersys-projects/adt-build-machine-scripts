@@ -367,8 +367,10 @@ then
         status "Interrogating to see what Application you are running, if any"
         status "#############################################################"
         ${BUILD_HOME}/application/InterrogateApplicationType.sh
-        ${BUILD_HOME}/application/CheckForAssetsOverwrite.sh
-                
+        if ( [ "${BUILD_CHOICE}" -ne "1" ] )
+        then
+          ${BUILD_HOME}/application/CheckForAssetsOverwrite.sh
+        fi        
         status ""
         status "#############################################################"
         status "Initialising assets datastore, this may or may not take a while"
