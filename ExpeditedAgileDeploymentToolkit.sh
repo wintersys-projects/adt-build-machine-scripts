@@ -34,6 +34,19 @@
 #syntax on" > /root/.vimrc
 
 
+list_descendants ()
+{
+  local children="`/usr/bin/ps -o pid= --ppid "$1"`"
+
+  for pid in $children
+  do
+    list_descendants "$pid"
+  done
+
+  /bin/echo "$children"
+}
+
+
 end_it_all() {
         if ( [ -f /tmp/END_IT_ALL ] )
         then
@@ -45,7 +58,7 @@ end_it_all() {
                 if ( [ -f /tmp/END_IT_ALL ] )
                 then
                         /bin/echo "TERMINATING BECAUSE OF FAILURE PLEASE CHECK THE ERROR LOGS"
-                        /usr/bin/kill -9 $$
+                        /usr/bin/kill -9 list_descendents $$
                         exit
                 fi
         done
