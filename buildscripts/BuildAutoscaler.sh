@@ -250,12 +250,10 @@ do
                 fi
         else
                 #An appropriate looking autoscaler is already running in the current region
-                status "Autoscaler is already running. Will use that one..."
-                status "Press Enter if this is OK"
-                if ( [ "${HARDCORE}" != "1" ] )
-                then
-                        read response
-                fi
+                status "Configured to use ${NO_AUTOSCALERS} autoscalers and found ${autoscaler_no} running whilst trying to build more"
+                status "The autoscaler you are asking me to build looks like it's excess to the configured requirements"
+                status "Will not be creating autoscaler"
+                /bin/touch /tmp/END_IT_ALL
                 done="1"
         fi
 done
