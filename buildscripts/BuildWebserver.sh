@@ -194,14 +194,14 @@ do
 		alive="" 
 		count="0"
 		
-		while ( [ "${alive}" != "WEBSERVER_READY" ] && [ "${count}" -lt "300" ] )
+		while ( [ "${alive}" != "WEBSERVER_READY" ] && [ "${count}" -lt "600" ] )
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2
 			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/WEBSERVER_READY && /bin/echo 'WEBSERVER_READY'"`"
 		done
 
-		if ( [ "${count}" = "300" ] )
+		if ( [ "${count}" = "600" ] )
 		then
   			#If we are here then the build didn't succeed
 			done="0"
