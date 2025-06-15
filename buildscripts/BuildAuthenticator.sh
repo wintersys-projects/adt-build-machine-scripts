@@ -182,14 +182,14 @@ do
 		alive=""
 		count="0"
 		
-		while ( [ "${alive}" != "AUTHENTICATOR_READY" ] && [ "${count}" -lt "300" ] )
+		while ( [ "${alive}" != "AUTHENTICATOR_READY" ] && [ "${count}" -lt "600" ] )
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2                        
 			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/AUTHENTICATOR_READY && /bin/echo 'AUTHENTICATOR_READY'"`"
 		done
 
-		if ( [ "${count}" = "300" ] )
+		if ( [ "${count}" = "600" ] )
 		then
   			#If we are here then the build didn't complete correctly
 			done="0"
