@@ -189,14 +189,14 @@ do
                 alive=""
                 count="0"
 
-                while ( [ "${alive}" != "REVERSEPROXY_READY" ] && [ "${count}" -lt "300" ] )
+                while ( [ "${alive}" != "REVERSEPROXY_READY" ] && [ "${count}" -lt "600" ] )
                 do
                         count="`/usr/bin/expr ${count} + 1`"
                         /bin/sleep 2                        
                         alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${rp_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/REVERSEPROXY_READY && /bin/echo 'REVERSEPROXY_READY'"`"
                 done
 
-                if ( [ "${count}" = "300" ] )
+                if ( [ "${count}" = "600" ] )
                 then
                         #If we are here then the build didn't complete correctly
                         done="0"
