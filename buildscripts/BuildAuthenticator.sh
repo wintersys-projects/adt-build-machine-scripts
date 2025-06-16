@@ -181,15 +181,26 @@ do
 		done="0"
 		alive=""
 		count="0"
+
+      		probe_attempts="600"
+
+		if ( [ "`/bin/grep "^${WEBSERVER_CHOICE}:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+  		then
+    			probe_attempts="`/usr/bin/expr ${probe_attempts} + 150`"
+       			if ( [ "${MOD_SECURITY}" = "1" ] )
+	  		then
+     				probe_attempts="`/usr/bin/expr ${probe_attempts} + 300`"
+	 		fi
+    		fi
 		
-		while ( [ "${alive}" != "AUTHENTICATOR_READY" ] && [ "${count}" -lt "600" ] )
+		while ( [ "${alive}" != "AUTHENTICATOR_READY" ] && [ "${count}" -lt "${probe_attempts}" ] )
 		do
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 2                        
 			alive="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${auth_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/AUTHENTICATOR_READY && /bin/echo 'AUTHENTICATOR_READY'"`"
 		done
 
-		if ( [ "${count}" = "600" ] )
+		if ( [ "${count}" = "${probe_attempts}" ] )
 		then
   			#If we are here then the build didn't complete correctly
 			done="0"
