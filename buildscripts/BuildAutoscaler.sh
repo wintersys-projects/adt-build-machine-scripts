@@ -112,6 +112,12 @@ do
                                 /bin/sleep 1
                                 count="`/usr/bin/expr ${count} + 1`"
                         done
+
+                        if ( [ "${count}" = "120" ] )
+			then
+   				status "Machine ${authenticator_name} didn't provision correctly"
+       				/bin/touch /tmp/END_IT_ALL
+	   		fi
      
                         status "Autoscaler type VPS instance is now available"
 
