@@ -204,6 +204,13 @@ ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
 # if its been more than 1 day since this script was run on the current machine
 ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
 
+software_updated="0"
+
+if ( [ "`/usr/bin/find ~/UPDATEDSOFTWARE -mmin +10 -print`" != "" ] )
+then
+        software_updated="1"
+fi
+
 # Find out which cloudhost we are deploying to. If we are a HARDCORE build then the CLOUDHOST variable value is already in our
 # environment if not we ask the user for it interactively. The value of $CLOUDHOST is persistently stored on the filesystem
 # for reference from anywhere
@@ -465,5 +472,8 @@ status "This script completed at `/bin/date` and took `/bin/date -u -d @${runtim
 # Complete the setting up of the native firewall
 #${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 
-/usr/sbin/shutdown -r now
+if ( [ "${software_updated}" = "1" ] )
+then
+        /usr/sbin/shutdown -r now
+fi 
 
