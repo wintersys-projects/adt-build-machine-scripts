@@ -208,7 +208,7 @@ ${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
 
 software_updated="0"
 
-if ( [ "`/usr/bin/find ~/UPDATEDSOFTWARE -mmin +10 -print`" != "" ] )
+if ( [ "`/usr/bin/find ~/UPDATEDSOFTWARE -mmin -20 -print`" != "" ] )
 then
         software_updated="1"
 fi
