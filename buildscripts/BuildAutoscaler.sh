@@ -106,10 +106,11 @@ do
                         fi
 
                         status "Interrogating for autoscaler instance being available....if this goes on forever there is a problem"
-
-                        while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${autoscaler_name}" ${CLOUDHOST}`" != "running" ] )
+                        count="0"
+                        while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${autoscaler_name}" ${CLOUDHOST}`" != "running" ] && [ "${count}" -lt "120" ] )
                         do
-                                /bin/sleep 5
+                                /bin/sleep 1
+                                count="`/usr/bin/expr ${count} + 1`"
                         done
      
                         status "Autoscaler type VPS instance is now available"
