@@ -109,10 +109,11 @@ do
                         fi
 
                         status "Interrogating for reverse proxy instance being available....if this goes on forever there is a problem"
-
-                        while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${reverseproxy_name}" ${CLOUDHOST}`" != "running" ] )
+			count="0"
+                        while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${reverseproxy_name}" ${CLOUDHOST}`" != "running" ] && [ "${count}" -lt "120" ] )
                         do
                                 /bin/sleep 5
+	  			count="`/usr/bin/expr ${count} + 1`"
                         done
      
                         status "Reverse Proxy type VPS instance is now available"
