@@ -115,6 +115,12 @@ do
                                 /bin/sleep 5
 	  			count="`/usr/bin/expr ${count} + 1`"
                         done
+
+        		if ( [ "${count}" = "120" ] )
+			then
+   				status "Machine ${reverseproxy_name} didn't provision correctly"
+       				/bin/touch /tmp/END_IT_ALL
+	   		fi
      
                         status "Reverse Proxy type VPS instance is now available"
 
