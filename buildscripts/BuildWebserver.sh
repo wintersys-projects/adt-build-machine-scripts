@@ -207,6 +207,7 @@ do
 
 		if ( [ "`/bin/grep "^${WEBSERVER_CHOICE}:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
   		then
+        		status "${webserver_name} is compiling from source, it may take a bit longer"
     			probe_attempts="`/usr/bin/expr ${probe_attempts} + 150`"
        			if ( [ "${MOD_SECURITY}" = "1" ] )
 	  		then
