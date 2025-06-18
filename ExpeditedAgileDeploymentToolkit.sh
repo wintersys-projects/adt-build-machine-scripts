@@ -54,6 +54,8 @@ end_it_all() {
 
 end_it_all &
 
+trap '/bin/touch /tmp/END_IT_ALL; trap - EXIT; exit' EXIT INT HUP
+
 #Set up the intial logging  output. This is where the logging messages will be stored when they occur before
 #the main logging configuration has been set up. There is an output log for stdout and and error log for stderr
 if ( [ ! -d /root/logs ] )
