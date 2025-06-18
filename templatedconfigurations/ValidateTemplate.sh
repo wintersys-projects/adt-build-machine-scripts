@@ -202,6 +202,18 @@ then
         ${log_command} "Your value for the variable WEBSERVER_CHOICE (${WEBSERVER_CHOICE}) doesn't appear to be valid please review"
 fi
 
+if ( [ "`/bin/grep "^REVERSE_PROXY_CHOICE " ${quick_specification} | /bin/grep -w "${WEBSERVER_CHOICE}"  2>/dev/null `" = "" ] )
+then
+        ${log_command} "Your webserver choice ${WEBSERVER_CHOICE} can't be used as a reverse proxy"
+fi
+
+if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${WEBSERVER_CHOICE}" = "NGINX" ] && [ "`/bin/grep "^NGINX:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] )
+then
+        if ( [ "${MOD_SECURITY}" = "1" ] )
+        then
+                ${log_command} "To use NGINX as a reverse proxy with modsecurity enabled NGINX needs to be compiled from source which you can configure in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
+        fi
+fi
 if ( [ "`/bin/grep "^DATABASE_INSTALLATION_TYPE " ${quick_specification} | /bin/grep -w "${DATABASE_INSTALLATION_TYPE}"  2>/dev/null `" = "" ] )
 then
         ${log_command} "Your value for the variable DATABASE_INSTALLATION_TYPE (${DATABASE_INSTALLATION_TYPE}) doesn't appear to be valid please review"
