@@ -115,9 +115,15 @@ do
 			count="0"
 			while ( [ "`${BUILD_HOME}/providerscripts/server/IsInstanceRunning.sh "${webserver_name}" ${CLOUDHOST}`" != "running" ] && [ "${count}" -lt "120" ] )
    			do
-      				/bin/sleep 5
+      				/bin/sleep 1
 		  		count="`/usr/bin/expr ${count} + 1`"
 	  		done
+
+          		if ( [ "${count}" = "120" ] )
+			then
+   				status "Machine ${webserver_name} didn't provision correctly"
+       				/bin/touch /tmp/END_IT_ALL
+	   		fi
      
 			status "Webserver type VPS instance is now available"
 
