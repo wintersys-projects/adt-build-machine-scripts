@@ -162,6 +162,12 @@ else
         fi
 fi
 
+if ( [ "${DNS_CHOICE}" = "cloudflare" ] && [ "${AUTHENTICATION_SERVER}" = "1" ] )
+then
+        ${log_command} "Authentication servers are not intended to be used with the cloudflare DNS system" 
+        ${log_command} "if you want zero trust access you want to use cloudflare you should use cloudflare's own zero trust solution"
+fi
+
 if ( [ "`/bin/grep "^APPLICATION_REPOSITORY_PROVIDER " ${quick_specification} | /bin/grep -w "${APPLICATION_REPOSITORY_PROVIDER}"  2>/dev/null `" = "" ] )
 then
         ${log_command} "Your value for the variable APPLICATION_REPOSITORY_PROVIDER (${APPLICATION_REPOSITORY_PROVIDER}) doesn't appear to be valid please review"
