@@ -37,11 +37,11 @@ WEBSITE_URLP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
 #switched off and you can find some ssh key based helper scripts here that will enable you to authenticate to your machines.
 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat ] )
 then
-    status "Building from whole machine backups, username and password set to already existing values"
+    status "Building from whole machine backups, server username and server password set to already existing values"
     SERVER_USER="`/bin/grep 'USERNAME' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
     SERVER_USER_PASSWORD="`/bin/grep 'PASSWORD' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
 else
-    status "Not building from whole machine backups, username and password being freshly generated"
+    status "Not building from whole machine backups, server username and server password being freshly generated"
     SERVER_USER="X`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`X"
     SERVER_USER_PASSWORD="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`"
 fi
