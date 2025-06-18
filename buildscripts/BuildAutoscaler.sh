@@ -115,7 +115,7 @@ do
 
                         if ( [ "${count}" = "120" ] )
 			then
-   				status "Machine ${authenticator_name} didn't provision correctly"
+   				status "Machine ${autoscaler_name} didn't provision correctly"
        				/bin/touch /tmp/END_IT_ALL
 	   		fi
      
