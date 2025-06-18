@@ -193,7 +193,7 @@ do
 
       		probe_attempts="600"
 
-		if ( [ "`/bin/grep "^${WEBSERVER_CHOICE}:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+		if ( [ "`/bin/grep "^${WEBSERVER_CHOICE}:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] && [ "${BUILD_FROM_BACKUP}" != "1" ] )
   		then
     			status "${authenticator_name} is compiling from source, it may take a bit longer"
     			probe_attempts="`/usr/bin/expr ${probe_attempts} + 150`"
