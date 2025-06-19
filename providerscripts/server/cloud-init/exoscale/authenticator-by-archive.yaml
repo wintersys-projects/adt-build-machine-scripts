@@ -73,7 +73,9 @@ package_upgrade: true
 
 packages:
   - git
-
+  - network-manager 
+  - cron
+  
 runcmd:
   - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
   - '/usr/sbin/locale-gen'
