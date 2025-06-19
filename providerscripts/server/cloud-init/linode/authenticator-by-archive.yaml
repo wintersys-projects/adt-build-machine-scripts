@@ -65,6 +65,7 @@ package_upgrade: true
 
 packages:
   - git
+  - network-manager 
   - cron
 
 runcmd:
