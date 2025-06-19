@@ -44,7 +44,11 @@ end_it_all() {
                 /bin/sleep 1
                 if ( [ -f /tmp/END_IT_ALL ] )
                 then
+                        /bin/echo ""
+                        /bin/echo "----------------------------------------------------------"
                         /bin/echo "TERMINATING BECAUSE OF FAILURE PLEASE CHECK THE ERROR LOGS"
+                        /bin/echo "----------------------------------------------------------"
+                        /bin/echo ""
                         pgid="`/usr/bin/ps  xao pid,pgid | /bin/grep $$ | /usr/bin/awk '{print $NF}' | /usr/bin/uniq`"
                         /usr/bin/kill -TERM -- -${pgid}
                         exit
