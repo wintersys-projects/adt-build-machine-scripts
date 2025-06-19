@@ -59,6 +59,7 @@ DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 NO_REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXY`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
@@ -130,6 +131,17 @@ then
                 then
                         /usr/bin/scp -q ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 2>/dev/null
                 fi
+                if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
+                then
+                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar ] )
+                        then
+                                status "Copying the appropriate whole machine webserver backup to the autoscaler machine"
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar ${SERVER_USER}@${as_active_ip}:/tmp
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/mkdir -p /home/${SERVER_USER}/whole_webserver_backup ; ${SUDO} /bin/mv /tmp/webserver_backup.tar /home/${SERVER_USER}/whole_webserver_backup" 3>&1 2>/dev/null
+                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_hidden.tar ${SERVER_USER}@${as_active_ip}:/tmp
+                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/mv /tmp/webserver_hidden.tar /home/${SERVER_USER}/whole_webserver_backup" 3>&1 2>/dev/null
+                        fi
+                fi
         elif ( [ "${no_autoscalers}" != "0" ] )
         then
                 for as_active_ip in ${as_active_ips}
@@ -137,6 +149,17 @@ then
                         if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ] )
                         then
                                 /usr/bin/scp -q ${OPTIONS_AS} -i ${BUILD_KEY} -P ${SSH_PORT} ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/EMERGENCY_PASSWORD ${SERVER_USER}@${as_active_ip}:/home/${SERVER_USER}/.ssh/EMERGENCY_PASSWORD 2>/dev/null
+                        fi
+                        if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
+                        then
+                                if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar ] )
+                                then
+                                        status "Copying the appropriate whole machine webserver backup to the autoscaler machine"
+                                        /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_backup.tar ${SERVER_USER}@${as_active_ip}:/tmp
+                                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/mkdir -p /home/${SERVER_USER}/whole_webserver_backup ; ${SUDO} /bin/mv /tmp/webserver_backup.tar /home/${SERVER_USER}/whole_webserver_backup" 3>&1 2>/dev/null
+                                        /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/webserver/webserver_hidden.tar ${SERVER_USER}@${as_active_ip}:/tmp
+                                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_AS} ${SERVER_USER}@${as_active_ip} "${SUDO} /bin/mv /tmp/webserver_hidden.tar /home/${SERVER_USER}/whole_webserver_backup" 3>&1 2>/dev/null
+                                fi
                         fi
                 done
         fi
