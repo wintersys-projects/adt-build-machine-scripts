@@ -127,7 +127,7 @@ then
 
     if ( [ "$?" != "0" ] )
     then
-        status "There is a problem with your template (${templatefile}) please correct it and try again...."
+        status "There is a problem (syntax error) with your template (${templatefile}) please correct it and try again...."
     	/bin/touch /tmp/END_IT_ALL
     fi
 elif ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "1" ] && [ ! -f /root/PARAMETER ] )
