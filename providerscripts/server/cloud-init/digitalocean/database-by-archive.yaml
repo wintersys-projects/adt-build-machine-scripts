@@ -1,5 +1,5 @@
 #cloud-config
-database-by-archive.yaml
+
 
 manage_resolv_conf: true
 resolv_conf:
