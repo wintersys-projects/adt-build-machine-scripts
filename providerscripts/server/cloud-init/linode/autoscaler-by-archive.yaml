@@ -69,6 +69,7 @@ package_upgrade: true
 
 packages:
   - git
+  - cron
 
 runcmd:
   - '/bin/sed -i "/en_GB.UTF/s/\(^# \)\(.*$\)/\2/g" /etc/locale.gen'
