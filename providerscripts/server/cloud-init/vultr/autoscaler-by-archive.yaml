@@ -40,6 +40,11 @@ write_files:
   path: /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat.gz
   permissions: '0644'
 - encoding: b64
+  content: XXXXWEBSERVER_CONFIGURATIONXXXX
+  owner: root:root
+  path: /home/XXXXSERVER_USERXXXX/.ssh/webserver_configuration_settings.dat.gz
+  permissions: '0644'
+- encoding: b64
   content: XXXXBUILDSTYLES_SETTINGSXXXX
   owner: root:root
   path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat.gz
