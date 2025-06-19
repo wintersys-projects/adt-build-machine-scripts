@@ -71,6 +71,7 @@ package_upgrade: true
 packages:
   - git
   - network-manager 
+  - cron
 #XXXXMARIADB_SERVERXXXX  - mariadb-server
 #XXXXMARIADB_CLIENTXXXX  - mariadb-client
 
