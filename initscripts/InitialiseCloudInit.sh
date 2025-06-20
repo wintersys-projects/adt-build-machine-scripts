@@ -194,7 +194,6 @@ then
         then
                 /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
                 /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-                /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
         fi
 fi
 
@@ -204,7 +203,6 @@ then
         then
                 /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
                 /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-                /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
         fi
 fi
 
@@ -214,8 +212,28 @@ then
         then
                 /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
                 /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-                /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
         fi
+fi
+
+REVERSE_PROXY_WEBSERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY_WEBSERVER`"
+
+if ( [ "${REVERSE_PROXY_WEBSERVER}" = "NGINX" ] )
+then
+        if ( [ "`/bin/grep ^NGINX:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXNGINXXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+        fi
+        /bin/sed -i 's/XXXXREVERSEPROXYSERVERXXXX/NGINX/g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+
+fi
+
+if ( [ "${REVERSE_PROXY_WEBSERVER}" = "APACHE" ] )
+then
+        if ( [ "`/bin/grep ^APACHE:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXAPACHEXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+        fi
+        /bin/sed -i 's/XXXXREVERSEPROXYSERVERXXXX/APACHE/g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
 fi
 
 #The same technique is used for database installations as is used for webserver installations
