@@ -302,9 +302,9 @@ then
         ${log_command} "Your value for the variable NO_REVERSE_PROXY (${NO_REVERSE_PROXY}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^REVERSE_PROXY_CHOICE " ${quick_specification} | /bin/grep -w "${WEBSERVER_CHOICE}"  2>/dev/null `" = "" ] )
+if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "`/bin/grep "^REVERSE_PROXY_CHOICE " ${quick_specification} | /bin/grep -w "${REVERSE_PROXY_WEBSERVER}"  2>/dev/null `" = "" ] )
 then
-        ${log_command} "Your webserver choice ${WEBSERVER_CHOICE} can't be used as a reverse proxy"
+        ${log_command} "Your webserver choice ${REVERSE_PROXY_WEBSERVER}  can't be used as a reverse proxy"
 fi
 
 if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${WEBSERVER_CHOICE}" = "NGINX" ] && [ "`/bin/grep "^NGINX:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] )
