@@ -142,7 +142,14 @@ then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-proxyserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         fi
 
-        /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} --security-group ${firewall_id} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibilty} --cloud-init "${cloud_config}"
+        firewall=""
+        
+        if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
+	then
+                 firewall=" --security-group ${firewall_id}"
+        fi
+
+        /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} ${firewall} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibilty} --cloud-init "${cloud_config}"
 
         if ( [ "`/usr/bin/exo compute private-network list -O json | /usr/bin/jq -r '.[] | select (.name == "adt_private_net_'${REGION}'").id'`" = "" ] )
         then
@@ -181,7 +188,13 @@ then
  
         vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`"
         subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
-        /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} --image "${OS_CHOICE}" --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+        
+        if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
+	then
+                /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} --image "${OS_CHOICE}" --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+        else
+                /usr/local/bin/linode-cli linodes create --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} --image "${OS_CHOICE}" --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc",  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+        fi        
 fi
 
 if (  [ "${CLOUDHOST}" = "vultr" ] )
