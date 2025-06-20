@@ -427,9 +427,15 @@ This needs to be set to an integer that determines the maximum number of webserv
 
 You have a choice of webserver that you want to deploy to. You can set this to "NGINX, "APACHE" or "LIGHTTPD". What you set this to will determine which webserver gets installed and used. 
 
+--------
+
+### REVERSE_PROXY_WEBSERVER
+
+This sets which webserver is to be used for the reverse proxy webserver which can be different to what you use as your main webserver. For example you can set this to "NGINX" and your main webserver to "APACHE"
+
 -----
 
-REVERSE_PROXY
+### REVERSE_PROXY
 
 if you want to deploy reverse proxy/proxies then you can set REVERSE_PROXY to "1" in your template. So, this setting has two options
  
