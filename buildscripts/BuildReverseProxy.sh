@@ -241,7 +241,7 @@ do
 
                 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
                 then
-                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_backup.tar ] )
+                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_backup.tar ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_hidden.tar ] )
                         then
                                 status "Copying the appropriate whole machine backup to the reverseproxy machine"
                                 /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/reverseproxy/reverseproxy_backup.tar ${SERVER_USER}@${rp_active_ip}:/tmp
