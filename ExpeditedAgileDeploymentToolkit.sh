@@ -37,6 +37,7 @@
 end_it_all() {
         if ( [ -f /tmp/END_IT_ALL ] )
         then
+                cwd="`/usr/bin/pwd`"
                 /bin/rm /tmp/END_IT_ALL
         fi
         while ( [ 1 ] )
@@ -44,6 +45,7 @@ end_it_all() {
                 /bin/sleep 1
                 if ( [ -f /tmp/END_IT_ALL ] )
                 then
+                        cd ${cwd}
                         /bin/echo ""
                         /bin/echo "----------------------------------------------------------"
                         /bin/echo "TERMINATING BECAUSE OF FAILURE PLEASE CHECK THE ERROR LOGS"
