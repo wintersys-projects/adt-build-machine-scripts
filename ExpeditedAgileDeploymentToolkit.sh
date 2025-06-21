@@ -63,7 +63,7 @@ end_it_all() {
                         cd ${cwd}
                         /bin/echo ""
                         /bin/echo "----------------------------------------------------------"
-                        /bin/echo "USER INITIATED TERMINATION PLEASE CHECK YOUR ERROR LOGS"
+                        /bin/echo "USER INITIATED TERMINATION"
                         /bin/echo "----------------------------------------------------------"
                         /bin/echo ""
                 fi
