@@ -210,16 +210,24 @@ do
         /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" 3>&1 2>/dev/null
 done
 
-
 #We are satisfied that all is well so far so lets do a finally battery of tests to be as sure as we can be that we are on our feet
 
-status ""
-status "##############################################################################################################################"
-status "The build might pause here"
-status "Anything more than a few minutes then you need to investigate what the hold-up is because something might be wrong"
-status "If you are performing a webserver from source build its likely that any wait here will be longer than a repo or cloud-init based build"
-status "##############################################################################################################################"
-status ""
+if ( [ "`/bin/grep "^${WEBSERVER_CHOICE}:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+then
+        status ""
+        status "##############################################################################################################################"
+        status "Performing system verification checks"
+        status "I have been compiling from source code this can be a long process so there might be a pause here whilst I catch up with myself"
+        status "##############################################################################################################################"     
+        status ""
+else
+        status ""
+        status "##############################################################################################################################"
+        status "Performing system verification checks"
+        status "This should be fairly snappy, any pause more than a minute or so will likely need to be investigated"
+        status "##############################################################################################################################"     
+        status ""
+fi
 
 # This checks that the application language (most likely PHP) has been installed correctly
 if ( [ "${APPLICATION_LANGUAGE}" != "" ] )
