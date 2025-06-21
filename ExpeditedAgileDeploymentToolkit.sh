@@ -35,11 +35,18 @@
 
 
 end_it_all() {
+        cwd="`/usr/bin/pwd`"
+        
         if ( [ -f /tmp/END_IT_ALL ] )
         then
-                cwd="`/usr/bin/pwd`"
                 /bin/rm /tmp/END_IT_ALL
         fi
+        
+        if ( [ -f /tmp/END_IT_ALL_USER ] )
+        then
+                /bin/rm /tmp/END_IT_ALL_USER
+        fi
+        
         while ( [ 1 ] )
         do
                 /bin/sleep 1
@@ -48,19 +55,32 @@ end_it_all() {
                         cd ${cwd}
                         /bin/echo ""
                         /bin/echo "----------------------------------------------------------"
-                        /bin/echo "TERMINATING BECAUSE OF FAILURE PLEASE CHECK THE ERROR LOGS"
+                        /bin/echo "FAILURE INDUCED TERMINATION PLEASE CHECK THE ERROR LOGS"
                         /bin/echo "----------------------------------------------------------"
                         /bin/echo ""
+                elif ( [ -f /tmp/END_IT_ALL_USER ] )
+                then
+                        cd ${cwd}
+                        /bin/echo ""
+                        /bin/echo "----------------------------------------------------------"
+                        /bin/echo "USER INITIATED TERMINATION PLEASE CHECK YOUR ERROR LOGS"
+                        /bin/echo "----------------------------------------------------------"
+                        /bin/echo ""
+                fi
+
+                if ( [ -f /tmp/END_IT_ALL ] || [ -f /tmp/END_IT_ALL_USER ] )
+                then
                         pgid="`/usr/bin/ps  xao pid,pgid | /bin/grep $$ | /usr/bin/awk '{print $NF}' | /usr/bin/uniq`"
                         /usr/bin/kill -TERM -- -${pgid}
                         exit
+
                 fi
         done
 }
 
 end_it_all &
 
-trap '/bin/touch /tmp/END_IT_ALL; trap - EXIT; exit' EXIT INT HUP
+trap '/bin/touch /tmp/END_IT_ALL_USER' EXIT INT HUP
 
 #Set up the intial logging  output. This is where the logging messages will be stored when they occur before
 #the main logging configuration has been set up. There is an output log for stdout and and error log for stderr
