@@ -44,15 +44,15 @@ then
 else
         if ( [ "`/bin/grep Maria ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
         then
-                database_type="sql"
+                db_type="sql"
         fi
         if ( [ "`/bin/grep MySQL ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
         then
-                database_type="sql"
+                db_type="sql"
         fi
         if ( [ "`/bin/grep Postgres ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbe.dat`" != "" ] )
         then
-                database_type="postgres"
+                db_type="postgres"
         fi
 fi
 
@@ -63,7 +63,7 @@ then
         read x
 fi
 
-if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.sql ] && [ "${database_type}" != "sql" ] )
+if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.sql ] && [ "${db_type}" != "sql" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
     	/bin/touch /tmp/END_IT_ALL
@@ -78,7 +78,7 @@ then
         fi
 fi
 
-if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.psql ] && [ "${database_type}" != "postgres" ] )
+if ( [ -f ${interrogation_home}/${BASELINE_DB_REPOSITORY}/applicationDB.psql ] && [ "${db_type}" != "postgres" ] )
 then
         status "It seems like there is a mismatch between the type of database and thw webroot type"
     	/bin/touch /tmp/END_IT_ALL
