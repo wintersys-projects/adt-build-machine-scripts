@@ -21,6 +21,8 @@
 #####################################################################################
 #set -x
 
+WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
+
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat ] )
 then
         status "Error, cannot find database prefix file"
@@ -45,7 +47,14 @@ then
         /bin/echo "/* SALTEDALREADY */" >> /tmp/fullfile
         /bin/echo "define( 'DISALLOW_FILE_EDIT', true );" >> /tmp/fullfile
         /bin/echo "define('WP_CACHE', false);" >> /tmp/fullfile
-        /bin/echo "define('CONCATENATE_SCRIPTS', true);" >> /tmp/fullfile
+        
+        if ( [ "${WEBSERVER_CHOICE}" = "LIGHTTPD" ] )
+        then
+                /bin/echo "define('CONCATENATE_SCRIPTS', false);" >> /tmp/fullfile
+        else
+                /bin/echo "define('CONCATENATE_SCRIPTS', true);" >> /tmp/fullfile
+        fi
+
         /bin/echo "define('COMPRESS_SCRIPTS', true);" >> /tmp/fullfile
         /bin/echo "define('COMPRESS_CSS', true);" >> /tmp/fullfile
         /bin/echo "define('DISABLE_WP_CRON', true);" >> /tmp/fullfile
