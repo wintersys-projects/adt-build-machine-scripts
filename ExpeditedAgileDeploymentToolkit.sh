@@ -70,6 +70,16 @@ end_it_all() {
 
                 if ( [ -f /tmp/END_IT_ALL ] || [ -f /tmp/END_IT_ALL_USER ] )
                 then
+                        if ( [ -f /tmp/END_IT_ALL ] )
+                        then
+                            /bin/rm /tmp/END_IT_ALL
+                        fi
+        
+                        if ( [ -f /tmp/END_IT_ALL_USER ] )
+                        then
+                            /bin/rm /tmp/END_IT_ALL_USER
+                        fi
+                        
                         pgid="`/usr/bin/ps  xao pid,pgid | /bin/grep $$ | /usr/bin/awk '{print $NF}' | /usr/bin/uniq`"
                         /usr/bin/kill -TERM -- -${pgid}
                         exit
