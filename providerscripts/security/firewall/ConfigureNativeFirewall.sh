@@ -55,7 +55,7 @@ then
                         /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${SSH_PORT}
 
 
-                        if ( [ "${all_dns_proxy_ips}" != "" ] || [ "${firewall_name}" = "adt-authenticator" ] )
+                        if ( [ "${all_dns_proxy_ips}" != "" ] && [ "${firewall_name}" != "adt-authenticator" ] )
                         then
                                 if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-proxyserver" ] )
                                 then
