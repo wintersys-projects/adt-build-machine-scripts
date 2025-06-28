@@ -254,17 +254,17 @@ then
                 
                 if ( [ "${firewall_id}" = "" ] )
                 then
-		        firewall_id="`/usr/bin/vultr firewall group create -o json | /usr/bin/jq -r '.firewall_group.id'`"  
-		        /usr/bin/vultr firewall group update ${firewall_id} --description "${firewall_name}-${BUILD_IDENTIFIER}"                
+                        firewall_id="`/usr/bin/vultr firewall group create -o json | /usr/bin/jq -r '.firewall_group.id'`"
+                        /usr/bin/vultr firewall group update ${firewall_id} --description "${firewall_name}-${BUILD_IDENTIFIER}"
                 else
-		        if ( [ "`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.id == "'${firewall_id}'")|.instance_count'`" = "0" ] )
-			then
-   				rules="`/usr/bin/vultr firewall rule list --group-id ${firewall_id}`"
-       				for rule in ${rules}
-	   			do
-   					/usr/bin/vultr firewall rule delete --group-id ${firewall_id} --rule-id ${rule}
-				done
-			fi
+                        if ( [ "`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.id == "'${firewall_id}'")|.instance_count'`" = "0" ] )
+                        then
+                                rules="`/usr/bin/vultr firewall rule list ${firewall_id} -o json | /usr/bin/jq -r '.firewall_rules[].id'`"
+                                for rule in ${rules}
+                                do
+                                        /usr/bin/vultr firewall rule delete ${firewall_id} ${rule}
+                                done
+                        fi
                 fi
 
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
