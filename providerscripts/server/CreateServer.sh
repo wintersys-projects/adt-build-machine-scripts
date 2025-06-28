@@ -212,17 +212,23 @@ then
         # vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
         vpc_id="`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
         OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
-   
+        cloud_config="`/bin/cat ${cloud_config}`"
         if ( [ "${DDOS_PROTECTION}" = "1" ] )
         then
-                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
+                cloud_config="`/bin/cat ${cloud_config}`"
+                machine_id="`/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} -o json | /usr/bin/jq -r '.[].id'`"
         else
-                /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="`/bin/cat ${cloud_config}`" --vpc-enable --vpc-ids ${vpc_id}
-        fi   
-	        
-	if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
+                machine_id="`/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} -o json | /usr/bin/jq -r '.[].id'`"
+        fi    
+
+        while ( [ "`/usr/bin/vultr instance list -o json | /usr/bin/jq -r '.instances[] | select (.id == "'${machine_id}'").status'`" != "active" ] )
+        do
+                /bin/sleep 2
+        done
+
+        if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
         then
-        	firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
         then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-webserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
