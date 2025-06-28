@@ -30,10 +30,10 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT | /bin/sed 's/:/ /g'`"
-PERSIST_ASSETS_TO_CLOUD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PERSIST_ASSETS_TO_CLOUD`"
+PERSIST_ASSETS_TO_DATASTORE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PERSIST_ASSETS_TO_DATASTORE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
-if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
+if ( [ "${PERSIST_ASSETS_TO_DATASTORE}" = "1" ] )
 then
 	interrogation_home="${BUILD_HOME}/interrogation"
 	for directory_to_mount in ${DIRECTORIES_TO_MOUNT}
