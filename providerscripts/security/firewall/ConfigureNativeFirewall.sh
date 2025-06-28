@@ -175,7 +175,11 @@ then
                 else
 		        if ( [ "`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.id == "'${firewall_id}'")|.instance_count'`" = "0" ] )
 			then
-			        /usr/bin/vultr firewall group delete ${firewall_id}
+   				rules="`/usr/bin/vultr firewall rule list --group-id ${firewall_id}`"
+       				for rule in ${rules}
+	   			do
+   					/usr/bin/vultr firewall rule delete --group-id ${firewall_id} --rule-id ${rule}
+				done
 			fi
                 fi
 
