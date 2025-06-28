@@ -21,7 +21,7 @@ then
         then
                 all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
 
-                firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name'-'${BUILD_IDENTIFIER}'").id'`"
+                firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
                 
                 if ( [ "${firewall_id}" = "" ] )
                 then
