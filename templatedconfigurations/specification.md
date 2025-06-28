@@ -499,7 +499,7 @@ This is the port that the SSH daemon will be listening on for connections. You c
 
 -----
 
-### PERSIST_ASSETS_TO_CLOUD 
+### PERSIST_ASSETS_TO_DATASTORE 
 
 There are three settings you can use:
 
