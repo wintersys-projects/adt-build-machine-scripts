@@ -16,6 +16,93 @@ build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
+
+        if ( [ "${CLOUDHOST}" = "digitalocean" ] )
+        then
+                all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
+
+                firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name'-'${BUILD_IDENTIFIER}'").id'`"
+                
+                if ( [ "${firewall_id}" = "" ] )
+                then
+			/usr/local/bin/doctl compute firewall create --name "${firewall_name}-${BUILD_IDENTIFIER}" --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"   
+                else
+			if ( [ "`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.id == "'${firewall_id}'").droplet_ids[]'`" = "" ] )
+			then
+       				/bin/echo "Y" | /usr/local/bin/doctl compute firewall remove-rules ${firewall_id} --inbound-rules "" --outbound-rules "" --force
+			fi
+                fi
+
+                if ( [ "${firewall_name}" = "adt-autoscaler" ] )
+                then
+                        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+
+                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        then
+				rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"                        
+    			fi
+			rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
+			rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                fi
+
+                	if ( [ "${firewall_name}" = "adt-webserver" ] ||  [ "${firewall_name}" = "adt-authenticator" ]  ||  [ "${firewall_name}" = "adt-proxyserver" ] )
+                	then
+                        	if ( [ "${firewall_name}" = "adt-webserver" ] )
+                        	then
+                	        	machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        	elif ( [ "${firewall_name}" = "adt-authenticator" ] )
+                        	then
+                    	        	machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        	elif ( [ "${firewall_name}" = "adt-proxyserver" ] )
+                        	then
+                                	machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        	fi
+
+                        	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        	then
+					rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+    				fi
+
+                        	/usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+
+
+                        	if ( [ "${all_dns_proxy_ips}" != "" ] && [ "${firewall_name}" != "adt-authenticator" ] )
+                        	then
+                                	if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-proxyserver" ] )
+                                	then
+       						for ip in ${alldnsproxyips}
+						do
+							rules=${rules}" protocol:tcp,ports:443,address:${ip} " 
+						done
+						rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} "
+                                	fi
+                        	else
+					rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} protocol:tcp,ports:443,address:0.0.0.0/0 "
+                        	fi
+				rules=${rules}"  protocol:tcp,ports:443,address:${VPC_IP_RANGE} " 
+				rules=${rules}" protocol:icmp,address:0.0.0.0/0"
+				rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
+                	fi
+
+                	if ( [ "${firewall_name}" = "adt-database" ] )
+                	then
+                        	machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        	then
+					rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                        	fi
+				rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:${DB_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
+				rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                
+   			fi
+
+			/usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}"
+
+			for machine_id in ${machine_ids}
+			do
+				/usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
+			done
+                	/bin/echo "ADT_FIREWALL_ID:${firewall_name}-${BUILD_IDENTIFIER}"
+		fi
+  	fi
         if ( [ "${CLOUDHOST}" = "exoscale" ] )
         then
                 all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
@@ -242,4 +329,5 @@ then
                         /usr/bin/vultr instance update-firewall-group ${machine_id} -f ${firewall_id}
                 done
                 /bin/echo "ADT_FIREWALL_ID:${firewall_name}-${BUILD_IDENTIFIER}"
+	fi
 fi
