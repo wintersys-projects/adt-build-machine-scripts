@@ -54,7 +54,7 @@ APPLICATION_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICA
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
-PERSIST_ASSETS_TO_CLOUD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PERSIST_ASSETS_TO_CLOUD`"
+PERSIST_ASSETS_TO_DATASTORE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PERSIST_ASSETS_TO_DATASTORE`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 NO_REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXY`"
@@ -307,7 +307,7 @@ do
 done
 
 #If we are mounting assets into the webroot of our application from the datastore then this checks that they are mounted correctly
-if ( [ "${PERSIST_ASSETS_TO_CLOUD}" = "1" ] )
+if ( [ "${PERSIST_ASSETS_TO_DATASTORE}" = "1" ] )
 then
         status "Checking that your assets are mounted..."
         assets_mounted=""
