@@ -161,4 +161,81 @@ then
                         /bin/echo "ADT_FIREWALL_ID:${firewall_id}"
                 fi
         fi
+
+        if ( [ "${CLOUDHOST}" = "vultr" ] )
+        then
+                all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
+
+                firewall_id="`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.description == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
+                
+                if ( [ "${firewall_id}" = "" ] )
+                then
+		        firewall_id="`/usr/bin/vultr firewall group create -o json | /usr/bin/jq -r '.firewall_group.id'`"  
+		        /usr/bin/vultr firewall group update ${firewall_id} --description "${firewall_name}-${BUILD_IDENTIFIER}"                
+                else
+		        if ( [ "`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.id == "'${firewall_id}'")|.instance_count'`" = "0" ] )
+			then
+			        /usr/bin/vultr firewall group delete ${firewall_id}
+			fi
+                fi
+
+                if ( [ "${firewall_name}" = "adt-autoscaler" ] )
+                then
+                        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+
+                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        then
+                                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
+                        fi
+                        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+                fi
+
+                if ( [ "${firewall_name}" = "adt-webserver" ] ||  [ "${firewall_name}" = "adt-authenticator" ]  ||  [ "${firewall_name}" = "adt-proxyserver" ] )
+                then
+                        if ( [ "${firewall_name}" = "adt-webserver" ] )
+                        then
+                	        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        elif ( [ "${firewall_name}" = "adt-authenticator" ] )
+                        then
+                    	        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        elif ( [ "${firewall_name}" = "adt-proxyserver" ] )
+                        then
+                                machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        fi
+
+                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        then
+                                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
+                        fi
+
+                        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+
+
+                        if ( [ "${all_dns_proxy_ips}" != "" ] && [ "${firewall_name}" != "adt-authenticator" ] )
+                        then
+                                if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-proxyserver" ] )
+                                then
+                			/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4  --source=cloudflare --subnet=10.0.0.0/8
+					/usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+                                fi
+                        else
+                                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0                       
+                        fi
+                fi
+
+                if ( [ "${firewall_name}" = "adt-database" ] )
+                then
+                        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        then
+                                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32
+                        fi
+                        /usr/bin/vultr firewall rule create ${firewall_id} --protocol icmp --size 32 --ip-type v4 -s 0.0.0.0/0
+                fi
+
+                for machine_id in ${machine_ids}
+                do
+                        /usr/bin/vultr instance update-firewall-group ${machine_id} -f ${firewall_id}
+                done
+                /bin/echo "ADT_FIREWALL_ID:${firewall_name}-${BUILD_IDENTIFIER}"
 fi
