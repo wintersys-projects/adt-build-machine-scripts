@@ -233,9 +233,9 @@ then
  
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 	then	
-		/usr/bin/vultr account >&3
+		/usr/bin/vultr account info>&3
 	else
-		/usr/bin/vultr account
+		/usr/bin/vultr account info
 	fi
 		
 	if ( [ "$?" != "0" ] )
