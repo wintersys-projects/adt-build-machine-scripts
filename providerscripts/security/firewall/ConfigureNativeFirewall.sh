@@ -61,8 +61,6 @@ then
 					rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
     				fi
 
-				/usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
-
 				if ( [ "${all_dns_proxy_ips}" != "" ] && [ "${firewall_name}" != "adt-authenticator" ] )
 				then
 					if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-proxyserver" ] )
