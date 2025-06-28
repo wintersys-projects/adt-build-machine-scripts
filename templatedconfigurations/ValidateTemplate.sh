@@ -218,9 +218,9 @@ then
         ${log_command} "Your value for the variable DATABASE_INSTALLATION_TYPE (${DATABASE_INSTALLATION_TYPE}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^PERSIST_ASSETS_TO_CLOUD " ${quick_specification} | /bin/grep -w "${PERSIST_ASSETS_TO_CLOUD}"  2>/dev/null `" = "" ] )
+if ( [ "`/bin/grep "^PERSIST_ASSETS_TO_DATASTORE " ${quick_specification} | /bin/grep -w "${PERSIST_ASSETS_TO_DATASTORE}"  2>/dev/null `" = "" ] )
 then
-        ${log_command} "Your value for the variable PERSIST_ASSETS_TO_CLOUD (${PERSIST_ASSETS_TO_CLOUD}) doesn't appear to be valid please review"
+        ${log_command} "Your value for the variable PERSIST_ASSETS_TO_DATASTORE (${PERSIST_ASSETS_TO_DATASTORE}) doesn't appear to be valid please review"
 fi
 
 existing_build_identifiers="`/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}`"
