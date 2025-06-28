@@ -400,7 +400,7 @@ then
         status "Interrogating to see what Application you are running, if any"
         status "#############################################################"
         ${BUILD_HOME}/application/InterrogateApplicationType.sh
-        if ( [ "${BUILD_CHOICE}" -ne "1" ] )
+        if ( [ "${BUILD_CHOICE}" -eq "1" ] )
         then
           ${BUILD_HOME}/application/CheckForAssetsOverwrite.sh
         fi        
