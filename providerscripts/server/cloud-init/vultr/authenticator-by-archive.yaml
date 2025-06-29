@@ -60,7 +60,7 @@ write_files:
   path: /etc/ssh/sshd_config
   append: true
 - content: |
-  /home/XXXXSERVER_USERXXXX
+    /home/XXXXSERVER_USERXXXX
   path: /home/homedir.dat
 
 
