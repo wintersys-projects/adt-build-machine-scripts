@@ -64,7 +64,9 @@ write_files:
     AllowUsers XXXXSERVER_USERXXXX
   path: /etc/ssh/sshd_config
   append: true
-  
+- content: /home/XXXXSERVER_USERXXXX
+  path: /home/buildhome.dat
+
 package_update: true
 package_upgrade: true
 
