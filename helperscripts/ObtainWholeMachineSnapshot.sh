@@ -85,7 +85,6 @@ then
         do
                 /bin/echo "Invalid resonose, try again"
                 read response
-                /usr/bin/exo compute instance-template register --boot-mode legacy --disable-password --from-snapshot ${snapshot_id} --zone ${region_id} --username ${DEFAULT_USER} ${machine_name} 
         done
 
         if ( [ "${response}" = "1" ] )
