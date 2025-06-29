@@ -62,7 +62,7 @@ then
         machine_id="`/usr/local/bin/doctl compute droplet list | /bin/grep autoscaler | /usr/bin/awk '{print $1}'`"
         machine_name="`/usr/local/bin/doctl compute droplet list | /bin/grep autoscaler | /usr/bin/awk '{print $2}'`"
 
-        /bin/echo"########################SNAPSHOTING YOUR MACHINE####################################"
+        /bin/echo "########################SNAPSHOTING YOUR MACHINE####################################"
 
         /usr/local/bin/doctl compute droplet-action snapshot --snapshot-name "${machine_name}" ${machine_id}
 fi
