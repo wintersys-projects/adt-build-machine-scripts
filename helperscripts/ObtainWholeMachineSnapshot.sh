@@ -78,6 +78,7 @@ then
         /usr/bin/exo compute instance snapshot create -z ${region_id} ${machine_id}
         snapshot_id="`/usr/bin/exo compute instance snapshot list -O json  | /usr/bin/jq -r '.[] | select ( .instance == "'${machine_name}'").id'`"
         /bin/echo "Is the machine you  are snapshotting  based on 1) ubuntu or 2) debian?"
+        /bin/echo "Please enter a value of 1 or 2 to make a choice"
         read response
 
         while ( [ "`/bin/echo 1 2 | /bin/grep "${response}"`" = "" ] )
