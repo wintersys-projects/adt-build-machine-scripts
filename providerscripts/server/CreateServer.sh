@@ -217,8 +217,6 @@ then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-proxyserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         fi
 
-        firewall_id="`/bin/echo ${firewall_id} | /usr/bin/awk -F':' '{print $NF}'`"
-
         if ( [ "`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`" = "" ] )
         then
                 # ip_block="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
