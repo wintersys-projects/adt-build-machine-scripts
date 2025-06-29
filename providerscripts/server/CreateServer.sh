@@ -200,32 +200,6 @@ fi
 
 if (  [ "${CLOUDHOST}" = "vultr" ] )
 then
-        if ( [ "`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`" = "" ] )
-        then
-                # ip_block="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
-                # /usr/bin/vultr vpc2 create --region="${REGION}" --description="adt-vpc" --ip-type="v4" --ip-block="${ip_block}" --prefix-length="16"
-                subnet="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
-                size="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $2}'`"
-                /usr/bin/vultr vpc create --region="${REGION}" --description="${VPC_NAME}" --subnet="${subnet}" --size="${size}"
-        fi
-
-        # vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
-        vpc_id="`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
-        OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
-        cloud_config="`/bin/cat ${cloud_config}`"
-        if ( [ "${DDOS_PROTECTION}" = "1" ] )
-        then
-                cloud_config="`/bin/cat ${cloud_config}`"
-                machine_id="`/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=true --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} -o json | /usr/bin/jq -r '.[].id'`"
-        else
-                machine_id="`/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --ddos=false --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} -o json | /usr/bin/jq -r '.[].id'`"
-        fi    
-
-        while ( [ "`/usr/bin/vultr instance list -o json | /usr/bin/jq -r '.instances[] | select (.id == "'${machine_id}'").status'`" != "active" ] )
-        do
-                /bin/sleep 2
-        done
-
         if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
         then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
@@ -242,4 +216,26 @@ then
         then
                 firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-proxyserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
         fi
+
+        firewall_id="`/bin/echo ${firewall_id} | /usr/bin/awk -F':' '{print $NF}'`"
+
+        if ( [ "`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`" = "" ] )
+        then
+                # ip_block="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
+                # /usr/bin/vultr vpc2 create --region="${REGION}" --description="adt-vpc" --ip-type="v4" --ip-block="${ip_block}" --prefix-length="16"
+                subnet="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $1}'`"
+                size="`/bin/echo ${VPC_IP_RANGE} | /usr/bin/awk -F'/' '{print $2}'`"
+                /usr/bin/vultr vpc create --region="${REGION}" --description="${VPC_NAME}" --subnet="${subnet}" --size="${size}"
+        fi
+
+        # vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
+        vpc_id="`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
+        OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
+        cloud_config="`/bin/cat ${cloud_config}`"
+        if ( [ "${DDOS_PROTECTION}" = "1" ] )
+        then
+                machine_id="`/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --firewall-group ${firewall_id} --ddos=true --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} -o json | /usr/bin/jq -r '.[].id'`"
+        else
+                machine_id="`/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} --firewall-group ${firewall_id} --ddos=false --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} -o json | /usr/bin/jq -r '.[].id'`"
+        fi    
 fi
