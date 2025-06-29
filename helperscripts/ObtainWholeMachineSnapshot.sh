@@ -2,7 +2,7 @@
 ####################################################################################
 # Author : Peter Winter
 # Date   : 13/06/2016
-# Description : This script will create a snapshot of the autoscaler
+# Description : This script will create a snapshot of a machine
 ####################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -19,9 +19,7 @@
 #####################################################################################
 #####################################################################################
 #set -x
-#
-#
-#
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
