@@ -103,9 +103,8 @@ fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
-        machine_id="`/usr/local/bin/linode-cli --text linodes list | /bin/grep autoscaler | /usr/bin/awk '{print $1}' | /usr/bin/head -1`"
-        machine_name="`/usr/local/bin/linode-cli --text linodes list | /bin/grep autoscaler | /usr/bin/awk '{print $2}' | /usr/bin/head -1`"
-        disk_id="`/usr/local/bin/linode-cli --text linodes disks-list ${machine_id} | /bin/grep -v swap | /bin/grep -v id | /usr/bin/awk '{print $1}'`"
+        machine_name="`/usr/local/bin/linode-cli linodes list --json | /usr/bin/jq -r '.[] | select (.id == "'${machine_id}'").label'`"
+        disk_id="`/usr/local/bin/linode-cli linodes disks-list ${machine_id} --json | /usr/bin/jq -r '.[] | select (.filesystem == "ext4").id'`"
         /bin/echo "########################SNAPSHOTTING YOUR MACHINE####################################"
         /usr/local/bin/linode-cli images create --disk_id ${disk_id} --label ${machine_name}
 fi
