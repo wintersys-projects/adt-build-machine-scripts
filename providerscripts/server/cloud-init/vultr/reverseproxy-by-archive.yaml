@@ -101,5 +101,6 @@ runcmd:
   - '/home/XXXXSERVER_USERXXXX/utilities/config/StoreConfigValue.sh "WEBSERVERCHOICE" "XXXXREVERSEPROXYSERVERXXXX"'
   - '/home/XXXXSERVER_USERXXXX/utilities/processing/RunServiceCommand.sh "ssh" restart'
   - '/home/XXXXSERVER_USERXXXX/utilities/processing/RunServiceCommand.sh "cron" restart'
+  - '/home/XXXXSERVER_USERXXXX/SetupFirewall.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/arch.sh'
   - '/bin/mkdir -p /home/XXXXSERVER_USERXXXX/runtime/ && /bin/touch /home/XXXXSERVER_USERXXXX/runtime/REVERSEPROXY_READY'
