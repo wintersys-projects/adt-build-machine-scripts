@@ -213,3 +213,23 @@ then
 
         /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} ${firewall} ${ddos} --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} 
 fi
+
+if ( [ "${CLOUDHOST}" = "digitalocean" ] )
+then
+        if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-autoscaler"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-webserver"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-database" 
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-authenticator" 
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-proxyserver" 
+        fi
+fi
