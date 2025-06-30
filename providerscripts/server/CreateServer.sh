@@ -111,21 +111,24 @@ then
         fi
 fi
 
-if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
+if ( [ "${CLOUDHOST}" = "exoscale" ] || [ "${CLOUDHOST}" = "linode" ] || [ "${CLOUDHOST}" = "vultr" ] )
 then
-	firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
-elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
-then
-	firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-webserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
-elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
-then
-	firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-database" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
-elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
-then
-	firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-authenticator" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
-elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
-then
-	firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-proxyserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-autoscaler" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-webserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-database" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-authenticator" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
+        then
+                firewall_id="`${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "adt-proxyserver" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'`"
+        fi
 fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
