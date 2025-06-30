@@ -32,7 +32,7 @@ then
                         /bin/sleep 5
                 done
 
-                /usr/local/bin/doctl compute firewall create --name "${firewall_name}-${BUILD_IDENTIFIER}" --outbound-rules "protocol:icmp,address:0.0.0.0/0"   
+                /usr/local/bin/doctl compute firewall create --name "${firewall_name}-${BUILD_IDENTIFIER}"  --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
 
                 firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
 
@@ -71,7 +71,7 @@ then
                         then
                             if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-proxyserver" ] )
                             then
-                                for ip in ${alldnsproxyips}
+                                for ip in ${all_dns_proxy_ips}
                                 do
                                       rules=${rules}" protocol:tcp,ports:443,address:${ip} " 
                                 done
@@ -88,17 +88,19 @@ then
 
                   if ( [ "${firewall_name}" = "adt-database" ] )
                   then
-                       machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                       machine_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+
                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                        then
                            rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
                        fi
+
                        rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:${DB_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
                        rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                
                   fi
 
-                 /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}"  --outbound-rules "protocol:tcp,ports:all,address:0.0.0.0/0"
-
+                 /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
+                 
                  for machine_id in ${machine_ids}
                  do
                       /usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
