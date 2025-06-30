@@ -24,7 +24,7 @@ then
                 
                 if ( [ "${firewall_id}" != "" ] )
                 then
-                        /bin/echo "Y" | /usr/local/bin/doctl -o json compute firewall delete ${firewall_id}
+                        /usr/local/bin/doctl -o json compute firewall delete ${firewall_id} --force
                 fi
 
                 while ( [ "`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`" != "" ] )
