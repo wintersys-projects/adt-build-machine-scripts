@@ -37,19 +37,19 @@ done
 
 if ( [ "${response}" = "1" ] )
 then
-    machine_type="^auth-"
+    machine_type="auth"
 elif ( [ "${response}" = "2" ] )
 then
-    machine_type="\-rp-"
+    machine_type="-rp"
 elif ( [ "${response}" = "3" ] )
 then
-   machine_type="\-as-"
+   machine_type="-as"
 elif ( [ "${response}" = "4" ] )
 then
-    machine_type="^ws-"
+    machine_type="ws"
 elif ( [ "${response}" = "5" ] )
 then
-    machine_type="^db-"
+    machine_type="db"
 else
         /bin/echo "Unrecognised response"
         exit
@@ -59,7 +59,7 @@ machine_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_ty
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
-        machine_name="`/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.id == ${machine_id} ).name'`"
+        machine_name="`/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.id == '${machine_id}' ).name'`"
         /bin/echo "########################SNAPSHOTING YOUR MACHINE####################################"
         /usr/local/bin/doctl compute droplet-action snapshot --snapshot-name "${machine_name}" ${machine_id}
 fi
