@@ -103,7 +103,6 @@ then
                  do
                       /usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
                  done
-                /bin/echo "ADT_FIREWALL_ID:${firewall_id}
         fi
         if ( [ "${CLOUDHOST}" = "exoscale" ] )
         then
