@@ -59,11 +59,8 @@ machine_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_ty
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
-        machine_id="`/usr/local/bin/doctl compute droplet list | /bin/grep autoscaler | /usr/bin/awk '{print $1}'`"
-        machine_name="`/usr/local/bin/doctl compute droplet list | /bin/grep autoscaler | /usr/bin/awk '{print $2}'`"
-
+        machine_name="`/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.id == ${machine_id} ).name'`"
         /bin/echo "########################SNAPSHOTING YOUR MACHINE####################################"
-
         /usr/local/bin/doctl compute droplet-action snapshot --snapshot-name "${machine_name}" ${machine_id}
 fi
 
