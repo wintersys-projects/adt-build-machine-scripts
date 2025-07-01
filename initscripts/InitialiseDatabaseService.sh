@@ -565,7 +565,7 @@ fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots ] )
 then
-        /bin/mkdir ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots
 fi
 
 /bin/echo "USERNAME:${DB_USERNAME}" > ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate
