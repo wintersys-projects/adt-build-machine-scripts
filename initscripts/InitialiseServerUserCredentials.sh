@@ -31,6 +31,7 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
+BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 WEBSITE_URLP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEURL`"
 
 #Set a username and password which we can set on all our servers. Once the machines are built, password authentication is
@@ -40,6 +41,11 @@ then
     status "Building from whole machine backups, server username and server password set to already existing values"
     SERVER_USER="`/bin/grep 'USERNAME' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
     SERVER_USER_PASSWORD="`/bin/grep 'PASSWORD' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+elif ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat ] )
+then
+    status "Building from whole machine snapshots, server username and server password set to already existing values"
+    SERVER_USER="`/bin/grep 'USERNAME' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+    SERVER_USER_PASSWORD="`/bin/grep 'PASSWORD' ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
 else
     status "Not building from whole machine backups, server username and server password being freshly generated"
     SERVER_USER="X`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`X"
