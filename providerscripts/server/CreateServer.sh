@@ -19,7 +19,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ####################################################################################
 ####################################################################################
-set -x
+#set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -256,5 +256,5 @@ fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
-        ${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "${machine_type}" | /bin/grep 'ADT_FIREWALL_ID:' | /usr/bin/awk -F':' '{print  $NF}'
+        ${BUILD_HOME}/providerscripts/security/firewall/ConfigureNativeFirewall.sh "${machine_type}" 
 fi
