@@ -38,7 +38,7 @@ then
 
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
                 then
-                        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                        machine_identifier="as-${REGION}-${BUILD_IDENTIFIER}"
 
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                         then
@@ -53,13 +53,13 @@ then
                 then
                         if ( [ "${firewall_name}" = "adt-webserver" ] )
                         then
-                         machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "ws-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                            machine_identifier="ws-${REGION}-${BUILD_IDENTIFIER}"
                         elif ( [ "${firewall_name}" = "adt-authenticator" ] )
                         then
-                            machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                            machine_identifier="auth-${REGION}-${BUILD_IDENTIFIER}"
                         elif ( [ "${firewall_name}" = "adt-proxyserver" ] )
                         then
-                            machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "rp-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                            machine_identifier="rp-${REGION}-${BUILD_IDENTIFIER}"
                         fi
 
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
@@ -88,7 +88,7 @@ then
 
                   if ( [ "${firewall_name}" = "adt-database" ] )
                   then
-                       machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                       machine_identifier="db-${REGION}-${BUILD_IDENTIFIER}"
 
                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                        then
@@ -100,7 +100,15 @@ then
                   fi
 
                  /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
-                 
+
+                 machine_ids=""
+
+                 while ( [ "${machine_ids}" = "" ] )
+                 do
+                        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_identifier}" ${CLOUDHOST}`"
+                        /bin/sleep 5
+                 done
+
                  for machine_id in ${machine_ids}
                  do
                       /usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
