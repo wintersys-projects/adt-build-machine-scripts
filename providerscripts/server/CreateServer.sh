@@ -156,7 +156,7 @@ fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
-        if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'${VPC_NAME}'")).id'`" ] )
+        if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'${VPC_NAME}'")).id'`" = "" ] )
         then
                 /usr/local/bin/doctl vpcs create --name "${VPC_NAME}" --region "${REGION}" --ip-range "${VPC_IP_RANGE}"
         fi
