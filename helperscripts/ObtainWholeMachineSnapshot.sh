@@ -24,6 +24,7 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
 /bin/echo "Do you want to snapshot an 1. authenticator, 2. reverse proxy, 3. autoscaler, 4. webserver or 5. database machine type?"
 /bin/echo "Please enter a value between 1 and 5 to make a selection"
@@ -38,30 +39,77 @@ done
 if ( [ "${response}" = "1" ] )
 then
     machine_type="auth"
+    machine_label="authenticator"
 elif ( [ "${response}" = "2" ] )
 then
     machine_type="-rp"
+    machine_label="reverseproxy"
 elif ( [ "${response}" = "3" ] )
 then
    machine_type="-as"
+    machine_label="autoscaler"
 elif ( [ "${response}" = "4" ] )
 then
     machine_type="ws"
+    machine_label="webserver"
 elif ( [ "${response}" = "5" ] )
 then
     machine_type="db"
+    machine_label="database"
 else
         /bin/echo "Unrecognised response"
         exit
 fi
+
+if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots ] )
+then
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots
+fi
+
+SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
+SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
+
+/bin/echo "USERNAME:${SERVER_USER}" > ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat
+/bin/echo "PASSWORD:${SERVER_USER_PASSWORD}" >> ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat
 
 machine_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_type}-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} | /usr/bin/head -n 1`"
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
         machine_name="`/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.id == '${machine_id}' ).name'`"
+
+        if ( [ "${machine_name}" = "" ] )
+        then
+                /bin/echo "Couldn't find a machine to snapshot"
+                exit
+        fi
+        if ( [ "`/usr/local/bin/doctl compute snapshot list -o json | /usr/bin/jq '.[] | select (.name == "'${machine_name}'").id'`" != "" ] )
+        then
+                /bin/echo "A snapshot for machine ${machine_name} already exists, delete it and retry if you want to generate a new snapshot"
+                exit
+        fi
         /bin/echo "########################SNAPSHOTING YOUR MACHINE####################################"
         /usr/local/bin/doctl compute droplet-action snapshot --snapshot-name "${machine_name}" ${machine_id}
+
+        /bin/echo "Trying to get snapshot id"
+        while ( [ "`/usr/local/bin/doctl compute snapshot list -o json | /usr/bin/jq -r '.[] | select (.name == "'${machine_name}'").id'`" = "" ] )
+        do
+                /bin/sleep 5
+        done
+
+        snapshot_id="`/usr/local/bin/doctl compute snapshot list -o json | /usr/bin/jq -r '.[] | select (.name == "'${machine_name}'").id'`" 
+
+        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        then
+                if ( [ "`/bin/grep ${machine_label} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat`" != "" ] )
+                then
+                        /bin/sed -i "s/.*${machine_label}.*/${machine_label}:${snapshot_id}/" ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+                else
+                        /bin/echo "${machine_label}:${snapshot_id}" >> ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+                fi
+        else
+                /bin/echo "${machine_label}:${snapshot_id}" > ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+        fi
 fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
