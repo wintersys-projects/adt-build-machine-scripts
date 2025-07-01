@@ -88,7 +88,7 @@ then
 
                   if ( [ "${firewall_name}" = "adt-database" ] )
                   then
-                       machine_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
+                       machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "db-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`"
 
                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                        then
