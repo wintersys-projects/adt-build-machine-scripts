@@ -44,6 +44,7 @@ SSH_PRIVATE_KEY_TRIMMED="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUIL
 TIMEZONE_CONTINENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_TIMEZONE_CONTINENT`"
 TIMEZONE_CITY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_TIMEZONE_CITY`"
 BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
+BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 TIMEZONE="${TIMEZONE_CONTINENT}/${TIMEZONE_CITY}"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
@@ -141,7 +142,7 @@ reverseproxy_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUD
 build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstyles.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
 from_backup=""
-if ( [ "${BUILD_FROM_BACKUP}" = "1" ] )
+if ( [ "${BUILD_FROM_BACKUP}" = "1" ] || [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
         from_backup="-by-archive"
 fi
