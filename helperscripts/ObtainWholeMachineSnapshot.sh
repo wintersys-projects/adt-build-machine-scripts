@@ -72,6 +72,13 @@ SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_I
 /bin/echo "USERNAME:${SERVER_USER}" > ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat
 /bin/echo "PASSWORD:${SERVER_USER_PASSWORD}" >> ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat
 
+/bin/cp ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat
+
+if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ] )
+then
+        /bin/cp ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat
+fi
+
 machine_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_type}-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} | /usr/bin/head -n 1`"
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
