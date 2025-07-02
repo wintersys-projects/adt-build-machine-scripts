@@ -230,6 +230,15 @@ then
         OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
         cloud_config="`/bin/cat ${cloud_config}`"
 
+        snapshot=""
+        os='--os="'${OS_CHOICE}'"'
+
+        if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
+        then
+                snapshot="--snapshot=${snapshot_id}"
+                os=""
+        fi
+
         if ( [ "${DDOS_PROTECTION}" = "1" ] )
         then
                 ddos="--ddos=true"
@@ -244,7 +253,7 @@ then
                  firewall="--firewall-group ${firewall_id}"
         fi
 
-        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" --os="${OS_CHOICE}" --ipv6=false -s ${KEY_ID} ${firewall} ${ddos} --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} 
+        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" ${snapshot} ${os} --ipv6=false -s ${KEY_ID} ${firewall} ${ddos} --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} 
 fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
