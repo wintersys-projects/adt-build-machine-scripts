@@ -97,7 +97,7 @@ then
         fi
 
         /bin/echo "##############################################################################################"
-        /bin/echo "############MAKING A SNAPSHOT OF MACHINE: ${machine_name} ################"
+        /bin/echo "################MAKING A SNAPSHOT OF MACHINE: ${machine_name} #####################"
         /bin/echo "##############################################################################################"
 
         /usr/local/bin/doctl compute droplet-action snapshot --snapshot-name "${machine_name}" ${machine_id}
