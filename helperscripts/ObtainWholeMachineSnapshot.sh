@@ -145,7 +145,7 @@ then
 
         while ( [ "`/bin/echo 1 2 | /bin/grep "${response}"`" = "" ] )
         do
-                /bin/echo "Invalid resonose, try again"
+                /bin/echo "Invalid response, try again"
                 read response
         done
 
@@ -173,10 +173,49 @@ fi
 
 if ( [ "${CLOUDHOST}" = "vultr" ] )
 then
-        export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/TOKEN`"
+        export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
 
-        SUBID="`/usr/bin/vultr instance list | /bin/grep  autoscaler | /usr/bin/awk '{print $1}' | /usr/bin/head -1`"
-        /bin/echo "########################SNAPSHOTING YOUR MACHINE IN THE BACKGROUND####################################"
-        /usr/bin/vultr snapshot create -i ${SUBID} -d "autoscaler-${SERVER_USER}"
-        /bin/touch ${HOME}/.ssh/SNAPSHOT:${SUBID}
+        if ( [ "`/usr/bin/vultr snapshot list -o json | /usr/bin/jq -r '.snapshots[] | select (.description == "'${machine_label}'-'${SERVER_USER}'").id'`" != "" ] )
+        then
+                /bin/echo "A snapshot of your current machine already exists, please delete it if you want to make a new one"
+                exit
+        fi
+
+        /bin/echo "##############################################################################################"
+        /bin/echo "################MAKING A SNAPSHOT OF MACHINE: ${machine_label} #####################"
+        /bin/echo "##############################################################################################"
+
+        /usr/bin/vultr snapshot create -i ${machine_id} -d "${machine_label}-${SERVER_USER}"
+        if ( [ "$?" = "0" ] )
+        then
+                /bin/echo "Waiting to get the id of your snapshot"
+
+                while ( [ "`/usr/bin/vultr snapshot list -o json | /usr/bin/jq -r '.snapshots[] | select (.description == "'${machine_label}'-'${SERVER_USER}'").id'`" = "" ] )
+                do
+                        /bin/sleep 5
+                done
+
+                snapshot_id="`/usr/bin/vultr snapshot list -o json | /usr/bin/jq -r '.snapshots[] | select (.description == "'${machine_label}'-'${SERVER_USER}'").id'`"
+
+                /bin/echo "Snapshot generated. It has an id of ${snapshot_id}"
+        else
+                /bin/echo "Error creating snapshot...exiting without creating one"
+                exit
+        fi
+fi
+
+/bin/echo "Trying to update stored snapshot ids located at: ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat"
+
+if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+then
+        if ( [ "`/bin/grep ${machine_label} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat`" != "" ] )
+        then
+                /bin/sed -i "s/.*${machine_label}.*/${machine_label}:${snapshot_id}/" ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+        else
+                /bin/echo "${machine_label}:${snapshot_id}" >> ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+        fi
+        /bin/echo "Stored snapshot ids updated"
+else
+        /bin/echo "${machine_label}:${snapshot_id}" > ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+        /bin/echo "Stored snapshot ids generated"
 fi
