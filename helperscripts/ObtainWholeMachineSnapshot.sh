@@ -95,16 +95,24 @@ then
                 /bin/echo "A snapshot for machine ${machine_name} already exists, delete it and retry if you want to generate a new snapshot"
                 exit
         fi
-        /bin/echo "########################SNAPSHOTING YOUR MACHINE####################################"
+
+        /bin/echo "##############################################################################################"
+        /bin/echo "############MAKING A SNAPSHOT OF MACHINE: ${machine_name} ################"
+        /bin/echo "##############################################################################################"
+
         /usr/local/bin/doctl compute droplet-action snapshot --snapshot-name "${machine_name}" ${machine_id}
 
-        /bin/echo "Trying to get snapshot id"
+        /bin/echo "Trying verify newly generated snapshot  - this should take less than one minute"
         while ( [ "`/usr/local/bin/doctl compute snapshot list -o json | /usr/bin/jq -r '.[] | select (.name == "'${machine_name}'").id'`" = "" ] )
         do
                 /bin/sleep 5
         done
 
         snapshot_id="`/usr/local/bin/doctl compute snapshot list -o json | /usr/bin/jq -r '.[] | select (.name == "'${machine_name}'").id'`" 
+
+        /bin/echo "Successfully obtained snasphot id:${snapshot_id}"
+
+        /bin/echo "Trying to update stored snapshot ids located at: ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat"
 
         if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
@@ -114,8 +122,10 @@ then
                 else
                         /bin/echo "${machine_label}:${snapshot_id}" >> ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
                 fi
+                /bin/echo "Stored snapshot ids updated"
         else
                 /bin/echo "${machine_label}:${snapshot_id}" > ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+                /bin/echo "Stored snapshot ids generated"
         fi
 fi
 
