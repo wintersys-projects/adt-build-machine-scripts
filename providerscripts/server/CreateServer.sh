@@ -176,6 +176,11 @@ if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
         template_visibility=" --template-visibility public "
 
+        if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
+        then
+                OS_CHOICE="${snapshot_id}"
+        fi
+
         firewall=""
         
         if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
