@@ -131,12 +131,15 @@ fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
-        region_id="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/CURRENTREGION`"
-
-        /bin/echo "########################SNAPSHOTING YOUR MACHNIE IN THE BACKGROUND####################################"
-
-        machine_name="`/usr/bin/exo compute instance list --zone ${region_id} -O json | /usr/bin/jq -r '.[].name'`"
+        region_id="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/CURRENTREGION`"
+        machine_name="`/usr/bin/exo compute instance list --zone ${region_id} -O json | /usr/bin/jq -r '.[] | select (.name | contains ( "'${machine_type}'-'${region_id}'-'${BUILD_IDENTIFIER}'")).name'`"
         machine_id="`/usr/bin/exo compute instance list --zone ch-gva-2 -O json | /usr/bin/jq -r '.[] | select ( .name == "'${machine_name}'").id'`"
+
+
+        /bin/echo "##############################################################################################"
+        /bin/echo "################MAKING A SNAPSHOT OF MACHINE: ${machine_name} #####################"
+        /bin/echo "##############################################################################################"
+
         /usr/bin/exo compute instance snapshot create -z ${region_id} ${machine_id}
         snapshot_id="`/usr/bin/exo compute instance snapshot list -O json  | /usr/bin/jq -r '.[] | select ( .instance == "'${machine_name}'").id'`"
         /bin/echo "Is the machine you  are snapshotting  based on 1) ubuntu or 2) debian?"
@@ -160,7 +163,7 @@ then
                 exit
         fi
 
-        /usr/bin/exo compute instance-template register --boot-mode legacy --disable-password --from-snapshot ${snapshot_id} --zone ${region_id} --username ${target_os} ${machine_name} 
+        snapshot_id="`/usr/bin/exo compute instance-template register --boot-mode legacy --disable-password --from-snapshot ${snapshot_id} --zone ${region_id} --username ${target_os} ${machine_name} -O json | /usr/bin/jq -r '.id'`"
 fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
