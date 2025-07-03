@@ -150,7 +150,7 @@ build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstyles.dat 
 from_backup=""
 if ( [ "${BUILD_FROM_BACKUP}" = "1" ] || [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
-        from_backup="-by-archive"
+        from_backup="-by-snapshot"
 fi
 
 # take the packaged cloud-init scripts and make them live ready
