@@ -114,37 +114,37 @@ fi
 if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
 then
         machine_type="adt-autoscaler"
-        if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
-                snapshot_id="`/bin/grep autoscaler ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                snapshot_id="`/bin/grep autoscaler ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
         fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
 then
         machine_type="adt-webserver"
-        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
-                snapshot_id="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                snapshot_id="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
         fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
 then
         machine_type="adt-database"
-        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
-                snapshot_id="`/bin/grep database ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                snapshot_id="`/bin/grep database ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
         fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
 then
         machine_type="adt-authenticator"
-        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
-                snapshot_id="`/bin/grep authenticator ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                snapshot_id="`/bin/grep authenticator ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
         fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
 then
         machine_type="adt-reverseproxy"
-        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
-                snapshot_id="`/bin/grep reverseproxy ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                snapshot_id="`/bin/grep reverseproxy ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
         fi
 fi
 
