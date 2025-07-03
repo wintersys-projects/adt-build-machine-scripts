@@ -41,7 +41,6 @@ DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
 BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYER`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
-BUILD_FROM_BACKUP="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_BACKUP`"
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
@@ -547,13 +546,6 @@ else
         DB_PASSWORD="p`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`p"
         DB_USERNAME="u`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-8 | /usr/bin/tr '[:upper:]' '[:lower:]'`u"
         DB_IDENTIFIER="self-managed"
-fi
-
-if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat ] )
-then
-        DB_USERNAME="`/bin/grep USERNAME ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
-        PASSWORD="`/bin/grep PASSWORD ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
-        DBNAME="`/bin/grep DBNAME ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
 fi
 
 if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat ] )
