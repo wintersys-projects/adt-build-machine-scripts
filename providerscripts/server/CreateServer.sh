@@ -211,6 +211,12 @@ then
  
         vpc_id="`/usr/local/bin/linode-cli vpcs list --json | /usr/bin/jq -r '.[] | select (.label == "'${VPC_NAME}'").id'`"
         subnet_id="`/usr/local/bin/linode-cli --json vpcs subnets-list ${vpc_id} | /usr/bin/jq  -r '.[] | select (.label == "adt-subnet").id'`"
+
+        image="--image ${OS_CHOICE}" 
+        if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
+        then
+                image="--image ${snapshot_id}"
+        fi
         
         if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
         then
