@@ -210,7 +210,7 @@ fi
 
 if ( [ "`/bin/grep "^REVERSE_PROXY_WEBSERVER " ${quick_specification} | /bin/grep -w "${REVERSE_PROXY_WEBSERVER}"  2>/dev/null `" = "" ] )
 then
-        ${log_command} "Your value for the variable REVERSE_PROXY_SERVER (${REVERSE_PROXY_WEBSERVER}) doesn't appear to be valid please review"
+        ${log_command} "Your value for the variable REVERSE_PROXY_WEBSERVER (${REVERSE_PROXY_WEBSERVER}) doesn't appear to be valid please review"
 fi
 
 if ( [ "`/bin/grep "^DATABASE_INSTALLATION_TYPE " ${quick_specification} | /bin/grep -w "${DATABASE_INSTALLATION_TYPE}"  2>/dev/null `" = "" ] )
