@@ -108,6 +108,15 @@ exec 2>>/root/logs/${err_file}
 status_file="initiallogging-status-`/bin/date | /bin/sed 's/ //g'`"
 exec 4>>/root/logs/${status_file}
 
+if ( [ "`/usr/bin/find /root/logs -name "*build*" -type f`" != "" ] )
+then
+        if ( [ ! -d /root/logs/archive ] )
+        then
+             /bin/mkdir -p /root/logs/archive
+        fi
+        /bin/mv /root/logs/*build* /root/logs/archive
+fi
+
 #Set up a status function that can be called to log the status messages
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -293,11 +302,11 @@ then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
 fi
 
-if ( [ "`/usr/bin/find ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs -type d -empty`" != "" ] )
+if ( [ "`/usr/bin/find ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs -name "*build*" -type f`" != "" ] )
 then
         if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/archive ] )
         then
-             /bin/mkdir ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/archive
+             /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/archive
         fi
         /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/*build* ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs/archive
 fi
