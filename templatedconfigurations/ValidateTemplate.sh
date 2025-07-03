@@ -168,7 +168,7 @@ then
         ${log_command} "if you want zero trust access you want to use cloudflare you should use cloudflare's own zero trust solution"
 fi
 
-if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
+if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] ) )
 then
         ${log_command} "Your BUILD_ARCHIVE_CHOICE Is set to ${BUILD_ARCHIVE_CHOICE} and that can't be when you are deploying from snapshots"
         ${log_command} "You have to deploy from a temporal backup if you are building your servers based on snapshots"
