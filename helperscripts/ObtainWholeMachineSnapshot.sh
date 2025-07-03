@@ -84,6 +84,13 @@ fi
 
 machine_id="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_type}-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} | /usr/bin/head -n 1`"
 
+if ( [ "${machine_id}" = "" ] )
+then
+    /bin/echo "Sorry couldn't find a machine of type ${machine_label} to generate a snapshot of"
+    /bin/echo "I have to exit, please investigate"
+    exit
+fi
+
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
         machine_name="`/usr/local/bin/doctl compute droplet list -o json | /usr/bin/jq -r '.[] | select (.id == '${machine_id}' ).name'`"
