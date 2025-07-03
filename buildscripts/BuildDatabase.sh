@@ -244,24 +244,6 @@ do
 			done="1"
 		fi
 
-                if ( [ "${BUILD_FROM_BACKUP}" = "1" ] && [ "${done}" = "1" ] )
-                then
-                        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_hidden.tar ] )
-                        then
-                                status "Copying the appropriate whole machine backup to the database machine"
-                                /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_backup.tar ${SERVER_USER}@${db_active_ip}:/tmp
-                                status "Extracting the whole machine backup onto the database machine"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_backup.tar --keep-newer-files -C /"
-			        /usr/bin/scp -q -P ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/database/database_hidden.tar ${SERVER_USER}@${db_active_ip}:/tmp
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /usr/bin/tar xvf /tmp/database_hidden.tar --keep-newer-files -C /"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /bin/rm /home/${SERVER_USER}/runtime/DB_APPLICATION_INSTALLED ; ${SUDO} /home/${SERVER_USER}/application/db/InstallApplicationDB.sh"
-                                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${db_active_ip} "${SUDO} /home/${SERVER_USER}/utilities/housekeeping/ResetClonedDatabase.sh"
-   			else
-                                status "Failed to locate whole machine backup to build database from when BUILD_FROM_BACKUP is set to 1"
-				/bin/touch /tmp/END_IT_ALL
-                        fi
-                fi
-
 		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
 		if ( [ "${done}" != "1" ] )
 		then
