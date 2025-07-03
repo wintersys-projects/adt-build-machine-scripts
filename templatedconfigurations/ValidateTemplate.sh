@@ -168,6 +168,12 @@ then
         ${log_command} "if you want zero trust access you want to use cloudflare you should use cloudflare's own zero trust solution"
 fi
 
+if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
+then
+        ${log_command} "Your BUILD_ARCHIVE_CHOICE Is set to ${BUILD_ARCHIVE_CHOICE} and that can't be when you are deploying from snapshots"
+        ${log_command} "You have to deploy from a temporal backup if you are building your servers based on snapshots"
+fi
+
 if ( [ "`/bin/grep "^APPLICATION_REPOSITORY_PROVIDER " ${quick_specification} | /bin/grep -w "${APPLICATION_REPOSITORY_PROVIDER}"  2>/dev/null `" = "" ] )
 then
         ${log_command} "Your value for the variable APPLICATION_REPOSITORY_PROVIDER (${APPLICATION_REPOSITORY_PROVIDER}) doesn't appear to be valid please review"
