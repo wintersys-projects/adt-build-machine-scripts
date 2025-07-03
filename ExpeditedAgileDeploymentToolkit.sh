@@ -90,7 +90,8 @@ end_it_all() {
 
 end_it_all &
 
-trap '/bin/touch /tmp/END_IT_ALL_USER' EXIT INT HUP
+trap '/bin/sleep 2;/usr/bin/pwd' EXIT
+trap '/bin/touch /tmp/END_IT_ALL_USER;exit' INT
 
 #Set up the intial logging  output. This is where the logging messages will be stored when they occur before
 #the main logging configuration has been set up. There is an output log for stdout and and error log for stderr
