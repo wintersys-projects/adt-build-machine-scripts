@@ -237,6 +237,12 @@ then
         while ( [ "${application_configuration_installed}" = "" ] )
         do
                 /bin/sleep 1
+
+                if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
+                then
+                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/CONFIGURATION_RESET_ACTIONED || /home/${SERVER_USER}/application/configuration/ResetConfiguration.sh"
+                fi
+                
                 for ws_active_ip in ${ws_active_ips}
                 do
                         /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/SetApplicationConfiguration.sh" 2>/dev/null
