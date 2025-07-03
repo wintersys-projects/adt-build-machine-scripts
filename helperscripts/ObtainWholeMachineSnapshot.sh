@@ -72,7 +72,10 @@ SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_I
 /bin/echo "USERNAME:${SERVER_USER}" > ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat
 /bin/echo "PASSWORD:${SERVER_USER_PASSWORD}" >> ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/credentials.dat
 
-/bin/cp ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat
+if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots ] )
+then
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots
+fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ] )
 then
@@ -168,10 +171,14 @@ fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
-        machine_name="`/usr/local/bin/linode-cli linodes list --json | /usr/bin/jq -r '.[] | select (.id == "'${machine_id}'").label'`"
+        machine_name="`/usr/local/bin/linode-cli linodes list --json | /usr/bin/jq -r '.[] | select (.id == '${machine_id}').label'`"
         disk_id="`/usr/local/bin/linode-cli linodes disks-list ${machine_id} --json | /usr/bin/jq -r '.[] | select (.filesystem == "ext4").id'`"
-        /bin/echo "########################SNAPSHOTTING YOUR MACHINE####################################"
-        /usr/local/bin/linode-cli images create --disk_id ${disk_id} --label ${machine_name}
+
+        /bin/echo "##############################################################################################"
+        /bin/echo "################MAKING A SNAPSHOT OF MACHINE: ${machine_label} #####################"
+        /bin/echo "##############################################################################################"
+
+        snapshot_id="`/usr/local/bin/linode-cli images create --disk_id ${disk_id} --label ${machine_name} --json | /usr/bin/jq -r '.[].id'`"
 fi
 
 if ( [ "${CLOUDHOST}" = "vultr" ] )
@@ -213,7 +220,7 @@ if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots
 then
         if ( [ "`/bin/grep ${machine_label} ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat`" != "" ] )
         then
-                /bin/sed -i "s/.*${machine_label}.*/${machine_label}:${snapshot_id}/" ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
+                /bin/sed -i "s;.*${machine_label}.*;${machine_label}:${snapshot_id};" ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
         else
                 /bin/echo "${machine_label}:${snapshot_id}" >> ${BUILD_HOME}/runtimedata/wholemachinebackups/${WEBSITE_URL}/snapshots/snapshot_ids.dat
         fi
