@@ -80,10 +80,7 @@ end_it_all() {
                             /bin/rm /tmp/END_IT_ALL_USER
                         fi
                         
-                        pgid="`/usr/bin/ps  xao pid,pgid | /bin/grep $$ | /usr/bin/awk '{print $NF}' | /usr/bin/uniq`"
-                        /usr/bin/kill -TERM -- -${pgid}
-                        exit
-
+                        /usr/bin/kill 0
                 fi
         done
 }
