@@ -606,6 +606,21 @@ then
         ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${NO_REVERSE_PPOXY}" = "0" ] )
+then
+        ${log_command} "You are set to deploy to multiple regions which means that you have to use reverse proxy machines"
+        ${log_command} "Currently your number of reverse proxy machines is set to zero"
+fi
+
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] && [ "${DBaaS_PUBLIC_ENDPOINT}" = "" ] )
+then
+        ${log_command} "You are configured for multi region deployment and this is not the primary region"
+        ${log_command} "When this is the case you have to have a DBaaS public endpoint set"
+        ${log_command} "Currenlty your DBaaS_PUBLIC_ENDPOINT is set to ''"
+fi
+
+
+
 if ( [ "${status_set}" = "0" ] )
 then
         ${log_command2} "YOUR TEMPLATE LOOKS TO BE FULLY VALIDATED"
