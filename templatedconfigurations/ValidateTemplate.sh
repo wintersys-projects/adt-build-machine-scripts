@@ -638,6 +638,12 @@ then
         ${log_command} "You should use cloudflare (or modify the toolkit to support your DNS proxy service of choice) instead in multi region mode"
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
+then
+        ${log_command} "Please be aware that you are in multi-region mode and you are also building from snapshots this could complicate things"
+        ${log_command} "And is therefore not recommended. Rather, it is preferred to just perform regular builds when in multi-region mode"
+fi
+
 if ( [ "${status_set}" = "0" ] )
 then
         ${log_command2} "YOUR TEMPLATE LOOKS TO BE FULLY VALIDATED"
