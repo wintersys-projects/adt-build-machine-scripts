@@ -51,3 +51,4 @@ runcmd:
   - '/usr/bin/chown -R XXXXSERVER_USERXXXX:root /home/XXXXSERVER_USERXXXX'
   - '/home/XXXXSERVER_USERXXXX/utilities/processing/RunServiceCommand.sh "ssh" restart'
   - '/home/XXXXSERVER_USERXXXX/utilities/processing/RunServiceCommand.sh "cron" restart'
+  - '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'` &'
