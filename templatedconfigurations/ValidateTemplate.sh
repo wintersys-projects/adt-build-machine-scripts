@@ -619,6 +619,14 @@ then
         ${log_command} "Currenlty your DBaaS_PUBLIC_ENDPOINT is set to ''"
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${DATABASE_INSTALLATION_TYPE}" != "DBaaS" ] )
+then
+        ${log_command} "You are making a multi region deployment and your database installation type is not DBaaS"
+        ${log_command} "This is not allowed, please correct"
+fi
+
+
+
 
 
 if ( [ "${status_set}" = "0" ] )
