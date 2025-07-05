@@ -642,6 +642,7 @@ if ( [ "${MULTI_REGION}" = "1" ] && [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
         ${log_command} "Please be aware that you are in multi-region mode and you are also building from snapshots this could complicate things"
         ${log_command} "And is therefore not recommended. Rather, it is preferred to just perform regular builds when in multi-region mode"
+        ${log_command} "That said, if you are adventurous you could give it a go"
 fi
 
 if ( [ "${status_set}" = "0" ] )
