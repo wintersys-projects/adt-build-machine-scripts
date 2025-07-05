@@ -44,8 +44,11 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
+then
+
 #See if we are a managed database or not
-if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && ( [ "${MULTI_REGION}" = "0" || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] ) ) )
 then
         #########################################################################################################
         #If you are deploying to digitalocean provide a setting with the following format in your template
@@ -548,6 +551,21 @@ else
         DB_IDENTIFIER="self-managed"
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] ) 
+then
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" = != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${multi_region_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
+                DB_NAME="`/bin/grep DB_NAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
+                DB_PASSWORD="`/bin/grep DB_PASSWORD ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
+                DB_USERNAME="`/bin/grep DB_USERNAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
+                DB_PORT="`/bin/grep DB_PORT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
+                DB_IDENTIFIER="`/bin/grep DB_IDENTIFIER ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
+        else
+                /bin/touch /tmp/END_IT_ALL
+        fi
+fi
+
 if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat ] )
 then
         DB_USERNAME="`/bin/grep USERNAME ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
@@ -566,18 +584,23 @@ fi
 
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
 then
-        /bin/echo "DB_NAME=${DB_NAME}" > 
-        /bin/echo "DB_PASSWORD=${DB_PASSWORD}"
-        /bin/echo "DB_USERNAME=${DB_USERNAME}"
-        /bin/echo "DB_PORT=${DB_PORT}"
-        /bin/echo "DB_IDENTIFIER=${DB_IDENTIFIER}"
+        /bin/echo "DB_NAME=${DB_NAME}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
+        /bin/echo "DB_PASSWORD=${DB_PASSWORD}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
+        /bin/echo "DB_USERNAME=${DB_USERNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
+        /bin/echo "DB_PORT=${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
+        /bin/echo "DB_IDENTIFIER=${DB_IDENTIFIER}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
         
         multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
         ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${multi_region_bucket}
-fi
         
-
-
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" = != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/credentials.dat
+        fi
+        
+        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds ${multi_region_bucket}/credentials.dat
+fi
+      
 #Persist our credentials to the file system to be used at will      
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_NAME=${DB_NAME}"
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_PASSWORD=${DB_PASSWORD}"
