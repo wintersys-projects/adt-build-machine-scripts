@@ -625,6 +625,12 @@ then
         ${log_command} "This is not allowed, please correct"
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${DNS_CHOICE}" != "cloudflare" ] )
+then
+        ${log_command} "You are making a multi region deployment your DNS service provider is set to ${DNS_CHOICE}"
+        ${log_command} "This is not allowed, your DNS_CHOICE has to be cloudflare"
+fi
+
 
 
 
