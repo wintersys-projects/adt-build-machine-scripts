@@ -44,6 +44,8 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
+DBaaS_PUBLIC_ENDPOINT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_PUBLIC_ENDPOINT`"
+
 
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
@@ -591,7 +593,7 @@ then
         /bin/echo "DB_PASSWORD=${DB_PASSWORD}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
         /bin/echo "DB_USERNAME=${DB_USERNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
         /bin/echo "DB_PORT=${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
-        /bin/echo "DB_IDENTIFIER=${DB_IDENTIFIER}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
+        /bin/echo "DB_IDENTIFIER=${DBaaS_PUBLIC_ENDPOINT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
         
         multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
         ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${multi_region_bucket}
