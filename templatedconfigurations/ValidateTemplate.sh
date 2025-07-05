@@ -645,6 +645,12 @@ then
         ${log_command} "That said, if you are adventurous you could give it a go"
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] ) )
+then
+        ${log_command} "Your BUILD_ARCHIVE_CHOICE Is set to ${BUILD_ARCHIVE_CHOICE} and that can't be when you are deploying for multiple regions"
+        ${log_command} "You have to deploy from a temporal backup if you are building your servers for multiple regions"
+fi
+
 if ( [ "${status_set}" = "0" ] )
 then
         ${log_command2} "YOUR TEMPLATE LOOKS TO BE FULLY VALIDATED"
