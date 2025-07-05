@@ -564,6 +564,19 @@ fi
 /bin/echo "PASSWORD:${DB_PASSWORD}" >> ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate
 /bin/echo "DBNAME:${DB_NAME}" >> ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
+then
+        /bin/echo "DB_NAME=${DB_NAME}" > 
+        /bin/echo "DB_PASSWORD=${DB_PASSWORD}"
+        /bin/echo "DB_USERNAME=${DB_USERNAME}"
+        /bin/echo "DB_PORT=${DB_PORT}"
+        /bin/echo "DB_IDENTIFIER=${DB_IDENTIFIER}"
+        
+        multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
+        ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${multi_region_bucket}
+fi
+        
+
 
 #Persist our credentials to the file system to be used at will      
 ${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_NAME=${DB_NAME}"
