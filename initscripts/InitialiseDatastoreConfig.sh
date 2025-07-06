@@ -36,6 +36,8 @@ S3_LOCATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_LOCATION`"
 S3_HOST_BASE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_HOST_BASE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MULTI_REGION`"
+PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
 status ""
@@ -151,11 +153,14 @@ fi
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 identifier="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-for bucket in `${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh | /bin/grep "${website_bucket}-config" | /usr/bin/awk '{print  $NF}' | /bin/sed 's,s3://,,'`
-do
-        ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${bucket}/*
-        ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh ${bucket}
-done
+if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
+then
+	for bucket in `${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh | /bin/grep "${website_bucket}-config" | /usr/bin/awk '{print  $NF}' | /bin/sed 's,s3://,,'`
+	do
+        	${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${bucket}/*
+        	${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh ${bucket}
+	done
+fi
 
 #${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh 
 
