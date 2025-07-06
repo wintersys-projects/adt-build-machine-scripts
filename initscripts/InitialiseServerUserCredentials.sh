@@ -41,7 +41,7 @@ then
     SERVER_USER="`/bin/grep 'USERNAME' ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
     SERVER_USER_PASSWORD="`/bin/grep 'PASSWORD' ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
 else
-    status "Not building from whole machine backups, server username and server password being freshly generated"
+    status "Perfoming a regular build (not from whole machine snapshots), server username and server password being freshly generated"
     SERVER_USER="X`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`X"
     SERVER_USER_PASSWORD="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-18`"
 fi
