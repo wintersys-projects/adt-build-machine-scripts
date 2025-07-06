@@ -651,6 +651,11 @@ then
         ${log_command} "You have to deploy from a temporal backup if you are building your servers for multiple regions"
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] && [ "${DBaaS_PUBLIC_ENDPOINT}" = "" ] )
+then
+        ${log_command} "When mutli region is active and primary region is not, DBaaS_PUBLIC_ENDPOINT must be set, and, right now, it isn't"
+fi
+
 if ( [ "${status_set}" = "0" ] )
 then
         ${log_command2} "YOUR TEMPLATE LOOKS TO BE FULLY VALIDATED"
