@@ -606,7 +606,7 @@ then
         ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
 fi
 
-if ( [ "${MULTI_REGION}" = "1" ] && [ "${NO_REVERSE_PPOXY}" = "0" ] )
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${NO_REVERSE_PROXY}" = "0" ] )
 then
         ${log_command} "You are set to deploy to multiple regions which means that you have to use reverse proxy machines"
         ${log_command} "Currently your number of reverse proxy machines is set to zero"
