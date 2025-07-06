@@ -42,7 +42,7 @@ VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 VPC_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_NAME`"
 ACTIVE_FIREWALL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACTIVE_FIREWALLS`"
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
-
+KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 OS_CHOICE="`${BUILD_HOME}/providerscripts/cloudhost/GetOperatingSystemVersion.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION} | /bin/sed "s/'//g"`"
 
 if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
@@ -167,7 +167,7 @@ then
                 image="--image ${snapshot_id}"
         fi
 
-        /usr/local/bin/doctl compute droplet create "${server_name}" --size "${server_size}" ${image} --region "${REGION}" --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
+        /usr/local/bin/doctl compute droplet create "${server_name}" --size "${server_size}" ${image} --region "${REGION}"  --ssh-keys "${KEY_ID}" --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
 fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
@@ -187,7 +187,7 @@ then
                  firewall=" --security-group ${firewall_id}"
         fi
 
-        /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} ${firewall} --template "${OS_CHOICE}" --zone ${REGION} ${template_visibility} --cloud-init "${cloud_config}"
+        /usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} ${firewall} --template "${OS_CHOICE}" --zone ${REGION} --ssh-key ${KEY_ID} ${template_visibility} --cloud-init "${cloud_config}"
 
         if ( [ "`/usr/bin/exo compute private-network list -O json | /usr/bin/jq -r '.[] | select (.name == "adt_private_net_'${REGION}'").id'`" = "" ] )
         then
@@ -218,9 +218,9 @@ then
         
         if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
         then
-                /usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+                /usr/local/bin/linode-cli linodes create   --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
         else
-                /usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc",  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+                /usr/local/bin/linode-cli linodes create   --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc",  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
         fi        
 fi
 
@@ -263,7 +263,7 @@ then
                  firewall="--firewall-group ${firewall_id}"
         fi
 
-        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" ${snapshot} ${os} --ipv6=false  ${firewall} ${ddos} --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} 
+        /usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" ${snapshot} ${os} --ipv6=false -s ${KEY_ID} ${firewall} ${ddos} --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} 
 fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
