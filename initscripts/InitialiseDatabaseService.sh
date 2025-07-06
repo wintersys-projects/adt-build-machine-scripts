@@ -563,11 +563,7 @@ then
                 DB_PASSWORD="`/bin/grep DB_PASSWORD ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_USERNAME="`/bin/grep DB_USERNAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_PORT="`/bin/grep DB_PORT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
-               
-                if ( [ "${DB_IDENTIFIER}" = "" ] )
-                then
-                        DB_IDENTIFIER="${DBaaS_PUBLIC_ENDPOINT}"
-                fi
+                DB_IDENTIFIER="${DBaaS_PUBLIC_ENDPOINT}"
         else
                 status "Credentials not found when making a multi region deployment to a non primary region"
                 /bin/touch /tmp/END_IT_ALL
