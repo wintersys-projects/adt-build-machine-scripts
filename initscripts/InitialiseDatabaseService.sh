@@ -49,9 +49,6 @@ DBaaS_PUBLIC_ENDPOINT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBaaS_PU
 
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
-if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
-then
-
 #See if we are a managed database or not
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) ) )
 then
