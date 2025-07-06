@@ -34,22 +34,8 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
-#TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh TOKEN`"
-#PUBLIC_KEY_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PUBLIC_KEY_NAME`"
 
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
-
-#TOKEN=""
-
-#if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN ] )
-#then
- #       TOKEN="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN 2>/dev/null`"
-#fi
-
-#if ( [ "${TOKEN}" = "" ] )
-#then
- #       TOKEN="none"
-#fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
 then
@@ -78,18 +64,3 @@ fi
 /bin/chmod 700 ${BUILD_KEY}
 /bin/chmod 700 ${BUILD_KEY}.pub
 
-#key_name="${PUBLIC_KEY_NAME}-${BUILD_IDENTIFIER}"
-#${BUILD_HOME}/providerscripts/security/ssh/DeleteSSHKeyPair.sh "${key_name}" "${TOKEN}" ${CLOUDHOST}
-#${BUILD_HOME}/providerscripts/security/ssh/RegisterSSHKeyPair.sh "${key_name}" "${TOKEN}" "`/bin/cat ${BUILD_KEY}.pub`" ${CLOUDHOST}
-
-#PUBLIC_KEY_ID="`${BUILD_HOME}/providerscripts/security/ssh/GetSSHKeyID.sh \"${key_name}\" ${CLOUDHOST}`"
-
-#if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials ] )
-#then
-#        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials
-#fi
-
-#/bin/echo ${key_name} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYNAME
-#/bin/echo ${PUBLIC_KEY_ID} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID
-
-#${BUILD_HOME}/helperscripts/SetVariableValue.sh "PUBLIC_KEY_ID=${PUBLIC_KEY_ID}"
