@@ -563,7 +563,11 @@ then
                 DB_PASSWORD="`/bin/grep DB_PASSWORD ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_USERNAME="`/bin/grep DB_USERNAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_PORT="`/bin/grep DB_PORT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
-                DB_IDENTIFIER="`/bin/grep DB_IDENTIFIER ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds | /usr/bin/awk -F'=' '{print $NF}'`"
+               
+                if ( [ "${DB_IDENTIFIER}" = "" ] )
+                then
+                        DB_IDENTIFIER="${DBaaS_PUBLIC_ENDPOINT}"
+                fi
         else
                 status "Credentials not found when making a multi region deployment to a non primary region"
                 /bin/touch /tmp/END_IT_ALL
@@ -592,7 +596,6 @@ then
         /bin/echo "DB_PASSWORD=${DB_PASSWORD}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
         /bin/echo "DB_USERNAME=${DB_USERNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
         /bin/echo "DB_PORT=${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
-        /bin/echo "DB_IDENTIFIER=${DBaaS_PUBLIC_ENDPOINT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/multi-region.creds
         
         multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
         ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${multi_region_bucket}
