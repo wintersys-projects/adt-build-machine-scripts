@@ -422,8 +422,8 @@ fi
 #${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "1"
 
 # Initialise all of our security keys and store the PUBLIC_KEY_ID on the filesystem for reference from anywhere
-${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
-PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
+#${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
+#PUBLIC_KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 
 # Output any pre-processing messages
 ${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
