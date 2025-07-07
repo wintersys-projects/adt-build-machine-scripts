@@ -233,13 +233,16 @@ then
                         else
                                 ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}']'
                         fi
-            #    else
-            #            if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-            #            then
-            #                    ruleset='['${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}']'
-            #            else
-            #                    ruleset='['${rule_vpc}','${rule_icmp}']'
-            #            fi
+                else
+                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        then
+                                if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${firewall_name}" = "adt-webserver" ] )
+                                then
+                                        ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}']'
+                                fi
+                        else
+                                ruleset='['${rule_vpc}','${rule_icmp}']'
+                        fi
                 fi
 
                 if ( [ "${firewall_name}" = "adt-database" ] )
