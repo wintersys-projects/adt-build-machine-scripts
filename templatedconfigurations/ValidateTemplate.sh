@@ -606,6 +606,16 @@ then
         ${log_command} "It looks like you are trying to install Postgres without PHP support for postgres (pgsql)"
 fi
 
+if ( [ "`/bin/grep "^MULTI_REGION " ${quick_specification} | /bin/grep -w "${MULTI_REGION}"  2>/dev/null `" = "" ] )
+then
+        ${log_command} "Your value for the variable MULTI_REGION (${MULTI_REGION}) doesn't appear to be valid please review"
+fi
+
+if ( [ "`/bin/grep "^PRIMARY_REGION " ${quick_specification} | /bin/grep -w "${PRIMARY_REGION}"  2>/dev/null `" = "" ] )
+then
+        ${log_command} "Your value for the variable PRIMARY_REGION (${PRIMARY_REGION}) doesn't appear to be valid please review"
+fi
+
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${NO_REVERSE_PROXY}" = "0" ] )
 then
         ${log_command} "You are set to deploy to multiple regions which means that you have to use reverse proxy machines"
