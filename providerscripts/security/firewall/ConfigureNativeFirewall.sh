@@ -214,7 +214,7 @@ then
 
                 ruleset=""
 
-                if ( [ "${firewall_name}" = " adt-autoscaler" ] )
+                if ( [ "${firewall_name}" = "adt-autoscaler" ] )
                 then
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                         then
