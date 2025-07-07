@@ -34,9 +34,15 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
 DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
+
+
+webserver_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+database_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 
 if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
 then    
@@ -54,8 +60,6 @@ fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] && [ "${DATABASE_INSTALLATION_TYPE}"="DBaaS" ] )
 then
-	webserver_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'ws-' ${CLOUDHOST}`"
- 	database_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'db-' ${CLOUDHOST}`"
 	#The DBaaS solution from exoscale is not accessible from the private network ip address range so we have to allow the public IP addresses individually
  
    	ips="${webserver_ip},${database_ip}"
@@ -74,8 +78,6 @@ then
 
 if ( [ "${CLOUDHOST}" = "linode" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
-        webserver_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'ws-' ${CLOUDHOST}`"
-        database_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh  'db-' ${CLOUDHOST}`"
         #The DBaaS solution from linode is not accessible from the vpc ip address range so we have to allow the public IP addresses individually
 
         allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32"
