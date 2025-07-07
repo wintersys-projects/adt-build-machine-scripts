@@ -782,3 +782,21 @@ Whether to build the machines you are deploying in paralel or not on the build m
 ### NO_AUTOSCALERS
 
 How many autoscalers to deploy. An Interger value between 0 and 5
+
+---------------
+### MULTI_REGION
+
+If you wish to make a deployment using multiple regions then you need to set this as follows:
+
+0 - single region deployment
+1 - multi region deployment
+
+-----------------
+### PRIMARY_REGION
+
+If you are making a multi-region deployment you need to have a primary region (this is the first region you will built out servers for) and all the other regions that you are deploying will not be primary. When you making multi region deployments, then, you need to set this as follows:
+
+0 - the current region is not the primary region
+1 - the current region is the primary region
+
+The setting of "PRIMARY_REGION" doesn't have any effect if you are not deploying to multiple regions
