@@ -177,8 +177,10 @@ fi
 if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 then
         ws_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        rp_ws_active_ips="${ws_active_ips}"
 else
         ws_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+        rp_ws_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
 #This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
@@ -337,7 +339,7 @@ then
                 then
                         for rp_active_ip in ${rp_active_ips}
                         do
-                                for ws_active_ip in ${ws_active_ips}
+                                for ws_active_ip in ${rp_ws_active_ips}
                                 do
                                         /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
                                 done
