@@ -596,7 +596,7 @@ then
         multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
         ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${multi_region_bucket}
         
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" = != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
         then
                 ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/credentials.dat
         fi
