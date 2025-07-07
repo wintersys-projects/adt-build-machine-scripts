@@ -59,7 +59,12 @@ then
 elif ( [ "${ALGORITHM}" = "ecdsa" ] )
 then
         /usr/bin/ssh-keygen -t ecdsa -b 521 -N "" -f ${BUILD_KEY}
+elif ( [ "${ALGORITHM}" = "ed25519" ] )
+then
+        /usr/bin/ssh-keygen -t ed25519 -b 521 -N "" -f ${BUILD_KEY}
 fi
+
+
 
 /bin/chmod 700 ${BUILD_KEY}
 /bin/chmod 700 ${BUILD_KEY}.pub
