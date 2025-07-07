@@ -170,3 +170,9 @@ if ( [ "$?" = "0" ] )
 then
     status "New configuration bucket is located at: (s3://${website_bucket}-config-${identifier}) for you"
 fi
+
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ]  )
+then
+        multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
+	${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
+ fi
