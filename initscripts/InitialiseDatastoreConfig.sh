@@ -176,6 +176,12 @@ then
         multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
         if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
         then
+		status "About to delete existing multi-region credentials are you sure? (Y|y)"
+  		read response
+    		if ( [ "`/bin/echo "Y y" | /bin/grep ${response}`" = "" ] )
+      		then
+			/bin/touch /tmp/END_IT_ALL
+   		fi
                 ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
         fi
         ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
