@@ -143,26 +143,28 @@ if ( [ "`/bin/grep "^DNS_CHOICE " ${quick_specification} | /bin/grep -w "${DNS_C
 then
         ${log_command} "Your value for the variable DNS_CHOICE (${DNS_CHOICE}) doesn't appear to be valid please review"
 else
-        ip="111.111.111.111"
-        ${BUILD_HOME}/providerscripts/dns/AddRecord.sh "${zoneid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${ip}" "true" "${DNS_CHOICE}"
-        if ( [ "$?" = "1" ] )
+        if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
         then
-                ${log_command} "DNS Service doesn't seem to be available please investigate before proceeding"
-        else
-                zonename="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{$1=""}1' | /bin/sed 's/^ //g' | /bin/sed 's/ /./g'`"
-                zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
-                recordids="`${BUILD_HOME}/providerscripts/dns/GetAllRecordIDs.sh  "${zoneid}" "${WEBSITE_URL}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
-
-                if ( [ "${recordids}" != "" ] )
+                ip="111.111.111.111"
+                ${BUILD_HOME}/providerscripts/dns/AddRecord.sh "${zoneid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${ip}" "true" "${DNS_CHOICE}"
+                if ( [ "$?" = "1" ] )
                 then
-                        for recordid in ${recordids}
-                        do
-                                ${BUILD_HOME}/providerscripts/dns/DeleteRecord.sh "${zoneid}" "${recordid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${WEBSITE_URL}"
-                        done
+                        ${log_command} "DNS Service doesn't seem to be available please investigate before proceeding"
+                else
+                        zonename="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{$1=""}1' | /bin/sed 's/^ //g' | /bin/sed 's/ /./g'`"
+                        zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
+                        recordids="`${BUILD_HOME}/providerscripts/dns/GetAllRecordIDs.sh  "${zoneid}" "${WEBSITE_URL}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
+
+                        if ( [ "${recordids}" != "" ] )
+                        then
+                                for recordid in ${recordids}
+                                do
+                                        ${BUILD_HOME}/providerscripts/dns/DeleteRecord.sh "${zoneid}" "${recordid}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}" "${WEBSITE_URL}"
+                                done
+                        fi
                 fi
         fi
 fi
-
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] && [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
         ${log_command} "Authentication servers are not intended to be used with the cloudflare DNS system" 
