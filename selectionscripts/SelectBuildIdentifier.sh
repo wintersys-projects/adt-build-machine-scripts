@@ -69,7 +69,7 @@ do
 	fi
 done
 
-build_identifier="`/bin/echo ${build_identifier} | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/cut -c -8`"
+build_identifier="`/bin/echo ${build_identifier} | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/cut -c -12`"
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
 then
