@@ -126,9 +126,16 @@ then
                         rules=""
                         rules="`/usr/bin/exo compute security-group show ${firewall_id} -O json | /usr/bin/jq -r '.ingress_rules[].id'`"
                         rules="${rules} `/usr/bin/exo compute security-group show ${firewall_id} -O json | /usr/bin/jq -r '.egress_rules[].id'`"
+                        pids=""
                         for ruleid in ${rules}
                         do
                                 /usr/bin/yes | /usr/bin/exo compute security-group rule delete ${firewall_id} ${ruleid} &
+                                pids="${pids} $!"
+                        done
+
+                        for pid in ${pids}
+                        do
+                            wait ${pid}
                         done
                 fi
 
