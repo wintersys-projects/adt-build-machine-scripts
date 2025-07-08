@@ -98,7 +98,8 @@ then
 	exit
 fi
 
-number_of_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "-as-" "${CLOUDHOST}"`"
+REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+number_of_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
 
 if ( [ "${number_of_autscalers}" = "0" ] )
 then
