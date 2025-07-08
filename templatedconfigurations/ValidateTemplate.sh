@@ -240,6 +240,18 @@ then
         ${log_command} "For example, if you have BUILD_IDENTIFIERis such as '1test' or 'test2' then 'test' is not a valid BUILD_IDENTIFIER"
 fi
 
+build_identifier_length="`/bin/echo "${BUILD_IDENTIFIER}" | /bin/grep "^[a-zA-Z0-9-]*$" | /bin/grep -v "\-$" | /usr/bin/wc -c`"
+
+if ( [ "${build_identifier_length}" = "0" ] )
+then
+        ${log_command} "it looks like your build identifier (${BUILD_IDENTIFIER}) is not valid"
+fi
+
+if ( [ "${build_identifier_length}" -gt "12" ] )
+then
+        ${log_command} "it looks like your build identifier (${BUILD_IDENTIFIER}) is more than 12 characters"
+fi
+
 if ( [ "${VPC_IP_RANGE}" = "" ] )
 then
         ${log_command} "Your value for the variable VPC_IP_RANGE seems not to be set this is a MANDATORY SETTING"
