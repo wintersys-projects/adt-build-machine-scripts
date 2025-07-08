@@ -655,6 +655,11 @@ then
         ${log_command} "You have to deploy from a temporal backup if you are building your servers for multiple regions"
 fi
 
+if ( [ "${BYPASS_DB_LAYER}" = "0" ] && [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
+then
+        ${log_command} "Your BYPASS_DB_LAYER setting is set to 0 you probably want it to be set to 0 when you are in multi region mode and not a primary region"
+fi
+
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] && [ "${DBaaS_PUBLIC_ENDPOINT}" = "" ] )
 then
         ${log_command} "When mutli region is active and primary region is not, DBaaS_PUBLIC_ENDPOINT must be set, and, right now, it isn't"
