@@ -63,7 +63,7 @@ end_it_all() {
                         cd ${cwd}
                         /bin/echo ""
                         /bin/echo "----------------------------------------------------------"
-                        /bin/echo "USER INITIATED TERMINATION"
+                        /bin/echo "USER INITIATED TERMINATION ... please wait"
                         /bin/echo "----------------------------------------------------------"
                         /bin/echo ""
                 fi
