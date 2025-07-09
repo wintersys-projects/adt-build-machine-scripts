@@ -79,7 +79,7 @@ then
 		status "Installing Firewall"
 		${BUILD_HOME}/installscripts/InstallFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Initialising Firewall"
-		${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
+		${BUILD_HOME}/security/firewall/InitialiseFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating go"
 		${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating curl"
@@ -114,7 +114,7 @@ then
 		status "Installing Firewall"
 		${BUILD_HOME}/installscripts/InstallFirewall.sh "debian" >>${upgrade_log} 2>&1
 		status "Initialising Firewall"
-		${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh "debian" >>${upgrade_log} 2>&1
+		${BUILD_HOME}/security/firewall/InitialiseFirewall.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating go"
 		${BUILD_HOME}/installscripts/InstallGo.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating curl"
