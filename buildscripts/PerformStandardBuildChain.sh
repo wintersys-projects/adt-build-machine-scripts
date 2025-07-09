@@ -130,7 +130,10 @@ then
                 /bin/sleep 10
         done
 
-    ${BUILD_HOME}/buildscripts/BuildDatabase.sh 
+    if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+    then
+            ${BUILD_HOME}/buildscripts/BuildDatabase.sh
+    fi
     if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
     then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh
@@ -154,8 +157,13 @@ then
                 pids="${pids} $!"
                 /bin/sleep 10
         done
-    ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
-    pids="${pids} $!"
+        
+    if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+    then
+            ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
+            pids="${pids} $!"
+    fi
+    
     if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
     then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
@@ -186,8 +194,11 @@ then
                 /bin/sleep 10
         done
 
-    ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
-    pids="${pids} $!"
+    if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+    then
+            ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
+            pids="${pids} $!"
+    fi
     if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
     then
         ${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
