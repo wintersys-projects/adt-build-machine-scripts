@@ -41,6 +41,7 @@ DDOS_PROTECTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ENABLE_DDOS_PR
 VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 VPC_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_NAME`"
 ACTIVE_FIREWALL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACTIVE_FIREWALLS`"
+ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 #KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
 OS_CHOICE="`${BUILD_HOME}/providerscripts/cloudhost/GetOperatingSystemVersion.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION} | /bin/sed "s/'//g"`"
@@ -154,6 +155,21 @@ fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
+        key_id="`/usr/local/bin/doctl compute ssh-key list -o json | /usr/bin/jq -r '.[] | select ( .name == "AGILE_TOOLKIT_PUBLIC_KEY-'${BUILD_IDENTIFIER}'" ).id'`"
+        if ( [ "${key_id}" != "" ] )
+        then
+                /usr/local/bin/doctl compute ssh-key delete ${key_id} --force
+        fi
+
+        /usr/local/bin/doctl compute ssh-key create "AGILE_TOOLKIT_PUBLIC_KEY-${BUILD_IDENTIFIER}" --public-key "`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}.pub`"
+
+        key_id="`/usr/local/bin/doctl compute ssh-key list -o json | /usr/bin/jq '.[] | select (.name == "AGILE_TOOLKIT_PUBLIC_KEY-'${BUILD_IDENTIFIER}'").id'`"
+
+        if ( [ "${key_id}" = "" ] )
+        then
+                /bin/touch /tmp/END_IT_ALL
+        fi
+
         if ( [ "`/usr/local/bin/doctl vpcs list -o json | /usr/bin/jq -r '.[] | select (.region == "'${REGION}'") | select (.name | contains ("'${VPC_NAME}'")).id'`" = "" ] )
         then
                 /usr/local/bin/doctl vpcs create --name "${VPC_NAME}" --region "${REGION}" --ip-range "${VPC_IP_RANGE}"
@@ -167,7 +183,7 @@ then
                 image="--image ${snapshot_id}"
         fi
 
-        /usr/local/bin/doctl compute droplet create "${server_name}" --size "${server_size}" ${image} --region "${REGION}"  --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
+        /usr/local/bin/doctl compute droplet create "${server_name}" --ssh-keys "${key_id}" --size "${server_size}" ${image} --region "${REGION}"  --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
 fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
