@@ -253,7 +253,7 @@ then
 
         # vpc_id="`/usr/bin/vultr vpc2 list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
         vpc_id="`/usr/bin/vultr vpc list -o json | /usr/bin/jq -r '.vpcs[] | select (.description == "'${VPC_NAME}'").id'`"
-        OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r '.os[] | select (.name | contains ("'"${OS_CHOICE}"'")).id'`"
+        OS_CHOICE="`/usr/bin/vultr os list -o json | /usr/bin/jq -r --arg os_choice "${OS_CHOICE}" '.os[] | select (.name | contains ($os_choice)).id'`"
         cloud_config="`/bin/cat ${cloud_config}`"
 
         snapshot=""
