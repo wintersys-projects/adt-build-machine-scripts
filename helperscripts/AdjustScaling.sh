@@ -101,7 +101,7 @@ fi
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 number_of_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
 
-if ( [ "${number_of_autscalers}" = "0" ] )
+if ( [ "${number_of_autoscalers}" = "0" ] )
 then
 	/bin/echo "There doesn't seem to be any autoscalers running it's pointless trying to set a scaling value"
  	exit
