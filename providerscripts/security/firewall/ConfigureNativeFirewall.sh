@@ -72,7 +72,7 @@ then
                                 fi
                         fi
 
-                        if ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-reverseproxy" ] )
+                        if ( [ "${NO_REVERSE_PROXY}" = "1" ] && [ "${firewall_name}" = "adt-reverseproxy" ] )
                         then
                                 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                                 then
