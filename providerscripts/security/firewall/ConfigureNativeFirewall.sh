@@ -15,11 +15,13 @@ build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 #set -x
 
+
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
+        all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/dns/GetProxyDNSIPs.sh`"
+
         if ( [ "${CLOUDHOST}" = "digitalocean" ] )
         then
-                all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
                 firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
                 
                 if ( [ "${firewall_id}" != "" ] )
@@ -139,8 +141,6 @@ then
         fi
         if ( [ "${CLOUDHOST}" = "exoscale" ] )
         then
-                all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
-
                 firewall_id="`/usr/bin/exo -O json compute security-group list | /usr/bin/jq -r '.[] | select (.name | contains ("'${firewall_name}'")) |  select (.name | endswith ("'-${BUILD_IDENTIFIER}'")).id'`"
                 if ( [ "${firewall_id}" = "" ] )
                 then
@@ -227,8 +227,6 @@ then
         
         if ( [ "${CLOUDHOST}" = "linode" ] )
         then
-                all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
-
                 ruleset=""
                 rule_vpc='{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"}'
                 rule_build_machine='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"}'
@@ -305,8 +303,6 @@ then
 
        if ( [ "${CLOUDHOST}" = "vultr" ] )
         then
-                all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/security/firewall/GetProxyDNSIPs.sh`"
-
                 firewall_id="`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.description == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
                 
                 if ( [ "${firewall_id}" = "" ] )
