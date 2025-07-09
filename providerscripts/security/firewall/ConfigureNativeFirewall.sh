@@ -62,7 +62,7 @@ then
                             machine_identifier="rp-${REGION}-${BUILD_IDENTIFIER}"
                         fi
 
-                        if ( [ "${NO_REVERSE_PROXY}" = "0" ] && ( [ "${firewall_name}" = "adt-webserver" ] ||  [ "${firewall_name}" = "adt-authenticator" ] )
+                        if ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ||  [ "${firewall_name}" = "adt-authenticator" ] )
                         then
                                 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                                 then
@@ -72,7 +72,7 @@ then
                                 fi
                         fi
 
-                        if ( [ "${NO_REVERSE_PROXY}" = "0" ] && ( [ "${firewall_name}" = "adt-reverseproxy" ] )
+                        if ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-reverseproxy" ] )
                         then
                                 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                                 then
