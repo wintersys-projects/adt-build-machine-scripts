@@ -485,7 +485,7 @@ fi
 
 # If there is a DBaaS instance running then we can tighten up its firewall by only allowing connections from machines in the same VPC
 # where and if this is possible
-${BUILD_HOME}/providerscripts/security/firewall/TightenDBaaSFirewall.sh
+${BUILD_HOME}/providerscripts/dbaas/TightenDBaaSFirewall.sh
 # Put out any post processing messages to the user
 ${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
 
