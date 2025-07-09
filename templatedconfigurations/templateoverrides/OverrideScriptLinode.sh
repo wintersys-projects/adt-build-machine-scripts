@@ -91,4 +91,4 @@ then
 fi
 
 /bin/sh ${BUILD_HOME}/installscripts/InstallFirewall.sh "`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
-${BUILD_HOME}/providerscripts/security/firewall/InitialiseFirewall.sh 
+${BUILD_HOME}/security/firewall/InitialiseFirewall.sh 
