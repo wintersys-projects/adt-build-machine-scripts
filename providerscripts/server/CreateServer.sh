@@ -43,8 +43,7 @@ VPC_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_NAME`"
 ACTIVE_FIREWALL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACTIVE_FIREWALLS`"
 ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
-#KEY_ID="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/PUBLICKEYID`"
-OS_CHOICE="`${BUILD_HOME}/providerscripts/cloudhost/GetOperatingSystemVersion.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION} | /bin/sed "s/'//g"`"
+OS_CHOICE="`${BUILD_HOME}/providerscripts/server/GetOperatingSystemVersion.sh ${CLOUDHOST} ${BUILDOS} ${BUILDOS_VERSION} | /bin/sed "s/'//g"`"
 
 if ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-as-"`" != "" ] )
 then
