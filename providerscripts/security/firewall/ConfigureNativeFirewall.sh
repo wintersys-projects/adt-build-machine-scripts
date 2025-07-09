@@ -62,9 +62,24 @@ then
                             machine_identifier="rp-${REGION}-${BUILD_IDENTIFIER}"
                         fi
 
-                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        if ( [ "${NO_REVERSE_PROXY}" = "0" ] && ( [ "${firewall_name}" = "adt-webserver" ] ||  [ "${firewall_name}" = "adt-authenticator" ] )
                         then
-                            rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                                then
+                                            rules="protocol:tcp,ports:443,address:${build_machine_ip}/32 protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                else
+                                            rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                fi
+                        fi
+
+                        if ( [ "${NO_REVERSE_PROXY}" = "0" ] && ( [ "${firewall_name}" = "adt-reverseproxy" ] )
+                        then
+                                if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                                then
+                                            rules="protocol:tcp,ports:443,address:${build_machine_ip}/32 protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                else
+                                            rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                fi
                         fi
 
                         if ( [ "${all_dns_proxy_ips}" != "" ] && [ "${firewall_name}" != "adt-authenticator" ] )
