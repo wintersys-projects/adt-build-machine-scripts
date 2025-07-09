@@ -257,7 +257,7 @@ then
         cloud_config="`/bin/cat ${cloud_config}`"
 
         snapshot=""
-        os='--os="'${OS_CHOICE}'"'
+        os="--os=${OS_CHOICE}"
 
         if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
         then
