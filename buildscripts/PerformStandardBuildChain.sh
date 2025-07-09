@@ -133,7 +133,7 @@ then
                 /bin/sleep 10
         done
 
-    if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+    if ( [ "${BYPASS_DB_LAYER}" != "2" ] && ( [ "${PRIMARY_REGION}" != "1" ] && [ "${MULTI_REGION}" != "1" ] ) )
     then
             ${BUILD_HOME}/buildscripts/BuildDatabase.sh
     fi
@@ -161,7 +161,7 @@ then
                 /bin/sleep 10
         done
         
-    if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+    if ( [ "${BYPASS_DB_LAYER}" != "2" ] && ( [ "${PRIMARY_REGION}" != "1" ] && [ "${MULTI_REGION}" != "1" ] ) )
     then
             ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
             pids="${pids} $!"
@@ -197,7 +197,7 @@ then
                 /bin/sleep 10
         done
 
-    if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+    if ( [ "${BYPASS_DB_LAYER}" != "2" ] && ( [ "${PRIMARY_REGION}" != "1" ] && [ "${MULTI_REGION}" != "1" ] ) )
     then
             ${BUILD_HOME}/buildscripts/BuildDatabase.sh &
             pids="${pids} $!"
