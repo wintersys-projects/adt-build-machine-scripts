@@ -734,6 +734,8 @@ Otherwise, set this value to one of "MySQL", "Maria" or "Postgres" when you have
 
 1 : Don't install the application because you have already got a DBaaS running with the application installed in it from a previous build and so, use that.
 
+2. Completely bypass installing the DB layer. You might want this if you are installing to multiple regions and you don't want a DB layer on your secondary region(s). 
+
 -----
 
 ### APPLICATION_NAME
