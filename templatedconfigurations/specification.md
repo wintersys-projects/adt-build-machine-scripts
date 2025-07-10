@@ -586,7 +586,7 @@ Linode: Available regions you can set for linode are:
 
 Vultr: Available regions you can set for vultr are:   
 
-"ams","atl","cdg","dfw","ewr","fra","icn","lax","lhr","mex","mia","nrt","ord","sea","sgp","sjc","sto","syd","yto"
+"ams", "atl", "blr", "bom", "cdg", "del", "dfw", "ewr", "fra", "hnl", "icn", "itm", "jnb", "lax", "lhr", "mad", "man", "mel", "mex", "mia", "nrt", "ord", "sao", "scl", "sea", "sgp", "sjc", "sto", "syd", "tlv", "waw" "yto"
 
 -------
 
