@@ -56,6 +56,17 @@ else
 	exit
 fi
 
+if ( [ "${CLOUDHOST}" != "`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`" ] )
+then
+        /bin/echo "Your chosen cloudhost provider is different to your active cloudhost provider on this build machine"
+        /bin/echo "Do you want to set your chosen cloudhost to be the active cloudhost provider (Y|y)"
+        read response
+        if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
+        then
+                /bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
+        fi
+fi
+
 /bin/echo "What is the build identifier you want to connect to?"
 /bin/echo "You have these builds to choose from: "
 
