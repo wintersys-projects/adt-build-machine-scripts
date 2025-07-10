@@ -87,7 +87,7 @@ end_it_all() {
 
 end_it_all &
 
-trap '/bin/sleep 4; /bin/echo "Cleaned up the place"; /usr/bin/pwd' EXIT
+trap '/bin/sleep 2; /usr/bin/pwd' EXIT
 trap '/bin/touch /tmp/END_IT_ALL_USER; exit' INT
 
 #Set up the intial logging  output. This is where the logging messages will be stored when they occur before
