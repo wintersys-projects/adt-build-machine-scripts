@@ -574,7 +574,7 @@ Available region ids to choose from for each provider are:
 
 Digital Ocean: Available region IDs you can set for digital ocean are:  
 
-"nyc1","sfo1","nyc2","ams2","sgp1","lon1","nyc3","ams3","fra1","tor1","sfo2","blr1","sfo3"  
+"nyc1","sfo1","nyc2","ams2","sgp1","lon1","nyc3","ams3","fra1","tor1","sfo2","blr1","sfo3","syd1", "atl1"
 
 Exoscale: Available region IDs you can set for exoscale are:   
 
