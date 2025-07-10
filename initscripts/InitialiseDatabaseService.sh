@@ -292,6 +292,10 @@ then
                                 /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
                         fi
 
+                        status "Please go to the Exoscale GUI system of your new database and switch off 'STRICT_ALL_TABLES' and 'sql_require_primary_key'"
+                        status "Press <enter> once this is done, failure to do this could result in a blocked/failed installation"
+                        read x
+
                         #record a certificate in case we need it
                         /usr/bin/exo dbaas ca-certificate > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                 fi
