@@ -578,7 +578,7 @@ Digital Ocean: Available region IDs you can set for digital ocean are:
 
 Exoscale: Available region IDs you can set for exoscale are:   
 
-"ch-gva-2", "ch-dk-2", "at-vie-1", "de-fra-1", "bg-sof-1", "de-muc-1"   
+"ch-gva-2", "ch-dk-2", "at-vie-1", "at-vie-2", "de-fra-1", "bg-sof-1", "de-muc-1", "hr-zag-1"   
 
 Linode: Available regions you can set for linode are:   
 
