@@ -50,8 +50,8 @@ Early on in the development of this toolkit I supported AWS but I decided to str
 [AWS Database](https://github.com/wintersys-projects/adt-database-scripts-withaws)  
 
 
-[Anazon Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html)
-[Anazon Aurora Write Forwarding](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-write-forwarding.html)
+[Anazon Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html)  
+[Anazon Aurora Write Forwarding](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-write-forwarding.html)  
 
 
 
