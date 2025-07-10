@@ -28,6 +28,9 @@ Scripts that perform an pre or post processing that the current build run requir
 **${BUILD_HOME}/adt-build-machine-scripts/providerscripts**  
 Scripts that relate to 3rd party services that the build depends on such as a git provider or a cloudhost provider  
 
+**${BUILD_HOME}/adt-build-machine-scripts/security** 
+Functionality related to security that isn't provider specific. 
+
 **${BUILD_HOME}/adt-build-machine-scripts/selectionscripts**  
 Scripts that prompt for selection between particular service options when there needs to be a choice made.   
 
