@@ -37,4 +37,8 @@ Scripts related to the templating system of the current build
 **${BUILD_HOME}/adt-build-machine-scripts/utilities**
 Scripts thst provide general utility functions needed by the tooling
 
+-----------------------
+
+Early on in the development of this toolkit I supported AWS but I decided to strip out the AWS code that I had developed because it required various additional customisation and I want to keep the "core" of the toolkit as standardised as possible. The idea here is that I don't intend to modify this these core repositories with additional function but rather to simply maintain and enhance the core as is based on feedback from the community and to have any further customisations done in forks of these core repos. If you want to get stuck in with your own fork that supports AWS (possibly with features like EFS as well) then you might be interested in these archived repos that have the original AWS code that I developed and which might give you some pointers on how to go about it. 
+
 
