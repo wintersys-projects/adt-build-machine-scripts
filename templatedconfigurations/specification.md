@@ -582,7 +582,7 @@ Exoscale: Available region IDs you can set for exoscale are:
 
 Linode: Available regions you can set for linode are:   
 
-"ap-west", "ca-central", "ap-southeast", "us-iad", "us-ord", "fr-par", "us-sea", "br-gru", "nl-ams", "se-sto", "es-mad", "in-maa", "jp-osa", "it-mil", "us-mia", "id-cgk", "us-lax", "gb-lon", "au-mel", "us-central", "us-west", "us-southeast", "us-east", "eu-west", "ap-south", "eu-central", "ap-northeast" 
+"ap-west", "ca-central", "ap-southeast", "us-iad", "us-ord", "fr-par", "us-sea", "br-gru", "nl-ams", "se-sto", "es-mad", "in-maa", "jp-osa", "it-mil", "us-mia", "id-cgk", "us-lax", "gb-lon", "au-mel", "in-bom-2", "de-fra-2", "sg-sin-2", "jp-tyo-3", "us-central", "us-west", "us-southeast", "us-east", "eu-west", "ap-south", "eu-central", "ap-northeast" 
 
 Vultr: Available regions you can set for vultr are:   
 
