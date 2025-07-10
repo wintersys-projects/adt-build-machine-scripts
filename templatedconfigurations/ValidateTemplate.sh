@@ -344,9 +344,12 @@ then
         fi
 fi
 
-if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "${DB_PORT}" != "25060" ] )
+if ( [ "${MULTI_REGION}" = "0" ] || [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
 then
-        ${log_command} "Your value for the variable DB_PORT is ${DB_PORT} and it can only be '25060' in this configuration"
+        if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "${DB_PORT}" != "25060" ] )
+        then
+                ${log_command} "Your value for the variable DB_PORT is ${DB_PORT} and it can only be '25060' in this configuration"
+        fi
 fi
 
 if ( [ "`/bin/grep "^DB_SERVER_TYPE " ${quick_specification} | /bin/grep -w "${DB_SERVER_TYPE}"  2>/dev/null `" = "" ] )
