@@ -632,10 +632,11 @@ then
         ${log_command} "This is not allowed, please correct"
 fi
 
-if ( [ "${CLOUDHOST}" = "exoscale" ] && ( [ "${ACTIVE_FIREWALLS}" = "0" ] || [ "${ACTIVE_FIREWALLS}" != "1" ] ) )
+if ( [ "${ACTIVE_FIREWALLS}" = "0" ] || [ "${ACTIVE_FIREWALLS}" != "1" ] )
 then
         ${log_command} "You won't be able to connect to your web property unless you have a native firewall active"
         ${log_command} "Currently, your value for ACTIVE_FIREWALLS is set to ${ACTIVE_FIREWALLS}"
+        ${log_command} "It needs to be set to 2 or 3"
 fi
 
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${DNS_CHOICE}" != "cloudflare" ] )
