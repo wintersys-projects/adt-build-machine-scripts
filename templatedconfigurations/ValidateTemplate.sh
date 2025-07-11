@@ -632,6 +632,12 @@ then
         ${log_command} "This is not allowed, please correct"
 fi
 
+if ( [ "${CLOUDHOST}" = "exoscale" ] && ( [ "${ACTIVE_FIREWALLS}" = "0" ] || [ "${ACTIVE_FIREWALLS}" != "1" ] ) )
+then
+        ${log_command} "You won't be able to connect to your web property unless you have a native firewall active"
+        ${log_command} "Currently, your value for ACTIVE_FIREWALLS is set to ${ACTIVE_FIREWALLS}"
+fi
+
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${DNS_CHOICE}" != "cloudflare" ] )
 then
         ${log_command} "You are making a multi region deployment your DNS service provider is set to ${DNS_CHOICE}"
