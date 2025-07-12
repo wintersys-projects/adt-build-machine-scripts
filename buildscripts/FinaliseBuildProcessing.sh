@@ -239,9 +239,7 @@ then
 
         while ( [ "${application_configuration_installed}" = "" ] )
         do
-                /bin/sleep 1
-
-             #   /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/CONFIGURATION_RESET_ACTIONED || ${SUDO} /home/${SERVER_USER}/application/configuration/ResetConfiguration.sh"           
+                /bin/sleep 1     
                 
                 for ws_active_ip in ${ws_active_ips}
                 do
