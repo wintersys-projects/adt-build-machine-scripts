@@ -232,29 +232,29 @@ then
 fi
 
 #This checks that the user's application's configuration settings has been installed correctly and fully
-if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
-then
-        status "Checking that the application configuration for ${APPLICATION} has fully installed...."
-        application_configuration_installed=""
-
-        while ( [ "${application_configuration_installed}" = "" ] )
-        do
-                /bin/sleep 1
-
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/CONFIGURATION_RESET_ACTIONED || ${SUDO} /home/${SERVER_USER}/application/configuration/ResetConfiguration.sh"           
-                
-                for ws_active_ip in ${ws_active_ips}
-                do
-                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/SetApplicationConfiguration.sh" 2>/dev/null
-                        application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
-
-                        if ( [ "${application_configuration_installed}" = "" ] )
-                        then
-                                application_configuration_installed=""
-                        fi
-                done
-        done
-fi
+#if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
+#then
+#        status "Checking that the application configuration for ${APPLICATION} has fully installed...."
+#        application_configuration_installed=""
+#
+ ##       while ( [ "${application_configuration_installed}" = "" ] )
+  #      do
+  ##              /bin/sleep 1
+#
+   #             /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/CONFIGURATION_RESET_ACTIONED || ${SUDO} /home/${SERVER_USER}/application/configuration/ResetConfiguration.sh"           
+ #               
+  #              for ws_active_ip in ${ws_active_ips}
+   #             do
+    #                    /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/SetApplicationConfiguration.sh" 2>/dev/null
+     #                   application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
+#
+ #                       if ( [ "${application_configuration_installed}" = "" ] )
+  #                      then
+   #                             application_configuration_installed=""
+    #                    fi
+     #           done
+      #  done
+#fi
 
 #This checks that the webserver itself has been fully installed and is running. 
 status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
