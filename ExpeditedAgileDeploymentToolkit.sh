@@ -514,7 +514,7 @@ status "This script completed at `/bin/date` and took `/bin/date -u -d @${runtim
 # Complete the setting up of the native firewall
 #${BUILD_HOME}/providerscripts/security/firewall/SetupNativeFirewall.sh "0"
 
-trap - EXIT INT HUP
+trap - EXIT INT
 
 if ( [ "${software_updated}" = "1" ] )
 then
