@@ -42,6 +42,7 @@ INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.s
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
+MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MULTI_REGION`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
@@ -206,7 +207,15 @@ then
  	status "This is to make it a deliberate and conscious action to activate the an authentication server and also it saves us some complexity"
   	status "Please review the IP address of your authentication server with ${CLOUDHOST} and add it to your DNS system ${DNS_CHOICE}"
    	status "With the subdomain of 'auth' in other words if your website domain is www.nuocial.uk your authentication server domain should be auth.nuocial.uk"
-	status "================================================================================================================================="
+	if ( [ "${MULTI_REGION}" != "0" ] )
+ 	then
+ 		status "It looks like you are making a multi-region deployment. If you have multiple authentication servers running in different regions"
+   		status "And/or different vendors then only ONE of your authentication servers at any given time should be added to the DNS system"
+     		status "If your authentication server fails and its no longer possible to allow additional laptop ip systems to your servers"
+       		status "Then, you should swap the active DNS record for your authentication server to point to a backup authentication server in a"
+	 	status "Different region. A single authentication server will provide full authentications services across all regions"
+   	fi
+ 	status "================================================================================================================================="
 fi
 
 #Remind the deployer how the firewall is configured
