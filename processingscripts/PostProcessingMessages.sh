@@ -40,6 +40,8 @@ SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
+AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
+DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
@@ -194,6 +196,17 @@ then
     status "If you have trouble accessing your new wordpress site, one thing that might be wrong is permalinks within wordpress"
     status "In this case, go to https://${WEBSITE_URL}/wp-admin, login and rebuild permalinks under settings->permalinks"
     status "========================================================================================================================================="
+fi
+
+if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+then
+	status "================================================================================================================================"
+ 	status "YOU ARE DEPLOYING AN AUTHENTICATION SERVER"
+	status "The system is designed so that the authentications server(s) you deploy have their IP addresses manually added to the DNS system"
+ 	status "This is to make it a deliberate and conscious action to activate the an authentication server and also it saves us some complexity"
+  	status "Please review the IP address of your authentication server with ${CLOUDHOST} and add it to your DNS system ${DNS_CHOICE}"
+   	status "With the subdomain of 'auth' in other words if your website domain is www.nuocial.uk your authentication server domain should be auth.nuocial.uk"
+	status "================================================================================================================================="
 fi
 
 #Remind the deployer how the firewall is configured
