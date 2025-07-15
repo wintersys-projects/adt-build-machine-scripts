@@ -87,6 +87,8 @@ then
     /bin/mkdir -p  ${BUILD_HOME}/.lego/certificates 
 fi
 
+status "Generating new SSL certificate for the ${DNS_CHOICE} DNS service"
+
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
     #For production
