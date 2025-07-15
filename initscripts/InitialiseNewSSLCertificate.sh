@@ -29,6 +29,7 @@ status () {
 }
 
 website_url="${1}"
+auth="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_METHOD`"
@@ -42,6 +43,14 @@ then
         WEBSITE_URL="${website_url}"
 else
         WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+fi
+
+if ( [ "${auth}" = "yes" ] )
+then
+        WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_SERVER_URL`"
+        DNS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_USERNAME`"
+        DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_SECURITY_KEY`"
+        DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_CHOICE`"
 fi
 
 generate_new="0"
