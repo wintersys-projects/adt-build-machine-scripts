@@ -645,12 +645,12 @@ then
         ${log_command} "This is not allowed, your DNS_CHOICE has to be cloudflare"
 fi
 
-if ( [ "${MULTI_REGION}" = "1" ] && [ "${AUTHENTICATION_SERVER}" != "0" ] )
-then
-        ${log_command} "You are making a multi region deployment and also trying to provision an authentication server"
-        ${log_command} "This is not allowed. Authentication servers are not supported when making multi region deployments"
-        ${log_command} "You should use cloudflare (or modify the toolkit to support your DNS proxy service of choice) instead in multi region mode"
-fi
+#if ( [ "${MULTI_REGION}" = "1" ] && [ "${AUTHENTICATION_SERVER}" != "0" ] )
+#then
+#        ${log_command} "You are making a multi region deployment and also trying to provision an authentication server"
+#        ${log_command} "This is not allowed. Authentication servers are not supported when making multi region deployments"
+#        ${log_command} "You should use cloudflare (or modify the toolkit to support your DNS proxy service of choice) instead in multi region mode"
+#fi
 
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
