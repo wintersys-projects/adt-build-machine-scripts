@@ -41,6 +41,8 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MULTIREGION`"
+PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARYREGION`"
 PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 BUILDOS_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS_VERSION`"
@@ -216,7 +218,10 @@ do
                 else
                         #If we are here then we believe that the build completed correctly so the public IP address for the our authenticator machine
                         #Is added to the DNS provider
-                        ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary" ${WEBSITE_URL} "yes"
+                        if ( [ "${MULTI_REGION}" = "0" ] || [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
+                        then
+                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary" ${WEBSITE_URL} "yes"
+                        fi
                         done="1"
                 fi
 
