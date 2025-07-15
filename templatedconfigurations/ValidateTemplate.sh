@@ -639,11 +639,11 @@ then
         ${log_command} "It needs to be set to 2 or 3"
 fi
 
-if ( [ "${MULTI_REGION}" = "1" ] && [ "${DNS_CHOICE}" != "cloudflare" ] )
-then
-        ${log_command} "You are making a multi region deployment your DNS service provider is set to ${DNS_CHOICE}"
-        ${log_command} "This is not allowed, your DNS_CHOICE has to be cloudflare"
-fi
+#if ( [ "${MULTI_REGION}" = "1" ] && [ "${DNS_CHOICE}" != "cloudflare" ] )
+#then
+#        ${log_command} "You are making a multi region deployment your DNS service provider is set to ${DNS_CHOICE}"
+#        ${log_command} "This is not allowed, your DNS_CHOICE has to be cloudflare"
+#fi
 
 #if ( [ "${MULTI_REGION}" = "1" ] && [ "${AUTHENTICATION_SERVER}" != "0" ] )
 #then
