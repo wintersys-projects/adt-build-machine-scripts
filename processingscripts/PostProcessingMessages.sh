@@ -199,25 +199,6 @@ then
     status "========================================================================================================================================="
 fi
 
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
-then
-	status "================================================================================================================================"
- 	status "YOU ARE DEPLOYING AN AUTHENTICATION SERVER"
-	status "The system is designed so that the authentications server(s) you deploy have their IP addresses manually added to the DNS system"
- 	status "This is to make it a deliberate and conscious action to activate the an authentication server and also it saves us some complexity"
-  	status "Please review the IP address of your authentication server with ${CLOUDHOST} and add it to your DNS system ${DNS_CHOICE}"
-   	status "With the subdomain of 'auth' in other words if your website domain is www.nuocial.uk your authentication server domain should be auth.nuocial.uk"
-	if ( [ "${MULTI_REGION}" != "0" ] )
- 	then
- 		status "It looks like you are making a multi-region deployment. If you have multiple authentication servers running in different regions"
-   		status "And/or different vendors then only ONE of your authentication servers at any given time should be added to the DNS system"
-     		status "If your authentication server fails and its no longer possible to allow additional laptop ip systems to your servers"
-       		status "Then, you should swap the active DNS record for your authentication server to point to a backup authentication server in a"
-	 	status "Different region. A single authentication server will provide full authentications services across all regions"
-   	fi
- 	status "================================================================================================================================="
-fi
-
 #Remind the deployer how the firewall is configured
 status "#############################BUILD-MACHINE_FIREWALL###############################################################################################"
 status "Your build machine is looking for its firewall settings in the bucket: s3://`/bin/ls -l /root/FIREWALL-BUCKET* | /usr/bin/awk -F':' '{print $NF}'`"
