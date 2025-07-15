@@ -330,20 +330,20 @@ then
                         done
                 done
         fi
-        if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
-        then
-                status "Enabling webserver(s) ip address(es) in the reverse proxy/proxies"
-                if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] )
-                then
-                        for rp_active_ip in ${rp_active_ips}
-                        do
-                                for ws_active_ip in ${rp_ws_active_ips}
-                                do
-                                        /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
-                                done
-                        done
-                fi
-        fi
+     #   if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
+     #   then
+     #           status "Enabling webserver(s) ip address(es) in the reverse proxy/proxies"
+     #           if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] )
+     #           then
+     #                   for rp_active_ip in ${rp_active_ips}
+     #                   do
+     #                           for ws_active_ip in ${rp_ws_active_ips}
+     #                           do
+     #                                   /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/configuration/reverseproxy/AddNewIPToReverseProxyIPList.sh ${ws_active_ip}"
+     #                           done
+     #                   done
+     #           fi
+      #  fi
 fi
 
 #If the webserver isn't actually running try and spark it up
