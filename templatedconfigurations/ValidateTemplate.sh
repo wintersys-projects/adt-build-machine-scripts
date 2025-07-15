@@ -144,11 +144,11 @@ then
         ${log_command} "Your value for the variable DNS_CHOICE (${DNS_CHOICE}) doesn't appear to be valid please review"
 fi
 
-if ( [ "${DNS_CHOICE}" = "cloudflare" ] && [ "${AUTHENTICATION_SERVER}" = "1" ] )
-then
-        ${log_command} "Authentication servers are not intended to be used with the cloudflare DNS system" 
-        ${log_command} "if you want zero trust access you want to use cloudflare you should use cloudflare's own zero trust solution"
-fi
+#if ( [ "${DNS_CHOICE}" = "cloudflare" ] && [ "${AUTHENTICATION_SERVER}" = "1" ] )
+#then
+#        ${log_command} "Authentication servers are not intended to be used with the cloudflare DNS system" 
+#        ${log_command} "if you want zero trust access you want to use cloudflare you should use cloudflare's own zero trust solution"
+#fi
 
 if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] ) )
 then
