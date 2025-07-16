@@ -150,8 +150,24 @@ then
 	/bin/touch /tmp/END_IT_ALL
 fi
 
-website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-identifier="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ]  )
+then
+        multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
+        then
+		status "###################HALT################################"
+  		status "You are deploying a primary region, are you sure as I am"
+		status "about to delete existing multi-region credentials and any existing primary region configuration are you sure 100%? (Y|y)"
+  		status "####################HALT###############################"
+  		read response
+    		if ( [ "`/bin/echo "Y y" | /bin/grep ${response}`" = "" ] )
+      		then
+			/bin/touch /tmp/END_IT_ALL
+   		fi 		
+                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
+        fi
+        ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
+fi
 
 if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 then
@@ -162,27 +178,12 @@ then
 	done
 fi
 
-#${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh 
+website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+identifier="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
 status "Creating a new configuration bucket for build (${BUILD_IDENTIFIER})"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/MountConfigDatastore.sh 
 if ( [ "$?" = "0" ] )
 then
     status "New configuration bucket is located at: (s3://${website_bucket}-config-${identifier}) for you"
-fi
-
-if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ]  )
-then
-        multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
-        then
-		status "About to delete existing multi-region credentials are you sure? (Y|y)"
-  		read response
-    		if ( [ "`/bin/echo "Y y" | /bin/grep ${response}`" = "" ] )
-      		then
-			/bin/touch /tmp/END_IT_ALL
-   		fi
-                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
-        fi
-        ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
 fi
