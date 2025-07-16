@@ -621,6 +621,36 @@ You can set the cloudhost to Digital Ocean, for example by setting the CLOUDHOST
 
 If you want to deploy an authentication server then set this to "1" otherwise set it to "0"
 
+------------
+
+### AUTH_SERVER_URL  
+
+The website URL for your authentication server  
+
+-------------
+
+### AUTH_DNS_USERNAME  
+
+The username for the DNS service that your authentication server's URL is managed with. Your authentication server needs to be a different domain to your main website. For examle, if your main application domain is www.nuocial.uk then your authentication server might be auth.nuocialauth.uk which is a separate domain so that it can be hosted by a different DNS provider to your main application. For example, your main application might be hosted by linode DNS provider and your authentication server DNS might be hosted by cloudflare DNS.   
+
+-----------------------
+
+### AUTH_DNS_SECURITY_KEY  
+
+The security key that is paired with your AUTH_DNS_USERNAME for the DNS service provider for the authentication server DNS provider.  
+
+---------------------------
+
+### AUTH_DNS_CHOICE  
+
+This is the name of the DNS provider for your authentication server. This can be  
+
+1. cloudflare
+2. digitalocean
+3. exoscale
+4. linode
+5. vultr
+
 ---------
 
 ### MACHINE_TYPE
