@@ -432,9 +432,7 @@ ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 # If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
-        WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
-        auth_website_url="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/[^.]*./auth./'`"
-        ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${auth_website_url} "yes"
+        ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh "FILLER" "yes"
 fi
 
 # Generate the SSL certificate that will be used by our webservers
