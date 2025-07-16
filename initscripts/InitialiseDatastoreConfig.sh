@@ -155,9 +155,9 @@ then
         multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
         if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
         then
-		status "###################HALT################################"
-  		status "You are deploying a primary region, are you sure as I am"
-		status "about to delete existing multi-region credentials and any existing primary region configuration are you sure 100%? (Y|y)"
+		status "####################HALT################################"
+  		status "You are deploying a primary region, are you sure as I am about to delete existing multi-region"
+		status "credentials and any existing primary region configuration are you sure 100%? (Y|y)"
   		status "####################HALT###############################"
   		read response
     		if ( [ "`/bin/echo "Y y" | /bin/grep ${response}`" = "" ] )
