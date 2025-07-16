@@ -348,36 +348,44 @@ Each CMS system is likely to have directories where assets are generated from ap
 
 Joomla  
 
->     export DIRECTORIES_TO_MOUNT="images"
+>     export DIRECTORIES_TO_MOUNT="/var/www/html/images"
 
- When the CMS is joomla, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount
+ When the CMS is joomla, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount 
  
->     /var/www/html/images
+ >      /var/www/html/images
+
+ from an associated asset bucket in your datastore
 
 Worpress  
 
->     export DIRECTORIES_TO_MOUNT="wp-content.uploads"
+>     export DIRECTORIES_TO_MOUNT="/var/www/html/wp-content/uploads"
 
 When the CMS is WordPress, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount 
 
->     /var/www/html/wp-content/uploads  
+>     /var/www/html/wp-content/uploads
+
+from an associated asset bucket in your datastore
 
 Drupal  
 
->     export DIRECTORIES_TO_MOUNT="sites.default.files"
+>     export DIRECTORIES_TO_MOUNT="/var/www/html/sites/default/files"
 
 When the CMS is Drupal, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount 
 
 >     /var/www/html/sites/default/files
->  
+
+from an associated asset bucket in your datastore
+ 
 Opensocial 
 
->     export DIRECTORIES_TO_MOUNT="sites.default.files:/var/www/private"
+>     export DIRECTORIES_TO_MOUNT="/var/www/html/sites/default/files:/var/www/private"
 
 When the CMS is Opensocial, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount  
 
 >     /var/www/html/sites/default/files  and /var/www/private
-> 
+
+from associated asset buckets in your datastore
+
 Moodle 
 
 >     export DIRECTORIES_TO_MOUNT="moodledata.filedir"
@@ -386,6 +394,9 @@ When the CMS is Moodle, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount
 
 >     /var/www/html/moodledata/filedir
 
+from an associated asset bucket in your datastore
+
+The associated asset buckets are generated when you make your first temporal backup of a baselined application according to what you have the DIRECTORIES_TO_MOUNT value set to along with PERSIST_ASSETS_TO_DATASTORE being set to "1"
 ----- 
 
 ### SYNC_WEBROOTS
