@@ -218,7 +218,7 @@ do
                 else
                         #If we are here then we believe that the build completed correctly so the public IP address for the our authenticator machine
                         #Is added to the DNS provider
-                        if ( [ "${MULTI_REGION}" = "0" ] || [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
+                        if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
                         then
                                 ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary" ${WEBSITE_URL} "yes"
                         fi
