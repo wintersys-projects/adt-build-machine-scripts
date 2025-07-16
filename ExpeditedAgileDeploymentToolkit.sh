@@ -29,9 +29,12 @@
 ###############################################################################################
 #set -x
 
-#Uncomment/amend as desired
-#/bin/echo "set mouse=r
-#syntax on" > /root/.vimrc
+#comment/amend as desired
+/bin/echo "set mouse=r
+syntax on
+filetype indent on
+set smartindent
+autocmd BufRead,BufWritePre *.sh normal gg=G" > /root/.vimrc
 
 
 end_it_all() {
