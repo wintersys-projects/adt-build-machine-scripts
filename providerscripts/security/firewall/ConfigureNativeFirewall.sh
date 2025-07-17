@@ -100,8 +100,6 @@ then
 
                         if ( [ "${all_dns_proxy_ips}" != "" ] )
                         then
-                                status "here"
-                                exit
                                 if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-authenticator" ] )
                                 then
                                         for ip in ${all_dns_proxy_ips}
