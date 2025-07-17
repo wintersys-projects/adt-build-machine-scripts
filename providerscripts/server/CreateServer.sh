@@ -154,15 +154,25 @@ fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
-        key_id="`/usr/local/bin/doctl compute ssh-key list -o json | /usr/bin/jq -r '.[] | select ( .name == "AGILE_TOOLKIT_PUBLIC_KEY-'${BUILD_IDENTIFIER}'" ).id'`"
-        if ( [ "${key_id}" != "" ] )
+        if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SSH_KEY_ASSIGNED ] )
         then
-                /usr/local/bin/doctl compute ssh-key delete ${key_id} --force
+                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SSH_KEY_ASSIGNED
+                key_id="`/usr/local/bin/doctl compute ssh-key list -o json | /usr/bin/jq -r '.[] | select ( .name == "AGILE_TOOLKIT_PUBLIC_KEY-'${BUILD_IDENTIFIER}'" ).id'`"
+                if ( [ "${key_id}" != "" ] )
+                then
+                        /usr/local/bin/doctl compute ssh-key delete ${key_id} --force
+                fi
+
+                /usr/local/bin/doctl compute ssh-key create "AGILE_TOOLKIT_PUBLIC_KEY-${BUILD_IDENTIFIER}" --public-key "`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}.pub`"
+
         fi
 
-        /usr/local/bin/doctl compute ssh-key create "AGILE_TOOLKIT_PUBLIC_KEY-${BUILD_IDENTIFIER}" --public-key "`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}.pub`"
+        while ( [ "`/usr/local/bin/doctl compute ssh-key list -o json | /usr/bin/jq '.[] | select (.name == "AGILE_TOOLKIT_PUBLIC_KEY-'${BUILD_IDENTIFIER}'").id'`" = "" ] )
+        do
+                /bin/sleep 2
+        done
 
-        key_id="`/usr/local/bin/doctl compute ssh-key list -o json | /usr/bin/jq '.[] | select (.name == "AGILE_TOOLKIT_PUBLIC_KEY-'${BUILD_IDENTIFIER}'").id'`"
+        key_id="`/usr/local/bin/doctl compute ssh-key list -o json | /usr/bin/jq '.[] | select (.name == "AGILE_TOOLKIT_PUBLIC_KEY-'${BUILD_IDENTIFIER}'").id'`" 
 
         if ( [ "${key_id}" = "" ] )
         then
