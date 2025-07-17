@@ -306,23 +306,20 @@ then
                 fi
         fi
 
-       if ( [ "${CLOUDHOST}" = "vultr" ] )
+        if ( [ "${CLOUDHOST}" = "vultr" ] )
         then
                 firewall_id="`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.description == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
-                
+
                 if ( [ "${firewall_id}" = "" ] )
                 then
                         firewall_id="`/usr/bin/vultr firewall group create -o json | /usr/bin/jq -r '.firewall_group.id'`"
                         /usr/bin/vultr firewall group update ${firewall_id} --description "${firewall_name}-${BUILD_IDENTIFIER}"
                 else
-                        if ( [ "`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.id == "'${firewall_id}'")|.instance_count'`" = "0" ] )
-                        then
-                                rules="`/usr/bin/vultr firewall rule list ${firewall_id} -o json | /usr/bin/jq -r '.firewall_rules[].id'`"
-                                for rule in ${rules}
-                                do
-                                        /usr/bin/vultr firewall rule delete ${firewall_id} ${rule}
-                                done
-                        fi
+                        rules="`/usr/bin/vultr firewall rule list ${firewall_id} -o json | /usr/bin/jq -r '.firewall_rules[].id'`"
+                        for rule in ${rules}
+                        do
+                                /usr/bin/vultr firewall rule delete ${firewall_id} ${rule}
+                        done
                 fi
 
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
@@ -353,8 +350,7 @@ then
                         fi
                 fi
 
-
-                if ( [ "${all_dns_proxy_ips}" != "" ] && [ "${firewall_name}" != "adt-authenticator" ] )
+                if ( [ "${all_dns_proxy_ips}" != "" ] )
                 then
                         if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-authenticator" ] )
                         then
@@ -365,7 +361,7 @@ then
                         /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4 --subnet=0.0.0.0/0
                 fi
 
-                 /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
 
                 if ( [ "${firewall_name}" = "adt-database" ] )
                 then
