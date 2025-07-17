@@ -31,6 +31,16 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 
+if ( [ "${1}" != "" ] )
+then
+        DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_CHOICE`"
+        
+        if ( [ "${DNS_CHOICE}" = "" ] )
+        then
+                DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
+        fi
+fi
+
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
         if ( [ "${CLOUDHOST}" = "digitalocean" ] )
