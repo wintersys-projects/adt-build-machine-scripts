@@ -28,11 +28,12 @@ then
         if ( [ "${CLOUDHOST}" = "digitalocean" ] )
         then
                 firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
-                
+
                 if ( [ "${firewall_id}" != "" ] )
                 then
                         /usr/local/bin/doctl compute firewall delete ${firewall_id} --force
                 fi
+
 
                 while ( [ "`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`" != "" ] )
                 do
@@ -60,22 +61,22 @@ then
                 then
                         if ( [ "${firewall_name}" = "adt-webserver" ] )
                         then
-                            machine_identifier="ws-${REGION}-${BUILD_IDENTIFIER}"
+                                machine_identifier="ws-${REGION}-${BUILD_IDENTIFIER}"
                         elif ( [ "${firewall_name}" = "adt-authenticator" ] )
                         then
-                            machine_identifier="auth-${REGION}-${BUILD_IDENTIFIER}"
+                                machine_identifier="auth-${REGION}-${BUILD_IDENTIFIER}"
                         elif ( [ "${firewall_name}" = "adt-reverseproxy" ] )
                         then
-                            machine_identifier="rp-${REGION}-${BUILD_IDENTIFIER}"
+                                machine_identifier="rp-${REGION}-${BUILD_IDENTIFIER}"
                         fi
 
                         if ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ||  [ "${firewall_name}" = "adt-authenticator" ] )
                         then
                                 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                                 then
-                                            rules="protocol:tcp,ports:443,address:${build_machine_ip}/32 protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                        rules="protocol:tcp,ports:443,address:${build_machine_ip}/32 protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
                                 else
-                                            rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                        rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
                                 fi
                         else
                                 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
@@ -87,62 +88,65 @@ then
                                 fi
                         fi
 
-                        if ( [ "${NO_REVERSE_PROXY}" = "1" ] && [ "${firewall_name}" = "adt-reverseproxy" ] )
+                        if ( [ "${NO_REVERSE_PROXY}" = "1" ] && ( [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-webserver" ] ) )
                         then
                                 if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                                 then
-                                            rules="protocol:tcp,ports:443,address:${build_machine_ip}/32 protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                        rules="protocol:tcp,ports:443,address:${build_machine_ip}/32 protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
                                 else
-                                            rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                                        rules="protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE}"
                                 fi
                         fi
 
-                        if ( [ "${all_dns_proxy_ips}" != "" ] && [ "${firewall_name}" != "adt-authenticator" ] )
+                        if ( [ "${all_dns_proxy_ips}" != "" ] )
                         then
-                            if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] )
-                            then
-                                for ip in ${all_dns_proxy_ips}
-                                do
-                                      rules=${rules}" protocol:tcp,ports:443,address:${ip} " 
-                                done
-                                rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} "
-                            fi
-                         else
-                               rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} protocol:tcp,ports:443,address:0.0.0.0/0 "
-                         fi
+                                status "here"
+                                exit
+                                if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-authenticator" ] )
+                                then
+                                        for ip in ${all_dns_proxy_ips}
+                                        do
+                                                rules=${rules}" protocol:tcp,ports:443,address:${ip} " 
+                                        done
+                                        rules=${rules}" protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:22,address:${VPC_IP_RANGE} "
+                                fi
+                        elif ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-authenticator" ] )
+                        then
+                                rules=${rules}" protocol:tcp,ports:22,address:${VPC_IP_RANGE} protocol:tcp,ports:443,address:0.0.0.0/0 "
+                        fi
 
-                         rules=${rules}"  protocol:tcp,ports:443,address:${VPC_IP_RANGE} " 
-                         rules=${rules}" protocol:icmp,address:0.0.0.0/0"
-                         rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
-                  fi
+                        rules=${rules}"  protocol:tcp,ports:443,address:${VPC_IP_RANGE} " 
+                        rules=${rules}" protocol:icmp,address:0.0.0.0/0"
+                        rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
+                fi
 
-                  if ( [ "${firewall_name}" = "adt-database" ] )
-                  then
-                       machine_identifier="db-${REGION}-${BUILD_IDENTIFIER}"
+                if ( [ "${firewall_name}" = "adt-database" ] )
+                then
+                        machine_identifier="db-${REGION}-${BUILD_IDENTIFIER}"
 
-                       if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-                       then
-                           rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
-                       fi
+                        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+                        then
+                                rules="protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
+                        fi
 
-                       rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:${DB_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
-                       rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                
-                  fi
+                        rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:${DB_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
+                        rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                
+                fi
 
-                 /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
+                /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
 
-                 machine_ids=""
+                machine_ids=""
 
-                 while ( [ "${machine_ids}" = "" ] )
-                 do
+                while ( [ "${machine_ids}" = "" ] )
+                do
                         machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_identifier}" ${CLOUDHOST}`"
                         /bin/sleep 5
-                 done
+                done
 
-                 for machine_id in ${machine_ids}
-                 do
-                      /usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
-                 done
+                for machine_id in ${machine_ids}
+                do
+                        /usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
+                done
         fi
         if ( [ "${CLOUDHOST}" = "exoscale" ] )
         then
