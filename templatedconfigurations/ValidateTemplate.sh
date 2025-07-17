@@ -667,7 +667,7 @@ fi
 
 if ( [ "${BYPASS_DB_LAYER}" = "0" ] && [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
 then
-        ${log_command} "Your BYPASS_DB_LAYER setting is set to 0 you probably want it to be set to 0 when you are in multi region mode and not a primary region"
+        ${log_command} "Your BYPASS_DB_LAYER setting is set to 0 you probably want it to be set to 1 or 2 when you are in multi region mode and not a primary region"
 fi
 
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] && [ "${DBaaS_PUBLIC_ENDPOINT}" = "" ] )
