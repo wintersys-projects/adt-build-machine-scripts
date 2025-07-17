@@ -86,15 +86,7 @@ do
                         #Actually start the server machine. Following this, there will be an active machine instance running on your cloud provider
                         ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AUTH_SERVER_TYPE}" "${authenticator_name}" 
 
-                        #Keep trying if the first time wasn't successful
-                        while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
-                        do
-                                count="`/usr/bin/expr ${count} + 1`"
-                                /bin/sleep 10
-                                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AUTH_SERVER_TYPE}" "${authenticator_name}" 
-                        done
-
-                        if ( [ "${count}" = "10" ] )
+                        if ( [ "$?" != "0" ] )
                         then
                                 status "Could not create authenticator machine"
                                 /bin/touch /tmp/END_IT_ALL
