@@ -90,16 +90,9 @@ do
                         #Actually create the autoscaler machine. If the create fails, keep trying 
                         ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AS_SERVER_TYPE}" "${autoscaler_name}" 
 
-                        while ( [ "$?" != 0 ] && [ "${count}" -lt "10" ] )
-                        do
-                                count="`/usr/bin/expr ${count} + 1`"
-                                /bin/sleep 10
-                                ${BUILD_HOME}/providerscripts/server/CreateServer.sh "${AS_SERVER_TYPE}" "${autoscaler_name}" 
-                        done
-
-                        if ( [ "${count}" -eq "10" ] )
+                        if ( [ "$?" != "0" ] )
                         then
-                                status "Couldn't autoscaler create server"
+                                status "Could not create autoscaler machine"
                                 /bin/touch /tmp/END_IT_ALL
                         fi
 
