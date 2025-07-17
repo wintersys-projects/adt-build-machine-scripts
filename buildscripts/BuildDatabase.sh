@@ -86,19 +86,11 @@ do
 			#Actually spin up the machine we are going to build on
 			${BUILD_HOME}/providerscripts/server/CreateServer.sh "${DB_SERVER_TYPE}" "${database_name}"
 
-			#If for some reason, we failed to build the machine, then, give it another try
-			while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
-			do
-				count="`/usr/bin/expr ${count} + 1`"
-				/bin/sleep 10
-				${BUILD_HOME}/providerscripts/server/CreateServer.sh "${DB_SERVER_TYPE}" "${database_name}" 
-			done
-
-			if ( [ "${count}" = "10" ] )
-			then
-				status "Couldn't create database server"
-    				/bin/touch /tmp/END_IT_ALL
-			fi
+                        if ( [ "$?" != "0" ] )
+                        then
+                                status "Could not create database machine"
+                                /bin/touch /tmp/END_IT_ALL
+                        fi
 
       			status "Interrogating for database instance being available....if this goes on forever there is a problem"
 			count="0"
