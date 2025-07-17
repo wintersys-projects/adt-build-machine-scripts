@@ -157,7 +157,7 @@ then
         then
 		status "####################HALT################################"
   		status "You are deploying a primary region, are you sure as I am about to delete existing multi-region"
-		status "credentials and any existing primary region configuration are you sure 100%? (Y|y)"
+		status "credentials and any existing primary region configuration are you sure 100%? (Y|y), anything else to exit"
   		status "####################HALT###############################"
   		read response
     		if ( [ "`/bin/echo "Y y" | /bin/grep ${response}`" = "" ] )
