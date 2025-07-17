@@ -97,19 +97,11 @@ do
 			#Actually start the server machine. Following this, there will be an active machine instance running on your cloud provider
 			${BUILD_HOME}/providerscripts/server/CreateServer.sh "${WS_SERVER_TYPE}" "${webserver_name}" 
 
-			#Keep trying if the first time wasn't successful
-			while ( [ "$?" != "0" ] && [ "${count}" -lt "10" ] )
-			do
-				count="`/usr/bin/expr ${count} + 1`"
-				/bin/sleep 10
-				${BUILD_HOME}/providerscripts/server/CreateServer.sh "${WS_SERVER_TYPE}" "${webserver_name}" 
-			done
-
-			if ( [ "${count}" = "10" ] )
-			then
-				status "Could not create webserver machine"
-    				/bin/touch /tmp/END_IT_ALL
-			fi
+                        if ( [ "$?" != "0" ] )
+                        then
+                                status "Could not create webmaster machine"
+                                /bin/touch /tmp/END_IT_ALL
+                        fi
 
          		status "Interrogating for webserver instance being available....if this goes on forever there is a problem"
 			count="0"
