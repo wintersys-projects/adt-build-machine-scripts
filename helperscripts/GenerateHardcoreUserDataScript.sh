@@ -24,8 +24,8 @@
 
 if ( [ ! -f ./GenerateHardcoreUserDataScript.sh ] )
 then
-	/bin/echo "This script is expected to run from the helperscripts directory"
-	exit
+        /bin/echo "This script is expected to run from the helperscripts directory"
+        exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -36,9 +36,9 @@ user="`/usr/bin/pwd | /usr/bin/awk -F'/' '{print $3}'`"
 
 if ( [ "${1}" != "stack" ] )
 then
-	baseoverridescript="${BUILD_HOME}/templatedconfigurations/templateoverrides/OverrideScript.sh"
+        baseoverridescript="${BUILD_HOME}/templatedconfigurations/templateoverrides/OverrideScript.sh"
 else
-	baseoverridescript="${BUILD_HOME}/templatedconfigurations/templateoverrides/OverrideScriptLinode.sh"
+        baseoverridescript="${BUILD_HOME}/templatedconfigurations/templateoverrides/OverrideScriptLinode.sh"
 fi
 
 /bin/echo "Override scripts that you have generated are:"
@@ -51,8 +51,8 @@ read overridescript
 
 while ( [ ! -f ${BUILD_HOME}/overridescripts/${overridescript} ] )
 do
-	/bin/echo "I can't seem to find that script, please enter its name again or <ctrl-c> to exit"
-	read overridescript
+        /bin/echo "I can't seem to find that script, please enter its name again or <ctrl-c> to exit"
+        read overridescript
 done
 
 /bin/echo "Please enter a discriptive name for your userdata script"
@@ -63,27 +63,27 @@ configurationsettings_stack="${BUILD_HOME}/overridescripts/${overridescript}.sta
 
 if ( [ -f ${configurationsettings_stack} ] )
 then
-	/bin/sed -i '/^export/d' ${configurationsettings_stack}
+        /bin/sed -i '/^export/d' ${configurationsettings_stack}
 fi
 
 if ( [ ! -d ${BUILD_HOME}/userdatascripts ] )
 then
-	/bin/mkdir ${BUILD_HOME}/userdatascripts
+        /bin/mkdir ${BUILD_HOME}/userdatascripts
 fi
 
 /bin/cp ${baseoverridescript} ${BUILD_HOME}/userdatascripts/${userdatascript}
-/bin/sed 's/\"/\\"/g' ${configurationsettings} > ${configurationsettings}.live
+
 if ( [ "${1}" != "stack" ] )
 then
-	/bin/sed -i 's/#XXXECHOZZZ/\/bin\/echo \"/g' ${BUILD_HOME}/userdatascripts/${userdatascript}
-	/bin/sed -e '/#XXXYYYZZZ/ {' -e "r ${configurationsettings}.live" -e 'd' -e '}' -i ${BUILD_HOME}/userdatascripts/${userdatascript}
-	/bin/sed -i 's/#XXXROOTENVZZZ/  \" \>\> \/root\/Environment.env/g' ${BUILD_HOME}/userdatascripts/${userdatascript}
-	/bin/sed -e '/#XXXYYYZZZ/ {' -e "r ${configurationsettings}.live" -e 'd' -e '}' -i ${BUILD_HOME}/userdatascripts/${userdatascript}
+        /bin/sed -i "s;#XXXECHOZZZ;/bin/echo ';g" ${BUILD_HOME}/userdatascripts/${userdatascript}
+        /bin/sed -e '/#XXXYYYZZZ/ {' -e "r ${configurationsettings}" -e 'd' -e '}' -i ${BUILD_HOME}/userdatascripts/${userdatascript}
+        /bin/sed -i "s;#XXXROOTENVZZZ;  ' \>\> /root/Environment.env;g" ${BUILD_HOME}/userdatascripts/${userdatascript}
+        /bin/sed -e '/#XXXYYYZZZ/ {' -e "r ${configurationsettings}" -e 'd' -e '}' -i ${BUILD_HOME}/userdatascripts/${userdatascript}
 else
-	if ( [ -f ${configurationsettings_stack} ] )
-	then
-		/bin/sed -e '/#XXXSTACKYYY/ {' -e "r ${configurationsettings_stack}" -e 'd' -e '}' -i ${BUILD_HOME}/userdatascripts/${userdatascript}
-		/bin/sed -i "s/^export/#export/g" ${BUILD_HOME}/userdatascripts/${userdatascript}
+        if ( [ -f ${configurationsettings_stack} ] )
+        then
+                /bin/sed -e '/#XXXSTACKYYY/ {' -e "r ${configurationsettings_stack}" -e 'd' -e '}' -i ${BUILD_HOME}/userdatascripts/${userdatascript}
+                /bin/sed -i "s/^export/#export/g" ${BUILD_HOME}/userdatascripts/${userdatascript}
     fi
 fi
 
@@ -93,7 +93,7 @@ fi
 
 if ( [ "${1}" != "stack" ] )
 then
-	/bin/echo "Your generated build script is at: ${BUILD_HOME}/userdatascripts/${userdatascript}"
+        /bin/echo "Your generated build script is at: ${BUILD_HOME}/userdatascripts/${userdatascript}"
 else
-	/bin/echo "Your generated linode specific stack script is at: ${BUILD_HOME}/userdatascripts/${userdatascript}"
+        /bin/echo "Your generated linode specific stack script is at: ${BUILD_HOME}/userdatascripts/${userdatascript}"
 fi
