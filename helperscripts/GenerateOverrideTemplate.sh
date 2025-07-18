@@ -25,8 +25,8 @@
 
 if ( [ ! -f  ./GenerateOverrideTemplate.sh ] )
 then
-	/bin/echo "This script is expected to run from the helperscripts directory"
-	exit
+        /bin/echo "This script is expected to run from the helperscripts directory"
+        exit
 fi
 
 /bin/echo "############################################################################################################"
@@ -45,19 +45,19 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 read response
 if ( [ "${response}" = "1" ] )
 then
-	CLOUDHOST="digitalocean"
+        CLOUDHOST="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-	CLOUDHOST="exoscale"
+        CLOUDHOST="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-	CLOUDHOST="linode"
+        CLOUDHOST="linode"
 elif ( [ "${response}" = "4" ] )
 then
-	CLOUDHOST="vultr"
+        CLOUDHOST="vultr"
 else
-	/bin/echo "Unrecognised  cloudhost. Exiting ...."
-	exit
+        /bin/echo "Unrecognised  cloudhost. Exiting ...."
+        exit
 fi
 
 /bin/echo "Please tell us which template you wish to override"
@@ -67,17 +67,17 @@ no_templates="`/usr/bin/wc -l ${BUILD_HOME}/templatedconfigurations/templates/${
 read choice
 if ( [ "${choice}" -gt "0" ] && [ "${choice}" -le "${no_templates}" ] )
 then 
-	template="${choice}"
+        template="${choice}"
 else
-	/bin/echo "Invalid input...exiting"
-	exit
+        /bin/echo "Invalid input...exiting"
+        exit
 fi
 overridescript="${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/${CLOUDHOST}${template}.tmpl"
 newoverridescript="/tmp/${CLOUDHOST}${template}"
 
 if ( [ -f ${newoverridescript} ] )
 then
-	/bin/rm ${newoverridescript}
+        /bin/rm ${newoverridescript}
 fi
 
 /bin/echo "# <UDF name=\"SELECTED_TEMPLATE\" label=\"The number of the template you are using\" />" >> ${newoverridescript}.stack
@@ -85,7 +85,7 @@ fi
 /bin/cp ${overridescript} ${newoverridescript}
 /bin/cat ${overridescript} >> ${newoverridescript}.stack
 
-variables="`/bin/grep 'export ' ${newoverridescript} | /usr/bin/awk -F'=' '{print $1}' | /bin/sed 's/export//g'`"
+variables="`/bin/grep '^export ' ${newoverridescript} | /usr/bin/awk -F'=' '{print $1}' | /bin/sed 's/export//g'`"
 
 /bin/echo "###############################################################################"
 /bin/echo "YOU NEED TO SET ALL OF THESE VARIABLES TO SANE VALUES FOR THE BUILD TO FUNCTION"
@@ -95,35 +95,35 @@ read x
 
 for livevariable in ${variables}
 do
-	value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
-	display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
+        value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
+        display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
 
-	if ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" != "" ] ) 
-	then
-		/bin/echo "############################################################################################"
-		/bin/echo "Explanation from the specification regarding this variable:"
-		/bin/echo "############################################################################################"
-		/bin/sed "/### ${livevariable}/,/----/!d;/----/q" ${BUILD_HOME}/templatedconfigurations/specification.md
-		/bin/echo "Found a variable ${livevariable} what do you want to set it to?"
-		value="`/bin/grep -w "${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
-		/bin/echo "Its current value is \"${value}\" press <enter> to retain, anything else to override"
-		read setting
-		/bin/echo "OK, thanks..."
-		/bin/echo
-		/bin/echo
-		/bin/echo
-		/bin/echo
-		if ( [ "${setting}" != "" ] )
-		then
-			value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
-			/bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${setting}\"/g" ${newoverridescript}
-			/bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${setting}\"\/>/g" ${newoverridescript}.stack
-		else
-			value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
-			/bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
-			/bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
-		fi
-	fi
+        if ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" != "" ] ) 
+        then
+                /bin/echo "############################################################################################"
+                /bin/echo "Explanation from the specification regarding this variable:"
+                /bin/echo "############################################################################################"
+                /bin/sed "/### ${livevariable}/,/----/!d;/----/q" ${BUILD_HOME}/templatedconfigurations/specification.md
+                /bin/echo "Found a variable ${livevariable} what do you want to set it to?"
+                value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
+                /bin/echo "Its current value is \"${value}\" press <enter> to retain, anything else to override"
+                read setting
+                /bin/echo "OK, thanks..."
+                /bin/echo
+                /bin/echo
+                /bin/echo
+                /bin/echo
+                if ( [ "${setting}" != "" ] )
+                then
+                        value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
+                        /bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${setting}\"/g" ${newoverridescript}
+                        /bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${setting}\"\/>/g" ${newoverridescript}.stack
+                else
+                        value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
+                        /bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
+                        /bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
+                fi
+        fi
 done
 
 /bin/echo "###################################################################################################################################"
@@ -135,64 +135,64 @@ read response
 
 while ( [ "`/bin/echo "Y y N n" | /bin/grep "${response}"`" = "" ] )
 do
-	/bin/echo "That is not a valid response, please try again....."
-	read response
+        /bin/echo "That is not a valid response, please try again....."
+        read response
 done
 
 if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
 then
-	for livevariable in ${variables}
-	do
-		display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
-		value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
+        for livevariable in ${variables}
+        do
+                display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
+                value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
 
-		if ( ( [ "`/bin/grep 'NOT REQUIRED' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) && ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) )
-		then
-			/bin/echo "############################################################################################"
-			/bin/echo "Explanation from the specification regarding this variable:"
-			/bin/echo "############################################################################################"
-			/bin/sed "/### ${livevariable}/,/----/!d;/----/q" ${BUILD_HOME}/templatedconfigurations/specification.md
-			/bin/echo "Found a variable ${livevariable} what do you want to set it to?"
-			value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
-			value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
-			/bin/echo "Its current value is \"${value}\" press <enter> to retain, anything else to override"
-			read setting
-			/bin/echo "OK, thanks..."
-			if ( [ "${setting}" != "" ] )
-			then
-				/bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"$setting\"/g" ${newoverridescript}
-				/bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${setting}\"\/>/g" ${newoverridescript}.stack
-			else
-				/bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
-				/bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
-			fi
-		fi
-	done
+                if ( ( [ "`/bin/grep 'NOT REQUIRED' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) && ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) )
+                then
+                        /bin/echo "############################################################################################"
+                        /bin/echo "Explanation from the specification regarding this variable:"
+                        /bin/echo "############################################################################################"
+                        /bin/sed "/### ${livevariable}/,/----/!d;/----/q" ${BUILD_HOME}/templatedconfigurations/specification.md
+                        /bin/echo "Found a variable ${livevariable} what do you want to set it to?"
+                        value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
+                        value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
+                        /bin/echo "Its current value is \"${value}\" press <enter> to retain, anything else to override"
+                        read setting
+                        /bin/echo "OK, thanks..."
+                        if ( [ "${setting}" != "" ] )
+                        then
+                                /bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"$setting\"/g" ${newoverridescript}
+                                /bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${setting}\"\/>/g" ${newoverridescript}.stack
+                        else
+                                /bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
+                                /bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
+                        fi
+                fi
+        done
 else
-	for livevariable in ${variables}
-	do
-		display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
-		value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
+        for livevariable in ${variables}
+        do
+                display_name="`/bin/echo ${livevariable} | /bin/sed 's/_/ /g'`" 
+                value="`/bin/grep -w "^export ${livevariable}=" ${overridescript} | /usr/bin/awk -F'"' '{print $2}'`"
 
-		if ( ( [ "`/bin/grep 'NOT REQUIRED' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) && ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) )
-		then 
-			value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
-			/bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
-			/bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
-		fi
-	done
+                if ( ( [ "`/bin/grep 'NOT REQUIRED' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) && ( [ "`/bin/grep 'MANDATORY' ${overridescript} | /bin/grep "^export ${livevariable}="`" = "" ] ) )
+                then 
+                        value="`/bin/echo ${value} | /bin/sed 's|/|\\\/|g'`"
+                        /bin/sed -i "s/^export ${livevariable}=.*/export ${livevariable}=\"${value}\"/g" ${newoverridescript}
+                        /bin/sed -i "s/^export ${livevariable}=.*/# <UDF name=\"${livevariable}\" label=\"${display_name}\" default=\"${value}\"\/>/g" ${newoverridescript}.stack
+                fi
+        done
 fi
 
 /bin/echo "/bin/sh HardcoreADTWrapper.sh" >> ${newoverridescript}
 
 if ( [ ! -d ${BUILD_HOME}/overridescripts ] )
 then
-	/bin/mkdir ${BUILD_HOME}/overridescripts
+        /bin/mkdir ${BUILD_HOME}/overridescripts
 fi
 
 if ( [ -f ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl ] )
 then
-	/bin/mv ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl  ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl.$$
+        /bin/mv ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl  ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl.$$
 fi
 
 /bin/mv ${newoverridescript} ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl
