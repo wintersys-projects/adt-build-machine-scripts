@@ -12,14 +12,10 @@ This is the BUILDOS you wish to use for your servers, it can be one of "ubutnu" 
 
 ### BUILDOS_VERSION
 
-This is the BUILDOS_VERSION you are deploying for this can be   
-"20.04"  
-"22.04"   
+This is the BUILDOS_VERSION you are deploying for this can be    
 "24.04"  
 and later LTS releases if BUILDOS is "ubuntu". 
-
-"10"  
-"11"  
+ 
 "12"  
 and later releases if BUILDOS is "debian"
 
