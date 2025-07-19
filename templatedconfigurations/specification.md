@@ -397,6 +397,7 @@ When the CMS is Moodle, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount
 from an associated asset bucket in your datastore
 
 The associated asset buckets are generated when you make your first temporal backup of a baselined application according to what you have the DIRECTORIES_TO_MOUNT value set to along with PERSIST_ASSETS_TO_DATASTORE being set to "1"
+
 ----- 
 
 ### SYNC_WEBROOTS
@@ -775,7 +776,7 @@ Otherwise, set this value to one of "MySQL", "Maria" or "Postgres" when you have
 
 1 : Don't install the application because you have already got a DBaaS running with the application installed in it from a previous build and so, use that.
 
-2. Completely bypass installing the DB layer. You might want this if you are installing to multiple regions and you don't want a DB layer on your secondary region(s). 
+2 : Completely bypass installing the DB layer. You might want this if you are installing to multiple regions and you don't want a DB layer on your secondary region(s). 
 
 -----
 
@@ -822,11 +823,13 @@ Whether to build the machines you are deploying in paralel or not on the build m
 1 Build in parallel
 
 -------------
+
 ### NO_AUTOSCALERS
 
 How many autoscalers to deploy. An Interger value between 0 and 5
 
 ---------------
+
 ### MULTI_REGION
 
 If you wish to make a deployment using multiple regions then you need to set this as follows:
