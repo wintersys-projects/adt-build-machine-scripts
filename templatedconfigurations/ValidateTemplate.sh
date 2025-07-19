@@ -94,10 +94,10 @@ if ( [ "`/bin/grep "^BUILDOS_VERSION " ${quick_specification} | /bin/grep -w "${
 then
         ${log_command} "Your value for the variable BUILDOS_VERSION (${BUILDOS_VERSION}) doesn't appear to be valid please review"
 else
-        if ( [ "${BUILDOS_VERSION}" != "20.04" ] && [ "${BUILDOS_VERSION}" != "22.04" ] && [ "${BUILDOS_VERSION}" != "24.04" ] && [ "${BUILDOS}" = "ubuntu" ] )
+        if ( [ "${BUILDOS_VERSION}" != "24.04" ] && [ "${BUILDOS}" = "ubuntu" ] )
         then
                 ${log_command} "Your value for the variable BUILDOS_VERSION (${BUILDOS_VERSION}) doesn't appear to be valid please review"
-        elif ( [ "${BUILDOS_VERSION}" != "11" ] && [ "${BUILDOS_VERSION}" != "12" ] && [ "${BUILDOS}" = "debian" ] )
+        elif ( [ "${BUILDOS_VERSION}" != "12" ] && [ "${BUILDOS}" = "debian" ] )
         then
                 ${log_command} "Your value for the variable BUILDOS_VERSION (${BUILDOS_VERSION}) doesn't appear to be valid please review"
         fi
