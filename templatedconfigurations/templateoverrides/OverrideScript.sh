@@ -31,14 +31,6 @@ export LAPTOP_IP=""
 #BASE OVERRIDES
 export SSH="" #paste your public key here
 export SELECTED_TEMPLATE="" #set if using hardcore build
-#################################################################
-#MODIFY THESE VALUES IF YOU ARE DEPLOYING FROM A FORKED REPOSITORY
-#################################################################
-#export INFRASTRUCTURE_REPOSITORY_PROVIDER="github"
-#export INFRASTRUCTURE_REPOSITORY_OWNER="wintersys-projects"
-#export INFRASTRUCTURE_REPOSITORY_USERNAME="wintersys-projects"
-#export INFRASTRUCTURE_REPOSITORY_PASSWORD="none"
-####################################################################################
 ' > /root/Environment.env
 
 #XXXECHOZZZ
