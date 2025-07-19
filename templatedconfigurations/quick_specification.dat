@@ -1,7 +1,7 @@
 Quick Specification
 
 BUILDOS ubuntu debian
-BUILDOS_VERSION 20.04 22.04 24.04 11 12
+BUILDOS_VERSION 24.04 12
 APPLICATION none joomla wordpress drupal moodle
 APPLICATION_IDENTIFIER 0 1 2 3 4
 S3_HOST_BASE DIGITALOCEAN nyc3.digitaloceanspaces.com ams3.digitaloceanspaces.com sfo2.digitaloceanspaces.com sgp1.digitaloceanspaces.com fra1.digitaloceanspaces.com
