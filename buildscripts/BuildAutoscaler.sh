@@ -62,7 +62,7 @@ BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${
 SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
 # If finished=1, then we know that the autoscaler has been successfully built. We try up to 5 times before we give up if it fails
-while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
+while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
 	#If we are building multiple autoscalers we see how many autoscalers are running and number our current autoscaler relative to that
@@ -201,7 +201,7 @@ do
 		fi
 
 		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
-		if ( [ "${done}" != "1" ] )
+		if ( [ "${finished}" != "1" ] )
 		then
 			#If we are here then we believe that the autoscaler didn't build correctly
 			status "#########################################################################################################################"
