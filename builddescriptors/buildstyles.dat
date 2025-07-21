@@ -1,0 +1,173 @@
+###############################################################################################
+# Description: This .dat file allows you to configure what type of build you want to perform for a selection of
+# the software that is used. 
+# The word "source" means build from source and the word "repo" means build from standard repositories
+# The advantage to building from source is that you can easily fork the repositories and modify the configuration
+# parameters in the script if your configuration requirements are different to what I have set by default.
+# The disadvantage to building from source is that the machines take longer to build and configure. 
+# Author Peter Winter
+# Date 07/06/2016
+##############################################################################################
+# The set of possible configurations you could have are as follows:
+# If you are building for NGINX (your template webserver is set to NGINX) you can select one of:
+# NGINX:source   (uses default hardcoded settings)
+# NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
+# NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
+# NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
+# NGINX:repo
+# If you are building for APACHE (your templates webserver is set to APACHE) you can select one of:
+# APACHE:source   (uses default hardcoded settings)
+# APACHE:modules-list:<module1>:<module2>:....<modulen>
+# APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building apache from source)
+# APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
+# APACHE:repo
+# If you are building for lighttpd (your template webserver is set to LIGHTTPD) you can select one of:
+# LIGHTTPD:source   (uses default hardcoded settings)
+# LIGHTTPD:modules-list:<module1>:<module2>:....<modulen>
+# LIGHTTPD:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building lighttpd from source)
+# LIGHTTPD:software-packages:<software-package1>:<software-package2>:.....<modulen>
+# LIGHTTPD:repo
+# You can define what extensions PHP will be built with by modifying the line starting PHP: as shown below
+# PHP:<extension1>:<extension2>|port
+# You can override settings in the www.conf file of the php-fpm pool mechanism and also the php.ini file of your php-fpm configuration
+# Using this technique you can easily tune your PHP configuration and maybe you can have comented in and commented out configurations
+# where one might be production or for appication 1 and the other might be for development and so on
+# CONFIGPHPPOOL:<name1>=<value1>##<value2>:<name2>=<value1##value2>:<name3>=<value1##value2>:<name4>=<value1##value2>:<namen>=<value1##value2>
+# CONFIGPHPINI:<name1>=<value1>##<value2>:<name2>=<value1##value2>:<name3>=<value1##value2>:<name4>=<value1##<value2>:<namen>=<value1##value2>
+# NOTE: php.ini multiple values such as open_basedir with colon delmited values need to be written as "<name>=<value1>|<value2>|<value3>" with "|" instead of the usual ":"
+# This will perform something like, "apt install php8.0-fpm" if you put "fpm" in here for "extension1"
+# At the end of the line you can see "|port". When this is set it will set a port for use by php-fpm if it is not set then file sockets are used instead
+# If you have PERSIST_ASSETS_TO_DATASTORE=1 then you need a datastore mount tool, you can install from repo or from source and your options are:
+# DATASTOREMOUNTTOOL:s3fs:repo
+# DATASTOREMOUNTTOOL:s3fs:source
+# DATASTOREMOUNTTOOL:goof:binary
+# DATASTOREMOUNTTOOL:goof:source
+# DATASTOREMOUNTTOOL:rclone:repo
+# DATASTOREMOUNTTOOL:rclone:binary
+# DATASTOREMOUNTTOOL:rclone:source
+# DATASTOREMOUNTTOOL:geesefs:binary
+# DATASTOREMOUNTTOOL:geesefs:source
+# When installing mariadb on your VPS systems you can give it a verion number to install like this 
+# If you put 'cloud-init' here then cloud-init will install the default version of mariadb
+# MARIADB:cloud-init
+# MARIADB:repo:<version>
+# MySQL can be installed similarly to mariadb but there is no cloud-init option. You just tell it the version number you want to install and that its not cloud-init
+# You need to get your MySQL version number from https://dev.mysql.com/downloads/mysql (for example, 9.2.0)
+# MYSQL:repo:<version>
+# When installing postgres on your VPS systems you can give a version number to install like this
+# POSTGRES:repo:<version>
+# The buildchain type will define what usecase you are deploying. Standard will deploy autoscaler,webserver and database. database will deploy database only and webserver will deploy webserver only
+# Developers could define other chain node types such as caching for example and then caching would deploy a caching node such as memcached or redis and so on
+# BUILDCHAINTYPE:standard|webserver|database
+# The tool used for datastore access is an abstraction and you can use other tools rclone, s4cmd and to implement the interface if you want
+# DATASTORETOOL:s3cmd:repo
+# DATASTORETOOL:s3cmd:source
+# DATASTORETOOL:s5cmd:binary
+# DATASTORETOOL:s5cmd:source
+# You can choose which package manager you want to use. Currently only apt and apt-fast are supported. "Apt-fast" is supposed to be fastet, hence the "fast"
+# PACKAGEMANAGER:apt|apt-fast
+# You can choose what style of firewall you would like to have by setting the FIREWALL. You can choose ufw or iptables
+# FIREWALL:ufw|iptables
+# You can choose which email utility you want to send your system emails using sendemail or ssmtp
+# EMAILUTIL:sendemail|ssmtp
+###############################################################################################
+# License Agreement:
+# This file is part of The Agile Deployment Toolkit.
+# The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# The Agile Deployment Toolkit is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################################
+###############################################################################################
+#Pick one build style for each component you want to enable installation for. The choice of which to install e.g. NGINX or APACHE is made elsewhere
+#All this does is tell us how to build it not whether to build it
+#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING CLOUD-INIT#################################################
+NGINX:cloud-init
+NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
+#NGINX:repo
+#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
+#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX FROM SOURCE#################################################
+#NGINX:source
+#NGINX:static-modules-list:select:poll:http_v2:http_ssl:http_v2:http_realip:http_addition:http_sub:http_dav:http_flv:http_mp4:http_gunzip:http_gzip_static:http_auth_request:http_random_index:http_secure_link:http_degradation:http_slice:http_stub_status:stream_ssl_preread:mail_ssl:stream_ssl:stream_realip:http_realip
+#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+#NGINX:software-packages:build-essential:libpcre3-dev:libssl-dev:zlib1g-dev:libgd-dev
+
+##############################################################NGINX###########################################################
+
+##############################################################APACHE###########################################################
+#####UNCOMMENT AND MODIFY THESE TO INSTALL APACHE USING CLOUD-INIT#################################################
+APACHE:cloud-init
+APACHE:modules-list:mpm_event:ssl:rewrite:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi
+APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
+
+######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM REPO USING APT#############################################
+#APACHE:repo
+#APACHE:modules-list:mpm_event:ssl:rewrite:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi
+#APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
+
+######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM SOURCE#####################################################
+#APACHE:source
+#APACHE:modules-list:ssl:rewrite:alias:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi:socache_shmcb:log_config:log_debug:logio:dir:unixd:authz_core:mime:http2
+#APACHE:static-modules-list:mpm_event
+#APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
+#APACHE:software-packages:pandoc:build-essential:libssl-dev:libexpat-dev:libpcre3-dev:libapr1-dev:libaprutil1-dev:libnghttp2-dev:lua5.4:libjansson-dev:libcurl4-gnutls-dev
+##############################################################APACHE###########################################################
+
+##############################################################LIGHTTPD###########################################################
+#####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING CLOUD-INIT#################################################
+LIGHTTPD:cloud-init
+LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING APT#################################################
+#LIGHTTPD:repo
+#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD FROM SOURCE#################################################
+#LIGHTTPD:source
+#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+#LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
+#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+#LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
+##############################################################LIGHTTPD###########################################################
+##############################################################PHP###########################################################
+#PHP config 1
+#PHP:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:ldap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu|9176
+#PHP config 2
+#PHP:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
+#PHP joomla 5 (zlib and json are enabled by default in php>8.0)
+PHP:cloud-init:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl|9176
+#PHP:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
+#PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
+#PHP:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
+CONFIGPHPPOOL:pm=ondemand:pm.max_children=10:pm.max_requests=200:pm.start_servers=10:pm.min_spare_servers=5:pm.max_spare_servers=20:pm.process_idle_timeout=10s
+CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.output_compression=On:cgi.fix_pathinfo=0:output_buffering=Off:disable_functions=exec,passthru,shell_exec,system,popen,parse_ini_file,show_source:allow_url_fopen=Off:allow_url_include=Off:memory_limit=256M:opcache.enable=1:opcache.memory_consumption=256:open_basedir=/var/##/tmp:upload_tmp_dir=/var/www/html/tmp:sys_temp_dir=/var/www/html/tmp:expose_php=Off:date.timezone='Europe/London':cgi.force_redirect=On                                                                    
+##############################################################PHP###########################################################
+
+#DATASTOREMOUNTTOOL:rclone:repo
+#DATASTOREMOUNTTOOL:s3fs:repo
+DATASTOREMOUNTTOOL:goof:binary
+#DATASTOREMOUNTTOOL:geesefs:binary
+#Note, "MySQL" isn't configurable through this file only Maria DB is
+MARIADB:cloud-init
+#MARIADB:repo:11.5.4
+MYSQL:repo:9.2.0
+POSTGRES:repo:17
+BUILDCHAINTYPE:standard
+DATASTORETOOL:s3cmd:source
+#DATASTORETOOL:s5cmd:source
+PACKAGEMANAGER:apt
+FIREWALL:ufw
+EMAILUTIL:sendemail
+

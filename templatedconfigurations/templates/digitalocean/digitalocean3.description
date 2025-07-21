@@ -1,0 +1,13 @@
+DEPLOY A TEMPORAL BACKUP OF A JOOMLA, WORDPRESS,DRUPAL or MOODLE APPLICATION IN PRODUCTION MODE
+------------------------------------------------------------------------------------------------
+
+For this you will need to have a temporally backed up application stored with your git provider. This means two repositories, one for the webroot and one for the database.
+You can review in the ${BUILD_HOME}/doco/ directory how to backup an application (in other words, create these two repositories). Automatic backups are made periodically when you deploy in production mode.
+
+Depending on which temporal backup you want to deploy you will need to chose one of for all application types:
+
+export BUILD_CHOICE="2" # 2=hourly, 3=daily, 4=weekly, 5=monthly, 6=bimonthly
+export BUILD_ARCHIVE_CHOICE="hourly" # hourly, daily, weekly, monthly, bimonthly
+
+The template you will need to modify is at: ( ${BUILD_HOME}/templatedconfigurations/templates/digitalocean/digitalocean3.tmpl )
+
