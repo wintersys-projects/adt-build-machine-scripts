@@ -64,7 +64,7 @@ SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bi
 
 #If "done" is set to 1, then we know that a authentication server has been successfully built and is running.
 #Try up to 5 times if the authenticator is failing to complete its build
-while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
+while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
 	status "OK... Building an authentication server. This is the ${counter} attempt of 5"
@@ -218,7 +218,7 @@ do
 		fi
 
 		#If $done != 1, then the authenticator didn't build properly, so, destroy the machine
-		if ( [ "${done}" != "1" ] )
+		if ( [ "${finished}" != "1" ] )
 		then
 			status "################################################################################################################"
 			status "Hi, an authenticator server didn't seem to build correctly. I can destroy it and I can try to build a new authentication server for you"
@@ -252,7 +252,7 @@ do
 		status "The authenticator you are asking me to build looks like it's excess to the configured requirements"
 		status "Will not be creating authenticator"
 		/bin/touch /tmp/END_IT_ALL
-		finished=1
+		finished="1"
 	fi
 done
 
