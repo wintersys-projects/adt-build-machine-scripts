@@ -71,7 +71,7 @@ SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bi
 
 #If "done" is set to 1, then we know that a webserver has been successfully built and is running.
 #Try up to 5 times if the webserver is failing to complete its build
-while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
+while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
 	webserver_no="${1}"
@@ -233,7 +233,7 @@ do
 		fi
 
 		#If $done != 1, then the webserver didn't build properly, so, destroy the machine
-		if ( [ "${done}" != "1" ] )
+		if ( [ "${finished}" != "1" ] )
 		then
 			status "################################################################################################################"
 			status "Hi, a webserver didn't seem to build correctly. I can destroy it and I can try to build a new webserver for you"
@@ -266,7 +266,7 @@ do
 		status "The webserver you are asking me to build looks like it's excess to the configured requirements"
 		status "Will not be creating webserver"
 		/bin/touch /tmp/END_IT_ALL
-		finished=1
+		finished="1"
 	fi
 done
 
