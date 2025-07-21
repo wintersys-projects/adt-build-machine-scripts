@@ -68,7 +68,7 @@ fi
 
 #If "done" is set to 1, then we know that a reverse proxy server has been successfully built and is running.
 #Try up to 5 times if the reverse proxy is failing to complete its build
-while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] )
+while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
 	reverse_proxy_no="${1}"
@@ -230,7 +230,7 @@ do
 		fi
 
 		#If $done != 1, then the reverse proxy didn't build properly, so, destroy the machine
-		if ( [ "${done}" != "1" ] )
+		if ( [ "${finished}" != "1" ] )
 		then
 			status "################################################################################################################"
 			status "Hi, a reverse proxy server didn't seem to build correctly. I can destroy it and I can try to build a new reverse proxy server for you"
@@ -264,7 +264,7 @@ do
 		status "The reverse proxy you are asking me to build looks like it's excess to the configured requirements"
 		status "Will not be creating reverse proxy"
 		/bin/touch /tmp/END_IT_ALL
-		finished=1
+		finished="1"
 	fi
 done
 
