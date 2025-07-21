@@ -64,7 +64,7 @@ BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${
 SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
 #If we are done then we can stop otherwise retry up to 5 times
-while ( [ "${done}" != "1" ] && [ "${counter}" -lt "5" ] && [ "${DATABASE_INSTALLATION_TYPE}" != "None" ] )
+while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] && [ "${DATABASE_INSTALLATION_TYPE}" != "None" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
 	status "OK... building a database server. This is attempt ${counter} of 5"
@@ -235,7 +235,7 @@ do
 		fi
 
 		#If $done != 1 then it means the DB server didn't build correctly and fully, so destroy the machine it was being built on
-		if ( [ "${done}" != "1" ] )
+		if ( [ "${finished}" != "1" ] )
 		then
 			#If we are here then it means we didn't build successfully and we will have to try again
 			status "###########################################################################################################################"
@@ -270,7 +270,7 @@ do
 		status "The database you are asking me to build looks like it's excess to the configured requirements"
 		status "Will not be creating database"
 		/bin/touch /tmp/END_IT_ALL
-		finished=1
+		finished="1"
 	fi
 done
 
