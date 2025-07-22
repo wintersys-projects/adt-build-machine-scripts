@@ -87,27 +87,10 @@ fi
 periodicity=""
 if ( [ "${BUILD_ARCHIVE_CHOICE}" != "baseline" ] && [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 then
-	if ( [ "${BUILD_CHOICE}" = "2" ] )
-	then
-		periodicity="hourly"
-	elif ( [ "${BUILD_CHOICE}" = "3" ] )
-	then
-		periodicity="daily"
-	elif ( [ "${BUILD_CHOICE}" = "4" ] )
-	then
-		periodicity="weekly"
-	elif ( [ "${BUILD_CHOICE}" = "5" ] )
-	then
-		periodicity="monthly"
-	elif ( [ "${BUILD_CHOICE}" = "6" ] )
-	then
-		periodicity="bimonthly"
-	fi
-
-	if ( [ "${periodicity}" != "" ] )
-	then
-		backuparchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${periodicity}/applicationsourcecode.tar.gz"
-		backupdbarchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-db-${periodicity}/${WEBSITE_NAME}-DB-backup.tar.gz"
+	if ( [ "`/bin/echo 'hourly daily weekly monthly bimonthly' | /bin/grep ${BUILD_ARCHIVE_CHOICE}`" != "" ] )
+        then
+		backuparchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${BUILD_ARCHIVE_CHOICE}/applicationsourcecode.tar.gz"
+		backupdbarchive="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-db-${BUILD_ARCHIVE_CHOICE}/${WEBSITE_NAME}-DB-backup.tar.gz"
 	else
 		status "Your build kit doesn't seem to have a valid periodicity set"
 		/bin/touch /tmp/END_IT_ALL
