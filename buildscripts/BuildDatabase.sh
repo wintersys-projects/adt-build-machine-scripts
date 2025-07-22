@@ -20,7 +20,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-set -x
+#set -x
 finished="0" #If the build succeeds, this will be set to 1
 counter="0" #This counts up how many build attempts there has been
 
@@ -204,7 +204,7 @@ do
 
 		if ( [ "${BASELINE_DB_REPOSITORY}" != "" ] )
 		then
-			/usr/bin/ssh -q ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
+			/usr/bin/ssh -q -p ${SSH_PORT} ${OPTIONS} -i ${BUILD_KEY} ${SERVER_USER}@${db_active_ip} "${CUSTOM_USER_SUDO} /home/${SERVER_USER}/utilities/config/StoreConfigValue.sh 'BASELINEDBREPOSITORY' ${BASELINE_DB_REPOSITORY}" 
 		fi
 
 		# When the call "CreateServer.sh" was made above a cloud-init (userdata) script was used to build out the machine
