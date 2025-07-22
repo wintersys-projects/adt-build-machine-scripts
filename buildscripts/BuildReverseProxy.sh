@@ -66,7 +66,7 @@ then
 	/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIMARY_DNS_SET
 fi
 
-#If "done" is set to 1, then we know that a reverse proxy server has been successfully built and is running.
+#If "finished" is set to 1, then we know that a reverse proxy server has been successfully built and is running.
 #Try up to 5 times if the reverse proxy is failing to complete its build
 while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
