@@ -62,7 +62,7 @@ OPTIONS="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHostsFile=/dev
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
-#If "done" is set to 1, then we know that a authentication server has been successfully built and is running.
+#If "finished" is set to 1, then we know that a authentication server has been successfully built and is running.
 #Try up to 5 times if the authenticator is failing to complete its build
 while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
