@@ -30,93 +30,93 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
-BUILD_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_CHOICE`"
+BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT`"
 DATASTORE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATASTORE_CHOICE`"
 
 #When we are a baseline, we want to persist all our assets to our datastore. This involves deleting any existing assets from the bucket
 #we are persisting to so we issue a warning here, that the existing assets will be purged
 
-if ( [ "${BUILD_CHOICE}" = "0" ] || [ "${BUILD_CHOICE}" = "1" ] )
+if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] || [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
-	status "Checking to see if there are any assets already existing for the ${WEBSITE_URL} build in your datastore..."
-	for assettype in `/bin/echo ${DIRECTORIES_TO_MOUNT} | /bin/sed 's/:/ /'`
-	do
-		assets_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-assets-${assettype}"
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "${assets_bucket}" | /usr/bin/wc -l`" -gt "0" ] )
-		then
-			status "###################################################################################################################"
-			status "=CRITICAL WARNING    CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING="
-			status "###################################################################################################################"
-			status "Hi Mate, there's some assets in your datastore for this website. They are probably from a previous build"
-			status "You have selected a baseline or a virgin build this means existing assets will be deleted."
-			status "With this in mind, I will take a safety backup for you of your existing assets. The bucket name of the copy"
-			status "Will be displayed which you might want to make a note of for future reference should you need to reinstall the previous"
-			status "version."
-			status "-------------"
-			status "IMPORTANT:FYI"
-			status "-------------"
-			status "Additional warning, backups of your application sourcode and database stored in your git repository will also be overwritten"
-			status "During normal operation of this particular deployment. You might want to CHECK IF YOU HAVE SOURCECODE AND DATABASE BACKUPS"
-			status "From previous builds in your git repository that clash with what you are trying to deploy here"
-			status "If you are fine with previous builds being overwritten (its a deliberate redeploy of the same application, right on),"
-			status "But, if not, proceed with caution. Thanks"
-			status "###########################################################################################"
-			status "IT IS STRONGLY ADVISED THAT YOU MAKE A SAFETY BACKUP OF THE ASSETS I HAVE DISCOVERED"
-			status "DEPENDING ON THE SIZE OF THE ASSETS IN YOUR DATASTORE THIS COULD TAKE SOME TIME TO COMPLETE"
-			status "###########################################################################################"
-			status "##############################################################################################################################"
-			status "TYPE 'Y' or 'y' to make a safety backup or 'NO BACKUP' to not make one ('NO BACKUP') IS A DESTRUCTIVE CHOICE THAT CANNOT BE RECOVERED)"
-			status "If you don't understand what 'NO BACKUP' does, don't type it"
-			status "Enter your choice now:"
-			if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ]  )
-			then
-				read input
-			fi
+        status "Checking to see if there are any assets already existing for the ${WEBSITE_URL} build in your datastore..."
+        for assettype in `/bin/echo ${DIRECTORIES_TO_MOUNT} | /bin/sed 's/:/ /'`
+        do
+                assets_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-assets-${assettype}"
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "${assets_bucket}" | /usr/bin/wc -l`" -gt "0" ] )
+                then
+                        status "###################################################################################################################"
+                        status "=CRITICAL WARNING    CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING="
+                        status "###################################################################################################################"
+                        status "Hi Mate, there's some assets in your datastore for this website. They are probably from a previous build"
+                        status "You have selected a baseline or a virgin build this means existing assets will be deleted."
+                        status "With this in mind, I will take a safety backup for you of your existing assets. The bucket name of the copy"
+                        status "Will be displayed which you might want to make a note of for future reference should you need to reinstall the previous"
+                        status "version."
+                        status "-------------"
+                        status "IMPORTANT:FYI"
+                        status "-------------"
+                        status "Additional warning, backups of your application sourcode and database stored in your git repository will also be overwritten"
+                        status "During normal operation of this particular deployment. You might want to CHECK IF YOU HAVE SOURCECODE AND DATABASE BACKUPS"
+                        status "From previous builds in your git repository that clash with what you are trying to deploy here"
+                        status "If you are fine with previous builds being overwritten (its a deliberate redeploy of the same application, right on),"
+                        status "But, if not, proceed with caution. Thanks"
+                        status "###########################################################################################"
+                        status "IT IS STRONGLY ADVISED THAT YOU MAKE A SAFETY BACKUP OF THE ASSETS I HAVE DISCOVERED"
+                        status "DEPENDING ON THE SIZE OF THE ASSETS IN YOUR DATASTORE THIS COULD TAKE SOME TIME TO COMPLETE"
+                        status "###########################################################################################"
+                        status "##############################################################################################################################"
+                        status "TYPE 'Y' or 'y' to make a safety backup or 'NO BACKUP' to not make one ('NO BACKUP') IS A DESTRUCTIVE CHOICE THAT CANNOT BE RECOVERED)"
+                        status "If you don't understand what 'NO BACKUP' does, don't type it"
+                        status "Enter your choice now:"
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ]  )
+                        then
+                                read input
+                        fi
 
-			while ( [ "${input}" != "Y" ] && [ "${input}" != "y" ] && [ "${input}" != "NO BACKUP" ] )
-			do
-				status "That is not a valid input, please enter 'Y', 'y', or 'NO BACKUP'"
-				status "Make sure you understand what 'NO BACKUP' means if you don't understand, don't type 'NO BACKUP'"
-				if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" ]  || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
-				then
-					read input
-				fi
-			done
+                        while ( [ "${input}" != "Y" ] && [ "${input}" != "y" ] && [ "${input}" != "NO BACKUP" ] )
+                        do
+                                status "That is not a valid input, please enter 'Y', 'y', or 'NO BACKUP'"
+                                status "Make sure you understand what 'NO BACKUP' means if you don't understand, don't type 'NO BACKUP'"
+                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" ]  || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
+                                then
+                                        read input
+                                fi
+                        done
 
-			if ( [ "${input}" = "Y" ] || [ "${input}" = "Y" ] ) 
-			then
-				status "Making a safety backup: s3://${assets_bucket}-backup-$$ in your ${DATASTORE_CHOICE} datastore from a previous build of this website - ${WEBSITE_URL} , please wait....."
+                        if ( [ "${input}" = "Y" ] || [ "${input}" = "Y" ] ) 
+                        then
+                                status "Making a safety backup: s3://${assets_bucket}-backup-$$ in your ${DATASTORE_CHOICE} datastore from a previous build of this website - ${WEBSITE_URL} , please wait....."
 
-				${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${assets_bucket}-backup-$$
-				${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${assets_bucket} ${assets_bucket}-backup-$$
-				${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
+                                ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${assets_bucket}-backup-$$
+                                ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${assets_bucket} ${assets_bucket}-backup-$$
+                                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
 
-				status "OK, thanks for waiting. You can find your previously deployed assets in s3://${assets_bucket}-backup-$$ in your ${DATASTORE_CHOICE} datastore."
-				status " please press <enter> to continue"
-				if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ]  || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
-				then
-					read x
-				fi
-			else
-				status "####################################################################"
-				status "THIS COULD CAUSE YOU A LOT OF PROBLEMS IF IT'S WRONG. ARE YOU 100% SURE?"
-				status "###################################################################"
-				status "Again you absolutely sure that you want to proceed, potentially destructive action type 'YES PROCEED' to continue, otherwise I will exit"
-				read response
-				if ( [ "${response}" != "YES PROCEED" ] )
-				then
-					/bin/touch /tmp/END_IT_ALL
-				fi
-				${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
-			fi
-		fi
-	done
+                                status "OK, thanks for waiting. You can find your previously deployed assets in s3://${assets_bucket}-backup-$$ in your ${DATASTORE_CHOICE} datastore."
+                                status " please press <enter> to continue"
+                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ]  || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
+                                then
+                                        read x
+                                fi
+                        else
+                                status "####################################################################"
+                                status "THIS COULD CAUSE YOU A LOT OF PROBLEMS IF IT'S WRONG. ARE YOU 100% SURE?"
+                                status "###################################################################"
+                                status "Again you absolutely sure that you want to proceed, potentially destructive action type 'YES PROCEED' to continue, otherwise I will exit"
+                                read response
+                                if ( [ "${response}" != "YES PROCEED" ] )
+                                then
+                                        /bin/touch /tmp/END_IT_ALL
+                                fi
+                                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
+                        fi
+                fi
+        done
 fi
