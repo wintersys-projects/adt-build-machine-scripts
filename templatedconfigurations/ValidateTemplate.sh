@@ -490,11 +490,6 @@ then
 	fi
 fi
 
-if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:social" ] && ( [ "${php_version}" != "8.1" ] &&  [ "${php_version}" != "8.2" ] ) )
-then
-	${log_command} "At the time of my testing, Drupal Opensocial requires PHP 8.1 or 8.2. You are trying to install PHP version ${PHP_VERSION}"
-fi
-
 php_version="`/bin/echo ${PHP_VERSION} | /bin/sed 's/\.//g'`"
 if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] && [ "${php_version}" -lt "82" ] )
 then
