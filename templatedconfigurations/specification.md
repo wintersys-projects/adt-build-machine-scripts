@@ -517,20 +517,6 @@ There are three settings you can use:
 
 -----
 
-### BUILD_CHOICE
-
-If set to "0", this means that you are installing a virgin CMS system, for example, Joomla, Wordpress, Moodle or Drupal
-If set to "1", this means that you are deploying a baseline of an application you have customised (see BASELINE_DB_REPOSITORY and APPLICATION_BASELINE_SOURCECODE_REPOSITORY ) also, BUILD_ARCHIVE_CHOICE needs to be set to "baseline
-If set to "2"  this means that you are deploying from an hourly backup of an application 
-if set to "3", this means that you are deploying from a daily backup of an application
-If set to "4"  this means that you are deploying from a weekly backup of an application
-If set to "5"  this means that you are deploying from a monthly backup of an application
-If set to "6"  this means that you are deploying from a bimonthly backup of an application
-
-As long as you have backups in place, you can use this setting to roll back to a backup from up to two months previously, if you had some need to. 
-
------ 
-
 ### BASELINE_DB_REPOSITORY
 
 When you baseline your application database, you will need to create a repository <unique_identifier>-db-baseline. From here your baseline will be pulled during installation. 
@@ -552,6 +538,7 @@ If for example, your unique identifier is "wordydemo", then, APPLICATION_BASELIN
 
 You need to set BUILD_ARCHIVE_CHOICE based on where you are deploying from. The settings can be as follows for each option:  
 
+ BUILD_ARCHIVE_CHOICE="virgin"
  BUILD_ARCHIVE_CHOICE="baseline"  
  BUILD_ARCHIVE_CHOICE="hourly"  
  BUILD_ARCHIVE_CHOICE="daily"  
