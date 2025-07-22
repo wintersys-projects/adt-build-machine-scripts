@@ -411,7 +411,7 @@ fi
 # If we are installing an application (for example, Joomla or Wordpress) we don't know what application type we are until we check
 # so here we perform some checks to find out what application type we are
 # We also setup the assets datastore if we expect that our application is going to want to store its assets in the datastore
-if ( [ "${BUILD_CHOICE}" -ne "0"  ] )
+if ( [ "${BUILD_ARCHIVE_CHOICE}" -ne "virgin"  ] )
 then
 	status ""
 	status ""
@@ -419,7 +419,7 @@ then
 	status "Interrogating to see what Application you are running, if any"
 	status "#############################################################"
 	${BUILD_HOME}/application/InterrogateApplicationType.sh
-	if ( [ "${BUILD_CHOICE}" -eq "1" ] )
+	if ( [ "${BUILD_ARCHIVE_CHOICE}" -eq "baseline" ] )
 	then
 		${BUILD_HOME}/application/CheckForAssetsOverwrite.sh
 	fi        
