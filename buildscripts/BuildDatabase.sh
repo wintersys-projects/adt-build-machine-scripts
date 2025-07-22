@@ -20,7 +20,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-#set -x
+set -x
 finished="0" #If the build succeeds, this will be set to 1
 counter="0" #This counts up how many build attempts there has been
 
