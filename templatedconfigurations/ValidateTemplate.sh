@@ -237,11 +237,6 @@ then
 	${log_command} "Your value for the variable VPC_IP_RANGE seems not to be set this is a MANDATORY SETTING"
 fi
 
-if ( [ "`/bin/grep "^BUILD_CHOICE " ${quick_specification} | /bin/grep -w "${BUILD_CHOICE}"  2>/dev/null `" = "" ] )
-then
-	${log_command} "Your value for the variable BUILD_CHOICE (${BUILD_CHOICE}) doesn't appear to be valid please review"
-fi
-
 if ( [ "`/bin/grep "^BUILD_ARCHIVE_CHOICE " ${quick_specification} | /bin/grep -w "${BUILD_ARCHIVE_CHOICE}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable BUILD_ARCHIVE_CHOICE (${BUILD_ARCHIVE_CHOICE}) doesn't appear to be valid please review"
