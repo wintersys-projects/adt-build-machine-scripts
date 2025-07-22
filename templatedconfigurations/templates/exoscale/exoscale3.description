@@ -6,7 +6,6 @@ You can review in the ${BUILD_HOME}/doco/ directory how to backup an application
 
 Depending on which temporal backup you want to deploy you will need to chose one of for all application types:
 
-export BUILD_CHOICE="2" # 2=hourly, 3=daily, 4=weekly, 5=monthly, 6=bimonthly
 export BUILD_ARCHIVE_CHOICE="hourly" # hourly, daily, weekly, monthly, bimonthly
 
 The template you will need to modify is at: ( ${BUILD_HOME}/templatedconfigurations/templates/exoscale/exoscale3.tmpl )
