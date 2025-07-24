@@ -30,7 +30,7 @@ This is a unique string to describe your build. If you have multiple builds that
 
 ### APPLICATION
 
-This can be set to one of "non", "joomla", "wordpress", "drupal", "moodle"
+This can be set to one of "none", "joomla", "wordpress", "drupal", "moodle"
 
 ---- 
 
