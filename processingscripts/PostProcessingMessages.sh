@@ -129,37 +129,37 @@ then
                         status ""
                 fi
 
-                if ( [ "${APPLICATION}" = "drupal" ] )
-                then
-                        status ""
-                        status "####################################################################"
-
-                        if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:cms" ] )
-                        then
-                                status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}/core/install.php"
-                        else
-                                status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}"
-                        fi
-                        status "Use the credentials listed above please"
-                        status ""
-
-                        trap '' 2
-                        status "ctrl-c is disabled until the application is installed and the caching tables are truncated"
-
-                        finished="1"
-                        while ( [ "${finished}" = "1" ] )
-                        do
-                                finished="0"
-                                for ws_ip in ${ws_ips}
-                                do
-                                        if ( [ "`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/application/processing/drupal/CheckUser.sh"`" != "USER ADDED" ] )
-                                        then
-                                                finished="1"
-                                        fi
-                                done
-                                /bin/sleep 5
-                        done
-                fi
+             #   if ( [ "${APPLICATION}" = "drupal" ] )
+             #   then
+              #          status ""
+             #           status "####################################################################"##
+#
+ #                       if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" != "DRUPAL:cms" ] )
+  #                      then
+   #                             status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}/core/install.php"
+    #                    else
+     #                           status "Waiting for the application install to have been completed at: https://${WEBSITE_URL}"
+      #                  fi
+       #                 status "Use the credentials listed above please"
+        #                status ""
+#
+ #                       trap '' 2
+  #                      status "ctrl-c is disabled until the application is installed and the caching tables are truncated"
+#
+ #                       finished="1"
+  #                      while ( [ "${finished}" = "1" ] )
+   #                     do
+    #                            finished="0"
+     #                           for ws_ip in ${ws_ips}
+      #                          do
+       #                                 if ( [ "`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/application/processing/drupal/CheckUser.sh"`" != "USER ADDED" ] )
+        #                                then
+         #                                       finished="1"
+          #                              fi
+           #                     done
+            #                    /bin/sleep 5
+             #           done
+              #  fi
 
                 if ( [ "${APPLICATION}" = "moodle" ] )
                 then
@@ -173,27 +173,27 @@ then
 fi
 
 #With the drupal application the cache needs to be truncated (post install) otherwise there tends to be error messages
-if ( [ "${APPLICATION}" = "drupal" ] )
-then
-        status "###################################################################################################################"
-        status "Attempting to truncate cache ready for the application to be usable"
-        status "###################################################################################################################"
-
-        finished="1"
-        while ( [ "${finished}" = "1" ] )
-        do
-                finished="0"
-                for ws_ip in ${ws_ips}
-                do
-                        if ( [ "`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/application/processing/drupal/TruncateCache.sh"`" != "TRUNCATED" ] )
-                        then
-                                finished="1"
-                        fi
-                done
-                /bin/sleep 5
-        done
-        trap 2
-fi
+#if ( [ "${APPLICATION}" = "drupal" ] )
+#then
+ #       status "###################################################################################################################"
+  #      status "Attempting to truncate cache ready for the application to be usable"
+   #     status "###################################################################################################################"
+#
+ #       finished="1"
+  #      while ( [ "${finished}" = "1" ] )
+   #     do
+    #            finished="0"
+     #           for ws_ip in ${ws_ips}
+      #          do
+       #                 if ( [ "`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS} ${SERVER_USER}@${ws_ip} "${SUDO} /home/${SERVER_USER}/application/processing/drupal/TruncateCache.sh"`" != "TRUNCATED" ] )
+        #                then
+         #                       finished="1"
+          #              fi
+           #     done
+  #              /bin/sleep 5
+  #      done
+  #      trap 2
+#fi
 
 if ( [ "${APPLICATION}" = "wordpress" ] )
 then
