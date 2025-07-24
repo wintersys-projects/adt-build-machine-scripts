@@ -115,11 +115,6 @@ then
 	${log_command} "Your value for the variable APPLICATION (${APPLICATION}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^APPLICATION_IDENTIFIER " ${quick_specification} | /bin/grep -w "${APPLICATION_IDENTIFIER}" 2>/dev/null `" = "" ] )
-then
-	${log_command} "Your value for the variable APPLICATION_IDENTIFIER (${APPLICATION_IDENTIFIER}) doesn't appear to be valid please review"
-fi
-
 for host_base in `/bin/echo ${S3_HOST_BASE} | /bin/sed 's/:/ /g'`
 do
 	datastore_choice="`/bin/echo ${DATASTORE_CHOICE} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
