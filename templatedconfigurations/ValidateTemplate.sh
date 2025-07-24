@@ -253,26 +253,6 @@ then
 	${log_command} "Your value for the variable MAX_WEBSERVERS (${MAX_WEBSERVERS}) doesn't appear to be valid please review"
 fi
 
-if ( [ "${APPLICATION}" = "joomla" ] && [ "${APPLICATION_IDENTIFIER}" != "1" ] )
-then
-	${log_command} "There looks to be a mismatch between your application (${APPLICATION}) and your APPLICATION_IDENTIFIER (${APPLICATION_IDENTIFIER})"
-fi
-
-if ( [ "${APPLICATION}" = "wordpress" ] && [ "${APPLICATION_IDENTIFIER}" != "2" ] )
-then
-	${log_command} "There looks to be a mismatch between your application (${APPLICATION}) and your APPLICATION_IDENTIFIER (${APPLICATION_IDENTIFIER})"
-fi
-
-if ( [ "${APPLICATION}" = "drupal" ] && [ "${APPLICATION_IDENTIFIER}" != "3" ] )
-then
-	${log_command} "There looks to be a mismatch between your application (${APPLICATION}) and your APPLICATION_IDENTIFIER (${APPLICATION_IDENTIFIER})"
-fi
-
-if ( [ "${APPLICATION}" = "moodle" ] && [ "${APPLICATION_IDENTIFIER}" != "4" ] )
-then
-	${log_command} "There looks to be a mismatch between your application (${APPLICATION}) and your APPLICATION_IDENTIFIER (${APPLICATION_IDENTIFIER})"
-fi
-
 if ( [ "`/bin/grep "^SYNC_WEBROOTS " ${quick_specification} | /bin/grep -w "${SYNC_WEBROOTS}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable SYNC_WEBROOTS (${SYNC_WEBROOTS}) doesn't appear to be valid please review"
