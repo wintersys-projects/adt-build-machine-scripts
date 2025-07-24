@@ -21,6 +21,8 @@
 #####################################################################################
 #set -x
 
+APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_BASELINE_SOURCECODE_REPOSITORY`"
+
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat ] )
 then
         status "Error, cannot find database prefix file"
@@ -65,7 +67,10 @@ then
         /bin/echo '$config["system.performance"]["js"]["preprocess"] = FALSE;' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         /bin/echo '$settings["file_private_path"] = $app_root . "/../private";' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
         
-        /bin/echo '$settings["testing_package_manager"] = "true";' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default 
+        if ( [ "{APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] )
+        then
+                /bin/echo '$settings["testing_package_manager"] = "true";' >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default 
+        fi
 fi
 
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default drupal_settings.php
