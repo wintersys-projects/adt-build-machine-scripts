@@ -10,6 +10,5 @@ In your template ( ${BUILD_HOME}/templatedconfigurations/templates/digitalocean/
 
 BASELINE_DB_REPOSITORY
 APPLICATION_BASELINE_SOURCECODE_REPOSITORY
-APPLICATION_IDENTIFIER
 
 To select this template input "2" to bypass this template just press <enter>
