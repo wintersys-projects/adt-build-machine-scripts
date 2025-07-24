@@ -62,25 +62,6 @@ If you are deploying a virgin application, you can set APPLICATION_BASELINE_SOUR
 
 -----
 
-### APPLICATION_IDENTIFIER
-
-Currently this is 0 for no application, 1 for Joomla, 2 for Wordpress, 3 for Drupal and 4 for Moodle
-
-The basic thing you need to understand is that if you want your baselines and backups to be able to be used from different URLS, then, you need to set the APPLICATION_IDENTIFIER appropriate for your application. If you want your baseline to be able to be deployed by different people to different URLs, then, you need to set the APPLICATION_IDENTIFER to 1,2,3 or 4 depending on your application. If you set it to 0, that's fine, but, the baseline will only be able to deploy to the precise same URL. So, if you were developing a joomla application and your domain was dev.testdomain.com and you had an APPLICATION_IDENTIFIER of 0, then, you wouldn't be able to deploy to live.testdomain.com. If you set your APPLICATION_IDENTIFIER to 1, because you are running a joomla application, then you can deploy your baseline to dev.testdomain.com and live.testdomain.com or even live.livedomain.org similarly with your time based backups. 
-
-The APPLICATION_IDENTIFER is defined as follows and MUST be set for the type of application you are deploying. 
-
-APPLICATION_IDENTIFIER      |      application (CMS) type  
-
-0                           |        None  
-1                           |        Joomla  
-2                           |        Wordpress  
-3                           |        Drupal  
-4                           |        Moodle  
-
-
------
-
 ### S3_ACCESS_KEY 
 ### S3_SECRET_KEY
 
