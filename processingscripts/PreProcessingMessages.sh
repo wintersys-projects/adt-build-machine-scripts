@@ -33,7 +33,6 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
-APPLICATION_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_IDENTIFIER`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
@@ -81,71 +80,6 @@ then
 		fi
 	fi
 	${BUILD_HOME}/helperscripts/SetVariableValue.sh "ENABLE_DDOS_PROTECION=${ENABLE_DDOS_PROTECION}"
-fi
-
-#Put out some messages to make absolutely sure that the APPLICATION_IDENTIFIER is correctly set for the application we are deploying
-if ( [ "${APPLICATION}" = "joomla" ] && [ "${APPLICATION_IDENTIFIER}" != "1" ] )
-then
-	status "Your application is set to joomla and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-	status "The application identifier must be set to 1 for joomla otherwise bad things can happen"
-	status "I am setting your application identifier to 1"
-	APPLICATION_IDENTIFIER="1"
-	APPLICATION="joomla"
-	status "Press <enter> to accept"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_IDENTIFIER=${APPLICATION_IDENTIFIER}"
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION=${APPLICATION}"
-fi
-
-if ( [ "${APPLICATION}" = "wordpress" ] && [ "${APPLICATION_IDENTIFIER}" != "2" ] )
-then
-	status "Your application is set to wordpress and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-	status "The application identifier must be set to 2 for wordpress otherwise bad things can happen"
-	status "I am setting your application identifier to 2"
-	export APPLICATION_IDENTIFIER="2"
-	export APPLICATION="wordpress"
-	status "Press <enter> to accept"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_IDENTIFIER=${APPLICATION_IDENTIFIER}"
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION=${APPLICATION}"
-fi
-
-if ( [ "${APPLICATION}" = "drupal" ] && [ "${APPLICATION_IDENTIFIER}" != "3" ] )
-then
-	status "Your application is set to drupal and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-	status "The application identifier must be set to 3 for drupal otherwise bad things can happen"
-	status "I am setting your application identifier to 3"
-	APPLICATION_IDENTIFIER="3"
-	APPLICATION="drupal"
-	status "Press <enter> to accept"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_IDENTIFIER=${APPLICATION_IDENTIFIER}"
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION=${APPLICATION}"
-fi
-
-if ( [ "${APPLICATION}" = "moodle" ] && [ "${APPLICATION_IDENTIFIER}" != "4" ] )
-then
-	status "Your application is set to moodle and your application identifier is set to ${APPLICATION_IDENTIFIER}"
-	status "The application identifier must be set to 4 for moodle otherwise bad things can happen"
-	status "I am setting your application identifier to 4"
-	APPLICATION_IDENTIFIER="4"
-	APPLICATION="moodle"
-	status "Press <enter> to accept"
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		read x
-	fi
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_IDENTIFIER=${APPLICATION_IDENTIFIER}"
-	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION=${APPLICATION}"
 fi
 
 #We can't be in production mode and also be deploying a virgin or a baseline application
