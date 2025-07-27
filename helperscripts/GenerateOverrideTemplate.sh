@@ -25,9 +25,12 @@
 
 if ( [ ! -f  ./GenerateOverrideTemplate.sh ] )
 then
-	/bin/echo "This script is expected to run from the helperscripts directory"
-	exit
+        /bin/echo "This script is expected to run from the helperscripts directory"
+        exit
 fi
+
+text_reset="`/usr/bin/tput sgr0`"
+green="`/usr/bin/tput setaf 2`"
 
 /bin/echo "############################################################################################################"
 /bin/echo "WARNING: THERE IS NO SANITY CHECKING IF YOU USE THIS SCRIPT WHICH MEANS THAT IF YOU ENTER ANYTHING INCORRECT"
@@ -45,19 +48,19 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 read response
 if ( [ "${response}" = "1" ] )
 then
-	CLOUDHOST="digitalocean"
+        CLOUDHOST="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-	CLOUDHOST="exoscale"
+        CLOUDHOST="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-	CLOUDHOST="linode"
+        CLOUDHOST="linode"
 elif ( [ "${response}" = "4" ] )
 then
-	CLOUDHOST="vultr"
+        CLOUDHOST="vultr"
 else
-	/bin/echo "Unrecognised  cloudhost. Exiting ...."
-	exit
+        /bin/echo "Unrecognised  cloudhost. Exiting ...."
+        exit
 fi
 
 /bin/echo "Please tell us which template you wish to override"
@@ -67,22 +70,22 @@ no_templates="`/usr/bin/wc -l ${BUILD_HOME}/templatedconfigurations/templates/${
 read choice
 if ( [ "${choice}" -gt "0" ] && [ "${choice}" -le "${no_templates}" ] )
 then 
-	template="${choice}"
+        template="${choice}"
 else
-	/bin/echo "Invalid input...exiting"
-	exit
+        /bin/echo "Invalid input...exiting"
+        exit
 fi
 override_script="${BUILD_HOME}/templatedconfigurations/templates/${CLOUDHOST}/${CLOUDHOST}${template}.tmpl"
 new_override_script="/tmp/${CLOUDHOST}${template}"
 
 if ( [ -f ${new_override_script} ] )
 then
-	/bin/rm ${new_override_script}
+        /bin/rm ${new_override_script}
 fi
 
 if ( [ -f ${new_override_script}.stack ] )
 then
-	/bin/rm ${new_override_script}.stack
+        /bin/rm ${new_override_script}.stack
 fi
 
 /bin/echo "# <UDF name=\"SELECTED_TEMPLATE\" label=\"The number of the template you are using\" />" >> ${new_override_script}.stack
@@ -95,99 +98,105 @@ prompt="1"
 
 while ( [ "${mandatory_processed}" -lt "2" ] )
 do
-	while read line
-	do
-		if ( [ "${mandatory_processed}" = "0" ] )
-		then
-			process_line="`/bin/echo ${line} | /bin/grep "MANDATORY" | /bin/grep "^export"`"
-		else
-			process_line="`/bin/echo ${line} | /bin/grep -v "MANDATORY" | /bin/grep "^export" | /bin/grep -v 'NOT REQUIRED'`"
-		fi
+        while read line
+        do
+                if ( [ "${mandatory_processed}" = "0" ] )
+                then
+                        process_line="`/bin/echo ${line} | /bin/grep "MANDATORY" | /bin/grep "^export"`"
+                else
+                        process_line="`/bin/echo ${line} | /bin/grep -v "MANDATORY" | /bin/grep "^export" | /bin/grep -v 'NOT REQUIRED'`"
+                fi
 
-		if ( [ "${process_line}" != "" ] )
-		then
-			live_variable="`/bin/echo ${line} | /usr/bin/awk -F'=' '{print $1}' | /usr/bin/awk '{print $2}'`"
-			value="`/bin/echo ${line} | /usr/bin/awk -F'"' '{print $2}'`"
+                if ( [ "${process_line}" != "" ] )
+                then
+                        live_variable="`/bin/echo ${line} | /usr/bin/awk -F'=' '{print $1}' | /usr/bin/awk '{print $2}'`"
+                        current_value="`/bin/echo ${line} | /usr/bin/awk -F'"' '{print $2}'`"
 
-			if ( [ "${prompt}" = "1" ] )
-			then
-				/bin/echo "############################################################################################"
-				/bin/echo "Explanation from the specification regarding this variable:"
-				/bin/echo "############################################################################################"
-				/bin/sed "/### ${live_variable}/,/----/!d;/----/q" ${BUILD_HOME}/templatedconfigurations/specification.md
-				/bin/echo "Found a variable ${live_variable} what do you want to set it to?"
-				value="`/bin/grep -w "^export ${live_variable}=" ${override_script} | /usr/bin/awk -F'"' '{print $2}'`"
-				/bin/echo "Its current value is \"${value}\" press <enter> to retain, otherwise enter a new value now"
-				read setting < /dev/tty
-				/bin/echo "OK, thanks..."
-				/bin/echo
-				/bin/echo
-				/bin/echo
-				/bin/echo
-			fi
+                        if ( [ "${prompt}" = "1" ] )
+                        then
+                                /bin/echo "############################################################################################"
+                                /bin/echo "Explanation from the specification regarding this variable:"
+                                /bin/echo "############################################################################################"
+                                /bin/sed "/### ${live_variable}/,/----/!d;/----/q" ${BUILD_HOME}/templatedconfigurations/specification.md
+                                live_variable_green=`/bin/echo "${green}${live_variable}${text_reset}"` 
+                                /bin/echo 'Found a variable "'${live_variable_green}'" what do you want to set it to?'
+                                current_value="`/bin/grep -w "^export ${live_variable}=" ${override_script} | /usr/bin/awk -F'"' '"{print $2}"' | /usr/bin/awk -F'"' '{print $2}'`"
+                                current_value_green=`/bin/echo "${green}${current_value}${text_reset}"` 
+                                /bin/echo 'Its current value is "'${current_value_green}'" press <enter> to retain "reset" to erase, otherwise enter a new value now'
+                                read setting < /dev/tty
+                                /bin/echo "OK, thanks..."
+                                /bin/echo
+                                /bin/echo
+                                /bin/echo
+                                /bin/echo
+                        fi
 
-			if ( [ "${setting}" != "" ] )
-			then
-				/bin/echo 'export '${live_variable}'='${setting}'' >> ${new_override_script}
-				display_name="`/bin/echo ${live_variable} | /bin/sed 's/_/ /g'`"
-				if ( [ "${mandatory_processed}" = "0" ] )
-				then
-					/bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" />' >> ${new_override_script}.stack
-				else
-					/bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" default="'${setting}'" />' >> ${new_override_script}.stack
-				fi
-			else
-				/bin/echo 'export '${live_variable}'='${value}'' >> ${new_override_script}
-				display_name="`/bin/echo ${live_variable} | /bin/sed 's/_/ /g'`"
-				if ( [ "${mandatory_processed}" = "0" ] )
-				then
-					/bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" />' >> ${new_override_script}.stack
-				else
-					/bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" default="'${value}'" />' >> ${new_override_script}.stack
-				fi
-			fi
-		fi
-	done < ${override_script}
+                        if ( [ "${setting}" != "" ] )
+                        then
+                                if ( [ "${setting}" = "reset" ] )
+                                then
+                                        setting=""
+                                fi
+                                /bin/echo 'export '${live_variable}'="'${setting}'"' >> ${new_override_script}
+                                display_name="`/bin/echo ${live_variable} | /bin/sed 's/_/ /g'`"
+                                if ( [ "${mandatory_processed}" = "0" ] )
+                                then
+                                        /bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" />' >> ${new_override_script}.stack
+                                else
+                                        /bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" default="'${setting}'" />' >> ${new_override_script}.stack
+                                fi
+                        else
+                                /bin/echo 'export '${live_variable}'="'${current_value}'"' >> ${new_override_script}
+                                display_name="`/bin/echo ${live_variable} | /bin/sed 's/_/ /g'`"
+                                if ( [ "${mandatory_processed}" = "0" ] )
+                                then
+                                        /bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" />' >> ${new_override_script}.stack
+                                else
+                                        /bin/echo '# <UDF name="'${live_variable}'" label="'${display_name}'" default="'${current_value}'" />' >> ${new_override_script}.stack
+                                fi
+                        fi
+                fi
+        done < ${override_script}
 
-	if ( [ "${mandatory_processed}" = "0" ] )
-	then
-		/bin/echo "###################################################################################################################################"
-		/bin/echo "Do you want to review the rest of the variables that are being used or do you want to accept the default template values"
-		/bin/echo "If you want to change machine sizes or regions for example, you need to change them here so that they override the templated values"
-		/bin/echo "###################################################################################################################################"
-		/bin/echo "Enter 'y' or 'Y' if you wish to review/override the rest of the variables used by this template, 'N' or 'n' will use the default settings"
-		read response
+        if ( [ "${mandatory_processed}" = "0" ] )
+        then
+                /bin/echo "###################################################################################################################################"
+                /bin/echo "Do you want to review the rest of the variables that are being used or do you want to accept the default template values"
+                /bin/echo "If you want to change machine sizes or regions for example, you need to change them here so that they override the templated values"
+                /bin/echo "###################################################################################################################################"
+                /bin/echo "Enter 'y' or 'Y' if you wish to review/override the rest of the variables used by this template, 'N' or 'n' will use the default settings"
+                read response
 
-		while ( [ "`/bin/echo "Y y N n" | /bin/grep "${response}"`" = "" ] )
-		do
-			/bin/echo "That is not a valid response, please try again....."
-			read response
-		done
+                while ( [ "`/bin/echo "Y y N n" | /bin/grep "${response}"`" = "" ] )
+                do
+                        /bin/echo "That is not a valid response, please try again....."
+                        read response
+                done
 
-		if ( [ "${response}" != "y" ] && [ "${response}" != "Y" ] )
-		then
-			prompt="0"
-		fi
-		if ( [ "${1}" = "stack" ] )
-		then
-			/bin/echo "Variables marked mandatory written to ${new_override_script}.stack"
-			/bin/echo "##############################################################################" >> ${new_override_script}.stack
-		else
-			/bin/echo "Variables marked mandatory written to ${new_override_script}"
-			/bin/echo "##############################################################################" >> ${new_override_script}
-		fi
-	fi
-	mandatory_processed="`/usr/bin/expr ${mandatory_processed} + 1`"
+                if ( [ "${response}" != "y" ] && [ "${response}" != "Y" ] )
+                then
+                        prompt="0"
+                fi
+                if ( [ "${1}" = "stack" ] )
+                then
+                        /bin/echo "Variables marked mandatory written to ${new_override_script}.stack"
+                        /bin/echo "##############################################################################" >> ${new_override_script}.stack
+                else
+                        /bin/echo "Variables marked mandatory written to ${new_override_script}"
+                        /bin/echo "##############################################################################" >> ${new_override_script}
+                fi
+        fi
+        mandatory_processed="`/usr/bin/expr ${mandatory_processed} + 1`"
 done
 
 if ( [ ! -d ${BUILD_HOME}/overridescripts ] )
 then
-	/bin/mkdir ${BUILD_HOME}/overridescripts
+        /bin/mkdir ${BUILD_HOME}/overridescripts
 fi
 
 if ( [ -f ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl ] )
 then
-	/bin/mv ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl  ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl.$$
+        /bin/mv ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl  ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl.$$
 fi
 
 /bin/mv ${new_override_script} ${BUILD_HOME}/overridescripts/${CLOUDHOST}${template}override.tmpl
