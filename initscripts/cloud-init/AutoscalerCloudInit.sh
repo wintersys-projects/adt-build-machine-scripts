@@ -2,7 +2,7 @@
 #################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : This will configure cloud-init scripts for each machine type that
+# Description : This will configure cloud-init scripts for the autoscaler machine type that
 # you want to build. The result of this script is a valid cloud-init script with 
 # live data ready to be passed to a VPS instance when it is provisioned using 
 # a CLI call
