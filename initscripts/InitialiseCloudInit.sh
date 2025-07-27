@@ -50,4 +50,5 @@ AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTI
 
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
-	${BUILD_HOME}/initscripts/
+	${BUILD_HOME}/initscripts/cloud-init/AuthenticatorCloudInit.sh
+fi
