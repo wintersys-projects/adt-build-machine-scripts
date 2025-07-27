@@ -52,3 +52,8 @@ if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
 	${BUILD_HOME}/initscripts/cloud-init/AuthenticatorCloudInit.sh
 fi
+
+if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] && [ "${NO_AUTOSCALERS}" != "0" ] )
+then
+	${BUILD_HOME}/initscripts/cloud-init/AutoscalerCloudInit.sh
+fi
