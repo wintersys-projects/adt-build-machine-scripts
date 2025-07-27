@@ -99,7 +99,7 @@ fi
 
 # Our cloud-init scripts should be ready, just give then a quick validate and tell the user if there are any issues
 status ""
-status "Validating autoscaler cloud-init scripts"
+status "Validating autoscaler cloud-init script"
 
 autoscaler_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml`"
 status "${autoscaler_cloud_init_status}"
