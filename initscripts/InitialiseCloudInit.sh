@@ -50,10 +50,10 @@ AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTI
 NO_REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXY`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
-if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
-then
-	SNAPSHOT_ID="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-fi
+#if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+#then
+#	SNAPSHOT_ID="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
+#fi
 
 git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh ${INFRASTRUCTURE_REPOSITORY_PROVIDER}`"
 
@@ -96,15 +96,15 @@ database_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST
 
 #setup the webserver configuration settings
 #
-if ( [ "`/bin/echo ${DB_USERNAME} | /bin/grep ':::'`" != "" ] )
-then
-	DB_USERNAME="`/bin/echo ${DB_USERNAME} | /bin/sed 's/.*::://g'`"
-fi
+#if ( [ "`/bin/echo ${DB_USERNAME} | /bin/grep ':::'`" != "" ] )
+#then
+#	DB_USERNAME="`/bin/echo ${DB_USERNAME} | /bin/sed 's/.*::://g'`"
+#fi
 
-if ( [ "`/bin/echo ${DB_PASSWORD} | /bin/grep ':::'`" != "" ] )
-then
-	DB_PASSWORD="`/bin/echo ${DB_PASSWORD} | /bin/sed 's/.*::://g'`"
-fi
+#if ( [ "`/bin/echo ${DB_PASSWORD} | /bin/grep ':::'`" != "" ] )
+#then
+#	DB_PASSWORD="`/bin/echo ${DB_PASSWORD} | /bin/sed 's/.*::://g'`"
+#fi
 
 while read param
 do
