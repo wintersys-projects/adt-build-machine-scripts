@@ -64,7 +64,7 @@ and also:
 
   [Digital Ocean](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/digitalocean/buildmachine)  
   [Exoscale](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/exoscale/buildmachine)  
-  [Linode](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/linode/buildmachine)  
+  [Linode](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/linode/build-machine)  
   [Vultr](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/vultr/buildmachine)  
 
 10. ssh onto the build machine that you spun up in 8. and do as "sudo su" and give your BUILDMACHINE_PASSWORD
