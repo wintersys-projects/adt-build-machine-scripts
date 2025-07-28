@@ -34,7 +34,7 @@ Once you have decided with variables you want to override, override them in the 
   
   -----------------------------------
 
-## Method 2 - Automated Generation
+## Method 2 - Automated Generation from a template that is proven already
 
 1. On your laptop clone the build client scripts for example (or from your fork):
 
@@ -58,11 +58,16 @@ Once you have decided with variables you want to override, override them in the 
 and also:  
 
 #### SSH  (a public key that matches a private key that you have on your laptop)
-#### SELECTED_TEMPLATE  (the template number that you are overriding) 
+#### SELECTED_TEMPLATE  (the template number that you are overriding - 1 (virgin) 2 (baseline) 3 (temporal)) 
 
-8. Once you are happy that all the variables are correct copy it in its entirety and paste it into the user-data of a new VPS machine with your cloud provider
+8. Once you are happy that all the variables are correct copy it in its entirety and paste it into the user-data of a new VPS machine with your cloud provider. If you aren't sure about this you can follow the build machine tutorial for your current VPS hosting provider:
 
-9. ssh onto the build machine that you spun up in 8. and do as "sudo su" and give your BUILDMACHINE_PASSWORD
+  [Digital Ocean](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/digitalocean/buildmachine)
+  [Exoscale](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/exoscale/buildmachine)
+  [Linode](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/linode/buildmachine)
+  [Vultr](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/vultr/buildmachine)
+
+10. ssh onto the build machine that you spun up in 8. and do as "sudo su" and give your BUILDMACHINE_PASSWORD
   
  **ssh -p ${BUILDMACHINE_SSH_PORT} ${BUILDMACHINE_USER}@<ip address of your VPS machine - obtained from your cloudhosts gui when you started it up>**
 
