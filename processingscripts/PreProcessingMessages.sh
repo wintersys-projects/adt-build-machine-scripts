@@ -33,6 +33,7 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
+APPLICATION_REPOSITORY_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_PASSWORD`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
@@ -53,6 +54,11 @@ then
 	status "############################################"
 	status "Number of autoscalers is set to: ${NO_AUTOSCALERS}"
 	status "############################################"
+fi
+
+if ( [ "${APPLICATION_REPOSITORY_PASSWORD}" = "" ] )
+then
+        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_REPOSITORY_PASSWORD=none"
 fi
 
 #If we want DDOS protection on our vultr instance it can be set to "on" in response to these questions
