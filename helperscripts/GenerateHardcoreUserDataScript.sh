@@ -61,6 +61,7 @@ read userdatascript
 while ( [ "${userdatascript}" = "" ] )
 do
 	/bin/echo "Your userdata script needs a name"
+	/bin/echo "Please enter a discriptive name for your userdata script"
  	read userdatascript
 done
 
