@@ -187,9 +187,14 @@ then
 	${log_command} "Your value for the variable AUTHENTICATION_SERVER (${AUTHENTICATION_SERVER}) doesn't appear to be valid please review"
 fi
 
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && ( [ "${SYSTEM_EMAIL_PROVIDER}" = "" ] || [ "${SYSTEM_TOEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_EMAIL_USERNAME}" = "" ] || [ "${SYSTEM_EMAIL_PASSWORD}" = "" ] )
+if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && ( [ "${SYSTEM_EMAIL_PROVIDER}" = "" ] || [ "${SYSTEM_TOEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_EMAIL_USERNAME}" = "" ] || [ "${SYSTEM_EMAIL_PASSWORD}" = "" ] ) )
 then
 	${log_command} "You are deploying an authentication server and so SMTP must be fully setup and it looks like it isn't"
+fi
+
+if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && ( [ "${AUTH_SERVER_URL}" = "" ] || [ "${AUTH_DNS_USERNAME}" = "" ] || [ "${AUTH_DNS_SECURITY_KEY}" = "" ] || [ "${USER_EMAIL_DOMAIN}" = "" ] ) )
+then
+	${log_command} "You are deploying an authentication server and it looks like its DNS system might not be set up"
 fi
 
 if ( [ "`/bin/grep "^WEBSERVER_CHOICE " ${quick_specification} | /bin/grep -w "${WEBSERVER_CHOICE}"  2>/dev/null `" = "" ] )
