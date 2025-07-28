@@ -416,6 +416,12 @@ then
 	${log_command} "Your value for the variable ACTIVE_FIREWALLS (${ACTIVE_FIREWALLS}) doesn't appear to be valid please review"
 fi
 
+if ( [ "${APPLICATION_REPOSITORY_PASSWORD}" = "" ] )
+then
+	${log_command} "Application repository password is blank, this cannot be, so I am setting it to 'none'"
+ 	${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_REPOSITORY_PASSWORD=none"
+fi
+
 if ( [ "${APPLICATION}" = "joomla" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
 	joomla_version="`/bin/echo ${JOOMLA_VERSION} | /bin/sed 's/\./-/g'`"
