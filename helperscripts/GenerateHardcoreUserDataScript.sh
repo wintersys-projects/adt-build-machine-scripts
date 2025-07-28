@@ -58,6 +58,12 @@ done
 /bin/echo "Please enter a discriptive name for your userdata script"
 read userdatascript
 
+while ( [ "${userdatascript}" = "" ] )
+do
+	/bin/echo "Your userdata script needs a name"
+ 	read userdatascript
+done
+
 configurationsettings="${BUILD_HOME}/overridescripts/${overridescript}"
 configurationsettings_stack="${BUILD_HOME}/overridescripts/${overridescript}.stack"
 
