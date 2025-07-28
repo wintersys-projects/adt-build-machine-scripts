@@ -1,4 +1,4 @@
-To use template overrides with you cloudhost you need to pick one method or the other.
+To use template overrides with your cloudhost you need to pick one method or the other.
 
 ## Method 1 - Manual Overriding
 
