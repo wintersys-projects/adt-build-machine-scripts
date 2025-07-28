@@ -58,6 +58,8 @@ fi
 
 if ( [ "${APPLICATION_REPOSITORY_PASSWORD}" = "" ] )
 then
+	status "I find that the variable APPLICATION_REPOSITORY_PASSWORD isn't set in your template so I am setting it to 'none' for you"
+ 	status "This variable has to be set to a value or 'none' it can't be blank"
         ${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_REPOSITORY_PASSWORD=none"
 fi
 
