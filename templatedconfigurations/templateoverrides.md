@@ -62,10 +62,10 @@ and also:
 
 8. Once you are happy that all the variables are correct copy it in its entirety and paste it into the user-data of a new VPS machine with your cloud provider. If you aren't sure about this you can follow the build machine tutorial for your current VPS hosting provider:
 
-  [Digital Ocean](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/digitalocean/buildmachine)
-  [Exoscale](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/exoscale/buildmachine)
-  [Linode](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/linode/buildmachine)
-  [Vultr](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/vultr/buildmachine)
+  [Digital Ocean](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/digitalocean/buildmachine)  
+  [Exoscale](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/exoscale/buildmachine)  
+  [Linode](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/linode/buildmachine)  
+  [Vultr](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Tutorials/vultr/buildmachine)  
 
 10. ssh onto the build machine that you spun up in 8. and do as "sudo su" and give your BUILDMACHINE_PASSWORD
   
