@@ -197,6 +197,12 @@ then
 	${log_command} "You are deploying an authentication server and it looks like its DNS system might not be set up"
 fi
 
+
+if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "`/bin/grep "^AUTH_DNS_CHOICE " ${quick_specification} | /bin/grep -w "${AUTH_DNS_CHOICE}" 2>/dev/null `" = "" ] )
+then
+	${log_command} "Your value for the variable AUTH_DNS_CHOICE (${AUTH_DNS_CHOICE}) doesn't appear to be valid please review"
+fi
+
 if ( [ "`/bin/grep "^WEBSERVER_CHOICE " ${quick_specification} | /bin/grep -w "${WEBSERVER_CHOICE}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable WEBSERVER_CHOICE (${WEBSERVER_CHOICE}) doesn't appear to be valid please review"
