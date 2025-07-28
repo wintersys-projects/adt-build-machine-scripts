@@ -149,7 +149,6 @@ fi
 /bin/sed -i "s/XXXXBUILD_IDENTIFIERXXXX/${BUILD_IDENTIFIER}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
 /bin/sed -i "s/XXXXALGORITHMXXXX/${ALGORITHM}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
 /bin/sed -i "s;XXXXDATABASE_CONFIGURATIONXXXX;${database_configuration_settings};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml
-/bin/sed -i "s;XXXXREVERSEPROXY_CONFIGURATIONXXXX;${reverseproxy_configuration_settings};g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
 
 
 # Our cloud-init scripts should be ready, just give then a quick validate and tell the user if there are any issues
