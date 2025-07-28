@@ -26,42 +26,43 @@
 ##################################################################################################################################################
 # If you are deploying Quick Demos at a minimum you need to set all the values to custom values specific to your deployment in sections 1, 2 and 3
 ##################################################################################################################################################
-#SECTION1
-##########################################
+#SECTION 1 - replace all "CUSTOMISE ME" tokens with your own values before pasting this script into the user-data area of a new linode
+######################################################################################################################################
 
-export BUILDMACHINE_USER="agile-user"
-export BUILDMACHINE_PASSWORD="Hjdhfb34hd£" #Make sure any password you choose is strong enough to pass any strength enforcement rules of your OS
-export BUILDMACHINE_SSH_PORT="1035"
-export LAPTOP_IP=""
+export BUILDMACHINE_USER="####CUSTOMISE ME####"
+export BUILDMACHINE_PASSWORD="####CUSTOMISE ME####" #Make sure any password you choose is strong enough to pass any strength enforcement rules of your OS
+export BUILDMACHINE_SSH_PORT="####CUSTOMISE ME####"
+export LAPTOP_IP="####CUSTOMISE ME####"
 
-###########################################
-#SECTION 2
-###########################################
+######################################################################################################################################
+#SECTION 2 - replace all "CUSTOMISE ME" tokens with your own values before pasting this script into the user-data area of a new linode
+######################################################################################################################################
 
 /bin/echo '
 #BASE OVERRIDES
-export SSH="" #paste your public key here
-export SELECTED_TEMPLATE="" #set if using hardcore build (1 for virgin, 2 for baseline, 3 for temporal)
+export SSH="####CUSTOMISE ME####" #paste your public key here
+export SELECTED_TEMPLATE="####CUSTOMISE ME####" #set if using hardcore build (1 for virgin, 2 for baseline, 3 for temporal)
 ' > /root/Environment.env
 
-###########################################
-#SECTION 3
-###########################################
+#######################################################################################################################################
+#SECTION 3 - replace all "CUSTOMISE ME" tokens with your own values before pasting this script into the user-data area of a new linode
+#######################################################################################################################################
 
 /bin/echo '
-export S3_ACCESS_KEY=""
-export S3_SECRET_KEY=""
-export TOKEN=""
-export CLOUDHOST_ACCOUNT_ID=""
-export DNS_USERNAME=""
-export DNS_SECURITY_KEY=""
-export WEBSITE_NAME=""
-export WEBSITE_URL=""
+export S3_ACCESS_KEY="####CUSTOMISE ME####"
+export S3_SECRET_KEY="####CUSTOMISE ME####"
+export TOKEN="####CUSTOMISE ME####"
+export CLOUDHOST_ACCOUNT_ID="####CUSTOMISE ME####"
+export DNS_USERNAME="####CUSTOMISE ME####"
+export DNS_SECURITY_KEY="####CUSTOMISE ME####"
+export WEBSITE_NAME="####CUSTOMISE ME####"
+export WEBSITE_URL="####CUSTOMISE ME####"
 
 
-###########################################
-#SECTION 4
-###########################################
+######################################################################################################
+#SECTION 4 - If you know what you are doing you can customise these values to your taste/requirements (in most cases the quick demos
+#            will ask you to customise a few of them. 
+#####################################################################################################
 
 export WEBSITE_DISPLAY_NAME="Demo Application"
 export APPLICATION="joomla"
