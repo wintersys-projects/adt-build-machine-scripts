@@ -63,7 +63,7 @@ if ( [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
 	gitrepo="0"
 
-	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} 2>/dev/null`" = "" ] )
+	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY ${APPLICATION_REPOSITORY_PASSWORD} 2>/dev/null`" = "" ] )
 	then
 		status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
 		/bin/touch /tmp/END_IT_ALL
@@ -72,7 +72,7 @@ then
 		gitrepo="1"
 	fi
 
-	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_PASSWORD} ${APPLICATION_REPOSITORY_OWNER} ${BASELINE_DB_REPOSITORY} 2>/dev/null`" = "" ] )
+	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_OWNER} ${BASELINE_DB_REPOSITORY} ${APPLICATION_REPOSITORY_PASSWORD} 2>/dev/null`" = "" ] )
 	then
 		status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
 		/bin/touch /tmp/END_IT_ALL
