@@ -106,10 +106,10 @@ then
 	#For production
 	if ( [ "${SSL_LIVE_CERT}" = "1" ] )
 	then
-		command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=120 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
+		command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=2 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 	else
 		#For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-		command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=120 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --server=https://acme-staging-v02.api.letsencrypt.org/directory --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
+		command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=2 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --server=https://acme-staging-v02.api.letsencrypt.org/directory --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 	fi
 fi
 
@@ -121,10 +121,10 @@ then
     #Production
     if ( [ "${SSL_LIVE_CERT}" = "1" ] )
     then
-	    command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=120 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
+	    command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=2 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
     else
 	    #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-	    command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=120 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
+	    command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=2 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
     fi
 fi
 
@@ -135,11 +135,11 @@ then
     #For production
     if ( [ "${SSL_LIVE_CERT}" = "1" ] )
     then
-	    command="LINODE_TOKEN=${LINODE_TOKEN}  LINODE_POLLING_INTERVAL=120 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
+	    command="LINODE_TOKEN=${LINODE_TOKEN}  LINODE_POLLING_INTERVAL=2 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
     else
 	    #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
 	    #  command="LINODE_TOKEN=${LINODE_TOKEN} /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "92.123.94.2:53,92.123.94.3:53,92.123.95.3:53,92.123.95.4:53,95.123.95.2:53" --accept-tos run"
-	    command="LINODE_TOKEN=${LINODE_TOKEN} LINODE_POLLING_INTERVAL=120 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
+	    command="LINODE_TOKEN=${LINODE_TOKEN} LINODE_POLLING_INTERVAL=2 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
     fi  
 fi
 
@@ -150,10 +150,10 @@ then
     #For production
     if ( [ "${SSL_LIVE_CERT}" = "1" ] )
     then
-	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=120 VULTR_PROPAGATION_TIMEOUT=600  /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
+	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=2 VULTR_PROPAGATION_TIMEOUT=600  /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
     else
 	    #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=120 VULTR_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
+	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=2 VULTR_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
     fi
 fi
 
