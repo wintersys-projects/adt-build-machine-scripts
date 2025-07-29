@@ -49,13 +49,21 @@ export SELECTED_TEMPLATE="####CUSTOMISE ME####" #set if using hardcore build (1 
 #######################################################################################################################################
 
 /bin/echo '
+###############################################################################################################################
+# YOU WILL NEED OBJECT STORAGE IN THE AMS REGION FOR THIS DEMO TO WORK AND TO GET THE OBJECT STORAGE KEYS NEEDED HERE
+###############################################################################################################################
 export S3_ACCESS_KEY="####CUSTOMISE ME####"
 export S3_SECRET_KEY="####CUSTOMISE ME####"
+############################################################################
+# GRAB A FULL ACCESS PAT FROM YOUR DIGITAL OCEAN ACCOUNT AND PASTE THE TOKEN HERE
+############################################################################
 export TOKEN="####CUSTOMISE ME####"
-export CLOUDHOST_ACCOUNT_ID="####CUSTOMISE ME####"
-export DNS_USERNAME="####CUSTOMISE ME####"
-export DNS_SECURITY_KEY="####CUSTOMISE ME####"
-export WEBSITE_NAME="####CUSTOMISE ME####"
+#######################################################################################################################
+# UPDATE THE NAMESERVERS WITH YOUR DNS REGISTTAR TO NS1.DIGITALOCEAN.COM NS2.DIGITALOCEAN.COM and NS3.DIGITALOCEAN.COM 
+#######################################################################################################################
+export DNS_USERNAME="####CUSTOMISE ME####"     #YOUR DIGITAL OCEAN ACCOUNT EMAIL ADDRESS
+export DNS_SECURITY_KEY="####CUSTOMISE ME####" #FOR THE PURPOSES OF THE DEMO SAME AS TOKEN ABOVE
+export WEBSITE_NAME="####CUSTOMISE ME####"     #IF WEBSITE_URL is 'www.nuocial.uk' THEN THIS IS 'nuocial'
 export WEBSITE_URL="####CUSTOMISE ME####"
 
 
