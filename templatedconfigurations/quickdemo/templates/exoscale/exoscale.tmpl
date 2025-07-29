@@ -49,20 +49,30 @@ export SELECTED_TEMPLATE="####CUSTOMISE ME####" #set if using hardcore build (1 
 #######################################################################################################################################
 
 /bin/echo '
+#############################################################################################################
+# FULL ACCESS EXOSCALE IAM KEY PAIR FOR DEMO PURPOSES CAN BE SAME KEYPAIR AS ACCESS_KEY and SECRET_KEY BELOW
+#############################################################################################################
 export S3_ACCESS_KEY="####CUSTOMISE ME####"
 export S3_SECRET_KEY="####CUSTOMISE ME####"
+##################################################################################################################
+# FULL ACCESS EXOSCALE IAM KEY PAIR FOR DEMO PURPOSES CAN BE SAME KEYPAIR AS S3_ACCESS_KEY and S3_SECRET_KEY ABOVE
+##################################################################################################################
 export ACCESS_KEY="####CUSTOMISE ME####"  
 export SECRET_KEY="####CUSTOMISE ME####"   
-export CLOUDHOST_ACCOUNT_ID="####CUSTOMISE ME####"
-export DNS_USERNAME="####CUSTOMISE ME####"
+export CLOUDHOST_ACCOUNT_ID="####CUSTOMISE ME####"  #YOUR EXOSCALE ACCOUNT EMAIL ADDRESS
+#########################################################################################
+# UPDATE THE NAMESERVERS WITH YOUR DNS REGISTRAR TO ns1.exoscale.ch ns1.exoscale.com ns1.exoscale.io ns1.exoscale.net
+#########################################################################################
+export DNS_USERNAME="####CUSTOMISE ME####"          #
 #############################################################################################
 # Remember you need a DNS subscription active if you are using exoscale for your DNS provider
 # and also, the DNS_SECURITY_KEY is both IAM keys with appropriate privileges entered here as 
-# export DNS_SECURITY_KEY="<access-key>@<secret-key>"
+# export DNS_SECURITY_KEY="<access-key>@<secret-key>" (SAME KEYPAIR AS ACCESS_KEY and SECRET_KEY ABOVE)
 #############################################################################################
 export DNS_SECURITY_KEY="####CUSTOMISE ME####"
-export WEBSITE_NAME="####CUSTOMISE ME####"
+export WEBSITE_NAME="####CUSTOMISE ME####" # IF WEBSITE_URL='www.nuocial.uk' THEN THIS IS 'nuocial'
 export WEBSITE_URL="####CUSTOMISE ME####"
+
 ######################################################################################################
 #SECTION 4 - If you know what you are doing you can customise these values to your taste/requirements (in most cases the quick demos
 #            will ask you to customise a specific few of them). 
