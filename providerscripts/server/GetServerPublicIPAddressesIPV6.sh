@@ -45,7 +45,7 @@ fi
 
 if ( [ "${cloudhost}" = "linode" ] )
 then
-        /usr/local/bin/linode-cli --json linodes list | /usr/bin/jq -r '.[] | select (.label | contains("'${server_type}'")).[].ipv6.slaac.address' 2>/dev/null
+        /usr/local/bin/linode-cli --json linodes list | /usr/bin/jq -r '.[] | select (.label | contains("'${server_type}'")).ipv6' 2>/dev/null
 fi
 
 if ( [ "${cloudhost}" = "vultr" ] )
