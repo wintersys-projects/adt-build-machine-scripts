@@ -22,6 +22,8 @@
 
 cloudhost="${1}"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
 	/bin/cp ${BUILD_HOME}/initscripts/privatenetworking/exoscale/eth1.yaml /etc/netplan/eth1.yaml
