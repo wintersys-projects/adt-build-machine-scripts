@@ -280,7 +280,7 @@ else
 fi
 
 # Certain providers need their Eth1 interface configured for private networking to be possible
-${BUILD_HOME}/helperscripts/SetupEth1.sh ${CLOUDHOST}
+${BUILD_HOME}/initscripts/InitialisePrivateNetworking.sh ${CLOUDHOST}
 
 #Run some arbitrary compatibility checks
 ${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
