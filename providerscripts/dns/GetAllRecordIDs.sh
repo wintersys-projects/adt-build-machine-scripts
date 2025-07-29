@@ -27,16 +27,6 @@ status () {
 	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
-websiteurl="${2}"
-domainurl="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
-subdomain="`/bin/echo ${2} | /usr/bin/awk -F'.' '{print $1}'`"
-dns="${5}"
-
-if ( [ "${dns}" = "digitalocean" ] )
-then
-	/usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.type == "A") | select (.name == "'${subdomain}'").id'
-fi
-
 zoneid="${1}"
 websiteurl="${2}"
 email="${3}"
@@ -45,7 +35,19 @@ dns="${5}"
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
-	/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records?type=A&name=${websiteurl}&page=1&per_page=20&order=type&direction=desc&match=all" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'
+        recordids="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records?type=A&name=${websiteurl}&page=1&per_page=20&order=type&direction=desc&match=all" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'`"
+        recordids="${recordids} `/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records?type=AAAA&name=${websiteurl}&page=1&per_page=20&order=type&direction=desc&match=all" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'`"
+        /bin/echo ${recordids}
+fi
+
+websiteurl="${2}"
+domainurl="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
+subdomain="`/bin/echo ${2} | /usr/bin/awk -F'.' '{print $1}'`"
+dns="${5}"
+
+if ( [ "${dns}" = "digitalocean" ] )
+then
+	/usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.type == "A") | select (.name == "'${subdomain}'").id'
 fi
 
 domainurl="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
