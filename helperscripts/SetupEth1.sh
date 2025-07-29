@@ -24,11 +24,6 @@ cloudhost="${1}"
 
 if ( [ "${cloudhost}" = "exoscale" ] )
 then
-	/bin/echo "network:
-	version: 2
-	ethernets:
-	eth1:
-	dhcp4: true" > /etc/netplan/eth1.yaml
-
-	/usr/sbin/netplan apply 2>/dev/null
+	/bin/cp ${BUILD_HOME}/initscripts/privatenetworking/exoscale/eth1.yaml /etc/netplan/eth1.yaml
+	/usr/sbin/netplan apply 
 fi
