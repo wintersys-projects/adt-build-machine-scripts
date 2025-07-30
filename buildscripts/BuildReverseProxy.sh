@@ -221,10 +221,8 @@ do
                                         /bin/sleep 1
                                 done
                                 ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary"
-                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ipv6} 
                         else
                                 ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
-                                ${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ipv6} 
                                 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIMARY_DNS_SET
                         fi
 
