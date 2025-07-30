@@ -1,4 +1,3 @@
-
 #!/bin/sh
 ######################################################################################################
 # Description: This will configure the native firewall to restrict access by ip address to our infrastructure
@@ -266,7 +265,6 @@ then
 	then
 		ruleset=""
 		rule_vpc='{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protocol":"TCP","ports":"1-65535"}'
-  		rule_vpc_ipv6='{"addresses":{"ipv6":["fe80::/64"]},"action":"ACCEPT","protocol":"TCP","ports":"443"}'
 		rule_build_machine='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"}'
 		rule_build_machine_ssl='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"443"}'
 		rule_icmp='{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}'
@@ -304,19 +302,9 @@ then
 		then
 			if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 			then
-   				if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
-       				then
-	   				ruleset='['${rule_vpc}','${rule_vpc_ipv6}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}']'
-				else
-					ruleset='['${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}']'
-				fi
+				ruleset='['${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}']'
    			else
-         			if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
-       				then
-					ruleset='['${rule_vpc}','${rule_vpc_ipv6}','${rule_icmp}','${rule_ssl}']'
-     				else
-	 				ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}']'
-      				fi
+	 			ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}']'
 			fi
 		else
 			if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
