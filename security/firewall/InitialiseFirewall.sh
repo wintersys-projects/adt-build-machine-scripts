@@ -68,8 +68,8 @@ then
 	#uncomment this if you want more general access than just ssh
 	#/usr/sbin/ufw allow from ${LAPTOP_IP}
 	/usr/sbin/ufw allow from ${laptop_ip} to any port ${buildmachine_ssh_port}
- 	/usr/sbin/ufw allow 443 #needed by lego when resolving DNS
-  	/usr/sbin/ufw allow 80  #needed by lego when resolving DNS
+ 	#/usr/sbin/ufw allow 443 #needed by lego when resolving DNS
+  	#/usr/sbin/ufw allow 80  #needed by lego when resolving DNS
 	/bin/echo "y" | /usr/sbin/ufw enable
 	/bin/touch /root/FIREWALL-INITIALISED
 elif ( [ "${firewall}" = "iptables" ] )
