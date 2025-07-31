@@ -65,8 +65,9 @@ fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
-	export EXOSCALE_API_KEY="your_exoscale_api_key"
-   export EXOSCALE_API_SECRET="your_exoscale_api_secret"
+	EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+	EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
+
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
