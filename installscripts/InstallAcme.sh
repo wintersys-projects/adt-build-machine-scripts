@@ -26,15 +26,16 @@ then
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+email="${1}"
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-	/usr/bin/wget -O -  https://get.acme.sh | sh -s email=my@example.com
+	/usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email}
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	/usr/bin/wget -O -  https://get.acme.sh | sh -s email=my@example.com
+	/usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email}
 fi
 
 
