@@ -60,7 +60,7 @@ fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-	export DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
+	DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
@@ -72,7 +72,7 @@ fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
-	export LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${WEBSITE_URL}
+	LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${WEBSITE_URL}
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
