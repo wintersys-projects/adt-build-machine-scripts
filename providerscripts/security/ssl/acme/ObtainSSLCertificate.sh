@@ -56,7 +56,7 @@ ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-	CF_Toke="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+	CF_Token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
 	~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
