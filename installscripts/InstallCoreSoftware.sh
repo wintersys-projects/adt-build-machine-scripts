@@ -88,8 +88,8 @@ then
 		${BUILD_HOME}/installscripts/InstallWhois.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating JQ"
 		${BUILD_HOME}/installscripts/InstallJQ.sh "ubuntu" >>${upgrade_log} 2>&1
-		status "Installing/Updating Lego"
-		${BUILD_HOME}/installscripts/InstallLego.sh "ubuntu" >>${upgrade_log} 2>&1
+#		status "Installing/Updating Lego"
+#		${BUILD_HOME}/installscripts/InstallLego.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating Ruby"
 		${BUILD_HOME}/installscripts/InstallRuby.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating SSHPass"
@@ -123,8 +123,8 @@ then
 		${BUILD_HOME}/installscripts/InstallWhois.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating JQ"
 		${BUILD_HOME}/installscripts/InstallJQ.sh "debian" >>${upgrade_log} 2>&1
-		status "Installing/Updating Lego"
-		${BUILD_HOME}/installscripts/InstallLego.sh "debian" >>${upgrade_log} 2>&1
+#		status "Installing/Updating Lego"
+#		${BUILD_HOME}/installscripts/InstallLego.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating Ruby"
 		${BUILD_HOME}/installscripts/InstallRuby.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating SSHPass"
