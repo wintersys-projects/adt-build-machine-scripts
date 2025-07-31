@@ -67,7 +67,7 @@ then
 
 	if ( [ "${S3_SECRET_KEY}" != "" ] )
 	then
-		/bin/sed -i "s/XXXXSECRETKEYXXXX/${S3_SECRET_KEY}/" ${BUILD_HOME}/.s3cfg
+		/bin/sed -i "s;XXXXSECRETKEYXXXX;${S3_SECRET_KEY};" ${BUILD_HOME}/.s3cfg
 	else 
 		status "Couldn't find the secret key for your datastore, can't go on without it, will have to exit"
 		/bin/touch /tmp/END_IT_ALL
