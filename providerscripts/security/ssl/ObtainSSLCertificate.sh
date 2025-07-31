@@ -150,10 +150,10 @@ then
     #For production
     if ( [ "${SSL_LIVE_CERT}" = "1" ] )
     then
-	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
+	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
     else
 	    #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
+	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600 LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
     fi
 fi
 
