@@ -46,6 +46,7 @@ status () {
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS'`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_URL'`"
+ROOT_DOMAIN="`/bin/echo ${WEBSITE_URL} | /usr/bin/cut -d'.' -f2-`"
 DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_KEY`"
 
 
@@ -55,24 +56,26 @@ ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-	:
+	CF_Toke="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+	CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
+	DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-	DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
+	DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
 	EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-	EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} ~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${WEBSITE_URL}
+	EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} ~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
-	LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${WEBSITE_URL}
+	LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
