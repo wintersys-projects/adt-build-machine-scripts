@@ -175,9 +175,11 @@ fi
 # Set a name for the PUBLIC KEY which can be used everywhere
 export PUBLIC_KEY_NAME="AGILE_TOOLKIT_PUBLIC_KEY"
 
+background=""
 # Set a persistent way of letting us know if we are a HARDCORE build or not
 if ( [ "${HARDCORE}" = "1" ] )
 then
+	background=" &"
 	/bin/touch /root/HARDCORE
 else
 	if ( [ -f /root/HARDCORE ] )
@@ -253,13 +255,13 @@ fi
 
 # Make sure that ssh connections to the servers we will build are long lasting. A build can take several minutes over SSH and a short lasting
 # connection might drop during  the build proccess
-${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
+${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh ${background}
 
 # There is a core set of software that is needed by this toolkit. We install the software on the intial build and update the software
 # if its been more than 1 day since this script was run on the current machine
 
 
-${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
+${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS} ${background}
 
 software_updated="0"
 
@@ -277,22 +279,22 @@ then
 	${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}
 	CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 else
-	${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS}
+	${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${background}
 	/bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
 fi
 
 # Certain providers need their Eth1 interface configured for private networking to be possible
-${BUILD_HOME}/initscripts/InitialisePrivateNetworking.sh ${CLOUDHOST}
+${BUILD_HOME}/initscripts/InitialisePrivateNetworking.sh ${CLOUDHOST} ${background}
 
 #Run some arbitrary compatibility checks
-${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
+${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh ${background}
 
 status ""
 status ""
 
 # Find out what the BUILD_IDENTIFER is to be. The BUILD_IDENTIFIER will be written to the filesystem for persistent reference
 # in the file ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
-${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh
+${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh ${background}
 
 # If we are a HARDCORE build then the BUILD_IDENTIFIER is already in our enviornment, if we are EXPEDITED then we need to remind ourselves
 # of what the BUILD_IDENTIFIER has just been set to from the filesystem
@@ -372,19 +374,19 @@ ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_I
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 
 # Intialise the configuration values for the VPS provider we are using (access tokens/keys) and so on
-${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh
+${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh ${background}
 
 # Ask the user if they want to set any SMTP settings if they are not already set
-${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh
+${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh ${background}
 
 # Set up the credentials for the server user
-${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh
+${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh ${background}
 
 # Initialise/configure the datastore ready for use (access keys, tokens, host base values and so on)
-${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh
+${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh ${background}
 
 # Make a few pre-flight checks to check that we are good to go
-${BUILD_HOME}/initscripts/PreFlightChecks.sh
+${BUILD_HOME}/initscripts/PreFlightChecks.sh ${background}
 
 # If the build machine is configured to be part of the same VPC as the servers are, then, just perform a crude check to make sure that the build
 # machine has been added to the same VPC when it was provisioned. If the build machine is verified as attached to a VPC we assume it is the 
@@ -445,13 +447,6 @@ ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 #Provision any DBaaS database service that the build requires 
 ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 
-background=""
-
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-then
-	background="&"
-fi
-
 # If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
@@ -463,7 +458,7 @@ ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${background}
 
 # We perform the build using cloud-init scripts passed to the server being provisioned when it is created using the CLI
 # This script will substitute placeholder tokens for live values
-${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
+${BUILD_HOME}/initscripts/InitialiseCloudInit.sh ${background}
 
 #Just check that its 'all systems go'
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
