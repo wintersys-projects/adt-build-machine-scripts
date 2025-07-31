@@ -255,7 +255,7 @@ fi
 
 # Make sure that ssh connections to the servers we will build are long lasting. A build can take several minutes over SSH and a short lasting
 # connection might drop during  the build proccess
-${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh ${background}
+${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
 
 # There is a core set of software that is needed by this toolkit. We install the software on the intial build and update the software
 # if its been more than 1 day since this script was run on the current machine
@@ -284,17 +284,17 @@ else
 fi
 
 # Certain providers need their Eth1 interface configured for private networking to be possible
-${BUILD_HOME}/initscripts/InitialisePrivateNetworking.sh ${CLOUDHOST} ${background}
+${BUILD_HOME}/initscripts/InitialisePrivateNetworking.sh ${CLOUDHOST}
 
 #Run some arbitrary compatibility checks
-${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh ${background}
+${BUILD_HOME}/initscripts/InitialiseCompatibilityChecks.sh
 
 status ""
 status ""
 
 # Find out what the BUILD_IDENTIFER is to be. The BUILD_IDENTIFIER will be written to the filesystem for persistent reference
 # in the file ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
-${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh ${background}
+${BUILD_HOME}/selectionscripts/SelectBuildIdentifier.sh 
 
 # If we are a HARDCORE build then the BUILD_IDENTIFIER is already in our enviornment, if we are EXPEDITED then we need to remind ourselves
 # of what the BUILD_IDENTIFIER has just been set to from the filesystem
@@ -374,19 +374,19 @@ ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_I
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 
 # Intialise the configuration values for the VPS provider we are using (access tokens/keys) and so on
-${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh ${background}
+${BUILD_HOME}/initscripts/InitialiseCloudhostConfig.sh 
 
 # Ask the user if they want to set any SMTP settings if they are not already set
-${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh ${background}
+${BUILD_HOME}/selectionscripts/SelectSMTPSettings.sh 
 
 # Set up the credentials for the server user
-${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh ${background}
+${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh 
 
 # Initialise/configure the datastore ready for use (access keys, tokens, host base values and so on)
-${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh ${background}
+${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh
 
 # Make a few pre-flight checks to check that we are good to go
-${BUILD_HOME}/initscripts/PreFlightChecks.sh ${background}
+${BUILD_HOME}/initscripts/PreFlightChecks.sh 
 
 # If the build machine is configured to be part of the same VPC as the servers are, then, just perform a crude check to make sure that the build
 # machine has been added to the same VPC when it was provisioned. If the build machine is verified as attached to a VPC we assume it is the 
@@ -458,7 +458,7 @@ ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${background}
 
 # We perform the build using cloud-init scripts passed to the server being provisioned when it is created using the CLI
 # This script will substitute placeholder tokens for live values
-${BUILD_HOME}/initscripts/InitialiseCloudInit.sh ${background}
+${BUILD_HOME}/initscripts/InitialiseCloudInit.sh 
 
 #Just check that its 'all systems go'
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
