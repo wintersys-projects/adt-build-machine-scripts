@@ -68,10 +68,10 @@ fi
 #	${BUILD_HOME}/installscripts/InstallGo.sh ${BUILDOS}
 #fi
 
-if ( [ ! -d /usr/bin/lego ] )
-then
-	${BUILD_HOME}/installscripts/InstallLego.sh "${BUILDOS}"
-fi
+#if ( [ ! -d /usr/bin/lego ] )
+#then
+#	${BUILD_HOME}/installscripts/InstallLego.sh "${BUILDOS}"
+#fi
 
 export GOROOT=/usr/local/go
 export GOPATH=$HOME
