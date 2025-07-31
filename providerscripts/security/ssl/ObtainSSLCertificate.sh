@@ -63,10 +63,10 @@ else
 	WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 fi
 
-if ( [ ! -d /usr/local/go ] )
-then
-	${BUILD_HOME}/installscripts/InstallGo.sh ${BUILDOS}
-fi
+#if ( [ ! -d /usr/local/go ] )
+#then
+#	${BUILD_HOME}/installscripts/InstallGo.sh ${BUILDOS}
+#fi
 
 if ( [ ! -d /usr/bin/lego ] )
 then
