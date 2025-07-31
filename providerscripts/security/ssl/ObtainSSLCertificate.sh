@@ -27,3 +27,6 @@ status () {
 website_url="${1}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
+
+${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh
