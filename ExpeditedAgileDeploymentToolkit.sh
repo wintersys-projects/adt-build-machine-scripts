@@ -445,14 +445,21 @@ ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 #Provision any DBaaS database service that the build requires 
 ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 
+background=""
+
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+then
+	background="&"
+fi
+
 # If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
-	${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh "FILLER" "yes"
+	${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh "FILLER" "yes" ${background}
 fi
 
 # Generate the SSL certificate that will be used by our webservers
-${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
+${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${background}
 
 # We perform the build using cloud-init scripts passed to the server being provisioned when it is created using the CLI
 # This script will substitute placeholder tokens for live values
