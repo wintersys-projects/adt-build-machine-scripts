@@ -56,6 +56,7 @@ ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
+	#Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare API key
 	CF_Token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
 	~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
@@ -81,5 +82,5 @@ fi
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
 	VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
-	LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+	~/.acme.sh/acme.sh --issue --dns dns_vultr -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
