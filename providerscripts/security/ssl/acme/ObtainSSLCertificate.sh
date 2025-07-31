@@ -56,7 +56,9 @@ ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-	#Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare API key
+	#Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare GLOBAL API key
+        #https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_cf
+	#DNS_SECURITY_KEY="XXXXX:YYYYYY" - like exoscale
 	CF_Token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
 	~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
