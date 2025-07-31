@@ -27,9 +27,10 @@ status () {
 website_url="${1}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_METHOD`"
+SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
 
-
-export SSL_GENERATION_METHOD="AUTOMATIC"
-export SSL_GENERATION_SERVICE="LETSENCRYPT"
-
-${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh
+if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
+then
+	${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh ${website_url}
+fi
