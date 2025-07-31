@@ -67,7 +67,7 @@ if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
 	EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-
+	EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} ~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${WEBSITE_URL}
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
