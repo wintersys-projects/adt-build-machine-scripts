@@ -53,4 +53,8 @@ ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
 ~/.acme.sh/acme.sh --register-account -m ${DNS_SECURITY_KEY}
 
-DO_API_KEY ${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
+export DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
+
+
+
+export LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${WEBSITE_URL}
