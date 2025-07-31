@@ -258,16 +258,14 @@ ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
 # There is a core set of software that is needed by this toolkit. We install the software on the intial build and update the software
 # if its been more than 1 day since this script was run on the current machine
 
-if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+
+${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
+
+software_updated="0"
+
+if ( [ "`/usr/bin/find ~/UPDATEDSOFTWARE -mmin -20 -print`" != "" ] )
 then
-	${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS}
-
-	software_updated="0"
-
-	if ( [ "`/usr/bin/find ~/UPDATEDSOFTWARE -mmin -20 -print`" != "" ] )
-	then
-		software_updated="1"
-	fi
+	software_updated="1"
 fi
 
 # Find out which cloudhost we are deploying to. If we are a HARDCORE build then the CLOUDHOST variable value is already in our
