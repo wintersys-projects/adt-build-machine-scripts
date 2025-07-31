@@ -51,4 +51,4 @@ DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_
 
 ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
-DO_API_KEY (Digitalocean Token key here) ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
+DO_API_KEY ${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
