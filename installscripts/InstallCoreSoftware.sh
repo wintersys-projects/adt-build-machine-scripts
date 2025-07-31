@@ -80,9 +80,9 @@ then
 		${BUILD_HOME}/installscripts/InstallFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Initialising Firewall"
 		${BUILD_HOME}/security/firewall/InitialiseFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
-		status "Installing/Updating go"
-  		status "Installing/Updating SysVBanner"
+    		status "Installing/Updating SysVBanner"
 		${BUILD_HOME}/installscripts/InstallSysVBanner.sh "ubuntu" >>${upgrade_log} 2>&1
+		status "Installing/Updating go"
 		${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating curl"
 		${BUILD_HOME}/installscripts/InstallCurl.sh "ubuntu" >>${upgrade_log} 2>&1
