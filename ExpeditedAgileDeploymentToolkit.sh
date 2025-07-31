@@ -175,11 +175,9 @@ fi
 # Set a name for the PUBLIC KEY which can be used everywhere
 export PUBLIC_KEY_NAME="AGILE_TOOLKIT_PUBLIC_KEY"
 
-background=""
 # Set a persistent way of letting us know if we are a HARDCORE build or not
 if ( [ "${HARDCORE}" = "1" ] )
 then
-	background=" &"
 	/bin/touch /root/HARDCORE
 else
 	if ( [ -f /root/HARDCORE ] )
@@ -261,7 +259,7 @@ ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
 # if its been more than 1 day since this script was run on the current machine
 
 
-${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS} ${background}
+${BUILD_HOME}/installscripts/InstallCoreSoftware.sh ${BUILDOS} 
 
 software_updated="0"
 
@@ -279,7 +277,7 @@ then
 	${BUILD_HOME}/selectionscripts/SelectCloudhost.sh ${BUILDOS}
 	CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`"
 else
-	${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} ${background}
+	${BUILD_HOME}/installscripts/InstallCloudhostTools.sh ${CLOUDHOST} ${BUILDOS} 
 	/bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
 fi
 
@@ -450,11 +448,11 @@ ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 # If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 then
-	${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh "FILLER" "yes" ${background}
+	${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh "FILLER" "yes" 
 fi
 
 # Generate the SSL certificate that will be used by our webservers
-${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh ${background}
+${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh 
 
 # We perform the build using cloud-init scripts passed to the server being provisioned when it is created using the CLI
 # This script will substitute placeholder tokens for live values
