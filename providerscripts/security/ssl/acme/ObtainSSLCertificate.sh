@@ -58,7 +58,7 @@ if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
 	CF_Toke="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-	DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+	~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
@@ -70,7 +70,7 @@ if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
 	EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-	EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} ~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+	~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
