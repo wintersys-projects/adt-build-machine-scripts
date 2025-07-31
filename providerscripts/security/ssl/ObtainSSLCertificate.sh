@@ -29,4 +29,7 @@ website_url="${1}"
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 
+export SSL_GENERATION_METHOD="AUTOMATIC"
+export SSL_GENERATION_SERVICE="LETSENCRYPT"
+
 ${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh
