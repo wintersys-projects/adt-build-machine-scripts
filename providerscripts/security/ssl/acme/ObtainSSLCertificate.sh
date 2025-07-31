@@ -53,8 +53,27 @@ ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
 ~/.acme.sh/acme.sh --register-account -m ${DNS_SECURITY_KEY}
 
-export DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
+if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
+then
+	:
+fi
 
+if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
+then
+	export DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${WEBSITE_URL}
+fi
 
+if ( [ "${DNS_CHOICE}" = "exoscale" ] )
+then
+	:
+fi
 
-export LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${WEBSITE_URL}
+if ( [ "${DNS_CHOICE}" = "linode" ] )
+then
+	export LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${WEBSITE_URL}
+fi
+
+if ( [ "${DNS_CHOICE}" = "vultr" ] )
+then
+	:
+fi
