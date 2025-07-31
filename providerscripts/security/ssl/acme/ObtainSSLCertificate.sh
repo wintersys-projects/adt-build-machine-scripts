@@ -52,7 +52,7 @@ DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_
 
 ${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
 
-~/.acme.sh/acme.sh --register-account -m ${DNS_SECURITY_KEY}
+~/.acme.sh/acme.sh --register-account -m ${SYSTEM_FROMEMAIL_ADDRESS}
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
