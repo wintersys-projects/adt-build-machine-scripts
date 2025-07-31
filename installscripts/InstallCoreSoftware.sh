@@ -81,6 +81,8 @@ then
 		status "Initialising Firewall"
 		${BUILD_HOME}/security/firewall/InitialiseFirewall.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating go"
+  		status "Installing/Updating SysVBanner"
+		${BUILD_HOME}/installscripts/InstallSysVBanner.sh "ubuntu" >>${upgrade_log} 2>&1
 		${BUILD_HOME}/installscripts/InstallGo.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating curl"
 		${BUILD_HOME}/installscripts/InstallCurl.sh "ubuntu" >>${upgrade_log} 2>&1
@@ -96,8 +98,6 @@ then
 		${BUILD_HOME}/installscripts/InstallSSHPass.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating Sudo"
 		${BUILD_HOME}/installscripts/InstallSudo.sh "ubuntu" >>${upgrade_log} 2>&1
-		status "Installing/Updating SysVBanner"
-		${BUILD_HOME}/installscripts/InstallSysVBanner.sh "ubuntu" >>${upgrade_log} 2>&1
 		status "Installing/Updating Cron"
 		${BUILD_HOME}/installscripts/InstallCron.sh "ubuntu" >>${upgrade_log} 2>&1 
 		/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
@@ -115,6 +115,8 @@ then
 		${BUILD_HOME}/installscripts/InstallFirewall.sh "debian" >>${upgrade_log} 2>&1
 		status "Initialising Firewall"
 		${BUILD_HOME}/security/firewall/InitialiseFirewall.sh "debian" >>${upgrade_log} 2>&1
+		status "Installing/Updating SysVBanner"
+		${BUILD_HOME}/installscripts/InstallSysVBanner.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating go"
 		${BUILD_HOME}/installscripts/InstallGo.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating curl"
@@ -131,8 +133,6 @@ then
 		${BUILD_HOME}/installscripts/InstallSSHPass.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating Sudo"
 		${BUILD_HOME}/installscripts/InstallSudo.sh "debian" >>${upgrade_log} 2>&1
-		status "Installing/Updating SysVBanner"
-		${BUILD_HOME}/installscripts/InstallSysVBanner.sh "debian" >>${upgrade_log} 2>&1
 		status "Installing/Updating Cron"
 		${BUILD_HOME}/installscripts/InstallCron.sh "debian" >>${upgrade_log} 2>&1 
 		/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
