@@ -27,10 +27,12 @@ status () {
 website_url="${1}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_METHOD`"
-SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
 
-if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
+
+if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep lego`" != "" ] )
 then
 	${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh ${website_url}
+elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep acme`" != "" ] )
+then
+	${BUILD_HOME}/providerscripts/security/ssl/acme/ObtainSSLCertificate.sh ${website_url}
 fi
