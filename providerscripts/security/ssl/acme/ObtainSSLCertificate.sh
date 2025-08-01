@@ -35,7 +35,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-#set -x
+set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -51,12 +51,20 @@ DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 
+SYSTEM_FROMEMAIL_ADDRESS="webmaster1@nuocial.uk"
+WEBSITE_URL="www.vernation.uk"
+ROOT_DOMAIN="vernation.uk"
+DNS_SECURITY_KEY="5e428fb266c195cfcea8bd49d14ac92739b2ef50c8fca58ce6da42813fb6c3bc"
+DNS_CHOICE="linode"
+BUILDOS="debian"
+
 if ( [ ! -f ~/.acme.sh/acme.sh ] )
 then
         ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} "https://acme-v02.api.letsencrypt.org/directory "
 fi
 
-~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+#~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+#~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
@@ -83,8 +91,9 @@ fi
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY=${DNS_SECURITY_KEY} 
-        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  
-        #--set-default-ca --server letsencrypt
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+        ~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+        ~/.acme.sh/acme.sh --staging  --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  --server https://acme-staging-v02.api.letsencrypt.org
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
