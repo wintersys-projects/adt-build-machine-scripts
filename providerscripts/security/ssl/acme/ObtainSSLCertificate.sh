@@ -38,9 +38,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -48,41 +48,47 @@ SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYST
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_URL'`"
 ROOT_DOMAIN="`/bin/echo ${WEBSITE_URL} | /usr/bin/cut -d'.' -f2-`"
 DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_KEY`"
+DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
+BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 
+if ( [ ! -f ~/.acme.sh/acme.sh ] )
+then
+        ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} "https://acme-v02.api.letsencrypt.org/directory "
+fi
 
-${BUILD_HOME}/installscripts/InstallAcme.sh ${SYSTEM_FROMEMAIL_ADDRESS}
-
-~/.acme.sh/acme.sh --register-account -m ${SYSTEM_FROMEMAIL_ADDRESS}
+~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-	#Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare GLOBAL API key
+        #Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare GLOBAL API key
         #https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_cf
-	#DNS_SECURITY_KEY="XXXXX:YYYYYY" - like exoscale
-	CF_Token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-	CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-	~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        #DNS_SECURITY_KEY="XXXXX:YYYYYY" - like exoscale
+        CF_Token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+        CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
+        ~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-	DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
-	EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-	EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-	~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+        EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
+        ~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
-	LINODE_V4_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        export LINODE_V4_API_KEY=${DNS_SECURITY_KEY} 
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  
+        #--set-default-ca --server letsencrypt
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
-	VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
-	~/.acme.sh/acme.sh --issue --dns dns_vultr -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
+        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
