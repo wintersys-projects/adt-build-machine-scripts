@@ -70,6 +70,8 @@
 # FIREWALL:ufw|iptables
 # You can choose which email utility you want to send your system emails using sendemail or ssmtp
 # EMAILUTIL:sendemail|ssmtp
+# You can choose which tool you want to use to generate your ssl certificates
+# SSLCERTCLIENT:lego|acme
 ###############################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -170,4 +172,4 @@ DATASTORETOOL:s3cmd:source
 PACKAGEMANAGER:apt
 FIREWALL:ufw
 EMAILUTIL:sendemail
-
+SSLCERTCLIENT:lego
