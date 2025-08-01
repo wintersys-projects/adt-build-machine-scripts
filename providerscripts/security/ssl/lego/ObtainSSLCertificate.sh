@@ -82,74 +82,49 @@ then
 	/bin/mkdir -p  ${BUILD_HOME}/.lego/certificates 
 fi
 
+if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep lego`" != "" ] )
+then
+	if ( [ "${SSL_LIVE_CERT}" = "1" ] )
+	then
+ 		server=""
+   	else
+    		server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
+	fi
+elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep acme`" != "" ] )
+then	
+	server="--server https://acme.zerossl.com/v2/DV90"
+fi
+
 status "Generating new SSL certificate for the ${DNS_CHOICE} DNS service"
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-	#For production
-	if ( [ "${SSL_LIVE_CERT}" = "1" ] )
-	then
-		command="CLOUDFLARE_EMAIL="${DNS_USERNAME}" CLOUDFLARE_API_KEY="${DNS_SECURITY_KEY}" /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-	else
-		#For Testing
-		command="CLOUDFLARE_EMAIL="${DNS_USERNAME}" CLOUDFLARE_API_KEY="${DNS_SECURITY_KEY}" /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-	fi
+	command="CLOUDFLARE_EMAIL="${DNS_USERNAME}" CLOUDFLARE_API_KEY="${DNS_SECURITY_KEY}" /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-	#For production
-	if ( [ "${SSL_LIVE_CERT}" = "1" ] )
-	then
-		command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-	else
-		#For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-		command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --server=https://acme-staging-v02.api.letsencrypt.org/directory --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-	fi
+	command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
 	EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
 	EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-
-    #Production
-    if ( [ "${SSL_LIVE_CERT}" = "1" ] )
-    then
-	    command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-    else
-	    #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-	    command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-    fi
+	command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" ${server} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
-	LINODE_TOKEN="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+	#LINODE_TOKEN="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+	command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}v4" --domains "${WEBSITE_URL}" ${server} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
 
-    #For production
-    if ( [ "${SSL_LIVE_CERT}" = "1" ] )
-    then
-	    command="LINODE_TOKEN=${LINODE_TOKEN}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
-    else
-	    #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-	    #  command="LINODE_TOKEN=${LINODE_TOKEN} /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "92.123.94.2:53,92.123.94.3:53,92.123.95.3:53,92.123.95.4:53,95.123.95.2:53" --accept-tos run"
-	    command="LINODE_TOKEN=${LINODE_TOKEN} LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE}v4 --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
-    fi  
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
-	VULTR_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-
-    #For production
-    if ( [ "${SSL_LIVE_CERT}" = "1" ] )
-    then
-	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
-    else
-	    #For Development/Staging (will give insecure message in browser but isnt subject to issuance limits)
-	    command="VULTR_API_KEY=${VULTR_API_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600 LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --server=https://acme-staging-v02.api.letsencrypt.org/directory --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
-    fi
+	#VULTR_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+	command="VULTR_API_KEY=${DNS_SECURIRY_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} ${server} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
 fi
 
 if ( [ ! -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt ] )
