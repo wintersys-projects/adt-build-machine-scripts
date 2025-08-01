@@ -51,12 +51,6 @@ DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 
-SYSTEM_FROMEMAIL_ADDRESS="webmaster1@nuocial.uk"
-WEBSITE_URL="www.vernation.uk"
-ROOT_DOMAIN="vernation.uk"
-DNS_SECURITY_KEY="5e428fb266c195cfcea8bd49d14ac92739b2ef50c8fca58ce6da42813fb6c3bc"
-DNS_CHOICE="linode"
-BUILDOS="debian"
 
 if ( [ ! -f ~/.acme.sh/acme.sh ] )
 then
