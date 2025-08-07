@@ -87,6 +87,7 @@ then
                                 /bin/echo "The database private IP address is: `${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"` (try this one first from your application if it timesout, try the public one)" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
                                 /bin/echo "The database port is ${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
                                 /bin/echo "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+                                /bin/echo "A copy of the credentials for this application deployment can be found by running ${BUILD_HOME}/ApplicationConfiguration.sh"
                         fi
                 else
                         if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
