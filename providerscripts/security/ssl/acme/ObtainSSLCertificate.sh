@@ -78,6 +78,7 @@ then
 fi
 
 ~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+~/.acme.sh/acme.sh --set-default-ca --server "${server}"
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
@@ -87,7 +88,6 @@ then
 
         export CF_Email="${DNS_USERNAME}"
         export CF_Key="${DNS_SECURITY_KEY}"
-        ~/.acme.sh/acme.sh --set-default-ca --server ${server}
         ~/.acme.sh/acme.sh --issue --dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}" 
 fi
 
