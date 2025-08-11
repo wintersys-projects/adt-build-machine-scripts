@@ -26,17 +26,20 @@ then
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-email="${1}"
-server="${2}"
+email="${2}"
+server="${3}"
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-        /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} --server ${2}
+        /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} --server ${server}
+        ~/.acme.sh/acme.sh --register-account -m "${email}" 
+
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-        /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} --server ${2}
+        /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} --server ${server}
+        ~/.acme.sh/acme.sh --register-account -m "${email}" 
 fi
 
 
