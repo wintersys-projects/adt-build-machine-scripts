@@ -757,9 +757,15 @@ This can be set to "AUTOMATIC" or "MANUAL". If it is set to automatic, then an a
 
 -----
 
-### SSL_GENERATION_SERVICE="LETSENCRYPT"
+### SSL_GENERATION_SERVICE
 
-When SSL_GENERATION_METHOD="AUTOMATIC", this should be set to "LETSENCRYPT" otherwise it should be left blank
+This can be set to one of two values:
+
+1. LETSENCRYPT
+2. ZEROSSL
+
+If SSL_GENERATION_SERVICE is set to "LETSENCRYPT" then the "lets encrypt" service will be used to generate the SSL certificates for your deployment
+If SSL_GENERATION_SERVICE is set to "ZEROSSL" then the "zero ssl" service will be used to generate the SSL certificates for your deployment
 
 ------
 
