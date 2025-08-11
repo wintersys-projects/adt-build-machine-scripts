@@ -52,7 +52,9 @@ DNS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_USERNAME`"
 DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_KEY`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
+SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_METHOD`"
 SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
+SSL_LIVE_CERT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_LIVE_CERT`"
 
 if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT}" ] )
 then
@@ -80,6 +82,15 @@ fi
 ~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
 
+server=""
+if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
+then
+	if ( [ "${SSL_LIVE_CERT}" = "0" ] )
+	then
+		server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
+	fi
+fi
+
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
         #Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare GLOBAL API key
@@ -94,24 +105,24 @@ fi
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
         export DO_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}" ${server}
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
         export EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
         export EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}" ${server}
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --staging  --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  --server https://acme-staging-v02.api.letsencrypt.org
+        ~/.acme.sh/acme.sh --staging  --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  ${server}
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
         export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
-        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}" ${server}
 fi
