@@ -59,7 +59,12 @@ then
         ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} "https://acme-v02.api.letsencrypt.org/directory "
 fi
 
-~/.acme.sh/acme.sh --update-account -m ${SYSTEM_FROMEMAIL_ADDRESS} 
+if ( [ "`/bin/grep -r ${SYSTEM_FROMEMAIL_ADDRESS} ~/.acme.sh`" = "" ] )
+then
+        ~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+fi
+
+~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
