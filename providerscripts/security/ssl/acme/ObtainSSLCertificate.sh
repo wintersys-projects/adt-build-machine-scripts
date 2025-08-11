@@ -66,7 +66,7 @@ fi
 
 if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
 then
-        SYSTEM_FROMEMAIL_ADDRESS="acme-${DNS_USERNAME}"
+        SYSTEM_FROMEMAIL_ADDRESS="${DNS_USERNAME}"
 fi
 
 if ( [ ! -f ~/.acme.sh/acme.sh ] )
