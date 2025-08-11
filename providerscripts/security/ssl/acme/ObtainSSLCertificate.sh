@@ -66,7 +66,7 @@ fi
 
 if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
 then
-        SYSTEM_FROMEMAIL_ADDRESS="${DNS_USERNAME}"
+        SYSTEM_FROMEMAIL_ADDRESS="acme-${DNS_USERNAME}"
 fi
 
 if ( [ ! -f ~/.acme.sh/acme.sh ] )
@@ -119,7 +119,7 @@ fi
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  ${server} --dnssleep 90
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  ${server} 
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
