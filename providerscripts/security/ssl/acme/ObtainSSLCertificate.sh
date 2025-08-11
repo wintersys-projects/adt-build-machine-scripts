@@ -93,26 +93,25 @@ fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-        DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        export DO_API_KEY="${DNS_SECURITY_KEY}" 
+        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
-        EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-        EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
+        export EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+        export EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
         ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
-        export LINODE_V4_API_KEY=${DNS_SECURITY_KEY} 
-        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-        ~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+        export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
         ~/.acme.sh/acme.sh --staging  --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  --server https://acme-staging-v02.api.letsencrypt.org
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
-        VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
+        export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
         ~/.acme.sh/acme.sh --issue --dns dns_vultr -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
