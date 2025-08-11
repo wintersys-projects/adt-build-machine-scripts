@@ -118,7 +118,7 @@ fi
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
 	#LINODE_TOKEN="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-	command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}v4" --domains "${WEBSITE_URL}" ${server} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" ${server} --accept-tos run"
+	command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" --domains "${WEBSITE_URL}" ${server} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" ${server} --accept-tos run"
 
 fi
 
