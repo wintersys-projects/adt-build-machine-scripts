@@ -43,7 +43,6 @@ status () {
         /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
-####***********SYSTEM_FROMEMAIL_ADDRESS has to be set with zerossl - put it in the template validator
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS'`"
@@ -61,6 +60,11 @@ then
 elif ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL}" ] )
 then
         server="zerossl"
+fi
+
+if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
+then
+        SYSTEM_FROMEMAIL_ADDRESS="${DNS_USERNAME}"
 fi
 
 if ( [ ! -f ~/.acme.sh/acme.sh ] )
