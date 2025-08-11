@@ -43,16 +43,25 @@ status () {
         /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
+####***********SYSTEM_FROMEMAIL_ADDRESS has to be set with zerossl - put it in the template validator
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS'`"
-SYSTEM_FROMEMAIL_ADDRESS="webmaster@nuocial.uk"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_URL'`"
 ROOT_DOMAIN="`/bin/echo ${WEBSITE_URL} | /usr/bin/cut -d'.' -f2-`"
 DNS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_USERNAME`"
 DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_KEY`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
+SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
 
+if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT}" ] )
+then
+        server="letsencrypt"
+elif ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL}" ] )
+then
+        server="zerossl"
+fi
 
 if ( [ ! -f ~/.acme.sh/acme.sh ] )
 then
@@ -74,7 +83,7 @@ then
 
         export CF_Email="${DNS_USERNAME}"
         export CF_Key="${DNS_SECURITY_KEY}"
-        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+        ~/.acme.sh/acme.sh --set-default-ca --server ${server}
         ~/.acme.sh/acme.sh --issue --dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}" 
 fi
 
