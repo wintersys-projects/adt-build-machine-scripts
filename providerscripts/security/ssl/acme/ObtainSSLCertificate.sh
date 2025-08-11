@@ -35,7 +35,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-set -x
+#set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -56,7 +56,7 @@ SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENE
 SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
 SSL_LIVE_CERT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_LIVE_CERT`"
 
-if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT}" ] )
+if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
 then
         server="letsencrypt"
 elif ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL}" ] )
@@ -71,6 +71,7 @@ fi
 
 if ( [ ! -f ~/.acme.sh/acme.sh ] )
 then
+        ${BUILD_HOME}/installscripts/InstallSocat.sh ${BUILDOS}
         ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} "https://acme-v02.api.letsencrypt.org/directory "
 fi
 
@@ -79,16 +80,16 @@ then
         ~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
 fi
 
-~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" -w /var/www/html
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
 
 server=""
 if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
 then
-	if ( [ "${SSL_LIVE_CERT}" = "0" ] )
-	then
-		server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
-	fi
+        if ( [ "${SSL_LIVE_CERT}" = "0" ] )
+        then
+                server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
+        fi
 fi
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
@@ -118,7 +119,7 @@ fi
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --staging  --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  ${server}
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"  ${server} --dnssleep 90
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
