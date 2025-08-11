@@ -90,9 +90,9 @@ then
 	then
  		server=""
    	else
-    		server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
+		server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
 	fi
-elif ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "A" ] )
+elif ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
 then	
 	server="--server https://acme.zerossl.com/v2/DV90"
 fi
