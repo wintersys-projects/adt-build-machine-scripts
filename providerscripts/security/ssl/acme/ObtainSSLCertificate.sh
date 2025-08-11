@@ -35,7 +35,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-#set -x
+set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -45,8 +45,10 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS'`"
+SYSTEM_FROMEMAIL_ADDRESS="webmaster@nuocial.uk"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_URL'`"
 ROOT_DOMAIN="`/bin/echo ${WEBSITE_URL} | /usr/bin/cut -d'.' -f2-`"
+DNS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_USERNAME`"
 DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_KEY`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
@@ -57,29 +59,30 @@ then
         ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} "https://acme-v02.api.letsencrypt.org/directory "
 fi
 
-#~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
-#~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+~/.acme.sh/acme.sh --update-account -m ${SYSTEM_FROMEMAIL_ADDRESS} 
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
         #Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare GLOBAL API key
         #https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_cf
         #DNS_SECURITY_KEY="XXXXX:YYYYYY" - like exoscale
-        CF_Token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-        CF_Account_ID="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-        ~/.acme.sh/acme.sh --issue -dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+
+        export CF_Email="${DNS_USERNAME}"
+        export CF_Key="${DNS_SECURITY_KEY}"
+        ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+        ~/.acme.sh/acme.sh --issue --dns dns_cf -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}" 
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-        DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue -dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        DO_API_KEY=${DNS_SECURITY_KEY} ~/.acme.sh/acme.sh --issue --dns dns_dgon -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
         EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
         EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-        ~/.acme.sh/acme.sh --issue -dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
+        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d ${ROOT_DOMAIN} -d "${WEBSITE_URL}"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
