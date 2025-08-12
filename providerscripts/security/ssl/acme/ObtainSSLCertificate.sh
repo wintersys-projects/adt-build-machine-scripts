@@ -88,7 +88,7 @@ if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE
 then
         if ( [ "${SSL_LIVE_CERT}" = "0" ] )
         then
-                server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
+                server="--server https://acme-staging-v02.api.letsencrypt.org/directory"
         fi
 fi
 
