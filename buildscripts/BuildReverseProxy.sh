@@ -124,7 +124,6 @@ do
                         while ( ( [ "${ip}" = "" ] || [ "${private_ip}" = "" ] ) || [ "${ip}" = "0.0.0.0" ] && [ "${count}" -lt "10" ] )
                         do
                                 ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "${reverseproxy_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
-                                ipv6="`${BUILD_HOME}/providerscripts/server/GetServerIPV6Addresses.sh "${reverseproxy_name}" ${CLOUDHOST}`"
                                 private_ip="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "${reverseproxy_name}" ${CLOUDHOST} | /bin/grep -P "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$"`"
                                 /bin/sleep 5
                                 count="`/usr/bin/expr ${count} + 1`"
