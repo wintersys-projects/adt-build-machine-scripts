@@ -80,8 +80,8 @@ then
         ~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
 fi
 
-~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" -w /var/www/html
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
+~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" -w /var/www/html
 
 server=""
 if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
