@@ -87,7 +87,15 @@ then
 fi
 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
-~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" -w /var/www/html
+
+~/.acme.sh/acme.sh --remove --domain ${WEBSITE_URL} 
+
+if ( [ -d ~/.acme.sh/${WEBSITE_URL}_ecc ] )
+then
+        /bin/rm -r ~/.acme.sh/${WEBSITE_URL}_ecc
+fi
+
+~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" --force
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
@@ -97,30 +105,30 @@ then
 
         export CF_Email="${DNS_USERNAME}"
         export CF_Key="${DNS_SECURITY_KEY}"
-        ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --dnssleep 90 
+        ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} 
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
         export DO_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --dnssleep 90 
+        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server}
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
         export EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
         export EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --dnssleep 90 
+        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} 
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --dnssleep 90 
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} 
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
         export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
-        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --dnssleep 90 
+        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
 fi
