@@ -90,8 +90,14 @@ then
 	then
 		if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
 		then
-			${BUILD_HOME}/providerscripts/security/ssl/legoProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
-		fi
+  			if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep lego`" != "" ] )
+			then
+   				${BUILD_HOME}/providerscripts/security/ssl/lego/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
+			elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep acme`" != "" ] )
+   			then
+	     		${BUILD_HOME}/providerscripts/security/ssl/acme/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
+   			fi
+  		fi
 	fi
 
 	if ( [ "${SSL_GENERATION_METHOD}" = "MANUAL" ] )
