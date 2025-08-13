@@ -43,6 +43,8 @@ export SELECTED_TEMPLATE="" #set if using hardcore build
 
 #set -x
 
+/bin/echo "${BUILDMACHINE_USER}" > /root/buildmachine_user.dat
+
 OUT_FILE="buildmachine-out-`/bin/date | /bin/sed 's/ //g'`"
 exec 1>>/root/${OUT_FILE}
 ERR_FILE="buildmachine-err-`/bin/date | /bin/sed 's/ //g'`"
