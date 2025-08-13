@@ -175,7 +175,8 @@ This will be the username for your nameserver provider
 
 This is the security key which will enable us to manipulate records as needed with your nameserver provider. You can find this key as follows for each provider:
 
-**cloudflare** - Ths is the Global API key for your cloudflare account which you can find by clicking on your profile at the top right of the screen
+**cloudflare** - You need your Cloudflare account ID and you need to generate an API token with DNS Edit scope and function.   
+You can then present your credentials to the toolkit as: DNS_SECURITY_KEY="\<account-id\>:\<api-token\>". If you are unsure how to find your account ID and how to generate your API token with DNS Edit scope you can look [here](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/CloudflareAPITokens)
 
 **digital ocean** - The access token for your digital ocean account, (can be the same as TOKEN)
 
