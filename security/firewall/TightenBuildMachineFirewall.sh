@@ -137,7 +137,22 @@ then
 
 	if ( [ "${ips}" != "" ] )
 	then
-		firewall=""
+ 		updated="0"
+ 
+   		for ip in ${ips}
+   		do
+	 		if ( [ "`/bin/grep ${ip} /etc/ssh/sshd_config`" = "" ] )
+			then
+				/bin/echo "AllowUsers ${BUILDMACHINE_USER}@${ip}" >> /etc/ssh/sshd_config
+				updated="1"
+			fi
+		done
+  
+  		if ( [ "${updated}" = "1" ] )
+		then
+			/bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
+		fi		
+  		firewall=""
 		if ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "ufw" ] )
 		then
 			firewall="ufw"
