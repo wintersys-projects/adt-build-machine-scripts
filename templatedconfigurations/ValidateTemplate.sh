@@ -411,6 +411,20 @@ then
 	${log_command} "Your value for the variable SSL_LIVE_CERT (${SSL_LIVE_CERT}) doesn't appear to be valid please review"
 fi
 
+if ( [ "`/bin/grep "^SSLCERTCLIENT:lego" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] && [ "${SSL_GENERATION_SERVICE}" != "LETSENCRYPT" ] )
+then
+	${log_command} "There seems to be a mismatch between your SSL CLIENT software choice in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
+ 	${log_command} "and your chosen ssl generation service (${SSL_GENERATION_SERVICE})"
+  	${log_command} "The 'lego' SSL CLIENT can only be used with the LETSENCRYPT certificate service"
+fi
+
+if ( [ "`/bin/grep "^SSLCERTCLIENT:acme" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] && [ "${SSL_GENERATION_SERVICE}" != "ZEROSSL" ] )
+then
+	${log_command} "There seems to be a mismatch between your SSL CLIENT software choice in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
+ 	${log_command} "and your chosen ssl generation service (${SSL_GENERATION_SERVICE})"
+  	${log_command} "The 'acme' SSL CLIENT can only be used with the ZEROSSL certificate service"
+fi
+
 if ( [ "`/bin/grep "^ACTIVE_FIREWALLS " ${quick_specification} | /bin/grep -w "${ACTIVE_FIREWALLS}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable ACTIVE_FIREWALLS (${ACTIVE_FIREWALLS}) doesn't appear to be valid please review"
@@ -436,9 +450,6 @@ then
 		${log_command} "Your value for variable APPLICATION_BASELINE_SOURCECODE_REPOSITORY (${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}) doesn't appear to be valid please review"
 	fi
 fi
-
-if ( [ "`/bin/grep "^SSLCERTCLIENT:lego" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] && [ ")
-
 
 if ( [ "${APPLICATION}" = "drupal" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
