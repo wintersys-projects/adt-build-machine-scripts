@@ -799,8 +799,8 @@ When you are making a "hardcore" build, you need to supply the number of the tem
 
 Whether to build the machines you are deploying in paralel or not on the build machine. If you build them in parallel they will build quicker but it might not be so easy to see what is going on.
 
-0 Do not build in parallel
-1 Build in parallel
+0 Do not build in parallel  
+1 Build in parallel  
 
 -------------
 
