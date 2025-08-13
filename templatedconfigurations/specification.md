@@ -201,11 +201,11 @@ You can use the same access key and secret key as your main account or you can c
 
 This can be set to one of these values 
 
-"cloudflare" 
-"digitalocean" 
-"exoscale"
-"linode"
-"vultr"
+"cloudflare"   
+"digitalocean"   
+"exoscale"  
+"linode"  
+"vultr"  
 
 It defines which of the (supported) DNS service you would like to use with your deployment.
 
