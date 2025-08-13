@@ -38,9 +38,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 website_url="${1}"
@@ -60,9 +60,9 @@ SUDO="/bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
 if ( [ "${website_url}" != "" ] )
 then
-	WEBSITE_URL="${website_url}"
+        WEBSITE_URL="${website_url}"
 else
-	WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+        WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 fi
 
 export GOROOT=/usr/local/go
@@ -71,79 +71,79 @@ export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 if ( [ ! -f /usr/bin/lego ] )
 then
-	${BUILD_HOME}/installscripts/InstallLego.sh ${BUILDOS}
+        ${BUILD_HOME}/installscripts/InstallLego.sh ${BUILDOS}
 fi
 
 if ( [ ! -d ${BUILD_HOME}/.lego/accounts ] )
 then
-	/bin/mkdir -p  ${BUILD_HOME}/.lego/accounts 
+        /bin/mkdir -p  ${BUILD_HOME}/.lego/accounts 
 fi
 
 if ( [ ! -d ${BUILD_HOME}/.lego/certificates ] )
 then
-	/bin/mkdir -p  ${BUILD_HOME}/.lego/certificates 
+        /bin/mkdir -p  ${BUILD_HOME}/.lego/certificates 
 fi
 
 server=""
 if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
 then
-	if ( [ "${SSL_LIVE_CERT}" = "0" ] )
-	then
-		server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
-	fi
+        if ( [ "${SSL_LIVE_CERT}" = "0" ] )
+        then
+                server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
+        fi
 elif ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
-then	
-	server="--server https://acme.zerossl.com/v2/DV90"
+then
+        server="--server https://acme.zerossl.com/v2/DV90"
 fi
 
 status "Generating new SSL certificate for the ${DNS_CHOICE} DNS service"
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-	command="CLOUDFLARE_EMAIL="${DNS_USERNAME}" CLOUDFLARE_API_KEY="${DNS_SECURITY_KEY}" /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 ${server} --accept-tos run"
+        command="CLOUDFLARE_EMAIL="${DNS_USERNAME}" CLOUDFLARE_API_KEY="${DNS_SECURITY_KEY}" /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-	command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 ${server} --accept-tos run"
+        command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
-	EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-	EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-	command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" ${server} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 ${server} --accept-tos run"
+        EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+        EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
+        command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" ${server} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
-	#LINODE_TOKEN="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-	command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 LINODE_HTTP_TIMEOUT=120 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" --domains "${WEBSITE_URL}" --dns-timeout=120 --cert.timeout 120  --dns.propagation-wait 120s --dns.resolvers "1.1.1.1:53,8.8.8.8:53" ${server} --accept-tos run"
+        #LINODE_TOKEN="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+        command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 LINODE_HTTP_TIMEOUT=120 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" ${server} --domains "${WEBSITE_URL}" --dns-timeout=120 --cert.timeout 120  --dns.propagation-wait 120s --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
-	#VULTR_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-	command="VULTR_API_KEY=${DNS_SECURIRY_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} --domains ${WEBSITE_URL} ${server} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" ${server} --accept-tos run"
+        #VULTR_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+        command="VULTR_API_KEY=${DNS_SECURIRY_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
 fi
 
 if ( [ ! -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt ] )
 then
-	status "Please wait, valid certificate not found, trying to issue SSL certificate for your domain ${WEBSITE_URL}"
-	eval ${command}
-	count="1"
-	while ( [ "`/usr/bin/find ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt -mmin -5 2>/dev/null`" = "" ] && [ "${count}" -lt "5" ] )
-	do
-		count="`/usr/bin/expr ${count} + 1`"
-		/bin/sleep 5
-		status "Failed to generate SSL Certificate, this is attempt ${count}"
-		eval ${command}
-	done
+        status "Please wait, valid certificate not found, trying to issue SSL certificate for your domain ${WEBSITE_URL}"
+        eval ${command}
+        count="1"
+        while ( [ "`/usr/bin/find ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt -mmin -5 2>/dev/null`" = "" ] && [ "${count}" -lt "5" ] )
+        do
+                count="`/usr/bin/expr ${count} + 1`"
+                /bin/sleep 5
+                status "Failed to generate SSL Certificate, this is attempt ${count}"
+                eval ${command}
+        done
 fi
 
 if ( [ "${count}" = "5" ] )
 then
-	status "FAILED TO ISSUE SSL CERTIFICATE  (what is SSL_LIVE_CERT set to and have you hit an issuance limit for ${WEBSITE_URL}?)"
-	status "Will have to exit, can't continue without the SSL certificate being set up"
-	/bin/touch /tmp/END_IT_ALL
+        status "FAILED TO ISSUE SSL CERTIFICATE  (what is SSL_LIVE_CERT set to and have you hit an issuance limit for ${WEBSITE_URL}?)"
+        status "Will have to exit, can't continue without the SSL certificate being set up"
+        /bin/touch /tmp/END_IT_ALL
 fi
