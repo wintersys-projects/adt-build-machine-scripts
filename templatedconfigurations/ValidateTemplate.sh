@@ -437,6 +437,9 @@ then
 	fi
 fi
 
+if ( [ "`/bin/grep "^SSLCERTCLIENT:lego" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] && [ ")
+
+
 if ( [ "${APPLICATION}" = "drupal" ] && [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
 	if ! /usr/bin/curl --head --silent --fail https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz 1>&2 >/dev/null
