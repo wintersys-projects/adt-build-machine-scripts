@@ -47,141 +47,44 @@ else
         WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 fi
 
-export GOROOT=/usr/local/go
-export GOPATH=$HOME
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-
-if ( [ ! -f /usr/bin/lego ] )
+if ( [ "${SSL_GENERATION_METHOD}" = "MANUAL" ] )
 then
-        ${BUILD_HOME}/installscripts/InstallLego.sh ${BUILDOS}
-fi
+	response="INPUTNEW"
 
-if ( [ ! -d ${BUILD_HOME}/.lego/accounts ] )
-then
-        /bin/mkdir -p  ${BUILD_HOME}/.lego/accounts 
-fi
-
-if ( [ ! -d ${BUILD_HOME}/.lego/certificates ] )
-then
-        /bin/mkdir -p  ${BUILD_HOME}/.lego/certificates 
-fi
-
-server=""
-if ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
-then
-        if ( [ "${SSL_LIVE_CERT}" = "0" ] )
-        then
-                server="--server=https://acme-staging-v02.api.letsencrypt.org/directory"
-        fi
-elif ( [ "${SSL_GENERATION_METHOD}" = "AUTOMATIC" ] && [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
-then
-        server="--server https://acme.zerossl.com/v2/DV90"
-fi
-
-status "Generating new SSL certificate for the ${DNS_CHOICE} DNS service"
-
-if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
-then
-        command="CLOUDFLARE_EMAIL="${DNS_USERNAME}" CLOUDFLARE_API_KEY="${DNS_SECURITY_KEY}" /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-fi
-
-if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
-then
-        command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-fi
-
-if ( [ "${DNS_CHOICE}" = "exoscale" ] )
-then
-        EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-        EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-        command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" ${server} --domains ${WEBSITE_URL} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
-fi
-
-if ( [ "${DNS_CHOICE}" = "linode" ] )
-then
-        #LINODE_TOKEN="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-        command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 LINODE_HTTP_TIMEOUT=120 /usr/bin/lego --email "${DNS_USERNAME}" --dns "${DNS_CHOICE}" ${server} --domains "${WEBSITE_URL}" --dns-timeout=120 --cert.timeout 120  --dns.propagation-wait 120s --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
-fi
-
-if ( [ "${DNS_CHOICE}" = "vultr" ] )
-then
-        #VULTR_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-        command="VULTR_API_KEY=${DNS_SECURIRY_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --accept-tos run"
-fi
-
-if ( [ ! -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt ] )
-then
-        status "Please wait, valid certificate not found, trying to issue SSL certificate for your domain ${WEBSITE_URL}"
-        eval ${command}
-        count="1"
-        while ( [ "`/usr/bin/find ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt -mmin -5 2>/dev/null`" = "" ] && [ "${count}" -lt "5" ] )
-        do
-                count="`/usr/bin/expr ${count} + 1`"
-                /bin/sleep 5
-                status "Failed to generate SSL Certificate, this is attempt ${count}"
-                eval ${command}
-        done
-fi
-
-if ( [ "${count}" = "5" ] )
-then
-        status "FAILED TO ISSUE SSL CERTIFICATE  (what is SSL_LIVE_CERT set to and have you hit an issuance limit for ${WEBSITE_URL}?)"
-        status "Will have to exit, can't continue without the SSL certificate being set up"
-        /bin/touch /tmp/END_IT_ALL
-fi
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- if ( [ "${SSL_GENERATION_METHOD}" = "MANUAL" ] )
+	if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/privkey.pem ] )
 	then
-		response="INPUTNEW"
-
-		if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/privkey.pem ] )
+		status "There is a certificate I can use. Do you want me to use that?, or are you going to give me a new one?"
+		status "Found a certificate for this domain. For your info, this is its expiry date"
+		/usr/bin/openssl x509 -in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem -noout -enddate
+		status "Please enter Y to use the existing one. Anything else to input a new one"
+		if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 		then
-			status "There is a certificate I can use. Do you want me to use that?, or are you going to give me a new one?"
-			status "Found a certificate for this domain. For your info, this is its expiry date"
-			/usr/bin/openssl x509 -in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem -noout -enddate
-			status "Please enter Y to use the existing one. Anything else to input a new one"
-			if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-			then
-				read response
-			fi
-		fi
-		if ( ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] ) || [ "${response}" = "INPUTNEW" ] )
-		then
-			if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL} ] )
-			then
-				/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}
-			fi
-
-			status "You have selected the manual method of generating an SSL certificate. This presumes that you have the necessary SSL files from a 3rd party"
-			status "Certificate provider. So, here I will have to ask you to input the certificates so that I can pass them over to your servers"
-			status "So, mate, please paste your certificate chain here. <ctrl d> when done"
-			status "ESSENTIAL - Only copy from the first dash in the file '-' to the last dash in the file. Do not copy any prefixed whitespace or suffixed whitespace"
-
-			fullchain=`cat`
-			/bin/echo "${fullchain}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem
-			/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem
-
-			status "Cheers. So, mate, please paste your certifcate key here. <ctrl d> when done"
-			status "ESSENTIAL - Only copy from the first dash in the file '-' to the last dash in the file. Do not copy any prefixed whitespace or suffixed whitespace"
-
-			privkey=`cat`
-			/bin/echo "${privkey}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/privkey.pem
-			/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/privkey.pem
+			read response
 		fi
 	fi
+	
+ 	if ( ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] ) || [ "${response}" = "INPUTNEW" ] )
+	then
+		if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL} ] )
+		then
+			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}
+		fi
+
+		status "You have selected the manual method of generating an SSL certificate. This presumes that you have the necessary SSL files from a 3rd party"
+		status "Certificate provider. So, here I will have to ask you to input the certificates so that I can pass them over to your servers"
+		status "So, mate, please paste your certificate chain here. <ctrl d> when done"
+		status "ESSENTIAL - Only copy from the first dash in the file '-' to the last dash in the file. Do not copy any prefixed whitespace or suffixed whitespace"
+
+		fullchain=`cat`
+		/bin/echo "${fullchain}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem
+		/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/fullchain.pem
+
+		status "Cheers. So, mate, please paste your certifcate key here. <ctrl d> when done"
+		status "ESSENTIAL - Only copy from the first dash in the file '-' to the last dash in the file. Do not copy any prefixed whitespace or suffixed whitespace"
+
+		privkey=`cat`
+		/bin/echo "${privkey}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/privkey.pem
+		/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${WEBSITE_URL}/privkey.pem
+	fi
+fi
+ 
