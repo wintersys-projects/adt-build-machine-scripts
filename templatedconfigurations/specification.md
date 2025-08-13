@@ -176,11 +176,16 @@ This will be the username for your nameserver provider
 This is the security key which will enable us to manipulate records as needed with your nameserver provider. You can find this key as follows for each provider:
 
 **cloudflare** - You need your Cloudflare account ID and you need to generate an API token with DNS Edit scope and function.   
-You can then present your credentials to the toolkit as: DNS_SECURITY_KEY="\<account-id\>:\<api-token\>". If you are unsure how to find your account ID and how to generate your API token with DNS Edit scope you can look [here](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/CloudflareAPITokens)
+You can then present your credentials to the toolkit as:  
+
+DNS_SECURITY_KEY="\<account-id\>:\<api-token\>"  
+
+If you are unsure how to find your account ID and how to generate your API token with DNS Edit scope you can look [here](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/CloudflareAPITokens)
 
 **digital ocean** - The access token for your digital ocean account, (can be the same as TOKEN)
 
-**exoscale**  - The access key and secret key for your exoscale account. You need to enter this as ${ACCESS_KEY}:${SECRET_KEY}. You can use the same access key and secret key as your main account or you can create separate ones with only DNS manipulation rights. 
+**exoscale**  - The access key and secret key for your exoscale account. You need to enter this as ${ACCESS_KEY}:${SECRET_KEY}.   
+You can use the same access key and secret key as your main account or you can create separate ones with only DNS manipulation rights. 
 
 **linode** - A personal access token with DNS manipulation rights (can be the same value as TOKEN)
 
