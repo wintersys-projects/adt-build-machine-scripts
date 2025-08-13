@@ -37,8 +37,9 @@ then
 else
 	if ( [ "${dns}" = "cloudflare" ] )
 	then
-		/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${apikey}" -H "Content-Type: application/json" --data "{\"name\":\"${websiteurl}\"}" > /dev/null 2>&1
-	fi
+		#/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${apikey}" -H "Content-Type: application/json" --data "{\"name\":\"${websiteurl}\"}" > /dev/null 2>&1
+    	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" --header "Authorization: Bearer ${authkey}" --header "Content-Type: application/json"	
+ 	fi
 
 	domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
 	dns="${4}"
