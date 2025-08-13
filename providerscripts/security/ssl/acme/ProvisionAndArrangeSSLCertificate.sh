@@ -76,11 +76,10 @@ then
 
                 ${BUILD_HOME}/providerscripts/security/ssl/ObtainSSLCertificate.sh ${website_url}
 
-
-                if ( [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.crt ] && [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.key ] )
+                if ( [ -f ~/.acme.sh/${website_url}_ecc/fullchain.cer ] && [ -f ~/.acme.sh/${website_url}_ecc/${website_url}.key ] )
                 then
-                        /bin/mv ${BUILD_HOME}/.lego/certificates/${website_url}.crt ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/fullchain.pem
-                        /bin/mv ${BUILD_HOME}/.lego/certificates/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/privkey.pem
+                        /bin/mv ~/.acme.sh/${website_url}_ecc/fullchain.cer ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/fullchain.pem
+                        /bin/mv ~/.acme.sh/${website_url}_ecc/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/privkey.pem
                 fi
 
                 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/fullchain.pem ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/privkey.pem ] )
@@ -108,11 +107,11 @@ else
         #There was no certificate so generate one and copy it back to the build client for later use
         ${BUILD_HOME}/providerscripts/security/ssl/ObtainSSLCertificate.sh ${website_url}
 
-        if ( [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.crt ] && [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.key ] )
+        if ( [ -f ~/.acme.sh/${website_url}_ecc/fullchain.cer ] && [ -f ~/.acme.sh/${website_url}_ecc/${website_url}.key ] )
         then
                 #All this is about is putting the generated certificate files in the right place on our nice new webserver
-                /bin/mv ${BUILD_HOME}/.lego/certificates/${website_url}.crt ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/fullchain.pem
-                /bin/mv ${BUILD_HOME}/.lego/certificates/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/privkey.pem
+                /bin/mv ~/.acme.sh/${website_url}_ecc/fullchain.cer ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/fullchain.pem
+                /bin/mv ~/.acme.sh/${website_url}_ecc/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/privkey.pem
 
                 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/fullchain.pem ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url}/privkey.pem ] )
                 then
