@@ -100,6 +100,7 @@ runcmd:
   - '/bin/sed -i -e "s/^KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/g" -e "s/^#KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i -e "s/^ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g" -e "s/^#ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g" /etc/ssh/sshd_config'
   - '/bin/sed -i -e "s/^AddressFamily.*/AddressFamily inet/g" -e "s/^#AddressFamily.*/AddressFamily inet/g" /etc/ssh/sshd_config'
+  - '/bin/sed -i -e "s/^UsePAM.*/UsePam no/g" -e "s/^#UsePam.*/UsePam no/g" /etc/ssh/sshd_config' 
   - '/home/XXXXSERVER_USERXXXX/utilities/processing/RunServiceCommand.sh "ssh" restart'
   - '/home/XXXXSERVER_USERXXXX/utilities/config/StoreConfigValue.sh "WEBSERVERCHOICE" "XXXXREVERSEPROXYSERVERXXXX"'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallPackageManager.sh' 
