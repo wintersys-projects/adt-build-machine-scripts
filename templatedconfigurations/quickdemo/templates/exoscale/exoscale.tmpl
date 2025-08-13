@@ -201,7 +201,7 @@ fi
 
 /bin/sed -i "s/^Port.*$/Port ${BUILDMACHINE_SSH_PORT}/g" /etc/ssh/sshd_config
 /bin/sed -i "s/^#Port.*$/Port ${BUILDMACHINE_SSH_PORT}/g" /etc/ssh/sshd_config
-/bin/echo "AllowUsers ${BUILDMACHINE_USER}" >> /etc/ssh/sshd_config
+/bin/echo "AllowUsers ${BUILDMACHINE_USER}@${LAPTOP_IP}" >> /etc/ssh/sshd_config
 
 /usr/bin/apt-get -qq -y update
 /usr/bin/apt-get -qq -y install git
