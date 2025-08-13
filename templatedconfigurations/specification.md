@@ -761,8 +761,8 @@ This can be set to "AUTOMATIC" or "MANUAL". If it is set to automatic, then an a
 
 This can be set to one of two values:
 
-1. LETSENCRYPT
-2. ZEROSSL
+1. LETSENCRYPT (letsencrypt certificates can only be issued when **lego** is the SSLCERTCLIENT in buildstyles.dat on the build machine)
+2. ZEROSSL     (zerossl certificates can only be issued when **acme** is the SSLCERTCLIENT in buildstyles.dat on the build machine)
 
 If SSL_GENERATION_SERVICE is set to "LETSENCRYPT" then the "lets encrypt" service will be used to generate the SSL certificates for your deployment
 If SSL_GENERATION_SERVICE is set to "ZEROSSL" then the "zero ssl" service will be used to generate the SSL certificates for your deployment
