@@ -103,8 +103,8 @@ then
         #https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_cf
         #DNS_SECURITY_KEY="XXXXX:YYYYYY" - like exoscale
 
-        account_id="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $1}'`"
-        api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+        account_id="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $1}'`"
+        api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
         
         export CF_Account_ID="${account_id}"
         export CF_Token="${api_token}"
