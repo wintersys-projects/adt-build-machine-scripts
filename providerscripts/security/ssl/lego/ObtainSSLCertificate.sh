@@ -100,7 +100,7 @@ status "Generating new SSL certificate for the ${DNS_CHOICE} DNS service"
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-        api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+        api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
         command="CLOUDFLARE_DNS_API_TOKEN="${api_token}" /usr/bin/lego --email="${DNS_USERNAME}" --domains="${WEBSITE_URL}" --dns="${DNS_CHOICE}" ${server} --dns.resolvers "1.1.1.1:53,8.8.8.8:53" --dns-timeout=120 --accept-tos run"
 fi
 
