@@ -28,7 +28,7 @@ status () {
 
 zoneid="${1}"
 email="${2}"
-api_token="${3}"
+credentials="${3}"
 websiteurl="${4}"
 ip="${5}"
 proxied="${6}"
@@ -39,6 +39,7 @@ zoneid="132d45711ccaf0fcbc1e267dc40de607"
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
+	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
 	#/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
 	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
 fi
