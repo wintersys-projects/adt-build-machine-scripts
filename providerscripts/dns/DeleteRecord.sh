@@ -26,6 +26,19 @@ status () {
 	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
+zoneid="${1}"
+recordid="${2}"
+email="${3}"
+api_token="${4}"
+dns="${5}"
+
+if ( [ "${dns}" = "cloudflare" ] )
+then
+	#/usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" -H "X-Auth-Email: ${email}"  -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json"
+    /usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json"
+fi
+
+
 domain="${6}"
 domainurl="`/bin/echo ${domain} | /usr/bin/cut -d'.' -f2-`"
 recordid="${2}"
@@ -36,34 +49,18 @@ then
 	/usr/local/bin/doctl compute domain records delete --force ${domainurl} ${recordid}
 fi
 
-zoneid="${1}"
 recordid="${2}"
-email="${3}"
-authkey="${4}"
-dns="${5}"
-
-if ( [ "${dns}" = "cloudflare" ] )
-then
-	#/usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" -H "X-Auth-Email: ${email}"  -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json"
-    /usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" --header "Authorization: Bearer ${authkey}" --header "Content-Type: application/json"
-fi
-
-recordid="${2}"
-authkey="${4}"
 dns="${5}"
 domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
 	/usr/bin/exo dns remove ${domainurl} ${recordid} -Q -f
-	#Alternative
-	#/usr/bin/curl  -H "X-DNS-Token: ${authkey}"  -H 'Accept: application/json' -X DELETE  https://api.exoscale.com/dns/v1/domains/${domainurl}/records/${recordid} 1>/dev/null 2>/dev/null
 fi
 
 record_id="${2}"
 dns="${5}"
 domain_url="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
-#domain_url="${7}"
 
 if ( [ "${dns}" = "linode" ] )
 then
@@ -72,7 +69,6 @@ then
 fi
 
 recordid="${2}"
-authkey="${4}"
 dns="${5}"
 domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
