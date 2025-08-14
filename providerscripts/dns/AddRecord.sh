@@ -34,9 +34,6 @@ ip="${5}"
 proxied="${6}"
 dns="${7}"
 
-zoneid="132d45711ccaf0fcbc1e267dc40de607"
-
-
 if ( [ "${dns}" = "cloudflare" ] )
 then
 	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
