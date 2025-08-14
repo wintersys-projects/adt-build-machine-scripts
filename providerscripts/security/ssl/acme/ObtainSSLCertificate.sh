@@ -56,16 +56,7 @@ SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENE
 SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
 SSL_LIVE_CERT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_LIVE_CERT`"
 
-if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
-then
-        if ( [ "${SSL_LIVE_CERT}" = "1" ] )
-        then
-                server="letsencrypt"
-        elif ( [ "${SSL_LIVE_CERT}" = "0" ] )
-        then
-                server="letsencrypt_test"
-        fi
-elif ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
+if ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
 then
         server="zerossl"
 fi
