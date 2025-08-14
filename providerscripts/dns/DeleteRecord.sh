@@ -29,11 +29,12 @@ status () {
 zoneid="${1}"
 recordid="${2}"
 email="${3}"
-api_token="${4}"
+credentials="${4}"
 dns="${5}"
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
+	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
 	#/usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" -H "X-Auth-Email: ${email}"  -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json"
     /usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json"
 fi
