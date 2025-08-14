@@ -103,8 +103,11 @@ then
         #https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_cf
         #DNS_SECURITY_KEY="XXXXX:YYYYYY" - like exoscale
 
-        export CF_Email="${DNS_USERNAME}"
-        export CF_Key="${DNS_SECURITY_KEY}"
+        account_id="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $1}'`"
+        api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+        
+        export CF_Account_ID="${account_id}"
+        export CF_Token="${api_token}"
         ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} 
 fi
 
