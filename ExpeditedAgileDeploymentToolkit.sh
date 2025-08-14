@@ -88,7 +88,7 @@ end_it_all() {
 			then
 				/bin/rm /tmp/END_IT_ALL_USER
 			fi
-
+			/bin/sleep 10
 			/usr/bin/kill 0
 		fi
 	done
