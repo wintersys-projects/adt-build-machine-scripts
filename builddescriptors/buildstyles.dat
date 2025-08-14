@@ -71,8 +71,8 @@
 # You can choose which email utility you want to send your system emails using sendemail or ssmtp
 # EMAILUTIL:sendemail|ssmtp
 # You can choose which tool you want to use to generate your ssl certificates
-# SSLCERTCLIENT:lego|acme
-###############################################################################################
+# SSLCERTCLIENT:lego|acme (note: if you are using letsencrypt you must set this to 'lego' if you are using zerossl you must set this to 'acme'
+###############################################################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
 # The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
