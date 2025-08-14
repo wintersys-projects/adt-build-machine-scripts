@@ -27,7 +27,7 @@ status () {
 }
 
 email="${1}"
-api_token="${2}"
+credentials="${2}"
 websiteurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
 dns="${4}"
 
@@ -37,6 +37,7 @@ then
 else
 	if ( [ "${dns}" = "cloudflare" ] )
 	then
+		api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
 		#/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${apikey}" -H "Content-Type: application/json" --data "{\"name\":\"${websiteurl}\"}" > /dev/null 2>&1
     	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"name":"'${websiteurl}'"}' > /dev/null 2>&1
  	fi
