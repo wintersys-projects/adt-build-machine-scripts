@@ -28,19 +28,19 @@ status () {
 
 zoneid="${1}"
 email="${2}"
-authkey="${3}"
+api_token="${3}"
 websiteurl="${4}"
 ip="${5}"
 proxied="${6}"
 dns="${7}"
 
+zoneid="132d45711ccaf0fcbc1e267dc40de607"
+
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
 	#/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
- 	account_id="`/bin/echo ${authkey} | /usr/bin/awk -F':::' '{print $1}'`"
-   	token="`/bin/echo ${authkey} | /usr/bin/awk -F':::' '{print $2}'`"
- 	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones?account.id=${account_id}" --header "Authorization: Bearer ${token}" --header "Content-Type: application/json"
+	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
 fi
 
 websiteurl="${4}"
