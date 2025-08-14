@@ -36,15 +36,7 @@ if ( [ "${dns}" = "cloudflare" ] )
 then
 	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
 	#zone_id="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones?name=${zonename}&status=active&page=1&per_page=20&order=status&direction=desc&match=all" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'`"
-    zone_id="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones?name=${zonename}&status=active&page=1&per_page=20&order=status&direction=desc&match=all" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'`"
-
-	while ( [ "${zone_id}" = "" ] )
-	do
-		/bin/sleep 2
-	#	zone_id="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones?name=${zonename}&status=active&page=1&per_page=20&order=status&direction=desc&match=all" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'`"
-	    zone_id="`/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones?name=${zonename}&status=active&page=1&per_page=20&order=status&direction=desc&match=all" --header "Authorization: Bearer ${api_tokeny}" --header "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'`"
- 	done
-	/bin/echo "${zone_id}"  
+    /usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones?name=${zonename}&status=active&page=1&per_page=20&order=status&direction=desc&match=all" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" | /usr/bin/jq -r '.result[].id' 
 fi
 
 
