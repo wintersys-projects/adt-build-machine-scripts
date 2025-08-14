@@ -138,6 +138,7 @@ do
 	fi
 done
 
+/bin/echo "Deleting existing Scaling Profile from datastore"
 ${BUILD_HOME}/providerscripts/datastore/configwrapper/MultiDeleteConfigDatastore.sh STATIC_SCALE:
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
