@@ -90,9 +90,13 @@ fi
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
-        #Need to update doco to explain they need to get cloudflare token and cloudflare account_id NOT cloudflare GLOBAL API key
-        #https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_cf
-        #DNS_SECURITY_KEY="XXXXX:YYYYYY" - like exoscale
+        zonename="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{$1=""}1' | /bin/sed 's/^ //g' | /bin/sed 's/ /./g'`"
+        zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
+
+        if ( [ "${zoneid}" = "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/dns/CreateZone.sh "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${DNS_CHOICE}"
+        fi
 
         account_id="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $1}'`"
         api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
