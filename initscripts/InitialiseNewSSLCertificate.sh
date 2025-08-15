@@ -121,9 +121,8 @@ then
                                         /bin/echo "SSLCERTCLIENT:acme" >> ${HOME}/runtime/buildstyles.dat
                                 fi
                         fi
+                        ${BUILD_HOME}/providerscripts/security/ssl/acme/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
                 fi
-                ${BUILD_HOME}/providerscripts/security/ssl/acme/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
-
                 if ( [ "${SSL_GENERATION_METHOD}" = "MANUAL" ] )
                 then
                         ${BUILD_HOME}/providerscripts/security/ssl/manual/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
