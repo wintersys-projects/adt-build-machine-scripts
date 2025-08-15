@@ -31,8 +31,17 @@ website_url="${1}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
+
+if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
+then
+        service_token="lets"
+elif ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
+then
+        service_token="zero"
+fi
 
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${website_url} ] )
