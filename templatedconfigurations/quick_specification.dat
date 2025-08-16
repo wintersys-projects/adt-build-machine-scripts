@@ -1,7 +1,7 @@
 Quick Specification
 
 BUILDOS ubuntu debian
-BUILDOS_VERSION 24.04 12
+BUILDOS_VERSION 24.04 12 13
 APPLICATION none joomla wordpress drupal moodle
 S3_HOST_BASE DIGITALOCEAN nyc3.digitaloceanspaces.com ams3.digitaloceanspaces.com sfo2.digitaloceanspaces.com sgp1.digitaloceanspaces.com fra1.digitaloceanspaces.com
 S3_HOST_BASE EXOSCALE sos-ch-gva-2.exo.io sos-ch-dk-2.exo.io sos-de-fra-1.exo.io sos-de-muc-1.exo.io sos-at-vie-1.exo.io sos-bg-sof-1
