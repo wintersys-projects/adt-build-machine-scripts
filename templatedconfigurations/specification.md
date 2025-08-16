@@ -178,7 +178,9 @@ This is the security key which will enable us to manipulate records as needed wi
 **cloudflare** - You need your Cloudflare account ID and you need to generate an API token with DNS Edit scope and function.   
 You can then present your credentials to the toolkit as:  
 
->     export DNS_SECURITY_KEY="<account-id>:<api-token>"  
+>     export DNS_SECURITY_KEY="<account-id>:::<api-token>"
+
+You must have the ":::" separator so that the toolkit knows how to extract the account ID and the API token separately. 
 
 If you are unsure how to find your account ID and how to generate your API token with DNS Edit scope you can look [here](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/CloudflareAPITokens)
 
