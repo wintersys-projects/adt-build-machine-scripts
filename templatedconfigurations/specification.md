@@ -16,8 +16,8 @@ This is the BUILDOS_VERSION you are deploying for this can be
 "24.04"  
 and later LTS releases if BUILDOS is "ubuntu". 
  
-"12"  
-and later releases if BUILDOS is "debian"
+"12" or "13" 
+if BUILDOS is "debian"
 
 -----
 
