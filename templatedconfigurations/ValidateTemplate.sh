@@ -318,6 +318,12 @@ then
 	${log_command} "You are in production mode, NO_AUTOSCALERS should not be 0 and so doesn't appear to be valid please review"
 fi
 
+if ( [ "${PRODUCTION}" = "0" ] && [ "${DEVELOPMENT}" = "1" ] )
+then
+	${log_command} "In development mode, the number of webservers has to be 1"
+ 	
+fi
+
 if ( [ "`/bin/grep "^PHP_VERSION " ${quick_specification} | /bin/grep -w "${PHP_VERSION}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable PHP_VERSION (${PHP_VERSION}) doesn't appear to be valid please review"
