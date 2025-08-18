@@ -307,21 +307,21 @@ then
 	fi
 fi
 
-if ( [ "${DEVELOPMENT}" = "1" ] && [ "${NO_AUTOSCALERS}" != "0" ] )
+if ( [ "${DEVELOPMENT}" = "1" ] && [ "${DEVELOPMENT}" = "1" ] && [ "${NO_AUTOSCALERS}" != "0" ] )
 then
 	${log_command} "You are in development mode, NO_AUTOSCALERS should be 0 not  (${NO_AUTOSCALERS}) and so doesn't appear to be valid please review"
-	export NO_AUTOSCALERS="0"
+  	${BUILD_HOME}/helperscripts/SetVariableValue.sh "NO_AUTOSCALERS=0"
 fi
 
-if ( [ "${PRODUCTION}" = "1" ] && [ "${NO_AUTOSCALERS}" = "0" ] )
+if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "1" ] && [ "${NO_AUTOSCALERS}" = "0" ] )
 then
 	${log_command} "You are in production mode, NO_AUTOSCALERS should not be 0 and so doesn't appear to be valid please review"
 fi
 
-if ( [ "${PRODUCTION}" = "0" ] && [ "${DEVELOPMENT}" = "1" ] )
+if ( [ "${PRODUCTION}" = "0" ] && [ "${DEVELOPMENT}" = "1" ] && [ "${NO_WEBSERVERS}" != "1" ] )
 then
 	${log_command} "In development mode, the number of webservers has to be 1"
- 	
+  	${BUILD_HOME}/helperscripts/SetVariableValue.sh "NO_WEBSERVERS=1"
 fi
 
 if ( [ "`/bin/grep "^PHP_VERSION " ${quick_specification} | /bin/grep -w "${PHP_VERSION}"  2>/dev/null `" = "" ] )
