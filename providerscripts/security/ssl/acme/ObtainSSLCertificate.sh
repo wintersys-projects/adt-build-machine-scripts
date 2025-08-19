@@ -75,6 +75,8 @@ fi
 if ( [ "`/bin/grep -r ${SYSTEM_FROMEMAIL_ADDRESS} ~/.acme.sh`" = "" ] )
 then
         ~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+else
+        ~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" --force
 fi
 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
@@ -86,7 +88,7 @@ then
         /bin/rm -r ~/.acme.sh/${WEBSITE_URL}_ecc
 fi
 
-~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" --force
+count="0"
 
 if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
@@ -100,7 +102,7 @@ then
 
         account_id="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $1}'`"
         api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
-        
+
         export CF_Account_ID="${account_id}"
         export CF_Token="${api_token}"
         ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} 
@@ -122,11 +124,21 @@ fi
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --dnssleep 90
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server}
+        while ( [ ! -f ~/.acme.sh/${WEBSITE_URL}_ecc/${WEBSITE_URL}.cer ] && [ "${count}" -lt "10" ] )
+        do
+                count="`/usr/bin/expr ${count} + 1`"
+                ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} 
+        done
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
         export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
         ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
+fi
+
+if ( [ "${count}" = "10" ] )
+then
+        /bin/touch /tmp/END_IT_ALL
 fi
