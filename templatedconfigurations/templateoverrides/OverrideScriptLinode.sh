@@ -50,8 +50,6 @@ exec 2>>/root/${ERR_FILE}
 /usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g' {} +
 /usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^AddressFamily.*/AddressFamily inet/g' {} +
 /usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#AddressFamily.*/AddressFamily inet/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^UsePAM.*/UsePam no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#UsePAM.*/UsePam no/g' {} +
 
 
 if ( [ "${BUILDMACHINE_SSH_PORT}" = "" ] )
