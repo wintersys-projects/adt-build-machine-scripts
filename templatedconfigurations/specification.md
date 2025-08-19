@@ -779,6 +779,12 @@ This can be set to one of two values:
 If SSL_GENERATION_SERVICE is set to "LETSENCRYPT" then the "lets encrypt" service will be used to generate the SSL certificates for your deployment
 If SSL_GENERATION_SERVICE is set to "ZEROSSL" then the "zero ssl" service will be used to generate the SSL certificates for your deployment
 
+**IMPORTANT NOTE:** When using "zerossl" and the "acme.sh" client, make sure that there are no residual a TXT records that haven't been cleaned up from the previous DNS challenges such as:
+
+**TXT value: eq510AVw_9zDkZUO_o8iNul5Djya3NqGGGvXtd7h23k for domain: _acme-challenge.www.nuocial.uk**
+
+If there are residual TXT DNS Challenge records present for your exact domain before you start your build, in my experience the acme.sh script will fail to issue the SSL certificate.
+
 ------
 
 ### SSL_LIVE_CERT
