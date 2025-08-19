@@ -44,7 +44,6 @@ fi
 
 
 end_it_all() {
-	pid="${1}"
 	cwd="`/usr/bin/pwd`"
 
 	if ( [ -f /tmp/END_IT_ALL ] )
@@ -89,13 +88,12 @@ end_it_all() {
 			then
 				/bin/rm /tmp/END_IT_ALL_USER
 			fi
-			#/usr/bin/kill 0
-   			/usr/bin/pkill -P ${pid}
-		fi
+			/usr/bin/kill 0
+    	fi
 	done
 }
 
-end_it_all  $$ &
+end_it_all  &
 
 trap '/bin/sleep 2; /usr/bin/pwd' EXIT
 trap '/bin/touch /tmp/END_IT_ALL_USER; exit' INT
