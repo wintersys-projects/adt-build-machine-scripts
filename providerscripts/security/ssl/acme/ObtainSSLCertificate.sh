@@ -122,7 +122,7 @@ fi
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
-        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} 
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --dnssleep 90
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
