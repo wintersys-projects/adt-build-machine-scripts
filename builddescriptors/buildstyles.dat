@@ -131,17 +131,17 @@ APACHE:software-packages:pandoc:build-essential:libssl-dev:libexpat-dev:libpcre3
 #LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING APT#################################################
-LIGHTTPD:repo
-LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
-LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+#LIGHTTPD:repo
+#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
 
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD FROM SOURCE#################################################
-#LIGHTTPD:source
-#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
-#LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
-#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
-#LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
+LIGHTTPD:source
+LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
+LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
 ##############################################################LIGHTTPD###########################################################
 ##############################################################PHP###########################################################
 #PHP config 1
