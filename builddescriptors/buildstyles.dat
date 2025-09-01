@@ -149,7 +149,8 @@ LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-f
 #PHP config 2
 #PHP:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
 #PHP joomla 5 (zlib and json are enabled by default in php>8.0)
-PHP:cloud-init:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap|9176
+#PHP:cloud-init:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap|9176
+PHP:cloud-init:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap
 #PHP:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
 #PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
 #PHP:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
