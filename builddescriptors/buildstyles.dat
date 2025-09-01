@@ -108,14 +108,14 @@ NGINX:software-packages:build-essential:libpcre3-dev:libssl-dev:zlib1g-dev:libgd
 
 ##############################################################APACHE###########################################################
 #####UNCOMMENT AND MODIFY THESE TO INSTALL APACHE USING CLOUD-INIT#################################################
-APACHE:cloud-init
-APACHE:modules-list:mpm_event:ssl:rewrite:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi
-APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
-
-######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM REPO USING APT#############################################
-#APACHE:repo
+#APACHE:cloud-init
 #APACHE:modules-list:mpm_event:ssl:rewrite:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi
 #APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
+
+######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM REPO USING APT#############################################
+APACHE:repo
+APACHE:modules-list:mpm_event:ssl:rewrite:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi
+APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
 
 ######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM SOURCE#####################################################
 #APACHE:source
