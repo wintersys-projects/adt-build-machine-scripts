@@ -90,26 +90,22 @@ PHP_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PHP_VERSION`"
 
 if ( [ "${APPLICATION_LANGUAGE}" = "PHP" ] )
 then
-	if ( [ "`/bin/grep ^PHP:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+	if ( [ "${BUILDOS}" = "ubuntu" ] )
 	then
-		if ( [ "${BUILDOS}" = "ubuntu" ] )
-		then
-			/bin/sed  -i 's/#XXXXPHPUBUNTUXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		elif ( [ "${BUILDOS}" = "debian" ] )
-		then
-			/bin/sed  -i 's/#XXXXPHPDEBIANXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		fi
-
-		/bin/sed  -i "s/XXXXPHP_VERSIONXXXX/${PHP_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-
-
-		php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
-		php_module_list=""
-		for php_module in ${php_modules}
-		do
-			php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
-		done
+		/bin/sed  -i 's/#XXXXPHPUBUNTUXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+	elif ( [ "${BUILDOS}" = "debian" ] )
+	then
+		/bin/sed  -i 's/#XXXXPHPDEBIANXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
 	fi
+
+	/bin/sed  -i "s/XXXXPHP_VERSIONXXXX/${PHP_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+
+	php_modules="`/bin/grep ^PHP ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/sed 's/^PHP:cloud-init://g' | /usr/bin/awk -F'|' '{print $1}' | /bin/sed 's/:/ /g'`"
+	php_module_list=""
+	for php_module in ${php_modules}
+	do
+		php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
+	done
 fi
 
 #the way this works is that installation method for each webserver type is commented out with a placeholder token
