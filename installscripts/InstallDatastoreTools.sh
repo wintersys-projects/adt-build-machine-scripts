@@ -90,6 +90,7 @@ then
 		fi
  		if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd:source`" != "" ] )
 		then	
+  			${BUILD_HOME}/installscripts/InstallJQ.sh ${buildos}
 			${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
 			GOBIN=`/usr/bin/pwd` /usr/bin/go install github.com/peak/s5cmd/v2@latest                 
 			/bin/mv ./s5cmd /usr/bin/s5cmd                                      											
@@ -101,10 +102,11 @@ then
  		then
 			/usr/bin/wget "`/usr/bin/wget -q -O - https://api.github.com/repos/peak/s5cmd/releases/latest  | /usr/bin/jq -r '.assets[] | select (.name | contains ("amd64"))'.browser_download_url`"
   			/usr/bin/dpkg -i ./s5cmd_*_linux_amd64.deb
-    			/bin/rm ./s5cmd_*_linux_amd64.deb
+			/bin/rm ./s5cmd_*_linux_amd64.deb
 		fi
  		if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd:source`" != "" ] )
 		then	
+  			${BUILD_HOME}/installscripts/InstallJQ.sh ${buildos}
 			${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
 			GOBIN=`/usr/bin/pwd` /usr/bin/go install github.com/peak/s5cmd/v2@latest                 
 			/bin/mv ./s5cmd /usr/bin/s5cmd                                      											
