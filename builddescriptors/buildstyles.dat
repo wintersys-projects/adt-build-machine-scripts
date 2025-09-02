@@ -94,9 +94,9 @@
 #NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
-#NGINX:repo
-#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
-#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+NGINX:repo
+NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
+NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX FROM SOURCE#################################################
 NGINX:source
@@ -149,8 +149,8 @@ LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essenti
 #PHP config 2
 #PHP:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
 #PHP joomla 5 (zlib and json are enabled by default in php>8.0)
-#PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap|9176
-PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap
+PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap|9176
+#PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap
 #PHP:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
 #PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
 #PHP:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
