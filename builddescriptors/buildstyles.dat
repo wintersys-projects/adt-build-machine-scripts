@@ -163,6 +163,7 @@ DATASTOREMOUNTTOOL:rclone:binary
 #DATASTOREMOUNTTOOL:geesefs:binary
 MARIADB:cloud-init
 #MARIADB:repo:11.5.4
+MARIADB:repo:12.0.2
 MYSQL:repo:9.2.0
 POSTGRES:repo:17
 BUILDCHAINTYPE:standard
