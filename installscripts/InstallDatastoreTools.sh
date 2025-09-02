@@ -86,7 +86,7 @@ then
  		then
 			/usr/bin/wget "`/usr/bin/wget -q -O - https://api.github.com/repos/peak/s5cmd/releases/latest  | /usr/bin/jq -r '.assets[] | select (.name | contains ("amd64"))'.browser_download_url`"
   			/usr/bin/dpkg -i ./s5cmd_*_linux_amd64.deb
-    			/bin/rm ./s5cmd_*_linux_amd64.deb
+			/bin/rm ./s5cmd_*_linux_amd64.deb
 		fi
  		if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd:source`" != "" ] )
 		then	
