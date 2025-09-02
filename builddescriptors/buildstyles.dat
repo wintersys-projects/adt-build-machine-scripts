@@ -131,17 +131,17 @@ APACHE:software-packages:pandoc:build-essential:libssl-dev:libexpat-dev:libpcre3
 #LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING APT#################################################
-#LIGHTTPD:repo
-#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
-#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+LIGHTTPD:repo
+LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
 
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD FROM SOURCE#################################################
-LIGHTTPD:source
-LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
-LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
-LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
-LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
+#LIGHTTPD:source
+#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_redirect:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_ssi:mod_userdir:mod_status:mod_setenv:mod_rewrite:mod_indexfile:mod_authn_file
+#LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
+#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+#LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre3-dev:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
 ##############################################################LIGHTTPD###########################################################
 ##############################################################PHP###########################################################
 #PHP config 1
@@ -149,8 +149,8 @@ LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essenti
 #PHP config 2
 #PHP:cli:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
 #PHP joomla 5 (zlib and json are enabled by default in php>8.0)
-#PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap|9176
-PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap
+PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap|9176
+#PHP:cli:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap
 #PHP:cli:simplexml:dom:gd:intl:zip:mysqli:curl|9176
 #PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
 #PHP:cli:curl:dom:exif:igbinary:imagick:intl:mbstring:openssl:xml:zip:mysqli|9176
