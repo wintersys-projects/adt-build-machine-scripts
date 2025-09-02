@@ -159,7 +159,7 @@ CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.
 ##############################################################PHP###########################################################
 #DATASTOREMOUNTTOOL:rclone:repo
 #DATASTOREMOUNTTOOL:s3fs:repo
-DATASTOREMOUNTTOOL:goof:source
+DATASTOREMOUNTTOOL:goof:binary
 #DATASTOREMOUNTTOOL:geesefs:binary
 MARIADB:cloud-init
 #MARIADB:repo:11.5.4
