@@ -162,7 +162,6 @@ CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.
 DATASTOREMOUNTTOOL:goof:binary
 #DATASTOREMOUNTTOOL:geesefs:source
 #MARIADB:cloud-init
-#MARIADB:repo:11.5.4
 MARIADB:repo:12.0.2
 MYSQL:repo:9.2.0
 POSTGRES:repo:17
