@@ -28,11 +28,12 @@ fi
 apt=""
 if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 then
-	apt="/usr/bin/apt-get"
-elif ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-fast" ] )
+	apt="/usr/bin/apt"
+elif ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-get" ] )
 then
-	apt="/usr/sbin/apt-fast"
+	apt="/usr/bin/apt-get"
 fi
+
 export DEBIAN_FRONTEND=noninteractive 
 install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install " 
 
