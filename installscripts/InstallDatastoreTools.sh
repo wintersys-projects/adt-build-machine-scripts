@@ -32,13 +32,8 @@ then
 	apt=""
 	if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 	then
-		apt="/usr/bin/apt-get"
-	elif ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-fast" ] )
-	then
-		apt="/usr/sbin/apt-fast"
-	fi
-
-	if ( [ "${apt}" = "/usr/sbin/apt-fast" ] && [ ! -f /usr/sbin/apt-fast ] )
+		apt="/usr/bin/apt"
+	elif ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-get" ] )
 	then
 		apt="/usr/bin/apt-get"
 	fi
