@@ -27,7 +27,9 @@ status () {
 	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
-datastore_to_get="`/bin/echo $1 | /usr/bin/cut -c-63`"
+#datastore_to_get="`/bin/echo $1 | /usr/bin/cut -c-63`"
+datastore_to_get="$1"
+
 if ( [ "${2}" != "" ] )
 then
 	destination="${2}"
