@@ -49,6 +49,7 @@ then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
 		/bin/bash -c "$(curl -sL https://git.io/vokNn)"
+		/usr/local/bin/apt-fast /usr/sbin/apt-fast
 		/usr/bin/snap install aria2c 
 		/bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
 	fi
@@ -56,6 +57,7 @@ then
 	if ( [ "${buildos}" = "debian" ] )
 	then
 		/bin/bash -c "$(curl -sL https://git.io/vokNn)"
+		/usr/local/bin/apt-fast /usr/sbin/apt-fast
 		/usr/bin/snap install aria2c 
 		/bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
 	fi   
