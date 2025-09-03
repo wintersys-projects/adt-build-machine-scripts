@@ -64,8 +64,8 @@
 # DATASTORETOOL:s3cmd:source
 # DATASTORETOOL:s5cmd:binary
 # DATASTORETOOL:s5cmd:source
-# You can choose which package manager you want to use. Currently only apt and apt-fast are supported. "Apt-fast" is supposed to be fastet, hence the "fast"
-# PACKAGEMANAGER:apt|apt-fast
+# You can choose which package manager you want to use. Currently only apt and apt-get are supported mostly as an example of how multiple package managers can be implemented. 
+# PACKAGEMANAGER:apt|apt-get
 # You can choose what style of firewall you would like to have by setting the FIREWALL. You can choose ufw or iptables
 # FIREWALL:ufw|iptables
 # You can choose which email utility you want to send your system emails using sendemail or ssmtp
@@ -168,7 +168,7 @@ POSTGRES:repo:17
 BUILDCHAINTYPE:standard
 #DATASTORETOOL:s3cmd:source
 DATASTORETOOL:s5cmd:binary
-PACKAGEMANAGER:apt-fast
+PACKAGEMANAGER:apt-get
 FIREWALL:iptables
 EMAILUTIL:sendemail
 SSLCERTCLIENT:lego
