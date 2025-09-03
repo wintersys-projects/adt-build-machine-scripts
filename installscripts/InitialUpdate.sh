@@ -44,22 +44,20 @@ then
 	fi
 fi
 
-if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-fast" ] )
+if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-get" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		/bin/bash -c "$(curl -sL https://git.io/vokNn)"
-		/usr/bin/ln -s /usr/local/bin/apt-fast /usr/sbin/apt-fast
-		/usr/bin/snap install aria2c 
-		/bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
+		/usr/bin/yes | /usr/bin/dpkg --configure -a
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages    
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		/bin/bash -c "$(curl -sL https://git.io/vokNn)"
-		/usr/bin/ln -s /usr/local/bin/apt-fast /usr/sbin/apt-fast
-		/usr/bin/snap install aria2c 
-		/bin/echo 'DOWNLOADBELOW="aria2c -c -s ${_MAXNUM} -x ${_MAXNUM} -k 1M -q --file-allocation=none"' >> /etc/apt-fast.conf
-	fi   
+		/usr/bin/yes | /usr/bin/dpkg --configure -a
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 install -y -qq apt-utils 
+		DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -o DPkg::Lock::Timeout=-1 -qq -y update --allow-change-held-packages    
+	fi
 fi
 
