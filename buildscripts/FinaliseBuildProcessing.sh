@@ -252,6 +252,22 @@ then
 	done
 fi
 
+#This checks that the reverse proxy webserver itself has been fully installed and is running. 
+status "Checking that the reverse proxy webserver ${WEBSERVER_CHOICE} has fully installed...."
+
+while ( [ "${rp_webserver_installed}" = "" ] )
+do
+	/bin/sleep 1
+	for rp_active_ip in ${rp_active_ips}
+	do
+		rp_webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
+		if ( [ "${rp_webserver_installed}" = "" ] )
+		then
+			rp_webserver_installed=""
+		fi
+	done
+done
+
 #This checks that the webserver itself has been fully installed and is running. 
 status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
 
