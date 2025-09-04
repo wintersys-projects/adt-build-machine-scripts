@@ -257,7 +257,7 @@ fi
 if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
 then
 	#This checks that the reverse proxy webserver itself has been fully installed and is running. 
-	status "Checking that the reverse proxy webserver ${REVERSE_PROXY_WEBSERVER} has fully installed...."
+	status "Checking that the reverse proxy webserver ${REVERSE_PROXY_WEBSERVER} has fully installed....(this may take a while if compiling from source)"
 
 	while ( [ "${rp_webserver_installed}" = "" ] )
 	do
@@ -276,7 +276,7 @@ fi
 if ( [ "${NO_WEBSERVERS}" != "0" ] )
 then
 	#This checks that the webserver itself has been fully installed and is running. 
-	status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
+	status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed....(this may take a while if compiling from source)"
 
 	while ( [ "${webserver_installed}" = "" ] )
 	do
