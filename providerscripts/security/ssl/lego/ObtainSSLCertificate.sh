@@ -35,7 +35,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-#set -x
+set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -44,6 +44,7 @@ status () {
 }
 
 website_url="${1}"
+auth="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
@@ -63,6 +64,14 @@ then
         WEBSITE_URL="${website_url}"
 else
         WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+fi
+
+if ( [ "${auth}" = "yes" ] )
+then
+        WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_SERVER_URL`"
+        DNS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_USERNAME`"
+        DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_SECURITY_KEY`"
+        DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_CHOICE`"
 fi
 
 export GOROOT=/usr/local/go
@@ -107,7 +116,7 @@ then
         then
                 ${BUILD_HOME}/providerscripts/dns/CreateZone.sh "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${DNS_CHOICE}"
         fi
-        
+
         api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
         command="CLOUDFLARE_DNS_API_TOKEN="${api_token}" /usr/bin/lego --email ${DNS_USERNAME} --domains ${WEBSITE_URL} --dns ${DNS_CHOICE} ${server} --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
 fi
