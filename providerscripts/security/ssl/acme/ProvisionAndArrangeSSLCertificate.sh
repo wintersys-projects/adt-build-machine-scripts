@@ -92,7 +92,7 @@ then
                         /bin/mkdir ${BUILD_HOME}/.lego
                 fi
 
-                ${BUILD_HOME}/providerscripts/security/ssl/acme/ObtainSSLCertificate.sh ${website_url}
+                ${BUILD_HOME}/providerscripts/security/ssl/acme/ObtainSSLCertificate.sh ${website_url} ${auth}
 
                 if ( [ -f ~/.acme.sh/${website_url}_ecc/fullchain.cer ] && [ -f ~/.acme.sh/${website_url}_ecc/${website_url}.key ] )
                 then
