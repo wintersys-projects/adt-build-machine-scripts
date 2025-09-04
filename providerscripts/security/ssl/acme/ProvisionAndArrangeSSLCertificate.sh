@@ -123,7 +123,7 @@ else
         fi
 
         #There was no certificate so generate one and copy it back to the build client for later use
-        ${BUILD_HOME}/providerscripts/security/ssl/acme/ObtainSSLCertificate.sh ${website_url}
+        ${BUILD_HOME}/providerscripts/security/ssl/acme/ObtainSSLCertificate.sh ${website_url} ${auth}
 
         if ( [ -f ~/.acme.sh/${website_url}_ecc/fullchain.cer ] && [ -f ~/.acme.sh/${website_url}_ecc/${website_url}.key ] )
         then
