@@ -52,6 +52,7 @@ APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATI
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
+REVERSE_PROXY_WEBSERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REVERSE_PROXY_WEBSERVER`"
 PERSIST_ASSETS_TO_DATASTORE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PERSIST_ASSETS_TO_DATASTORE`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
@@ -253,7 +254,7 @@ then
 fi
 
 #This checks that the reverse proxy webserver itself has been fully installed and is running. 
-status "Checking that the reverse proxy webserver ${WEBSERVER_CHOICE} has fully installed...."
+status "Checking that the reverse proxy webserver ${REVERSE_PROXY_WEBSERVER} has fully installed...."
 
 while ( [ "${rp_webserver_installed}" = "" ] )
 do
