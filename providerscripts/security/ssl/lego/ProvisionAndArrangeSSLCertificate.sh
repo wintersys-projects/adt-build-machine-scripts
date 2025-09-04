@@ -28,6 +28,7 @@ status () {
 }
 
 website_url="${1}"
+auth="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
@@ -83,7 +84,7 @@ then
                         /bin/mkdir ${BUILD_HOME}/.lego
                 fi
 
-                ${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh ${website_url}
+                ${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh ${website_url} ${auth}
 
 
                 if ( [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.crt ] && [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.key ] )
@@ -115,7 +116,7 @@ else
         fi
 
         #There was no certificate so generate one and copy it back to the build client for later use
-        ${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh ${website_url}
+        ${BUILD_HOME}/providerscripts/security/ssl/lego/ObtainSSLCertificate.sh ${website_url} ${auth}
 
         if ( [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.crt ] && [ -f ${BUILD_HOME}/.lego/certificates/${website_url}.key ] )
         then
