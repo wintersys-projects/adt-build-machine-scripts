@@ -108,7 +108,7 @@ then
                                 fi
                         fi
 
-                        ${BUILD_HOME}/providerscripts/security/ssl/lego/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
+                        ${BUILD_HOME}/providerscripts/security/ssl/lego/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL} ${auth}
                 fi
 
                 if ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
@@ -123,12 +123,12 @@ then
                                 fi
                         fi
 
-                        ${BUILD_HOME}/providerscripts/security/ssl/acme/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
+                        ${BUILD_HOME}/providerscripts/security/ssl/acme/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL} ${auth}
                 fi
 
                 if ( [ "${SSL_GENERATION_METHOD}" = "MANUAL" ] )
                 then
-                        ${BUILD_HOME}/providerscripts/security/ssl/manual/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL}
+                        ${BUILD_HOME}/providerscripts/security/ssl/manual/ProvisionAndArrangeSSLCertificate.sh ${WEBSITE_URL} ${auth}
                 fi
         fi
 
