@@ -43,8 +43,8 @@ status () {
         /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
-
-
+website_url="${1}"
+auth="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS'`"
