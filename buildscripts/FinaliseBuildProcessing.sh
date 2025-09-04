@@ -57,6 +57,7 @@ PERSIST_ASSETS_TO_DATASTORE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PE
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 NO_REVERSE_PROXY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_REVERSE_PROXY`"
+NO_WEBSERVERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_WEBSERVERS`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 
 
@@ -253,37 +254,43 @@ then
 	done
 fi
 
-#This checks that the reverse proxy webserver itself has been fully installed and is running. 
-status "Checking that the reverse proxy webserver ${REVERSE_PROXY_WEBSERVER} has fully installed...."
+if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
+then
+	#This checks that the reverse proxy webserver itself has been fully installed and is running. 
+	status "Checking that the reverse proxy webserver ${REVERSE_PROXY_WEBSERVER} has fully installed...."
 
-while ( [ "${rp_webserver_installed}" = "" ] )
-do
-	/bin/sleep 1
-	for rp_active_ip in ${rp_active_ips}
+	while ( [ "${rp_webserver_installed}" = "" ] )
 	do
-		rp_webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
-		if ( [ "${rp_webserver_installed}" = "" ] )
-		then
-			rp_webserver_installed=""
-		fi
+		/bin/sleep 1
+		for rp_active_ip in ${rp_active_ips}
+		do
+			rp_webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${rp_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
+			if ( [ "${rp_webserver_installed}" = "" ] )
+			then
+				rp_webserver_installed=""
+			fi
+		done
 	done
-done
+fi
 
-#This checks that the webserver itself has been fully installed and is running. 
-status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
+if ( [ "${NO_WEBSERVERS}" != "0" ] )
+then
+	#This checks that the webserver itself has been fully installed and is running. 
+	status "Checking that the webserver ${WEBSERVER_CHOICE} has fully installed...."
 
-while ( [ "${webserver_installed}" = "" ] )
-do
-	/bin/sleep 1
-	for ws_active_ip in ${ws_active_ips}
+	while ( [ "${webserver_installed}" = "" ] )
 	do
-		webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
-		if ( [ "${webserver_installed}" = "" ] )
-		then
-			webserver_installed=""
-		fi
+		/bin/sleep 1
+		for ws_active_ip in ${ws_active_ips}
+		do
+			webserver_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/installedsoftware/InstallWebserver.sh && /bin/echo 'INSTALL_WEBSERVER'"`" >&3
+			if ( [ "${webserver_installed}" = "" ] )
+			then
+				webserver_installed=""
+			fi
+		done
 	done
-done
+fi
 
 #This checks that our bespoke application (most likely a CMS of some sort) is installed to the best of our knowledge
 status "Checking that the bespoke application has been installed...."
