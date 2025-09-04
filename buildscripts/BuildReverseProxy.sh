@@ -143,9 +143,9 @@ do
 
                 #Store the public and private ip addresses of the reverse proxy machine in the datastore for access elsewhere
 
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxypublicip/*`" != "" ] )
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxypublicips/*`" != "" ] )
                 then
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicip/*
+                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicips/*
                 fi
 
                 if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxyips/*`" != "" ] )
@@ -243,7 +243,7 @@ do
 
                         #Our build failed so we don't want any ip address records stored in the S3 datastore
                         #We should destroy the server also because it's hosed
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicip
+                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicips
                         ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyips
                         ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ip} ${CLOUDHOST}
 
