@@ -437,8 +437,6 @@ fi
 # Initialise all of our security keys and store the PUBLIC_KEY_ID on the filesystem for reference from anywhere
 ${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
 
-# Output any pre-processing messages
-#${BUILD_HOME}/processingscripts/PreProcessingMessages.sh
 # Store our scaling requirements in the datastore (how many webservers to provision)
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 #Provision any DBaaS database service that the build requires 
