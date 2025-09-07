@@ -92,5 +92,13 @@ then
 	/bin/echo ${BUILD_IDENTIFIER} > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 fi
 
+#The StackScript capitalises the var names
+
+if ( [ "${DATABASE_DBAAS_INSTALLATION_TYPE}" != "" ] )
+then
+     export DATABASE_DBaaS_INSTALLATION_TYPE="${DATABASE_DBAAS_INSTALLATION_TYPE}"
+     unset DATABASE_DBAAS_INSTALLATION_TYPE
+fi
+
 /bin/sh ${BUILD_HOME}/installscripts/InstallFirewall.sh "`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
 ${BUILD_HOME}/security/firewall/InitialiseFirewall.sh 
