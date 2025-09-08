@@ -523,29 +523,22 @@ then
 	${log_command} "At the time of development, Drupal Opensocial requires PHP 8.1 or higher. You are trying to install PHP version ${PHP_VERSION}"
 fi
 
-if ( [ ! "`echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${DNS_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
+if ( [ "`/bin/echo "${DNS_USERNAME}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] && [ "`/bin/echo "${DNS_USERNAME}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] )
 then
 	${log_command} "It looks to me like the email address for the variable DNS_USERNAME (${DNS_USERNAME}) doesn't appear to be valid please review"
 fi
 
-if ( [ ! "`echo "${SYSTEM_TOEMAIL_ADDRESS}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${SYSTEM_TOEMAIL_ADDRESS}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
+if ( [ "`/bin/echo "${SYSTEM_TOEMAIL_ADDRESS}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] && [ "`/bin/echo "${SYSTEM_TOEMAIL_ADDRESS}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] )
 then
 	${log_command} "It looks to me like the email address for the variable SYSTEM_TOEMAIL_ADDRESS (${SYSTEM_TOEMAIL_ADDRESS}) doesn't appear to be valid please review"
 fi
 
-if ( [ ! "`echo "${SYSTEM_FROMEMAIL_ADDRESS}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${SYSTEM_FROMEMAIL_ADDRESS}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
+if ( [ "`/bin/echo "${SYSTEM_FROMEMAIL_ADDRESS}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] && [ "`/bin/echo "${SYSTEM_FROMEMAIL_ADDRESS}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] )
 then
 	${log_command} "It looks to me like the email address for the variable SYSTEM_FROMEMAIL_ADDRESS (${SYSTEM_FROMEMAIL_ADDRESS}) doesn't appear to be valid please review"
 fi
 
-#Not all email usernames are email addresses that can be checked for but if you know that yours are then you can uncomment this check
-
-#if ( [ ! "`echo "${SYSTEM_EMAIL_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${SYSTEM_EMAIL_USERNAME}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
-#then
-#       ${log_command} "It looks to me like the email address for the variable SYSTEM_EMAIL_USERNAME (${SYSTEM_EMAIL_USERNAME}) doesn't appear to be valid please review"
-#fi
-
-if ( [ ! "`echo "${GIT_EMAIL_ADDRESS}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] && [ ! "`/bin/echo "${GIT_EMAIL_ADDRESS}" | grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" ] )
+if ( [ "`/bin/echo "${GIT_EMAIL_ADDRESS}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] && [ "`/bin/echo "${GIT_EMAIL_ADDRESS}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] )
 then
 	${log_command} "It looks to me like the email address for the variable GIT_EMAIL_USERNAME (${GIT_EMAIL_ADDRESS}) doesn't appear to be valid please review"
 fi
