@@ -125,6 +125,7 @@ then
 	then
 		snapshot_id="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 	 	status "Deploying webserver machine from snapshot with ID ${snapshot_id}"	
+		${BUILD_HOME}/helperscripts/SetVariableValue.sh SNAPSHOT_ID=${snapshot_id}
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
 then
