@@ -116,35 +116,40 @@ then
 	if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
 	then
 		snapshot_id="`/bin/grep autoscaler ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	fi
+	 	status "Deploying autoscaler machine from snapshot with ID ${snapshot_id}"
+ 	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
 then
 	machine_type="adt-webserver"
 	if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
 	then
 		snapshot_id="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	fi
+	 	status "Deploying webserver machine from snapshot with ID ${snapshot_id}"	
+ 	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
 then
 	machine_type="adt-database"
 	if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
 	then
 		snapshot_id="`/bin/grep database ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	fi
+		status "Deploying database machine from snapshot with ID ${snapshot_id}"	
+ 	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
 then
 	machine_type="adt-authenticator"
 	if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
 	then
 		snapshot_id="`/bin/grep authenticator ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	fi
+		status "Deploying authenticator machine from snapshot with ID ${snapshot_id}"	
+ 	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
 then
 	machine_type="adt-reverseproxy"
 	if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
 	then
 		snapshot_id="`/bin/grep reverseproxy ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	fi
+		status "Deploying reverse proxy machine from snapshot with ID ${snapshot_id}"	
+ 	fi
 fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] || [ "${CLOUDHOST}" = "linode" ] || [ "${CLOUDHOST}" = "vultr" ] )
