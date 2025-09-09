@@ -822,7 +822,8 @@ How many autoscalers to deploy. An Interger value between 0 and 5
 
 If you wish to make a deployment using multiple regions then you need to set this as follows:
 
-0 - single region deployment. 
+0 - single region deployment.  
+
 1 - multi region deployment
 
 -----------------
