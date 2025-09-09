@@ -236,3 +236,13 @@ else
 	/bin/echo "${machine_label}:${snapshot_id}" > ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat
 	/bin/echo "Stored snapshot ids generated"
 fi
+
+/bin/echo "Storing snapshot metadata in the datastore"
+snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
+
+${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ${snap_bucket}/snapshot_ids.dat
+${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${snap_bucket}/db_credentials.dat.candidate
+${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat ${snap_bucket}/db_credentials.dat
+${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat ${snap_bucket}/credentials.dat
