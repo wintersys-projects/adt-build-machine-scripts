@@ -247,3 +247,23 @@ ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimed
 ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${snap_bucket}/db_credentials.dat.candidate
 ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat ${snap_bucket}/db_credentials.dat
 ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat ${snap_bucket}/credentials.dat
+
+cwd="`/usr/bin/pwd`"
+cd ${BUILD_HOME}/runtimedata/linode/test-build/keys
+/bin/tar cvfz keys.tar.gz *
+cd ${cwd}
+
+${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh  ${BUILD_HOME}/runtimedata/linode/test-build/keys/keys.tar.gz ${snap_bucket}/keys.tar.gz
+
+
+
+
+
+
+
+
+
+
+
+
+
