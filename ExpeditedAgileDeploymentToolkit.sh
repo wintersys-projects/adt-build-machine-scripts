@@ -369,12 +369,6 @@ fi
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
 
-if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
-then
-	/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
-	export SNAPSHOT_ID="`${BUILD_HOME}/initscripts/InitialiseSnapshots.sh`"
-fi
-
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 
 # Intialise the configuration values for the VPS provider we are using (access tokens/keys) and so on
@@ -388,6 +382,12 @@ ${BUILD_HOME}/initscripts/InitialiseServerUserCredentials.sh
 
 # Initialise/configure the datastore ready for use (access keys, tokens, host base values and so on)
 ${BUILD_HOME}/initscripts/InitialiseDatastoreConfig.sh
+
+if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
+then
+	export SNAPSHOT_ID="`${BUILD_HOME}/initscripts/InitialiseSnapshots.sh`"
+ 	/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
+fi
 
 # Make a few pre-flight checks to check that we are good to go
 ${BUILD_HOME}/initscripts/PreFlightChecks.sh 
