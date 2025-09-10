@@ -371,6 +371,7 @@ ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_I
 
 if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
+	/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 	export SNAPSHOT_ID="`${BUILD_HOME}/initscripts/InitialiseSnapshots.sh`"
 fi
 
