@@ -45,10 +45,10 @@ then
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
                 fi
 
-                ${BUILD_HOME}/providerscrirts/datastore/GetFromDatastore.sh ${snap_bucket}/snapshot_ids.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscrirts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscrirts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscrirts/datastore/GetFromDatastore.sh ${snap_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/snapshot_ids.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
         fi
 
         if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
