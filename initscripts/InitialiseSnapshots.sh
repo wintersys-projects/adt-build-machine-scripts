@@ -37,31 +37,50 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 
 if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
-        snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-        snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
-        if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat ] )
         then
-                if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots ] )
+                SERVER_USER="`/bin/grep 'USERNAME' ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                SERVER_USER_PASSWORD="`/bin/grep 'PASSWORD' ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                /bin/echo "${SERVER_USER}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER
+                /bin/echo "${SERVER_USER_PASSWORD}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD
+                ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SERVER_USER=${SERVER_USER}"
+                ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SERVER_USER_PASSWORD=${SERVER_USER_PASSWORD}"
+
+                snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+                snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
+                if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
                 then
-                        /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                        if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots ] )
+                        then
+                                /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                        fi
+
+                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/snapshot_ids.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
                 fi
 
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/snapshot_ids.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-        fi
+                if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+                then
+                        /bin/touch /tmp/END_IT_ALL
+                fi
 
-        if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
-        then
-                /bin/touch /tmp/END_IT_ALL
-        fi
+                /bin/echo "`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/keys.tar.gz ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
 
-        /bin/echo "`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/keys.tar.gz ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-        
-        if ( [ -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
-        then
-                /bin/tar xvfz ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/keys.tar.gz -C ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
+                if ( [ -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
+                then
+                        /bin/tar xvfz ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/keys.tar.gz -C ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys
+                fi
+
+                SERVER_USER="`/bin/grep 'USERNAME' ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+                SERVER_USER_PASSWORD="`/bin/grep 'PASSWORD' ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat | /usr/bin/awk -F':' '{print $NF}'`"
+
+                /bin/echo "${SERVER_USER}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER
+                /bin/echo "${SERVER_USER_PASSWORD}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD
+
+                ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SERVER_USER=${SERVER_USER}"
+                ${BUILD_HOME}/helperscripts/SetVariableValue.sh "SERVER_USER_PASSWORD=${SERVER_USER_PASSWORD}"
         fi
 fi
