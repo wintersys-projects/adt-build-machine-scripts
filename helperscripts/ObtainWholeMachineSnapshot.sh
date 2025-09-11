@@ -250,7 +250,7 @@ ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimed
 
 cwd="`/usr/bin/pwd`"
 cd ${BUILD_HOME}/runtimedata/linode/test-build/keys
-/bin/tar cvfz keys.tar.gz *
+/bin/tar cvfz keys.tar.gz *BUILD_KEY*
 cd ${cwd}
 
 ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/keys.tar.gz ${snap_bucket}/keys.tar.gz
