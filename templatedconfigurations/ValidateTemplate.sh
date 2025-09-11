@@ -417,14 +417,14 @@ then
 	${log_command} "Your value for the variable SSL_LIVE_CERT (${SSL_LIVE_CERT}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^SSLCERTCLIENT:lego" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] && [ "${SSL_GENERATION_SERVICE}" != "LETSENCRYPT" ] )
+if ( [ "`/bin/grep "^SSLCERTCLIENT:lego" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] && [ "${SSL_GENERATION_SERVICE}" != "LETSENCRYPT" ] )
 then
 	${log_command} "There seems to be a mismatch between your SSL CLIENT software choice in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
  	${log_command} "and your chosen ssl generation service (${SSL_GENERATION_SERVICE})"
   	${log_command} "The 'lego' SSL CLIENT can only be used with the LETSENCRYPT certificate service"
 fi
 
-if ( [ "`/bin/grep "^SSLCERTCLIENT:acme" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] && [ "${SSL_GENERATION_SERVICE}" != "ZEROSSL" ] )
+if ( [ "`/bin/grep "^SSLCERTCLIENT:acme" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] && [ "${SSL_GENERATION_SERVICE}" != "ZEROSSL" ] )
 then
 	${log_command} "There seems to be a mismatch between your SSL CLIENT software choice in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
  	${log_command} "and your chosen ssl generation service (${SSL_GENERATION_SERVICE})"
