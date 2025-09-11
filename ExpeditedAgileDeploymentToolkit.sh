@@ -389,6 +389,8 @@ then
  	/usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 fi
 
+${BUILD_HOME}/initscripts/InitialiseUniqueConfigDatastore.sh
+
 # Make a few pre-flight checks to check that we are good to go
 ${BUILD_HOME}/initscripts/PreFlightChecks.sh 
 
