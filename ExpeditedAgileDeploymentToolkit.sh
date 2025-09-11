@@ -441,8 +441,11 @@ then
 	${BUILD_HOME}/initscripts/InitialiseAssetDatastore.sh
 fi
 
-# Initialise all of our security keys and store the PUBLIC_KEY_ID on the filesystem for reference from anywhere
-${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
+if (  [ "${BUILD_FROM_SNAPSHOT}" != "1" ] )
+then
+	# Initialise all of our security keys and store the PUBLIC_KEY_ID on the filesystem for reference from anywhere
+	${BUILD_HOME}/initscripts/InitialiseSecurityKeys.sh
+fi
 
 # Store our scaling requirements in the datastore (how many webservers to provision)
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
