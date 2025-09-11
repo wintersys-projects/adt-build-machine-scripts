@@ -37,11 +37,10 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 
 if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
+        snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+        snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
         if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
-                snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-                snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
-
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots ] )
                 then
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
