@@ -196,7 +196,6 @@ then
 	if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 	then
 		image="--image ${snapshot_id}"
-  		user_data=''
   	else
    		user_data='--user-data-file "${cloud_config}"'
 	fi
@@ -212,7 +211,6 @@ then
 	then
 		OS_CHOICE="${snapshot_id}"
 		template_visibility="--template-visibility private"
-  		user_data=''
 	else
  		user_data='--cloud-init "${cloud_config}"'
 	fi
@@ -250,7 +248,6 @@ then
 	if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 	then
 		image="--image ${snapshot_id}"
-  		user_data=""
   	else
 		user_data="--metadata.user_data ${cloud_config}"	
 	fi
@@ -286,7 +283,6 @@ then
 	then
 		snapshot="--snapshot=${snapshot_id}"
 		os=""
-  		user_data=''
 	else
  		user_data='--userdata="${cloud_config}"'
 	fi
