@@ -196,9 +196,8 @@ then
 	if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 	then
 		image="--image ${snapshot_id}"
-  	else
-   		user_data='--user-data-file "${cloud_config}"'
-	fi
+  	fi
+   	user_data='--user-data-file "${cloud_config}"'
 
 	/usr/local/bin/doctl compute droplet create "${server_name}" --ssh-keys "${key_id}" --size "${server_size}" ${image} --region "${REGION}"  --vpc-uuid "${vpc_id}" ${user_data}
 fi
@@ -211,9 +210,9 @@ then
 	then
 		OS_CHOICE="${snapshot_id}"
 		template_visibility="--template-visibility private"
-	else
- 		user_data='--cloud-init "${cloud_config}"'
 	fi
+ 		
+	user_data='--cloud-init "${cloud_config}"'
 
 	firewall=""
 
@@ -248,9 +247,9 @@ then
 	if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 	then
 		image="--image ${snapshot_id}"
-  	else
-		user_data="--metadata.user_data ${cloud_config}"	
 	fi
+
+	user_data="--metadata.user_data ${cloud_config}"	
 
 	if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
 	then
@@ -283,9 +282,9 @@ then
 	then
 		snapshot="--snapshot=${snapshot_id}"
 		os=""
-	else
- 		user_data='--userdata="${cloud_config}"'
 	fi
+ 	
+	user_data='--userdata="${cloud_config}"'
 
 	if ( [ "${DDOS_PROTECTION}" = "1" ] )
 	then
