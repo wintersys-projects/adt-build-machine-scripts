@@ -117,6 +117,7 @@ then
 	then
 		snapshot_id="`/bin/grep autoscaler ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 	 	status "Deploying autoscaler machine from snapshot with ID ${snapshot_id}"
+	 	cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
 then
@@ -126,6 +127,7 @@ then
 		snapshot_id="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 	 	status "Deploying webserver machine from snapshot with ID ${snapshot_id}"	
 		${BUILD_HOME}/helperscripts/SetVariableValue.sh SNAPSHOT_ID=${snapshot_id}
+		cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
 then
@@ -134,6 +136,7 @@ then
 	then
 		snapshot_id="`/bin/grep database ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 		status "Deploying database machine from snapshot with ID ${snapshot_id}"	
+		cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
 then
@@ -142,6 +145,7 @@ then
 	then
 		snapshot_id="`/bin/grep authenticator ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 		status "Deploying authenticator machine from snapshot with ID ${snapshot_id}"	
+		cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
 then
@@ -150,6 +154,7 @@ then
 	then
 		snapshot_id="`/bin/grep reverseproxy ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 		status "Deploying reverse proxy machine from snapshot with ID ${snapshot_id}"	
+		cloud_config="/tmp/cloud_config.$$"
  	fi
 fi
 
