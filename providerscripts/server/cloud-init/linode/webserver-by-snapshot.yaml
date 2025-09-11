@@ -7,14 +7,14 @@ users:
     shell: /bin/bash
     lock_passwd: false
 
-    ssh_authorized_keys:
-      - 'XXXXSSH_PUBLIC_KEYXXXX'
+#    ssh_authorized_keys:
+#      - 'XXXXSSH_PUBLIC_KEYXXXX'
 
-ssh_keys:
-  XXXXALGORITHMXXXX_private: |
-      -----BEGIN OPENSSH PRIVATE KEY-----
-      XXXXSSH_PRIVATE_KEYXXXX
-      -----END OPENSSH PRIVATE KEY-----
+#ssh_keys:
+#  XXXXALGORITHMXXXX_private: |
+#      -----BEGIN OPENSSH PRIVATE KEY-----
+#      XXXXSSH_PRIVATE_KEYXXXX
+#      -----END OPENSSH PRIVATE KEY-----
 
 write_files:
 - encoding: b64
