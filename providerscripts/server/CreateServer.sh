@@ -117,7 +117,6 @@ then
 	then
 		snapshot_id="`/bin/grep autoscaler ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 	 	status "Deploying autoscaler machine from snapshot with ID ${snapshot_id}"
-	 	cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
 then
@@ -127,7 +126,6 @@ then
 		snapshot_id="`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 	 	status "Deploying webserver machine from snapshot with ID ${snapshot_id}"	
 		${BUILD_HOME}/helperscripts/SetVariableValue.sh SNAPSHOT_ID=${snapshot_id}
-		cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^db-"`" != "" ] )
 then
@@ -136,7 +134,6 @@ then
 	then
 		snapshot_id="`/bin/grep database ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 		status "Deploying database machine from snapshot with ID ${snapshot_id}"	
-		cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
 then
@@ -145,7 +142,6 @@ then
 	then
 		snapshot_id="`/bin/grep authenticator ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 		status "Deploying authenticator machine from snapshot with ID ${snapshot_id}"	
-		cloud_config="/tmp/cloud_config.$$"
  	fi
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
 then
@@ -154,7 +150,6 @@ then
 	then
 		snapshot_id="`/bin/grep reverseproxy ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 		status "Deploying reverse proxy machine from snapshot with ID ${snapshot_id}"	
-		cloud_config="/tmp/cloud_config.$$"
  	fi
 fi
 
@@ -201,9 +196,12 @@ then
 	if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 	then
 		image="--image ${snapshot_id}"
+  		user_data=''
+  	else
+   		user_data='--user-data-file "${cloud_config}"'
 	fi
 
-	/usr/local/bin/doctl compute droplet create "${server_name}" --ssh-keys "${key_id}" --size "${server_size}" ${image} --region "${REGION}"  --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
+	/usr/local/bin/doctl compute droplet create "${server_name}" --ssh-keys "${key_id}" --size "${server_size}" ${image} --region "${REGION}"  --vpc-uuid "${vpc_id}" ${user_data}
 fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
@@ -214,6 +212,9 @@ then
 	then
 		OS_CHOICE="${snapshot_id}"
 		template_visibility="--template-visibility private"
+  		user_data=''
+	else
+ 		user_data='--cloud-init "${cloud_config}"'
 	fi
 
 	firewall=""
@@ -223,7 +224,7 @@ then
 		firewall=" --security-group ${firewall_id}"
 	fi
 
-	/usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} ${firewall} --template "${OS_CHOICE}" --zone ${REGION}  ${template_visibility} --cloud-init "${cloud_config}"
+	/usr/bin/exo compute instance create ${server_name} --instance-type standard.${server_size} ${firewall} --template "${OS_CHOICE}" --zone ${REGION}  ${template_visibility} ${user_data}
 
 	if ( [ "`/usr/bin/exo compute private-network list -O json | /usr/bin/jq -r '.[] | select (.name == "adt_private_net_'${REGION}'").id'`" = "" ] )
 	then
@@ -249,13 +250,16 @@ then
 	if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 	then
 		image="--image ${snapshot_id}"
+  		user_data=""
+  	else
+   		user_data='--metadata.user_data "${cloud_config}"'
 	fi
 
 	if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
 	then
-		/usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+		/usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' ${user_data} --disk_encryption "enabled"
 	else
-		/usr/local/bin/linode-cli linodes create  --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc",  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' --metadata.user_data "${cloud_config}" --disk_encryption "enabled"
+		/usr/local/bin/linode-cli linodes create  --authorized_keys "${key}" --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc",  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' ${user_data} --disk_encryption "enabled"
 	fi        
 fi
 
@@ -282,6 +286,9 @@ then
 	then
 		snapshot="--snapshot=${snapshot_id}"
 		os=""
+  		user_data=''
+	else
+ 		user_data='--userdata="${cloud_config}"'
 	fi
 
 	if ( [ "${DDOS_PROTECTION}" = "1" ] )
@@ -298,7 +305,7 @@ then
 		firewall="--firewall-group ${firewall_id}"
 	fi
 
-	/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" ${snapshot} ${os} --ipv6=false ${firewall} ${ddos} --userdata="${cloud_config}" --vpc-enable --vpc-ids ${vpc_id} 
+	/usr/bin/vultr instance create --label="${server_name}" --region="${REGION}" --plan="${server_size}" ${snapshot} ${os} --ipv6=false ${firewall} ${ddos} ${user_data} --vpc-enable --vpc-ids ${vpc_id} 
 fi
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
