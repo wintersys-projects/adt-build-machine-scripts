@@ -7,8 +7,8 @@ users:
     shell: /bin/bash
     lock_passwd: false
 
-    ssh_authorized_keys:
-      - 'XXXXSSH_PUBLIC_KEYXXXX'
+#    ssh_authorized_keys:
+  #    - 'XXXXSSH_PUBLIC_KEYXXXX'
 
 ssh_pwauth: false
 
