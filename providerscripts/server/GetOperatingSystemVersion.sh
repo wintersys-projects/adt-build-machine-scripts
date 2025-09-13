@@ -46,16 +46,10 @@ if ( [ "${cloudhost}" = "exoscale" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		if ( [ "${buildos_version}" = "24.04" ] )
-		then
-			/bin/echo "Linux Ubuntu ${buildos_version} LTS 64-bit"
-		fi
+		/bin/echo "Linux Ubuntu ${buildos_version} LTS 64-bit"
 	elif ( [ "${buildos}" = "debian" ] )
 	then
-		if ( [ "${buildos_version}" = "12" ] )
-		then
-			/bin/echo "Linux Debian ${buildos_version} (Bookworm) 64-bit"
-		fi
+		/bin/echo "Linux Debian ${buildos_version} (Bookworm) 64-bit"
 	fi
 fi
 
@@ -63,16 +57,10 @@ if ( [ "${cloudhost}" = "linode" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		if ( [ "${buildos_version}" = "24.04" ] )
-		then
-			/bin/echo "linode/ubuntu24.04"
-		fi
+		/bin/echo "linode/ubuntu${buildos_version}"
 	elif ( [ "${buildos}" = "debian" ] )
 	then
-		if ( [ "${buildos_version}" = "12" ] )
-		then
-			/bin/echo "linode/debian12"
-		fi
+		/bin/echo "linode/debian${buildos_version}"
 	fi
 fi
 
