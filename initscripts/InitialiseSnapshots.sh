@@ -39,18 +39,16 @@ if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
         snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
         snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
-        if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
+        
+        if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots ] )
         then
-                if ( [ ! -d ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots ] )
-                then
-                        /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                fi
-
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/snapshot_ids.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+                /bin/mkdir -p ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
         fi
+
+        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/snapshot_ids.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat.candidate ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/db_credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${snap_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
 
         if ( [ ! -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
         then
