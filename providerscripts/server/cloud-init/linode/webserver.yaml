@@ -60,12 +60,12 @@ write_files:
   path: /etc/profile
   append: true
   
-package_update: true
-package_upgrade: true
+#package_update: true
+#package_upgrade: true
 
 packages:
   - git
-  - network-manager 
+#  - network-manager 
   - jq
   - rsync
   - cron
