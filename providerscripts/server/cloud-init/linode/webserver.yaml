@@ -1,11 +1,11 @@
 #cloud-config
 
-#manage_resolv_conf: true
-#resolv_conf:
-#  nameservers:
-#    - '8.8.8.8'
-#    - '8.8.4.4'
-#    - '1.1.1.1'
+manage_resolv_conf: true
+resolv_conf:
+  nameservers:
+    - '8.8.8.8'
+    - '8.8.4.4'
+    - '1.1.1.1'
 
 users:
   - name: XXXXSERVER_USERXXXX
@@ -60,12 +60,12 @@ write_files:
   path: /etc/profile
   append: true
   
-#package_update: true
-#package_upgrade: true
+package_update: true
+package_upgrade: true
 
 packages:
   - git
-#  - network-manager 
+  - network-manager 
   - jq
   - rsync
   - cron
