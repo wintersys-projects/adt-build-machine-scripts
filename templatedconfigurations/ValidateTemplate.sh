@@ -104,7 +104,7 @@ else
 	if ( [ "${BUILDOS_VERSION}" != "24.04" ] && [ "${BUILDOS}" = "ubuntu" ] )
 	then
 		${log_command} "Your value for the variable BUILDOS_VERSION (${BUILDOS_VERSION}) doesn't appear to be valid please review"
-	elif ( [ "${BUILDOS_VERSION}" != "12" ] && [ "${BUILDOS}" = "debian" ] )
+	elif ( ( [ "${BUILDOS_VERSION}" != "12" ] && [ "${BUILDOS_VERSION}" != "13" ] ) && [ "${BUILDOS}" = "debian" ] )
 	then
 		${log_command} "Your value for the variable BUILDOS_VERSION (${BUILDOS_VERSION}) doesn't appear to be valid please review"
 	fi
