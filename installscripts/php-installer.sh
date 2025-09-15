@@ -11,3 +11,14 @@ ${SUDO} curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org
 ${SUDO} dpkg -i /tmp/debsuryorg-archive-keyring.deb
 ${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 ${SUDO} apt-get update
+
+#its possible we might fail and die, I have seen it happen due to networking glitches therefore php deserves a second chance just like everyone else
+if ( [ -f /usr/bin/php ] )
+do
+    ${SUDO} apt-get update
+    ${SUDO} apt-get -y install lsb-release ca-certificates curl
+    ${SUDO} curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+    ${SUDO} dpkg -i /tmp/debsuryorg-archive-keyring.deb
+    ${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+    ${SUDO} apt-get update
+done
