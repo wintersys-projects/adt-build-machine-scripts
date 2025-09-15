@@ -10,16 +10,15 @@ EXOSCALE_SECRET_KEY API Secret key
 
 ########  Public functions #####################
 
-
 # Usage: add  _acme-challenge.www.domain.com   "XKrxpRBosdIKFzxW_CT3KLZNf6q0HG9i01zxXp5CPBs"
 # Used to add txt record
 dns_exoscale_add() {
         fulldomain=$1
         txtvalue=$2
 
-        subdomain="`/bin/echo ${fulldomain} | /usr/bin/cut -d "." -f -2`"
-        domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d "." -f 3-`"
-        /usr/bin/exo dns add TXT ${domain} -n ${subdomain} -c ${txtvalue} 
+        subdomain="`/bin/echo ${fulldomain} | /usr/bin/cut -d "." -f -1`"
+        domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d "." -f 2-`"
+        /usr/bin/exo dns add TXT ${domain} -n ${subdomain} -c ${txtvalue} --ttl 60
 
         if ( [ "$?" = "0" ] )
         then
@@ -30,8 +29,6 @@ dns_exoscale_add() {
 
 }
 
-dns_exoscale_add acme.www.the-galley.uk hello1
-
 # Usage: fulldomain txtvalue
 # Used to remove the txt record after validation
 dns_exoscale_rm() {
@@ -39,8 +36,8 @@ dns_exoscale_rm() {
         txtvalue=$2
 
         domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d "." -f 3-`"
-        recordid="`/usr/bin/exo dns show ${domain} -O json | /usr/bin/jq -r '.[] | select ( .content | contains ("'${txtvalue}'")).id'`"
-        /usr/bin/exo dns remove ${domain} ${recordid} -Q -f
+        recordid="`/usr/bin/exo dns show ${domain} -O json | /usr/bin/jq -r '.[] | select ( .content | contains ('${txtvalue}')).id'`"
+        /usr/bin/exo dns remove ${fulldomain} ${recordid} -Q -f
 
         if ( [ "$?" = "0" ] )
         then
@@ -70,16 +67,11 @@ _checkAuth() {
         return 0
 }
 
-#_acme-challenge.www.domain.com
-#returns
-# _sub_domain=_acme-challenge.www
-# _domain=domain.com
-# _domain_id=sdjkglgdfewsdfg
-# _domain_token=sdjkglgdfewsdfg
 _get_root() {
+        :
 
 }
 
-# returns response
 _exoscale_rest() {
+        :
 }
