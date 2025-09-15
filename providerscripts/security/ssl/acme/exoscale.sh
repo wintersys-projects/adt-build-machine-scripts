@@ -17,8 +17,9 @@ dns_exoscale_add() {
         fulldomain=$1
         txtvalue=$2
 
+        subdomain="`/bin/echo ${fulldomain} | /usr/bin/cut -d "." -f -2`"
         domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d "." -f 3-`"
-        /usr/bin/exo dns add TXT ${domain} -c ${txtvalue} 
+        /usr/bin/exo dns add TXT ${domain} -n ${subdomain} -c ${txtvalue} 
 
         if ( [ "$?" = "0" ] )
         then
