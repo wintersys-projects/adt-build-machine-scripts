@@ -431,6 +431,13 @@ then
   	${log_command} "The 'acme' SSL CLIENT can only be used with the ZEROSSL certificate service"
 fi
 
+if ( [ "`/bin/grep "^SSLCERTCLIENT:acme" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] && [ "${SSL_GENERATION_SERVICE}" != "ZEROSSL" ] )
+then
+	${log_command} "There seems to be a mismatch between your SSL CLIENT software choice in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
+ 	${log_command} "and your chosen ssl generation service (${SSL_GENERATION_SERVICE})"
+  	${log_command} "The 'acme' SSL CLIENT can only be used with the ZEROSSL certificate service"
+fi
+
 if ( [ "`/bin/grep "^ACTIVE_FIREWALLS " ${quick_specification} | /bin/grep -w "${ACTIVE_FIREWALLS}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable ACTIVE_FIREWALLS (${ACTIVE_FIREWALLS}) doesn't appear to be valid please review"
