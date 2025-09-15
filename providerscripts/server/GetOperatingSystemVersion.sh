@@ -49,8 +49,14 @@ then
 		/bin/echo "Linux Ubuntu ${buildos_version} LTS 64-bit"
 	elif ( [ "${buildos}" = "debian" ] )
 	then
-		/bin/echo "Linux Debian ${buildos_version} (Bookworm) 64-bit"
-	fi
+ 		if ( [ "${buildos_version}" = "12" ] )
+   		then
+			/bin/echo "Linux Debian ${buildos_version} (Bookworm) 64-bit"
+		elif ( [ "${buildos_version}" = "13" ] )
+		then
+  			/bin/echo "Linux Debian ${buildos_version} (Trixie) 64-bit"
+		fi
+ 	fi
 fi
 
 if ( [ "${cloudhost}" = "linode" ] )
