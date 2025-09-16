@@ -122,22 +122,12 @@ then
         export CF_Account_ID="${account_id}"
         export CF_Token="${api_token}"
         ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} 
-        while ( [ ! -f ~/.acme.sh/${WEBSITE_URL}_ecc/${WEBSITE_URL}.cer ] && [ "${count}" -lt "10" ] )
-        do
-                count="`/usr/bin/expr ${count} + 1`"
-                ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} 
-        done
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
         export DO_API_KEY="${DNS_SECURITY_KEY}" 
         ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server}
-        while ( [ ! -f ~/.acme.sh/${WEBSITE_URL}_ecc/${WEBSITE_URL}.cer ] && [ "${count}" -lt "10" ] )
-        do
-                count="`/usr/bin/expr ${count} + 1`"
-                ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server}
-        done
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
@@ -153,33 +143,18 @@ then
         
         ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} 
         
-        while ( [ ! -f ~/.acme.sh/${WEBSITE_URL}_ecc/${WEBSITE_URL}.cer ] && [ "${count}" -lt "10" ] )
-        do
-                count="`/usr/bin/expr ${count} + 1`"
-                ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} 
-        done
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         export LINODE_V4_API_KEY="${DNS_SECURITY_KEY}" 
         ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server}
-        while ( [ ! -f ~/.acme.sh/${WEBSITE_URL}_ecc/${WEBSITE_URL}.cer ] && [ "${count}" -lt "10" ] )
-        do
-                count="`/usr/bin/expr ${count} + 1`"
-                ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} 
-        done
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
         export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
         ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
-        while ( [ ! -f ~/.acme.sh/${WEBSITE_URL}_ecc/${WEBSITE_URL}.cer ] && [ "${count}" -lt "10" ] )
-        do
-                count="`/usr/bin/expr ${count} + 1`"
-                ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
-        done
 fi
 
 if ( [ "${count}" = "10" ] )
