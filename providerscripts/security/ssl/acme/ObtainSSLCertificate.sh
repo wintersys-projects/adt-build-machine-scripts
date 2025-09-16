@@ -157,7 +157,4 @@ then
         ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
 fi
 
-if ( [ "${count}" = "10" ] )
-then
-        /bin/touch /tmp/END_IT_ALL
-fi
+
