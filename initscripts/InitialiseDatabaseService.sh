@@ -221,7 +221,7 @@ then
 			#See if there is an existing database that we can use
 			existing_db_name="`/usr/bin/exo dbaas list -O json | /usr/bin/jq -r '.[]  | select (.name=="'${db_name}'" and .type=="'${database_engine}'").name'`"   
 			new=""
-			if ( [ "${existing_db_name}" = "" ] )
+			if ( [ "${existing_db_name}" = "" ] || [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS ] )
 			then
 				#If we are here there is no existing database and we need to create one
 				if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
