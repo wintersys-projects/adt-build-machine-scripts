@@ -143,7 +143,7 @@ fi
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
 then
 	region_id="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/CURRENTREGION`"
-	machine_name="`/usr/bin/exo compute instance list --zone ${region_id} -O json | /usr/bin/jq -r '.[] | select (.name | contains ( "'${machine_type}'-'${region_id}'-'${BUILD_IDENTIFIER}'")).name'`"
+	machine_name="`/usr/bin/exo compute instance list --zone ${region_id} -O json | /usr/bin/jq -r '.[] | select (.name | contains ( "'${machine_type}'-'${region_id}'-'${BUILD_IDENTIFIER}'")).name' | /usr/bin/head -1`"
 	machine_id="`/usr/bin/exo compute instance list --zone ch-gva-2 -O json | /usr/bin/jq -r '.[] | select ( .name == "'${machine_name}'").id'`"
 
 
