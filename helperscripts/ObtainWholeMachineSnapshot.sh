@@ -249,7 +249,7 @@ ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimed
 ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat ${snap_bucket}/credentials.dat
 
 cwd="`/usr/bin/pwd`"
-cd ${BUILD_HOME}/runtimedata/linode/test-build/keys
+cd ${BUILD_HOME}/runtimedata/${CLOUDHOST}/test-build/keys
 /bin/tar cvfz keys.tar.gz *BUILD_KEY*
 cd ${cwd}
 
