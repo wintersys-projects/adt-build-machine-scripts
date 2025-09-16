@@ -223,9 +223,14 @@ then
                         db_password="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $6}'`"
 
 
-                        ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${dbaas_bucket}
-                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
-
+                        if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS ] )
+                        then
+                                if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS`" != "" ] )
+                                then
+                                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
+                                fi
+                        fi
+                        
                         #See if there is an existing database that we can use
                         existing_db_name="`/usr/bin/exo dbaas list -O json | /usr/bin/jq -r '.[]  | select (.name=="'${db_name}'" and .type=="'${database_engine}'").name'`"   
                         new=""
@@ -254,6 +259,7 @@ then
                                 /bin/echo "DB ADMIN USERNAME: ${admin_username}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
                                 /bin/echo "DB ADMIN PASSWORD: ${admin_password}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
 
+                                ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${dbaas_bucket}
                                 ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS ${dbaas_bucket}/.DBAAS_CREDENTIALS
 
                                 status "Creating  database ${db_name}, with engine: ${database_engine}, in region: ${database_region} and at size: ${database_size} please wait..."
