@@ -51,7 +51,7 @@ DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
 dbaas_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-dbaas_bucket="${dbaas_bucket}-${DNS_CHOICE}-${CLOUDHOST}-dbaas"
+dbaas_bucket="${dbaas_bucket}-${DNS_CHOICE}-dbaas"
 
 #See if we are a managed database or not
 if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) ) )
