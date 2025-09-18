@@ -284,7 +284,7 @@ then
 		os=""
 	fi
  	
-	user_data='--userdata="${cloud_config}"'
+	user_data="--userdata=${cloud_config}"
 
 	if ( [ "${DDOS_PROTECTION}" = "1" ] )
 	then
