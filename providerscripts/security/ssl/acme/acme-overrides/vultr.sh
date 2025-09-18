@@ -18,6 +18,15 @@ dns_vultr_add() {
         _sub_domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f -2`"
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
 
+        VULTR_API_KEY="${VULTR_API_KEY:-$(_readaccountconf_mutable VULTR_API_KEY)}"
+        if test -z "$VULTR_API_KEY"; then
+                VULTR_API_KEY=''
+                _err 'VULTR_API_KEY was not exported'
+                return 1
+        fi
+
+        _saveaccountconf_mutable VULTR_API_KEY "$VULTR_API_KEY"
+
 
         _debug _sub_domain "$_sub_domain"
         _debug _domain "$_domain"
@@ -47,6 +56,15 @@ dns_vultr_rm() {
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
         _domain_id="`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data == "'$txtvalue'").id'`"
 
+        VULTR_API_KEY="${VULTR_API_KEY:-$(_readaccountconf_mutable VULTR_API_KEY)}"
+        if test -z "$VULTR_API_KEY"; then
+                VULTR_API_KEY=''
+                _err 'VULTR_API_KEY was not exported'
+                return 1
+        fi
+
+        _saveaccountconf_mutable VULTR_API_KEY "$VULTR_API_KEY"
+        
         /usr/bin/vultr dns record delete $_domain $_domain_id
 
         if ( [ "$?" = "1" ] )
