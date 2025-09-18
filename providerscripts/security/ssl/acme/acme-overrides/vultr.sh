@@ -8,8 +8,6 @@ VULTR_API_KEY API Key
 Issues: github.com/acmesh-official/acme.sh/issues/2374
 '
 
-VULTR_Api="https://api.vultr.com/v2"
-
 ########  Public functions #####################
 #
 #Usage: add  _acme-challenge.www.domain.com   "XKrxpRBosdIKFzxW_CT3KLZNf6q0HG9i01zxXp5CPBs"
@@ -26,7 +24,10 @@ dns_vultr_add() {
 
         _info "Adding record"
 
-        /usr/bin/vultr dns record create $_domain -n $_sub_domain -t TXT -d "$txtvalue" --ttl=60
+        if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" = "" ] )
+        then
+                /usr/bin/vultr dns record create $_domain -n $_sub_domain -t TXT -d "$txtvalue" --ttl=60
+        fi
 
         if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" != "" ] )
         then
@@ -46,7 +47,7 @@ dns_vultr_rm() {
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
         _domain_id="`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data == "'$txtvalue'").id'`"
 
-        /usr/bin/vultr dns record delete ${domainurl} ${_domain_id}
+        /usr/bin/vultr dns record delete $_domain $_domain_id
 
         if ( [ "$?" = "1" ] )
         then
