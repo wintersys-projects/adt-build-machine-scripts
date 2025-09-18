@@ -163,7 +163,7 @@ then
 
        # export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
 
-        ~/.acme.sh/acme.sh --debug --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
+        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
 fi
 
 
