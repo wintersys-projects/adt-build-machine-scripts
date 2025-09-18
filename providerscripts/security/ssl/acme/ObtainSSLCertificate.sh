@@ -136,7 +136,7 @@ then
    #     export EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
    #     export EXOSCALE_SECRET_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
 
-        if ( [ -f ~/.acme.sh/dnsapi/dns_exoscale.sh ] )
+        if ( [ -f ~/.acme.sh/dnsapi/dns_exoscale.sh ] && [ -f ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/exoscale.sh ] )
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/exoscale.sh ~/.acme.sh/dnsapi/dns_exoscale.sh
         fi
@@ -151,10 +151,16 @@ then
         ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server}
 fi
 
-if ( [ "${DNS_CHOICE}" = "vultr" ] )
+if ( [ "${DNS_CHOICE}" = "vultr" ] && [ -f ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/vultr.sh ] )
 then
+        if ( [ -f ~/.acme.sh/dnsapi/dns_vultr.sh ] )
+        then
+                /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/vultr.sh ~/.acme.sh/dnsapi/dns_vultr.sh
+        fi
+
         export VULTR_API_KEY="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN`"
-        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} 
+
+        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server}
 fi
 
 
