@@ -22,8 +22,12 @@ dns_exoscale_add() {
         _debug _domain "$_domain"
 
         _info "Adding record"
-
-        /usr/bin/exo dns add TXT $_domain -c $txtvalue -n $_sub_domain -t 120
+        
+        if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" = "" ] )
+        then
+                /usr/bin/exo dns add TXT $_domain -c $txtvalue -n $_sub_domain -t 120
+        fi
+        
         if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" != "" ] )
         then
                 _info "Added, OK"
