@@ -16,6 +16,8 @@ users:
   #    XXXXSSH_PRIVATE_KEYXXXX
   #    -----END OPENSSH PRIVATE KEY-----
 
+hostname: XXXXWEBSERVER_HOSTNAMEXXXX
+
 write_files:
 - path: /etc/netplan/eth1.yaml
   content: |
