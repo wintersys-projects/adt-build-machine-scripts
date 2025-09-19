@@ -54,7 +54,7 @@ dns_vultr_rm() {
         txtvalue=$2
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
-        _domain_id="`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data == "'$txtvalue'").id'`"
+        _domain_id="`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`"
 
         VULTR_API_KEY="${VULTR_API_KEY:-$(_readaccountconf_mutable VULTR_API_KEY)}"
         if test -z "$VULTR_API_KEY"; then
@@ -64,8 +64,11 @@ dns_vultr_rm() {
         fi
 
         _saveaccountconf_mutable VULTR_API_KEY "$VULTR_API_KEY"
-        
-        /usr/bin/vultr dns record delete $_domain $_domain_id
+
+        if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" != "" ] )
+        then
+                /usr/bin/vultr dns record delete $_domain $_domain_id
+        fi
 
         if ( [ "$?" = "1" ] )
         then
