@@ -47,13 +47,18 @@ dns_exoscale_rm() {
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
         _domain_id="`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" 
-        /usr/bin/exo dns remove $_domain $_domain_id --force
 
-        if ( [ "$?" = "1" ] )
+        if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" != "" ] )
         then
-                _err "Delete record error."
-                return 1
+                /usr/bin/exo dns remove $_domain $_domain_id --force
+        fi
+        
+        if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" = "" ] )
+        then
+                _info "Removed, OK"
+                return 0
         fi
 
-        return 0
+        _err "Remove txt record error."
+        return 1
 }
