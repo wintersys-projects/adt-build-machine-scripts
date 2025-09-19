@@ -10,6 +10,8 @@ users:
 #    ssh_authorized_keys:
  #     - 'XXXXSSH_PUBLIC_KEYXXXX'
 
+hostname: XXXXAUTHENTICATOR_HOSTNAMEXXXX
+
 ssh_pwauth: false
 
 write_files:
