@@ -70,12 +70,12 @@ dns_vultr_rm() {
                 /usr/bin/vultr dns record delete $_domain $_domain_id
         fi
 
-        if ( [ "$?" = "1" ] )
+        if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" = "" ] )
         then
-                _err "Delete record error."
-                return 1
+                _info "Removed, OK"
+                return 0
         fi
 
-        return 0
+        return 1
 
 }
