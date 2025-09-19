@@ -16,6 +16,8 @@ users:
 #      XXXXSSH_PRIVATE_KEYXXXX
 #      -----END OPENSSH PRIVATE KEY-----
 
+hostname: XXXXREVERSEPROXY_HOSTNAMEXXXX
+
 write_files:
 - encoding: b64
   content: XXXXREVERSEPROXY_CONFIGURATIONXXXX
