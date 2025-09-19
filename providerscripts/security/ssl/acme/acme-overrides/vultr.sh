@@ -76,6 +76,7 @@ dns_vultr_rm() {
                 return 0
         fi
 
+        _err "Remove txt record error."
         return 1
 
 }
