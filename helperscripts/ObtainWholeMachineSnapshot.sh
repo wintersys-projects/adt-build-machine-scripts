@@ -113,7 +113,7 @@ then
 
 	/usr/local/bin/doctl compute droplet-action snapshot --snapshot-name "${machine_name}" ${machine_id}
 
-	/bin/echo "Trying verify newly generated snapshot  - this should take less than one minute"
+	/bin/echo "Trying to verify newly generated snapshot  - this should take less than one minute"
 	while ( [ "`/usr/local/bin/doctl compute snapshot list -o json | /usr/bin/jq -r '.[] | select (.name == "'${machine_name}'").id'`" = "" ] )
 	do
 		/bin/sleep 5
