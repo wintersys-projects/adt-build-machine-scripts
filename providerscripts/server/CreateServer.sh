@@ -197,9 +197,8 @@ then
 	then
 		image="--image ${snapshot_id}"
   	fi
-   	user_data='--user-data-file "${cloud_config}"'
 
-	/usr/local/bin/doctl compute droplet create "${server_name}" --ssh-keys "${key_id}" --size "${server_size}" ${image} --region "${REGION}"  --vpc-uuid "${vpc_id}" ${user_data}
+	/usr/local/bin/doctl compute droplet create "${server_name}" --ssh-keys "${key_id}" --size "${server_size}" ${image} --region "${REGION}"  --vpc-uuid "${vpc_id}" --user-data-file "${cloud_config}"
 fi
 
 if ( [ "${CLOUDHOST}" = "exoscale" ] )
