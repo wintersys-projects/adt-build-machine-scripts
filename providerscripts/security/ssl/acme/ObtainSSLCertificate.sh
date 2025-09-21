@@ -84,11 +84,13 @@ then
         SYSTEM_FROMEMAIL_ADDRESS="${DNS_USERNAME}"
 fi
 
-if ( [ ! -f ~/.acme.sh/acme.sh ] )
+if ( [ -f ~/.acme.sh/acme.sh ] )
 then
-        ${BUILD_HOME}/installscripts/InstallSocat.sh ${BUILDOS}
-        ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} #"https://acme-v02.api.letsencrypt.org/directory "
+        /bin/rm -r ~/.acme.sh
 fi
+
+${BUILD_HOME}/installscripts/InstallSocat.sh ${BUILDOS}
+${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} #"https://acme-v02.api.letsencrypt.org/directory "
 
 if ( [ "`/bin/grep -r ${SYSTEM_FROMEMAIL_ADDRESS} ~/.acme.sh`" = "" ] )
 then
