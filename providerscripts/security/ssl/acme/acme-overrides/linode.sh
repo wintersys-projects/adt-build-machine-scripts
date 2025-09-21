@@ -45,14 +45,14 @@ dns_linode_v4_rm() {
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
         _domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
-        _record_id="`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$_txtvalue'")).id'`"
+        _record_id="`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`"
 
-        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$_txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" != "" ] )
         then
                 /usr/local/bin/linode-cli domains records-delete $_domain_id $_record_id
         fi
 
-        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$_txtvalue'")).id'`" = "" ] )
+        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
         then
                 _info "Removed, OK"
                 return 0
