@@ -37,8 +37,18 @@ dns="${7}"
 if ( [ "${dns}" = "cloudflare" ] )
 then
 	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
-	#/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
-	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
+
+	count="0"
+	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+ 	do
+  		count="`/usr/bin/expr ${count} + 1`"
+		/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
+	done
+ 
+ 	if ( [ "${count}" = "5" ] )
+  	then
+   		/bin/touch /tmp/END_IT_ALL
+	fi
 fi
 
 websiteurl="${4}"
@@ -49,10 +59,16 @@ dns="${7}"
 
 if ( [ "${dns}" = "digitalocean" ] )
 then
-	/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
-	if ( [ "$?" != "0" ] )
-	then
-		exit 1
+ 	count="0"
+	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+ 	do
+  		count="`/usr/bin/expr ${count} + 1`"
+		/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
+	done
+ 
+ 	if ( [ "${count}" = "5" ] )
+  	then
+   		/bin/touch /tmp/END_IT_ALL
 	fi
 fi
 
@@ -64,13 +80,17 @@ dns="${7}"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
-	/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
-	if ( [ "$?" != "0" ] )
-	then
-		exit 1
+	count="0"
+	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+ 	do
+  		count="`/usr/bin/expr ${count} + 1`"
+		/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
+	done
+ 
+ 	if ( [ "${count}" = "5" ] )
+  	then
+   		/bin/touch /tmp/END_IT_ALL
 	fi
-	#Alternatively:
-	# /usr/bin/curl  -H "X-DNS-Token: ${authkey}" -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d "{\"record\":{\"name\": \"${subdomain}\",\"record_type\": \"A\",\"content\": \"${ip}\",\"ttl\": 120}}" https://api.exoscale.com/dns/v1/domains/${domainurl}/records 1>/dev/null 2>/dev/null
 fi
 
 authkey="${3}"
@@ -82,10 +102,16 @@ dns="${7}"
 if ( [ "${dns}" = "linode" ] )
 then
 	domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
-	/usr/local/bin/linode-cli domains records-create ${domain_id} --type A --name ${subdomain} --target ${ip} --ttl_sec 60
-	if ( [ "$?" != "0" ] )
-	then
-		exit 1
+	count="0"
+	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+ 	do
+		count="`/usr/bin/expr ${count} + 1`"
+		/usr/local/bin/linode-cli domains records-create ${domain_id} --type A --name ${subdomain} --target ${ip} --ttl_sec 60
+	done
+ 
+ 	if ( [ "${count}" = "5" ] )
+  	then
+   		/bin/touch /tmp/END_IT_ALL
 	fi
 fi
 
@@ -97,10 +123,16 @@ dns="${7}"
 
 if ( [ "${dns}" = "vultr" ] )
 then
-	/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
-	if ( [ "$?" != "0" ] )
-	then
-		exit 1
+	count="0"
+	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+ 	do
+  		count="`/usr/bin/expr ${count} + 1`"
+		/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
+	done
+ 
+ 	if ( [ "${count}" = "5" ] )
+  	then
+   		/bin/touch /tmp/END_IT_ALL
 	fi
 fi
 
