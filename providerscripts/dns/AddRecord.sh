@@ -63,6 +63,7 @@ dns="${7}"
 
 if ( [ "${dns}" = "digitalocean" ] )
 then
+	#Make damn sure that the DNS record gets added to the DNS system
 	count="0"
 	while ( [ "${count}" -lt "5" ] && [ "`/usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.data == "'${ip}'").id'`" = "" ] )
 	do
@@ -128,18 +129,19 @@ dns="${7}"
 
 if ( [ "${dns}" = "vultr" ] )
 then
+	#Make damn sure that the DNS record gets added to the DNS system
 	count="0"
-	while ( [ "$?" != "0" ] && ( [ "${count}" -lt "5" ] || [ "${count}" = "0" ] ) )
- 	do
-  		count="`/usr/bin/expr ${count} + 1`"
+	while ( [ "${count}" -lt "5" ] && [ "`/usr/bin/vultr dns record list ${domainurl} -o json | /usr/bin/jq -r '.records[] | select (.data == "'${ip}'").id'`" = "" ] )
+	do
+		count="`/usr/bin/expr ${count} + 1`"
 		/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
 	done
- 
- 	if ( [ "${count}" = "5" ] )
-  	then
-   		/bin/touch /tmp/END_IT_ALL
+
+	if ( [ "${count}" = "5" ] )
+	then
+		/bin/touch /tmp/END_IT_ALL
 	fi
-fi
+fi 
 
 
 
