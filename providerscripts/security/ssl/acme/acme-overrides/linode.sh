@@ -21,7 +21,7 @@ dns_linode_v4_add() {
 
         _info "Adding record"
 
-        _domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
+        _domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
 
         if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
         then
