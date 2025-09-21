@@ -39,7 +39,7 @@ then
 	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
 
 	count="0"
-	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+	while ( [ "$?" != "0" ] && ( [ "${count}" -lt "5" ] || [ "${count}" = "0" ] ) )
  	do
   		count="`/usr/bin/expr ${count} + 1`"
 		/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
@@ -60,7 +60,7 @@ dns="${7}"
 if ( [ "${dns}" = "digitalocean" ] )
 then
  	count="0"
-	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+	while ( [ "$?" != "0" ] && ( [ "${count}" -lt "5" ] || [ "${count}" = "0" ] ) )
  	do
   		count="`/usr/bin/expr ${count} + 1`"
 		/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
@@ -81,7 +81,7 @@ dns="${7}"
 if ( [ "${dns}" = "exoscale" ] )
 then
 	count="0"
-	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+	while ( [ "$?" != "0" ] && ( [ "${count}" -lt "5" ] || [ "${count}" = "0" ] ) )
  	do
   		count="`/usr/bin/expr ${count} + 1`"
 		/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
@@ -103,7 +103,7 @@ if ( [ "${dns}" = "linode" ] )
 then
 	domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
 	count="0"
-	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+	while ( [ "$?" != "0" ] && ( [ "${count}" -lt "5" ] || [ "${count}" = "0" ] ) )
  	do
 		count="`/usr/bin/expr ${count} + 1`"
 		/usr/local/bin/linode-cli domains records-create ${domain_id} --type A --name ${subdomain} --target ${ip} --ttl_sec 60
@@ -124,7 +124,7 @@ dns="${7}"
 if ( [ "${dns}" = "vultr" ] )
 then
 	count="0"
-	while ( [ "$?" != "0" ] && [ "${count}" -lt "5" ] )
+	while ( [ "$?" != "0" ] && ( [ "${count}" -lt "5" ] || [ "${count}" = "0" ] ) )
  	do
   		count="`/usr/bin/expr ${count} + 1`"
 		/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
