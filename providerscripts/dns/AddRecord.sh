@@ -63,16 +63,16 @@ dns="${7}"
 
 if ( [ "${dns}" = "digitalocean" ] )
 then
- 	count="0"
-	while ( [ "$?" != "0" ] && ( [ "${count}" -lt "5" ] || [ "${count}" = "0" ] ) )
- 	do
-  		count="`/usr/bin/expr ${count} + 1`"
+	count="0"
+	while ( [ "${count}" -lt "5" ] && [ "`/usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.data == "'${ip}'").id'`" = "" ] )
+	do
+		count="`/usr/bin/expr ${count} + 1`"
 		/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
 	done
- 
- 	if ( [ "${count}" = "5" ] )
-  	then
-   		/bin/touch /tmp/END_IT_ALL
+
+	if ( [ "${count}" = "5" ] )
+	then
+		/bin/touch /tmp/END_IT_ALL
 	fi
 fi
 
