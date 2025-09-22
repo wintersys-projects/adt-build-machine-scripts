@@ -100,13 +100,7 @@ else
 fi
 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
-
 ~/.acme.sh/acme.sh --remove --domain ${WEBSITE_URL} 
-
-if ( [ -d ~/.acme.sh/${WEBSITE_URL}_ecc ] )
-then
-        /bin/rm -r ~/.acme.sh/${WEBSITE_URL}_ecc
-fi
 
 count="0"
 
