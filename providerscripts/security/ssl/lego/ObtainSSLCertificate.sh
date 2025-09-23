@@ -118,31 +118,31 @@ then
         fi
 
         api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
-        command="CLOUDFLARE_DNS_API_TOKEN="${api_token}" /usr/bin/lego --email ${DNS_USERNAME} --domains ${WEBSITE_URL} --dns ${DNS_CHOICE} ${server} --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
+        command="CLOUDFLARE_DNS_API_TOKEN="${api_token}" /usr/bin/lego --email ${DNS_USERNAME} --domains ${WEBSITE_URL} --dns ${DNS_CHOICE} ${server} --dns.propagation-wait 300s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
 then
-        command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --domains ${WEBSITE_URL} --dns ${DNS_CHOICE} ${server} --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
+        command="DO_AUTH_TOKEN="${DNS_SECURITY_KEY}"  DO_POLLING_INTERVAL=30 DO_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --domains ${WEBSITE_URL} --dns ${DNS_CHOICE} ${server} --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns.propagation-wait 300s --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
 then
         EXOSCALE_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
         EXOSCALE_API_SECRET="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
-        command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
+        command="EXOSCALE_API_KEY=${EXOSCALE_API_KEY} EXOSCALE_API_SECRET=${EXOSCALE_API_SECRET} EXOSCALE_POLLING_INTERVAL=30 EXOSCALE_PROPAGATION_TIMEOUT=600 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns.propagation-wait 300s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
 then
         #LINODE_TOKEN="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-        command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 LINODE_HTTP_TIMEOUT=120 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns-timeout=120 --cert.timeout 120  --dns.propagation-wait 120s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --accept-tos run"
+        command="LINODE_TOKEN=${DNS_SECURITY_KEY}  LINODE_POLLING_INTERVAL=30 LINODE_PROPAGATION_TIMEOUT=600 LINODE_HTTP_TIMEOUT=120 /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns-timeout=120 --cert.timeout 120   --dns.propagation-wait 300s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
         #VULTR_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
-        command="VULTR_API_KEY=${DNS_SECURIRY_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.propagation-wait 300 --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --accept-tos run"
+        command="VULTR_API_KEY=${DNS_SECURIRY_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.propagation-wait 300s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --accept-tos run"
 fi
 
 if ( [ ! -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt ] )
