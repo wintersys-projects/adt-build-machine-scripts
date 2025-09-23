@@ -99,8 +99,8 @@ do
 
                         if ( [ -f ~/.acme.sh/${website_url}_ecc/fullchain.cer ] && [ -f ~/.acme.sh/${website_url}_ecc/${website_url}.key ] )
                         then
-                                /bin/mv ~/.acme.sh/${website_url}_ecc/fullchain.cer ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/fullchain.pem
-                                /bin/mv ~/.acme.sh/${website_url}_ecc/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/privkey.pem
+                                /bin/cp ~/.acme.sh/${website_url}_ecc/fullchain.cer ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/fullchain.pem
+                                /bin/cp ~/.acme.sh/${website_url}_ecc/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/privkey.pem
                         fi
 
                         if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/fullchain.pem ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/privkey.pem ] )
@@ -153,3 +153,13 @@ do
                 fi
         fi
 done
+
+if ( [ -f ~/.acme.sh/${website_url}_ecc/fullchain.cer ] )
+then
+        /bin/rm ~/.acme.sh/${website_url}_ecc/fullchain.cer 
+fi
+
+if ( [ -f ~/.acme.sh/${website_url}_ecc/${website_url}.key ] )
+then
+        /bin/rm ~/.acme.sh/${website_url}_ecc/${website_url}.key
+fi
