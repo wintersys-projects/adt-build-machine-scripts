@@ -131,8 +131,8 @@ do
                 if ( [ -f ~/.acme.sh/${website_url}_ecc/fullchain.cer ] && [ -f ~/.acme.sh/${website_url}_ecc/${website_url}.key ] )
                 then
                         #All this is about is putting the generated certificate files in the right place on our nice new webserver
-                        /bin/mv ~/.acme.sh/${website_url}_ecc/fullchain.cer ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/fullchain.pem
-                        /bin/mv ~/.acme.sh/${website_url}_ecc/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/privkey.pem
+                        /bin/cp ~/.acme.sh/${website_url}_ecc/fullchain.cer ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/fullchain.pem
+                        /bin/cp ~/.acme.sh/${website_url}_ecc/${website_url}.key ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/privkey.pem
 
                         if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/fullchain.pem ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${website_url}/privkey.pem ] )
                         then
