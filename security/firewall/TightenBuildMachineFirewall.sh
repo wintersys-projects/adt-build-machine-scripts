@@ -40,10 +40,10 @@ status () {
 	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
-if ( [ -f /var/spool/cron/crontabs/root ] )
-then
-	/bin/sed -i "/^#/d" /var/spool/cron/crontabs/root
-fi
+#if ( [ -f /var/spool/cron/crontabs/root ] )
+#then#
+#	/bin/sed -i "/^#/d" /var/spool/cron/crontabs/root
+#fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
@@ -63,21 +63,21 @@ fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${auth_bucket}"
 
-if ( [ ! -f /var/spool/cron/crontabs/root ] )
-then
-	/bin/touch /var/spool/cron/crontabs/root
-fi
+#if ( [ ! -f /var/spool/cron/crontabs/root ] )
+#then
+	#/bin/touch /var/spool/cron/crontabs/root
+#fi
 
-if ( [ "`/usr/bin/crontab -l | /bin/grep TightenBuildMachineFirewall.sh`" = "" ] )
-then
-	/bin/echo "*/1 * * * * ${BUILD_HOME}/security/firewall/TightenBuildMachineFirewall.sh" >> /var/spool/cron/crontabs/root
-	/usr/bin/crontab -u root /var/spool/cron/crontabs/root 2>/dev/null
-fi
+#if ( [ "`/usr/bin/crontab -l | /bin/grep TightenBuildMachineFirewall.sh`" = "" ] )
+#then
+#	/bin/echo "*/1 * * * * ${BUILD_HOME}/security/firewall/TightenBuildMachineFirewall.sh" >> /var/spool/cron/crontabs/root
+#	/usr/bin/crontab -u root /var/spool/cron/crontabs/root 2>/dev/null
+#fi
 
-if ( [ "`/usr/bin/crontab -l | /bin/grep 'apt' | /bin/grep 'update' | /bin/grep 'upgrade'`" = "" ] )
-then
-	/bin/echo "45 4 * * * /usr/bin/apt -y -qq update && /usr/bin/apt -y -qq upgrade && /usr/sbin/shutdown -r now" >> /var/spool/cron/crontabs/root
-fi
+#if ( [ "`/usr/bin/crontab -l | /bin/grep 'apt' | /bin/grep 'update' | /bin/grep 'upgrade'`" = "" ] )
+#then
+#	/bin/echo "45 4 * * * /usr/bin/apt -y -qq update && /usr/bin/apt -y -qq upgrade && /usr/sbin/shutdown -r now" >> /var/spool/cron/crontabs/root
+#fi
 
 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
 then
