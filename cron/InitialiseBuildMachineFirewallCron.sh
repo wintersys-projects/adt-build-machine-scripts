@@ -1,3 +1,5 @@
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 if ( [ "`/usr/bin/crontab -l | /bin/grep TightenBuildMachineFirewall.sh`" = "" ] )
 then
         /bin/echo "*/1 * * * * ${BUILD_HOME}/security/firewall/TightenBuildMachineFirewall.sh" >> /var/spool/cron/crontabs/root
