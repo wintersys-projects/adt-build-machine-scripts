@@ -13,6 +13,9 @@ This is where the builddescriptors are for the current build. You can make chang
 **${BUILD_HOME}/adt-build-machine-scripts/buildscripts**  
 These scripts will build different classes of server machine, for example, database, webserver or autoscaler machine types  
 
+**${BUILD_HOME}/adt-build-machine-scripts/cron**
+Scripts to do with any cron tasks that need to be run on your build machine (note, if your build machine is not online 24/7 you will need to review what cronjobs are set and perform them manually)
+
 **${BUILD_HOME}/adt-build-machine-scripts/helperscripts**  
 Utility scripts that can help you manage different workflows that your servers need  
 
