@@ -30,6 +30,8 @@ status () {
 
 website_url="${1}"
 auth="${2}"
+build_identifier="${3}"
+cloudhost="${4}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 SSL_GENERATION_METHOD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_METHOD`"
@@ -37,6 +39,17 @@ SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GEN
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
+
+
+if ( [ "${build_identifier}" != "" ] )
+then
+        BUILD_IDENTIFIER="${build_identifier}"
+fi
+
+if ( [ "${cloudhost}" != "" ] )
+then
+        CLOUDHOST="${cloudhost}"
+fi
 
 if ( [ "${website_url}" != "" ] )
 then
