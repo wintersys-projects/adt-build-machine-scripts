@@ -368,7 +368,6 @@ fi
 
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
-${BUILD_HOME}/cron/InitialiseCrontabs.sh
 
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 
@@ -392,6 +391,7 @@ fi
 
 ${BUILD_HOME}/initscripts/InitialiseUniqueConfigDatastore.sh
 
+${BUILD_HOME}/cron/InitialiseCrontabs.sh
 # Make a few pre-flight checks to check that we are good to go
 ${BUILD_HOME}/initscripts/PreFlightChecks.sh 
 
