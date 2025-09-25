@@ -40,6 +40,10 @@ CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
 
+if ( [ "`/usr/bin/pwd`" != "${BUILD_HOME}" ] )
+then
+        cd ${BUILD_HOME}
+fi
 
 if ( [ "${build_identifier}" != "" ] )
 then
