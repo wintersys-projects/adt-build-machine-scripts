@@ -55,6 +55,12 @@ then
         exec 1>>/root/logs/${out_file}
         err_file="cron-logging-err"
         exec 2>>/root/logs/${err_file}
+        /bin/cp /dev/null /root/logs/${out_file}
+        /bin/cp /dev/null /root/logs/${err_file}
+        if ( [ "${HARDCORE}" = "1" ] )
+        then
+                /bin/touch /root/HARDCORE
+        fi
 fi
 
 if ( [ "${cloudhost}" != "" ] )
@@ -199,4 +205,9 @@ then
                 status "SSL Certificate not successfully provisioned/generated"
                 /bin/touch /tmp/END_IT_ALL
         fi
+fi
+
+if ( [ -f /root/HARDCORE ] && [ "${website_url}" = "none" ] )
+then
+        /bin/rm /root/HARDCORE
 fi
