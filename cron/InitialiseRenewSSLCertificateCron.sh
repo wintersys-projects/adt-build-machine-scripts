@@ -32,13 +32,13 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 
 if ( [ "`/usr/bin/crontab -l | /bin/grep InitialiseNewSSLCertificate.sh | /bin/grep -w "${BUILD_IDENTIFIER}" | /bin/grep -w "${CLOUDHOST}"`" = "" ] )
 then
-        /bin/echo '#10 3 * * * '${BUILD_HOME}'/initscripts/InitialiseNewSSLCertificate.sh "none" "none" "'${BUILD_IDENTIFIER}'" '"${CLOUDHOST}'"'' >> /var/spool/cron/crontabs/root
+        /bin/echo '#10 3 * * * '${BUILD_HOME}'/initscripts/InitialiseNewSSLCertificate.sh "none" "none" "'${BUILD_IDENTIFIER}'" "'${CLOUDHOST}'"' >> /var/spool/cron/crontabs/root
         /usr/bin/crontab -u root /var/spool/cron/crontabs/root 2>/dev/null
 fi
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-        if ( [ "`/usr/bin/crontab -l | /bin/grep "InitialiseNewSSLCertificate.sh" | /bin/grep -w "${BUILD_IDENTIFIER}" | /bin/grep -w "${CLOUDHOST}" | /bin/grep "^#"`" != "" ] )
+        if ( [ "`/usr/bin/crontab -l | /bin/grep "InitialiseNewSSLCertificate.sh" | /bin/grep "${BUILD_IDENTIFIER}" | /bin/grep "${CLOUDHOST}" | /bin/grep "^#"`" != "" ] )
         then
                 status "Please note: the Initialise New SSL Certificate cronjob is currently commented out. If you want to enable SSL certificate renewal please uncomment the line shown below in your crontab"
                 status "`/usr/bin/crontab -l | /bin/grep "InitialiseNewSSLCertificate.sh" | /bin/grep "${BUILD_IDENTIFIER}" | /bin/grep "${CLOUDHOST}" | /bin/grep "^#"`"
