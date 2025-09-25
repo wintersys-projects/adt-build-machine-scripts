@@ -51,7 +51,7 @@ then
         CLOUDHOST="${cloudhost}"
 fi
 
-if ( [ "${website_url}" != "" ] )
+if ( [ "${website_url}" != "" ] && [ "${website_url}" != "none" ] )
 then
         WEBSITE_URL="${website_url}"
 else
