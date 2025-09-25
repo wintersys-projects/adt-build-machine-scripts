@@ -38,7 +38,7 @@ fi
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-        if ( [ "`/usr/bin/crontab -l | /bin/grep "InitialiseNewSSLCertificate.sh" | /bin/grep "${BUILD_IDENTIFIER}" | /bin/grep "${CLOUDHOST}" | /bin/grep "^#"`" != "" ] )
+        if ( [ "`/usr/bin/crontab -l | /bin/grep "InitialiseNewSSLCertificate.sh" | /bin/grep -w "${BUILD_IDENTIFIER}" | /bin/grep -w "${CLOUDHOST}" | /bin/grep "^#"`" != "" ] )
         then
                 status "Please note: the Initialise New SSL Certificate cronjob is currently commented out. If you want to enable SSL certificate renewal please uncomment the line shown below in your crontab"
                 status "`/usr/bin/crontab -l | /bin/grep "InitialiseNewSSLCertificate.sh" | /bin/grep "${BUILD_IDENTIFIER}" | /bin/grep "${CLOUDHOST}" | /bin/grep "^#"`"
