@@ -114,7 +114,7 @@ then
         generate_new="1"
 fi
 
-if ( [ "${generate_new}" = "1" ] || [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ] || [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ] )
+if ( [ "${generate_new}" = "1" ] )
 then
         #IP has been added to the DNS provider and now we have to set up the SSL certificate for this webserver
 
