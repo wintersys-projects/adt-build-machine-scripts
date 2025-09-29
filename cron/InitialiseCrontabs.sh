@@ -29,5 +29,5 @@ fi
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 ${BUILD_HOME}/cron/InitialiseBuildMachineFirewallCron.sh
-${BUILD_HOME}/cron/InitialiseUpdateAndUpgradeFromCron.sh
+${BUILD_HOME}/cron/InitialiseUpdateAndUpgradeCron.sh
 ${BUILD_HOME}/cron/InitialiseRenewSSLCertificateCron.sh
