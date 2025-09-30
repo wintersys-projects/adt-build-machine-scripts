@@ -45,6 +45,8 @@ TIMEZONE_CITY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_TIMEZONE_
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 TIMEZONE="${TIMEZONE_CONTINENT}/${TIMEZONE_CITY}"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+DB_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_USERNAME`"
+DB_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PASSWORD`"
 
 #if ( [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
 #then
@@ -73,17 +75,6 @@ done < ${BUILD_HOME}/builddescriptors/database_descriptor.dat
 # get the database configuration settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 database_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/database_configuration_settings.dat | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
-#setup the webserver configuration settings
-#
-#if ( [ "`/bin/echo ${DB_USERNAME} | /bin/grep ':::'`" != "" ] )
-#then
-#	DB_USERNAME="`/bin/echo ${DB_USERNAME} | /bin/sed 's/.*::://g'`"
-#fi
-
-#if ( [ "`/bin/echo ${DB_PASSWORD} | /bin/grep ':::'`" != "" ] )
-#then
-#	DB_PASSWORD="`/bin/echo ${DB_PASSWORD} | /bin/sed 's/.*::://g'`"
-#fi
 
 # get the build style settings zipped up and base64 encoded so that it takes up less space in the cloud-init script which is size limited
 build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstyles.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
