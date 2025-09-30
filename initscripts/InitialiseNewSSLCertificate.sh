@@ -114,20 +114,23 @@ then
                 /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem.$$.old
                 /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem.$$.old
                 generate_new="1"
-        else
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/fullchain.pem`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/privkey.pem`" = "" ] )
-                then                      
-                        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ${ssl_bucket}/fullchain.pem
-                        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ${ssl_bucket}/privkey.pem
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ssl/${WEBSITE_URL}/privkey.pem                        
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ssl/${WEBSITE_URL}/fullchain.pem
-                fi
         fi
 fi
 
 if ( [ "${website_url}" = "none" ] || ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ] || [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ] ) )
 then
         generate_new="1"
+else
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/fullchain.pem`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/privkey.pem`" = "" ] )
+        then
+                if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ] || [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ] )
+                then
+                        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ${ssl_bucket}/fullchain.pem
+                        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ${ssl_bucket}/privkey.pem
+                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ssl/${WEBSITE_URL}/privkey.pem
+                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ssl/${WEBSITE_URL}/fullchain.pem
+                fi
+        fi
 fi
 
 if ( [ "${generate_new}" = "1" ] )
