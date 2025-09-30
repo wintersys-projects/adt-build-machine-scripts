@@ -112,6 +112,14 @@ then
         if ( [ "`/usr/bin/openssl x509 -checkend 60480000 -noout -in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem | /bin/grep 'Certificate will expire'`" != "" ] )
         then
                 generate_new="1"
+        else
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/fullchain.pem`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/privkey.pem`" = "" ] )
+                then                      
+                        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ${ssl_bucket}/fullchain.pem
+                        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ${ssl_bucket}/privkey.pem
+                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem ssl/${WEBSITE_URL}/privkey.pem                        
+                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ssl/${WEBSITE_URL}/fullchain.pem
+                fi
         fi
 fi
 
