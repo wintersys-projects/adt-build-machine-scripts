@@ -17,7 +17,6 @@ export PHP_VERSION="8.4"
 export BUILD_ARCHIVE_CHOICE="hourly"
 export APPLICATION_NAME="Demo Application"
 
-
 #####S3 Datastore Settings#######
 export S3_ACCESS_KEY=""  #MANDATORY
 export S3_SECRET_KEY=""  #MANDATORY
@@ -40,8 +39,8 @@ export CLOUDHOST_ACCOUNT_ID=""  #MANDATORY for Exoscale - this should be the acc
 ######DNS Settings##########
 export DNS_USERNAME=""  #MANDATORY
 export DNS_SECURITY_KEY=""   #MANDATORY The access key and secret key . You need to enter this here as ${ACCESS_KEY}:${SECRET_KEY} when DNS_CHOICE is exoscale
+                             #MANDATORY  (note you need a API token AND account ID here <accountid>:<api-token> if you use cloudflare - see the spec) 
 export DNS_CHOICE="exoscale" #you will need to set your DNS nameservers according to this choice
-
 
 #####Webserver Settings########
 export WEBSITE_DISPLAY_NAME="" #MANDATORY
