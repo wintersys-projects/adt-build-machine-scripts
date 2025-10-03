@@ -208,6 +208,11 @@ then
 	${log_command} "You are deploying an authentication server and it looks like your main DNS provider is set to cloudflare which it shouldn't be"
 fi
 
+if ( [ "${DNS_CHOICE}" = "cloudflare" ] && [ "`/bin/echo ${DNS_SECURITY_KEY} | /bin/grep ':::'`" = "" ] )
+then
+	${log_command} "Your value for DNS_SECURITY_KEY seems to be malformed"
+fi
+
 if ( [ "`/bin/grep "^WEBSERVER_CHOICE " ${quick_specification} | /bin/grep -w "${WEBSERVER_CHOICE}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable WEBSERVER_CHOICE (${WEBSERVER_CHOICE}) doesn't appear to be valid please review"
