@@ -49,6 +49,6 @@ then
 	fi
 	if (  [ "${APPLICATION}" = "moodle" ] )
 	then
-		headfile="index.php"
+		headfile="public/index.php"
 	fi
 fi
