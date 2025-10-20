@@ -86,7 +86,7 @@ then
 		
 		if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
 		then
-			allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32 --allow-list ${VPC_IP_RANGE}"
+			allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32"
 		else
 			allow_list=" --allow-list ${VPC_IP_RANGE}"
 		fi
