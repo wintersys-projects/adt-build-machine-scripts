@@ -88,7 +88,7 @@ then
 		then
 			allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32"
 		else
-			allow_list=" --allow-list ${VPC_IP_RANGE}"
+			allow_list=" --allow_list ${VPC_IP_RANGE}"		
 		fi
 
 		database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
