@@ -346,8 +346,10 @@ then
                         if ( [ "${MULTI_REGION}" = "1" ] )
                         then
                                 public_access="--private_network.public_access true"
+                                db_scope_prefix="public-"
                         else
                                 public_access="--private_network.public_access false"
+                                db_scope_prefix="private-"
                         fi
 
                         if ( [ "${database_type}" = "MySQL" ] )
@@ -401,7 +403,7 @@ then
 
                                 #Take a note of all our database details
                                 export CLUSTER_NAME="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
-                                export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
+                                export DB_IDENTIFIER="${db_scope_prefix}`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
                                 export DB_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].username'`"
                                 export DB_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --json | /usr/bin/jq -r '.[].password'`"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases mysql-list --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
