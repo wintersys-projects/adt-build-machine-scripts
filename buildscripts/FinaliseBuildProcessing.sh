@@ -415,6 +415,14 @@ then
 	fi
 fi
 
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
+then
+        for as_active_ip in ${as_active_ips}
+        do
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/TightenDBaaSFirewall.sh" 2>/dev/null
+        done
+fi
+
 status "Seeing this message means I am confident that it is 'all systems go' (once all systems go no more capitalism or communism, right?)"
 
 #Tell our infrastructure, 'yes, I am happy that you are up and running and functioning correctly'.
