@@ -84,7 +84,7 @@ then
 		#The DBaaS solution from linode is not accessible from the vpc ip address range so we have to allow the public IP addresses individually
 		VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 		
-		if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
+		if ( [ "${MULTI_REGION}" = "1" ] )
 		then
 			allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32"
 		else
