@@ -185,6 +185,21 @@ else
 	rp_ws_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
+
+if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
+then
+	if ( [ "${no_autoscalers}" = "1" ] )
+	then
+		/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/TightenDBaaSFirewall.sh" 2>/dev/null
+	elif ( [ "${no_autoscalers}" != "0" ] )
+	then
+        for as_active_ip in ${as_active_ips}
+        do
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/TightenDBaaSFirewall.sh" 2>/dev/null
+        done
+	fi
+fi
+
 #This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
 status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
 for ws_active_ip in ${ws_active_ips}
@@ -414,20 +429,6 @@ then
 				done
 			done
 		done
-	fi
-fi
-
-if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
-then
-	if ( [ "${no_autoscalers}" = "1" ] )
-	then
-		/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/TightenDBaaSFirewall.sh" 2>/dev/null
-	elif ( [ "${no_autoscalers}" != "0" ] )
-	then
-        for as_active_ip in ${as_active_ips}
-        do
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/TightenDBaaSFirewall.sh" 2>/dev/null
-        done
 	fi
 fi
 
