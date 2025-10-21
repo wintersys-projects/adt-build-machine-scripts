@@ -165,8 +165,12 @@ then
 			/bin/touch /tmp/END_IT_ALL
 		fi 		
 	fi
-	${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
-	${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
+	if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
+	then
+		${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
+	else
+		${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
+	fi
 fi
 
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
