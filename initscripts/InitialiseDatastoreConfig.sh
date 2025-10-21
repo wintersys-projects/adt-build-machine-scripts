@@ -185,10 +185,3 @@ then
 	done
 fi
 
-
-#status "Creating a new configuration bucket for build (${BUILD_IDENTIFIER})"
-#${BUILD_HOME}/providerscripts/datastore/configwrapper/MountConfigDatastore.sh 
-#if ( [ "$?" = "0" ] )
-#then
-#	status "New configuration bucket is located at: (s3://${website_bucket}-config-${identifier}) for you"
-#fi
