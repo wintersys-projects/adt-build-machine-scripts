@@ -164,8 +164,8 @@ then
 		then
 			/bin/touch /tmp/END_IT_ALL
 		fi 		
-		${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
 	fi
+	${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
 	${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
 fi
 
