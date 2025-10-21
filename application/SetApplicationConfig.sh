@@ -50,18 +50,18 @@ DB_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`"
 DB_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`"
 DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`"
 DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PORT'`"
-DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_IDENTIFIER'`"
-DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
+#DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_IDENTIFIER'`"
+#DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 
-if ( [ "${DB_IDENTIFIER}" = "" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
-then
-        DBaaS_PUBLIC_ENDPOINT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBAAS_PUBLIC_ENDPOINT`"
-        if ( [ "${DBaaS_PUBLIC_ENDPOINT}" != "" ] )
-        then
-                DB_IDENTIFIER="${DBaaS_PUBLIC_ENDPOINT}"
-				${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DB_IDENTIFIER}"
-        fi
-fi
+#if ( [ "${DB_IDENTIFIER}" = "" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+#then
+#        DBaaS_PUBLIC_ENDPOINT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DBAAS_PUBLIC_ENDPOINT`"
+#        if ( [ "${DBaaS_PUBLIC_ENDPOINT}" != "" ] )
+#        then
+#                DB_IDENTIFIER="${DBaaS_PUBLIC_ENDPOINT}"
+#				${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DB_IDENTIFIER}"
+#        fi
+#fi
 
 if ( [ "`/bin/echo ${DB_USERNAME} | /bin/grep ':::'`" != "" ] )
 then
