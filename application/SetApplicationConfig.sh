@@ -59,6 +59,7 @@ then
         if ( [ "${DBaaS_PUBLIC_ENDPOINT}" != "" ] )
         then
                 DB_IDENTIFIER="${DBaaS_PUBLIC_ENDPOINT}"
+				${BUILD_HOME}/helperscripts/SetVariableValue.sh "DB_IDENTIFIER=${DB_IDENTIFIER}"
         fi
 fi
 
