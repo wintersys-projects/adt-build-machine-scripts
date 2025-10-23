@@ -190,12 +190,12 @@ if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
 then
 	if ( [ "${no_autoscalers}" = "1" ] )
 	then
-		/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/TightenDBaaSFirewall.sh" 2>/dev/null
+		/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/AdjustDBaaSFirewall.sh" 2>/dev/null
 	elif ( [ "${no_autoscalers}" != "0" ] )
 	then
         for as_active_ip in ${as_active_ips}
         do
-                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/TightenDBaaSFirewall.sh" 2>/dev/null
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/AdjustDBaaSFirewall.sh" 2>/dev/null
         done
 	fi
 fi
