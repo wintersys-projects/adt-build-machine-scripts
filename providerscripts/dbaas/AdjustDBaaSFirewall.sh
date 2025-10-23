@@ -56,6 +56,11 @@ then
 
 	if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 	then
+
+		cluster_name="`/bin/echo ${dbaas} | /usr/bin/awk '{print $8}'`"
+	cluster_id="`/usr/local/bin/doctl database list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
+
+	/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${ip}
 		:
 		#Because the DBaaS setup is in the same VPC as your machines we don't need to tighten its firewall because its only accessible from within the VPC
 	fi
