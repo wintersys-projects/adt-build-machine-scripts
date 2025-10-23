@@ -92,6 +92,7 @@ then
 	/usr/sbin/ip6tables -P INPUT DROP
 	/usr/sbin/ip6tables -P FORWARD DROP
 	/usr/sbin/ip6tables -P OUTPUT DROP
-	${BUILD_HOME}/helperscripts/RunServiceCommand.sh netfilter-persistent save
+    /usr/sbin/iptables-save
+	/usr/sbin/ip6tables-save
 	/bin/touch /root/FIREWALL-INITIALISED
 fi
