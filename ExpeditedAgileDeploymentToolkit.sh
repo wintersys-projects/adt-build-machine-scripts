@@ -366,6 +366,12 @@ else
 	/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 fi
 
+if ( [ -f ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:* ] )
+then
+        /bin/rm ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:*
+fi
+/bin/touch ${BUILD_HOME}/runtimedata/BUILDMACHINEPORT:${SSH_PORT}
+
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
 
