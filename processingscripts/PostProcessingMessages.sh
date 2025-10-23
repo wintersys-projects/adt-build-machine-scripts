@@ -207,7 +207,7 @@ fi
 #Remind the deployer how the firewall is configured
 status "#############################BUILD-MACHINE_FIREWALL###############################################################################################"
 status "Your build machine is looking for its firewall settings in the bucket: s3://`/bin/ls -l /root/FIREWALL-BUCKET* | /usr/bin/awk -F':' '{print $NF}'`"
-status "Please review: https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts/blob/main/doco/AgileToolkitDeployment/TightenBuildMachineAccess.md"
+status "Please review: https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts/blob/main/doco/AgileToolkitDeployment/AdjustBuildMachineAccess.md"
 status "##################################################################################################################################################"
 
 status "################################IMPORTANT#############################################################################################"
