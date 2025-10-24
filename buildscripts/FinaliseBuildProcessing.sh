@@ -185,9 +185,9 @@ else
 	rp_ws_active_ips="`${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 fi
 
-
-if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
+if ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 then
+	status "Adjusting DBaaS firewall"
 	if ( [ "${no_autoscalers}" = "1" ] )
 	then
 		/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${as_active_ip} "${SUDO} /home/${SERVER_USER}/providerscripts/dbaas/AdjustDBaaSFirewall.sh" 2>/dev/null
