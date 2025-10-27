@@ -41,33 +41,35 @@ BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIF
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 DATABASE_DBaaS_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_DBaaS_INSTALLATION_TYPE`"
 DB_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_NAME`"
+VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 
 if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 then
-	webserver_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
-	database_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+	/usr/local/bin/doctl databases firewalls replace ${cluster_id} --rule ip_addr:${VPC_IP_RANGE}
+#	webserver_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "ws-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
+#	database_ip="`${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
 
-	if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
-	then    
-		database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
-		database_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
-	fi
+#	if ( [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep DBAAS`" != "" ] )
+#	then    
+#		database_details="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/sed 's/^.*DBAAS://g'`"
+#		database_region="`/bin/echo ${database_details} | /usr/bin/awk -F':' '{print $2}'`"
+#	fi
 
 
-	if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
-	then
-		dbaas="${DATABASE_DBaaS_INSTALLATION_TYPE}"
-		cluster_name="`/bin/echo ${dbaas} | /usr/bin/awk '{print $8}'`"
-		cluster_id="`/usr/local/bin/doctl database list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
-
-		if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
-		then
-			/usr/local/bin/doctl databases firewalls replace ${cluster_id} --rule ip_addr:${webserver_ip}
-			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
-		elif ( [ "${MULTI_REGION}" != "0" ] )
-			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${webserver_ip}
-			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
-		fi
+#	if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
+#	then
+#		dbaas="${DATABASE_DBaaS_INSTALLATION_TYPE}"
+#		cluster_name="`/bin/echo ${dbaas} | /usr/bin/awk '{print $8}'`"
+#		cluster_id="`/usr/local/bin/doctl database list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
+#
+#		if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
+#		then
+#			/usr/local/bin/doctl databases firewalls replace ${cluster_id} --rule ip_addr:${webserver_ip}
+#			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
+#		elif ( [ "${MULTI_REGION}" != "0" ] )
+#			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${webserver_ip}
+#			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
+#		fi
 		#If multi region is 0 then we should be in the same VPC as our database so no need to add any rules here
 	fi
 
@@ -76,31 +78,31 @@ then
 	then
 		#The DBaaS solution from exoscale is not accessible from the private network ip address range so we have to allow the public IP addresses individually
 
-		ips="${webserver_ip},${database_ip}"
-		database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
+		#ips="${webserver_ip},${database_ip}"
+	#	database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
 
 		if ( [ "${database_type}" = "Postgres" ] )
 		then
-			status "Tightening the firewall on your postgres database for your webserver with following IPs: ${ips}"    
-			/usr/bin/exo dbaas update --zone ${database-region} ${DB_NAME} --pg-ip-filter=${ips}
+			status "Tightening the firewall on your postgres database for your webserver with following IPs: ${VPC_IP_RANGE}"    
+			/usr/bin/exo dbaas update --zone ${database-region} ${DB_NAME} --pg-ip-filter=${VPC_IP_RANGE}
 		elif ( [ "${database_type}" = "MySQL" ] )
 		then
-			status "Tightening the firewall on your mysql database for your webserver with following IPs: ${ips}"    
-			/usr/bin/exo dbaas update --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${ips}
+			status "Tightening the firewall on your mysql database for your webserver with following IPs: ${VPC_IP_RANGE}"    
+			/usr/bin/exo dbaas update --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${VPC_IP_RANGE}
 		fi
 	fi
 
 	if ( [ "${CLOUDHOST}" = "linode" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
 	then
 		#The DBaaS solution from linode is not accessible from the vpc ip address range so we have to allow the public IP addresses individually
-		VPC_IP_RANGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh VPC_IP_RANGE`"
 		
-		if ( [ "${MULTI_REGION}" = "1" ] )
-		then
-			allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32"
-		else
-			allow_list=" --allow_list ${VPC_IP_RANGE}"		
-		fi
+		
+	#	if ( [ "${MULTI_REGION}" = "1" ] )
+#		then
+#			allow_list=" --allow_list ${webserver_ip}/32 --allow_list ${database_ip}/32"
+#		else
+#			allow_list=" --allow_list ${VPC_IP_RANGE}"		
+#		fi
 
 		database_type="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $1}'`"
 		label="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $7}'`"
@@ -108,11 +110,11 @@ then
 		if ( [ "${database_type}" = "MySQL" ] )
 		then
 			database_id="`/usr/local/bin/linode-cli --json databases mysql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
-			/usr/local/bin/linode-cli databases mysql-update ${database_id} ${allow_list}
+			/usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list ${VPC_IP_RANGE}
 		elif ( [ "${database_type}" = "Postgres" ] )
 		then
 			database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | /usr/bin/jq '.[] | select(.label | contains ("'${label}'")) | .id'`"
-			/usr/local/bin/linode-cli databases mysql-update ${database_id} ${allow_list}
+			/usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list ${VPC_IP_RANGE}
 		fi
 	fi
 
@@ -122,13 +124,13 @@ then
 		cluster_name="`/bin/echo ${dbaas} | /usr/bin/awk '{print $8}'`"
 		cluster_id="`/usr/local/bin/doctl database list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
 
-		if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] )
+		if ( ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) || [ "${MULTI_REGION}" = "0" ] )
 		then
-			/usr/local/bin/doctl databases firewalls replace ${cluster_id} --rule ip_addr:${webserver_ip}
-			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
-		elif ( [ "${MULTI_REGION}" != "0" ] )
-			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${webserver_ip}
-			/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
+			/usr/local/bin/doctl databases firewalls replace ${cluster_id} --rule ip_addr:${VPC_IP_RANGE}
+		#	/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
+	#	elif ( [ "${MULTI_REGION}" != "0" ] )
+	#		/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${webserver_ip}
+		#	/usr/local/bin/doctl databases firewalls append ${cluster_id} --rule ip_addr:${database_ip}
 		fi
 
 		#Because the DBaaS setup is in the same VPC as your machines we don't need to tighten its firewall because its only accessible from within the VPC
