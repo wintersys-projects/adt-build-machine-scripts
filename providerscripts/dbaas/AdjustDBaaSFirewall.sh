@@ -54,7 +54,7 @@ then
         if ( [ "${CLOUDHOST}" = "digitalocean" ] && [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] )
         then
                 dbaas="${DATABASE_DBaaS_INSTALLATION_TYPE}"
-                cluster_name="`/bin/echo ${dbaas} | /usr/bin/awk '{print $8}'`"
+                cluster_name="`/bin/echo ${dbaas} | /usr/bin/awk -F':' '{print $8}'`"
                 cluster_id="`/usr/local/bin/doctl database list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
                 /usr/local/bin/doctl databases firewalls replace ${cluster_id} --rule ip_addr:${VPC_IP_RANGE}
         fi
