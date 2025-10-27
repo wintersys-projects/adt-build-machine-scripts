@@ -128,31 +128,7 @@ then
                                 /bin/sleep 30
                         done
 
-                        #tighten the firewall on our cluster whether its a new or pre-existing cluster in the case of a preexisting one ip addresses might already be allowed through the firewall
-                        status "Tightening the firewall on your database cluster"
-                        uuids="`/usr/local/bin/doctl databases firewalls list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.cluster_uuid == "'${cluster_id}'").uuid'`"
-
-                        if ( [ "${uuids}" != "" ] )
-                        then
-                                for uuid in ${uuids}  
-                                do
-                                        /usr/local/bin/doctl databases firewalls remove ${cluster_id} --uuid ${uuid}
-                                done
-                        fi
-
-                        #create the database in the cluster
-                        #  status "Creating a database named ${db_name} in cluster: ${cluster_id}"
-                        #  /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
-
                         status "Probing for the database cluster ${cluster_name} to reach online status - Please Wait...."
-
-                        #wait for the database to be ready
-                        #  while ( [ "`/usr/local/bin/doctl databases db list ${cluster_id} -o json | /usr/bin/jq -r '.[] | select (.name == "'${db_name}'").name'`" = "" ] )
-                        #  do
-                        #          /bin/sleep 5
-                        #          /usr/local/bin/doctl databases db create ${cluster_id} ${db_name}
-                        #  done
-
 
                         while ( [ "`/usr/local/bin/doctl databases list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'" and .engine == "'${cluster_engine}'").status'`" != "online" ] )
                         do
