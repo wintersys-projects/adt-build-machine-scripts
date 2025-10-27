@@ -142,7 +142,7 @@ then
 				rules=${rules}" protocol:tcp,ports:22,address:${VPC_IP_RANGE} protocol:tcp,ports:443,address:0.0.0.0/0 "
 			fi
 
-			rules=${rules}"  protocol:tcp,ports:443,address:${VPC_IP_RANGE} " 
+            rules=${rules}"  protocol:tcp,ports:443,address:${VPC_IP_RANGE} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE}"			
 			rules=${rules}" protocol:icmp,address:0.0.0.0/0"
 			rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"
 		fi
