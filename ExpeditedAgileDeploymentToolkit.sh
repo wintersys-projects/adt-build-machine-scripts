@@ -460,6 +460,9 @@ fi
 ${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 #Provision any DBaaS database service that the build requires 
 ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
+# If there is a DBaaS instance running then we can adjust its firewall by only allowing connections from machines in the same VPC
+# where and if this is possible
+${BUILD_HOME}/providerscripts/dbaas/AdjustDBaaSFirewall.sh
 
 # If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
 if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
@@ -513,9 +516,6 @@ then
 	${BUILD_HOME}/buildscripts/BuildDatabase.sh
 fi
 
-# If there is a DBaaS instance running then we can adjust its firewall by only allowing connections from machines in the same VPC
-# where and if this is possible
-${BUILD_HOME}/providerscripts/dbaas/AdjustDBaaSFirewall.sh
 # Put out any post processing messages to the user
 ${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
 
