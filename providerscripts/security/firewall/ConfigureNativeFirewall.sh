@@ -122,8 +122,6 @@ then
 				if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 				then
 					rules="protocol:tcp,ports:443,address:${build_machine_ip}/32 protocol:tcp,ports:${SSH_PORT},address:${build_machine_ip}/32"
-				else
-					rules="protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE}"
 				fi
 			fi
 
