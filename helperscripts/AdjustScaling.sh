@@ -33,6 +33,12 @@ read x
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
+if ( [ "`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`" != "1" ] )
+then
+        /bin/echo "You are not in PRODUCTION mode, cannot set scaling parameters"
+        exit
+fi
+
 /bin/echo "Which cloudhost service are you using? 1) Digital Ocean 2) Exoscale 3) Linode 4) Vultr. Please Enter the number for your cloudhost"
 read response
 if ( [ "${response}" = "1" ] )
