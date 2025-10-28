@@ -280,10 +280,10 @@ then
                         #Open up fully until we are installed and then tighten up the firewall later on from the autoscaler
                         if ( [ "${database_engine}" = "mysql" ] )
                         then 
-                                /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --mysql-ip-filter="0.0.0.0/0"
+                                /usr/bin/exo dbaas update --quiet --zone ${database_region} ${db_name} --mysql-ip-filter="0.0.0.0/0"
                         elif ( [ "${database_engine}" = "pg" ] )
                         then
-                                /usr/bin/exo dbaas update --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
+                                /usr/bin/exo dbaas update --quiet --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
                         fi
 
                         status "Please go to the Exoscale GUI system of your new database and switch off 'STRICT_ALL_TABLES' and 'sql_require_primary_key'"
