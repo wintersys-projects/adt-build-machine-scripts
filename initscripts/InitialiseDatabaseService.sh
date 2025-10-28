@@ -265,7 +265,7 @@ then
                         done
 
                         status ""
-                        status "Database with name ${db_name} is now running (press <enter> to continue)"
+                        status "Database with name ${db_name} is now running"
                         status ""
 
                         #Take note of all of the database's configuration details
@@ -278,13 +278,13 @@ then
                         export DATABASE_REGION="${database_region}"
 
                         #Open up fully until we are installed and then tighten up the firewall later on from the autoscaler
-                        if ( [ "${database_engine}" = "mysql" ] )
-                        then 
-                                /usr/bin/exo dbaas update --quiet --zone ${database_region} ${db_name} --mysql-ip-filter="0.0.0.0/0"
-                        elif ( [ "${database_engine}" = "pg" ] )
-                        then
-                                /usr/bin/exo dbaas update --quiet --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
-                        fi
+                     #   if ( [ "${database_engine}" = "mysql" ] )
+                     #   then 
+                     #           /usr/bin/exo dbaas update --quiet --zone ${database_region} ${db_name} --mysql-ip-filter="0.0.0.0/0"
+                     #   elif ( [ "${database_engine}" = "pg" ] )
+                     #   then
+                     #           /usr/bin/exo dbaas update --quiet --zone ${database_region} ${db_name} --pg-ip-filter="0.0.0.0/0"
+                     #   fi
 
                         status "Please go to the Exoscale GUI system of your new database and switch off 'STRICT_ALL_TABLES' and 'sql_require_primary_key'"
                         status "Press <enter> once this is done, failure to do this could result in a blocked/failed installation"
