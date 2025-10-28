@@ -62,14 +62,15 @@ then
 
         if ( [ "${CLOUDHOST}" = "exoscale" ] && [ "${DATABASE_INSTALLATION_TYPE}"="DBaaS" ] )
         then
+                database_type="`/bin/echo "${DATABASE_DBaaS_INSTALLATION_TYPE}" | /usr/bin/awk -F':' '{print $1}'`"
                 if ( [ "${database_type}" = "Postgres" ] )
                 then
-                        status "Tightening the firewall on your postgres database for your webserver with following IPs: ${VPC_IP_RANGE}"    
-                        /usr/bin/exo dbaas update --quiet --zone ${database-region} ${DB_NAME} --pg-ip-filter=${VPC_IP_RANGE}
+                        status "Adjusting the firewall on your postgres database for your webserver with following IPs: ${VPC_IP_RANGE}"    
+                        /usr/bin/yes | /usr/bin/exo dbaas update --zone ${database-region} ${DB_NAME} --pg-ip-filter=${VPC_IP_RANGE}
                 elif ( [ "${database_type}" = "MySQL" ] )
                 then
-                        status "Tightening the firewall on your mysql database for your webserver with following IPs: ${VPC_IP_RANGE}"    
-                        /usr/bin/exo dbaas update --quiet --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${VPC_IP_RANGE}
+                        status "Adjusting the firewall on your mysql database for your webserver with following IPs: ${VPC_IP_RANGE}"    
+                        /usr/bin/yes | /usr/bin/exo dbaas update --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${VPC_IP_RANGE}
                 fi
         fi
 
