@@ -87,7 +87,7 @@ if ( [ "${dns}" = "exoscale" ] )
 then
 	#Make damn sure that the DNS record gets added to the DNS system
 	count="0"
-	while ( [ "${count}" -lt "5" ] && [ "`/usr/bin/exo dns list -O json | /usr/bin/jq -r '.[] | select (.content ="'${ip}'").id'`" = "" ] )
+	while ( [ "${count}" -lt "5" ] && [ "`/usr/bin/exo dns list -O json | /usr/bin/jq -r '.[] | select (.content == "'${ip}'").id'`" = "" ] )
  	do
   		count="`/usr/bin/expr ${count} + 1`"
 		/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
