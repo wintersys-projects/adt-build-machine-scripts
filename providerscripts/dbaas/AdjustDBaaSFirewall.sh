@@ -65,12 +65,12 @@ then
                 database_type="`/bin/echo "${DATABASE_DBaaS_INSTALLATION_TYPE}" | /usr/bin/awk -F':' '{print $1}'`"
                 if ( [ "${database_type}" = "Postgres" ] )
                 then
-                        status "Adjusting the firewall on your postgres database for your webserver with following IPs: ${VPC_IP_RANGE}"    
-                        /usr/bin/yes | /usr/bin/exo dbaas update --zone ${database-region} ${DB_NAME} --pg-ip-filter=${VPC_IP_RANGE}
+                        status "Adjusting the firewall on your postgres database for your webserver with following IPs: 0.0.0.0/0"    
+                        /usr/bin/yes | /usr/bin/exo dbaas update --zone ${database-region} ${DB_NAME} --pg-ip-filter="0.0.0.0/0"
                 elif ( [ "${database_type}" = "MySQL" ] )
                 then
-                        status "Adjusting the firewall on your mysql database for your webserver with following IPs: ${VPC_IP_RANGE}"    
-                        /usr/bin/yes | /usr/bin/exo dbaas update --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${VPC_IP_RANGE}
+                        status "Adjusting the firewall on your mysql database for your webserver with following IPs: 0.0.0.0/0"    
+                        /usr/bin/yes | /usr/bin/exo dbaas update --zone ${database_region} ${DB_NAME} --mysql-ip-filter="0.0.0.0/0"
                 fi
         fi
 
