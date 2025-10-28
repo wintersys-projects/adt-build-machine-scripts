@@ -265,7 +265,7 @@ then
                         done
 
                         status ""
-                        status "Database with name ${db_name} is now running"
+                        status "Database with name ${db_name} is now running (press <enter> to continue)"
                         status ""
 
                         #Take note of all of the database's configuration details
