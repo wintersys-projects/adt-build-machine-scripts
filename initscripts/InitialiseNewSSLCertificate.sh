@@ -126,7 +126,7 @@ then
                         status "Existing certificate found to be valid, no action necessary, reusing it"
                 fi
         else
-                status "Valid certicate not found"
+                status "Valid certificate not found"
                 /bin/touch /tmp/END_IT_ALL
         fi
 fi
