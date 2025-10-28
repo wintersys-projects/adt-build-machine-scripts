@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 zoneid="${1}"
@@ -36,23 +36,23 @@ dns="${7}"
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
-	#authkey="${credentials}"
-	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
-	#Make damn sure that the DNS record gets added to the DNS system
-	count="0"
-	while ( ( [ "$?" != "0" ] || [ "${count}" = "0" ] ) && [ "${count}" -lt "5" ] )
- 	do
-  		count="`/usr/bin/expr ${count} + 1`"
-		#keu
-		#/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
-		#token
-  		/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
-	done
- 
- 	if ( [ "${count}" = "5" ] )
-  	then
-   		/bin/touch /tmp/END_IT_ALL
-	fi
+        #authkey="${credentials}"
+        api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+        #Make damn sure that the DNS record gets added to the DNS system
+        count="0"
+        while ( ( [ "$?" != "0" ] || [ "${count}" = "0" ] ) && [ "${count}" -lt "5" ] )
+        do
+                count="`/usr/bin/expr ${count} + 1`"
+                #keu
+                #/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
+                #token
+                /usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
+        done
+
+        if ( [ "${count}" = "5" ] )
+        then
+                /bin/touch /tmp/END_IT_ALL
+        fi
 fi
 
 websiteurl="${4}"
@@ -63,21 +63,20 @@ dns="${7}"
 
 if ( [ "${dns}" = "digitalocean" ] )
 then
-	#Make damn sure that the DNS record gets added to the DNS system
-	count="0"
-	while ( [ "${count}" -lt "5" ] && [ "`/usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.data == "'${ip}'").id'`" = "" ] )
-	do
-		count="`/usr/bin/expr ${count} + 1`"
-		/usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
-	done
+        #Make damn sure that the DNS record gets added to the DNS system
+        count="0"
+        while ( [ "${count}" -lt "5" ] && [ "`/usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.data == "'${ip}'").id'`" = "" ] )
+        do
+                count="`/usr/bin/expr ${count} + 1`"
+                /usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl}
+        done
 
-	if ( [ "${count}" = "5" ] )
-	then
-		/bin/touch /tmp/END_IT_ALL
-	fi
+        if ( [ "${count}" = "5" ] )
+        then
+                /bin/touch /tmp/END_IT_ALL
+        fi
 fi
 
-authkey="${3}"
 subdomain="`/bin/echo ${4} | /usr/bin/awk -F'.' '{print $1}'`"
 domainurl="`/bin/echo ${4} | /usr/bin/cut -d'.' -f2-`"
 ip="${5}"
@@ -85,21 +84,26 @@ dns="${7}"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
-	#Make damn sure that the DNS record gets added to the DNS system
-	count="0"
-	while ( [ "${count}" -lt "5" ] && [ "`/usr/bin/exo dns list -O json | /usr/bin/jq -r '.[] | select (.content == "'${ip}'").id'`" = "" ] )
- 	do
-  		count="`/usr/bin/expr ${count} + 1`"
-		/usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
-	done
- 
- 	if ( [ "${count}" = "5" ] )
-  	then
-   		/bin/touch /tmp/END_IT_ALL
-	fi
+        #Make damn sure that the DNS record gets added to the DNS system
+        count="0"
+
+        id="`/usr/bin/exo dns list -O json | /usr/bin/jq -r '.[] | select (.name == "'${domainurl}'").id'`"
+
+        if ( [ "${id}" != "" ] )
+        then
+                while ( [ "${count}" -lt "5" ] && [ "`/usr/bin/exo dns show ${id} -O json | /usr/bin/jq -r '.[] | select (.content == "'${ip}'").id'`" = "" ] )
+                do
+                        count="`/usr/bin/expr ${count} + 1`"
+                        /usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60
+                done
+        fi
+
+        if ( [ "${count}" = "5" ] || [ "${id}" = "" ] )
+        then
+                /bin/touch /tmp/END_IT_ALL
+        fi
 fi
 
-authkey="${3}"
 subdomain="`/bin/echo ${4} | /usr/bin/awk -F'.' '{print $1}'`"
 domain_url="`/bin/echo ${4} | /usr/bin/cut -d'.' -f2-`"
 ip="${5}"
@@ -122,7 +126,6 @@ then
         fi
 fi
 
-authkey="${3}"
 subdomain="`/bin/echo ${4} | /usr/bin/awk -F'.' '{print $1}'`"
 domainurl="`/bin/echo ${4} | /usr/bin/cut -d'.' -f2-`"
 ip="${5}"
@@ -130,19 +133,19 @@ dns="${7}"
 
 if ( [ "${dns}" = "vultr" ] )
 then
-	#Make damn sure that the DNS record gets added to the DNS system
-	count="0"
-	while ( [ "${count}" -lt "5" ] && [ "`/usr/bin/vultr dns record list ${domainurl} -o json | /usr/bin/jq -r '.records[] | select (.data == "'${ip}'").id'`" = "" ] )
-	do
-		count="`/usr/bin/expr ${count} + 1`"
-		/usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
-	done
+        #Make damn sure that the DNS record gets added to the DNS system
+        count="0"
+        while ( [ "${count}" -lt "5" ] && [ "`/usr/bin/vultr dns record list ${domainurl} -o json | /usr/bin/jq -r '.records[] | select (.data == "'${ip}'").id'`" = "" ] )
+        do
+                count="`/usr/bin/expr ${count} + 1`"
+                /usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60
+        done
 
-	if ( [ "${count}" = "5" ] )
-	then
-		/bin/touch /tmp/END_IT_ALL
-	fi
-fi 
+        if ( [ "${count}" = "5" ] )
+        then
+                /bin/touch /tmp/END_IT_ALL
+        fi
+fi
 
 
 
