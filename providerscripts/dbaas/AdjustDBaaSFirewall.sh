@@ -65,11 +65,11 @@ then
                 if ( [ "${database_type}" = "Postgres" ] )
                 then
                         status "Tightening the firewall on your postgres database for your webserver with following IPs: ${VPC_IP_RANGE}"    
-                        /usr/bin/exo dbaas update --zone ${database-region} ${DB_NAME} --pg-ip-filter=${VPC_IP_RANGE}
+                        /usr/bin/exo dbaas update --quiet --zone ${database-region} ${DB_NAME} --pg-ip-filter=${VPC_IP_RANGE}
                 elif ( [ "${database_type}" = "MySQL" ] )
                 then
                         status "Tightening the firewall on your mysql database for your webserver with following IPs: ${VPC_IP_RANGE}"    
-                        /usr/bin/exo dbaas update --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${VPC_IP_RANGE}
+                        /usr/bin/exo dbaas update --quiet --zone ${database_region} ${DB_NAME} --mysql-ip-filter=${VPC_IP_RANGE}
                 fi
         fi
 
