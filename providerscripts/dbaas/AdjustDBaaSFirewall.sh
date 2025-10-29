@@ -97,10 +97,7 @@ then
                 cluster_name="`/bin/echo ${dbaas} | /usr/bin/awk '{print $8}'`"
                 cluster_id="`/usr/local/bin/doctl database list -o json | /usr/bin/jq -r '.[] | select (.name == "'${cluster_name}'").id'`"
 
-                if ( ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) || [ "${MULTI_REGION}" = "0" ] )
-                then
-                        /usr/local/bin/doctl databases firewalls replace ${cluster_id} --rule ip_addr:${VPC_IP_RANGE}
-                fi
+                /usr/bin/vultr database update ${cluster_id} --trusted-ips="${VPC_IP_RANGE}"
         fi
 fi
 
