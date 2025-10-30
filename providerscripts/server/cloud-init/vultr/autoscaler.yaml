@@ -87,7 +87,7 @@ runcmd:
   - '/bin/cp /etc/ssh/ssh_host_XXXXALGORITHMXXXX_key.pub /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX.pub'
   - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX'
   - '/bin/chmod 600 /home/XXXXSERVER_USERXXXX/.ssh/id_XXXXALGORITHMXXXX_AGILE_DEPLOYMENT_BUILD_KEY_XXXXBUILD_IDENTIFIERXXXX.pub'
-  - '/usr/bin/git clone https://XXXXGIT_PROVIDER_DOMAINXXXX/XXXXINFRASTRUCTURE_REPOSITORY_OWNERXXXX/adt-autoscaler-scripts.git /home/XXXXSERVER_USERXXXX/clone'
+  - '/usr/bin/git clone  -b XXXXGIT_BRANCHXXXX --single-branch https://XXXXGIT_PROVIDER_DOMAINXXXX/XXXXINFRASTRUCTURE_REPOSITORY_OWNERXXXX/adt-autoscaler-scripts.git /home/XXXXSERVER_USERXXXX/clone'
   - '/bin/mv /home/XXXXSERVER_USERXXXX/clone/* /home/XXXXSERVER_USERXXXX && /bin/rm -r /home/XXXXSERVER_USERXXXX/clone'
   - '/usr/bin/gzip -df /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat.gz'
   - '/bin/cp /home/XXXXSERVER_USERXXXX/.ssh/autoscaler_configuration_settings.dat /home/XXXXSERVER_USERXXXX/runtime/autoscaler_configuration_settings.dat'
