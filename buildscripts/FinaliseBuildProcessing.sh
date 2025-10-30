@@ -221,7 +221,7 @@ else
 	status ""
 	status "##############################################################################################################################"
 	status "Performing system verification checks"
-	status "This should be fairly snappy, any pause more than a minute or so will likely need to be investigated"
+	status "This should be fairly snappy in most cases. Unless indicated otherwise, any pause more than a few minutes should be investigated"
 	status "##############################################################################################################################"     
 	status ""
 fi
