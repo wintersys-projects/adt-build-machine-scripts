@@ -26,6 +26,7 @@ export BUILDMACHINE_USER="agile-user"
 export BUILDMACHINE_PASSWORD="Hjdhfb34hd£" #Make sure any password you choose is strong enough to pass any strength enforcement rules of your OS (vultr is really strict and a weak password will be a problem) also, do not use the dollar symbol in your password
 export BUILDMACHINE_SSH_PORT="1035"
 export LAPTOP_IP=""
+git_branch="main"
 
 /bin/echo '
 #BASE OVERRIDES
@@ -86,9 +87,9 @@ cd /home/${BUILDMACHINE_USER}
 
 if ( [ "${INFRASTRUCTURE_REPOSITORY_OWNER}" != "" ] )
 then
-	/usr/bin/git clone https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts.git
+	/usr/bin/git clone  -b ${git_branch} --single-branch https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts.git
 else
-	/usr/bin/git clone https://github.com/wintersys-projects/adt-build-machine-scripts.git
+	/usr/bin/git clone  -b ${git_branch} --single-branch https://github.com/wintersys-projects/adt-build-machine-scripts.git
 fi
 
 /usr/bin/find /home/${BUILDMACHINE_USER} -type d -exec chmod 755 {} \;

@@ -25,6 +25,8 @@
 
 #set -x
 
+git_branch="main"
+
 /bin/echo "${BUILDMACHINE_USER}" > /root/buildmachine_user.dat
 
 OUT_FILE="buildmachine-out-`/bin/date | /bin/sed 's/ //g'`"
@@ -68,9 +70,9 @@ cd /home/${BUILDMACHINE_USER}
 
 if ( [ "${INFRASTRUCTURE_REPOSITORY_OWNER}" != "" ] )
 then
-	/usr/bin/git clone https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts.git
+	/usr/bin/git clone  -b ${git_branch} --single-branch https://github.com/${INFRASTRUCTURE_REPOSITORY_OWNER}/adt-build-machine-scripts.git
 else
-	/usr/bin/git clone https://github.com/wintersys-projects/adt-build-machine-scripts.git
+	/usr/bin/git clone  -b ${git_branch} --single-branch https://github.com/wintersys-projects/adt-build-machine-scripts.git
 fi
 
 /usr/bin/find /home/${BUILDMACHINE_USER} -type d -exec chmod 755 {} \;

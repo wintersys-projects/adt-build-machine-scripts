@@ -219,6 +219,7 @@ then
                 /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem.verify 
 
                 status "SSL Certificates successfully validated"
+                status "Putting SSL Certificates into the datastore"
 
                 ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${ssl_bucket}/fullchain.pem ${ssl_bucket}/fullchain.pem.$$.old
                 ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${ssl_bucket}/privkey.pem ${ssl_bucket}/privkey.pem.$$.old
