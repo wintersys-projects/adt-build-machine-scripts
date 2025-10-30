@@ -48,7 +48,7 @@ TIMEZONE="${TIMEZONE_CONTINENT}/${TIMEZONE_CITY}"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 DB_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_USERNAME`"
 DB_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PASSWORD`"
-
+GIT_BRANCH="`/bin/grep "^GITBRANCH:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`"
 
 git_provider_domain="`${BUILD_HOME}/providerscripts/git/GitProviderDomain.sh ${INFRASTRUCTURE_REPOSITORY_PROVIDER}`"
 
