@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh 
 ###############################################################################################
 # Description: You can use this script to interact with the logging streams for your chosen build
 # Author Peter Winter
