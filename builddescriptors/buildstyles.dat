@@ -72,6 +72,8 @@
 # EMAILUTIL:sendemail|ssmtp
 # You can choose which tool you want to use to generate your ssl certificates
 # SSLCERTCLIENT:lego|acme (note: if you are using letsencrypt you must set this to 'lego' if you are using zerossl you must set this to 'acme'
+# GITBRANCH:main|dev
+# You can create branches as you need to but currently there is a main branch and a dev branch to work with
 ###############################################################################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -172,3 +174,4 @@ PACKAGEMANAGER:apt-get
 FIREWALL:iptables
 EMAILUTIL:sendemail
 SSLCERTCLIENT:acme
+GITBRANCH:main
