@@ -81,6 +81,8 @@ fi
 BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
 /bin/echo ${BUILD_HOME} > /home/buildhome.dat
 /bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
+
+/bin/sed -i "s/^GITBRANCH:.*/GITBRANCH:${git_branch}/g" ${BUILD_HOME}/builddescriptors/buildstyles.dat
  
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
 then
