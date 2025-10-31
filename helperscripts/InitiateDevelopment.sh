@@ -49,13 +49,13 @@ do
         read provider
 done
 
-if ( [ "${[provider}" = "1" ] )
+if ( [ "${provider}" = "1" ] )
 then
         provider="github.com"
-elif ( [ "${[provider}" = "2" ] )
+elif ( [ "${provider}" = "2" ] )
 then
         provider="bitbucket.org"
-elif ( [ "${[provider}" = "3" ] )
+elif ( [ "${provider}" = "3" ] )
 then
         provider="gitlab.com"
 fi
