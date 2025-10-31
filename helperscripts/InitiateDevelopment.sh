@@ -1,3 +1,38 @@
+#!/bin/sh
+########################################################################################################
+# Author: Peter Winter
+# Date  : 13/01/2022
+# Description : This script will clone the current latest version of the ADT infrastructure repositories
+# based on which provider you have them hosted with, the username of the account they are hosted under
+# and the branch that you wish to develop against.
+# If there are any other development directories that exist when this script is run those directories are
+# archived and the results of this being run becomes the current active development. For example, if you were
+# developing against another branch and you re-ran this then the branch that you specify here would become
+# the branch that you are developing against and any previous development arrangements would be archived
+# as ${BUILD_HOME}/development.archive.$$
+########################################################################################################
+# License Agreement:
+# This file is part of The Agile Deployment Toolkit.
+# The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# The Agile Deployment Toolkit is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
+#######################################################################################################
+#######################################################################################################
+#set -x
+
+if ( [ ! -f  ./InitiateDevelopment.sh ] )
+then
+	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+	exit
+fi
+
 /bin/echo "Please enter the username for the git account where your repositories are hosted"
 read username
 
@@ -27,6 +62,11 @@ fi
 
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
+if ( [ -d ${BUILD_HOME}/development ] )
+then
+        /bin/mv ${BUILD_HOME}/development ${BUILD_HOME}/development.archive.$$
+fi
 
 if ( [ ! -d ${BUILD_HOME}/development ] )
 then
