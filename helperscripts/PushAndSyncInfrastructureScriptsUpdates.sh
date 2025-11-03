@@ -62,6 +62,10 @@ GIT_EMAIL_ADDRESS="`${HOME}/utilities/config/ExtractConfigValue.sh 'GITEMAILADDR
 /usr/bin/git config --global user.name "${GIT_USER}"
 
 /usr/bin/git add . 
+
+/bin/echo "Press <enter> to commit and push these files to the git repo <ctrl-c> to abort"
+read x
+
 /usr/bin/git commit -m "${commit_message}"
 /usr/bin/git push -u origin ${BRANCH}
 
