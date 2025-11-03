@@ -45,7 +45,7 @@ cd /home/development
 
 if ( [ "${1}" = "main" ] )
 then
-        ${HOME}/providerscripts/email/SendEmail.sh "DEVELOPMENT BRANCH SET TO MAIN" "You can't do development work against a main branch use a dev branch instead and issue a pull request in the gui" "ERROR"
+       /bin/echo "You can't do development work against a main branch use a dev branch instead and issue a pull request in the gui"
         exit
 fi
 
