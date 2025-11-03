@@ -93,7 +93,7 @@ then
 	/bin/mkdir /home/development
 fi
 
-/bin/cp -r ${BUILD_HOME}/  /home/development && /bin/chown -R www-data:www-data /home/development
+/bin/cp -r ${BUILD_HOME}/*  /home/development && /bin/chown -R www-data:www-data /home/development
 /bin/sh ${BUILD_HOME}/helperscripts/InitialiseToolkitForDevelopment.sh
 
 /bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
