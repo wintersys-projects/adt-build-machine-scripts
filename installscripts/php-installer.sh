@@ -13,7 +13,7 @@ ${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] ht
 ${SUDO} apt-get update
 
 #its possible we might fail and die, I have seen it happen due to networking glitches therefore php deserves a second chance just like everyone else
-if ( [ -f /usr/bin/php ] )
+while ( [ -f /usr/bin/php ] )
 do
     ${SUDO} apt-get update
     ${SUDO} apt-get -y install lsb-release ca-certificates curl
