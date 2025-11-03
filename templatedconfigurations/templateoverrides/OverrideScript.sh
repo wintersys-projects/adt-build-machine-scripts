@@ -92,12 +92,10 @@ else
 	/usr/bin/git clone  -b ${git_branch} --single-branch https://github.com/wintersys-projects/adt-build-machine-scripts.git
 fi
 
-/usr/bin/find /home/${BUILDMACHINE_USER} -type d -exec chmod 755 {} \;
-/usr/bin/find /home/${BUILDMACHINE_USER} -type f -exec chmod 744 {} \;
-
-export BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
+BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
 /bin/echo ${BUILD_HOME} > /home/buildhome.dat
 
+/bin/sed -i "s/^GITBRANCH:.*/GITBRANCH:${git_branch}/g" ${BUILD_HOME}/builddescriptors/buildstyles.dat
 
 if ( [ -f ${BUILD_HOME}/helperscripts/SyncInfrastructureScriptsUpdates.sh ] )
 then
@@ -125,12 +123,14 @@ then
 	/bin/mkdir /home/development
 fi
 
-/bin/cp -r ${BUILD_HOME}/*  /home/development && /bin/chown -R www-data:www-data /home/development
+/bin/cp -r ${BUILD_HOME}/* /home/development  && /bin/cp -r ${BUILD_HOME}/.* /home/development  
 /bin/sh ${BUILD_HOME}/helperscripts/InitialiseToolkitForDevelopment.sh
 
-/bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
 
-/bin/sed -i "s/^GITBRANCH:.*/GITBRANCH:${git_branch}/g" ${BUILD_HOME}/builddescriptors/buildstyles.dat
+/usr/bin/find /home/${BUILDMACHINE_USER} -type d -exec chmod 755 {} \;
+/usr/bin/find /home/${BUILDMACHINE_USER} -type f -exec chmod 744 {} \;
+
+/bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
  
 if ( [ ! -d ${BUILD_HOME}/runtimedata ] )
 then
