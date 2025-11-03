@@ -62,6 +62,8 @@ read x
 GIT_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_USER`"
 GIT_EMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_EMAIL_ADDRESS`"
 
+/usr/bin/git config --global --add safe.directory /home/development
+
 /usr/bin/git config --global user.email "${GIT_EMAIL_ADDRESS}"
 /usr/bin/git config --global user.name "${GIT_USER}"
 
