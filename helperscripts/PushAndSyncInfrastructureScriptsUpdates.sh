@@ -74,7 +74,7 @@ read x
 
 /usr/bin/git push -u origin ${BRANCH}
 
-${BUILD_HOME}/installscripts/InstallRsync.sh
+/bin/sh ${BUILD_HOME}/installscripts/InstallRsync.sh
 
 /usr/bin/rsync -a /home/development/ ${BUILD_HOME}
 /bin/chown -R www-data:www-data ${BUILD_HOME}
