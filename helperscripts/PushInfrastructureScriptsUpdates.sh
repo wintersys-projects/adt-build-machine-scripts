@@ -55,8 +55,8 @@ fi
 /bin/echo "Press <enter> to confirm <ctrl-c> to exit"
 read x
 
-GIT_USER="`${HOME}/utilities/config/ExtractConfigValue.sh 'GITUSER'`"
-GIT_EMAIL_ADDRESS="`${HOME}/utilities/config/ExtractConfigValue.sh 'GITEMAILADDRESS'`"
+GIT_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_USER`"
+GIT_EMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_EMAIL_ADDRESS`"
 
 /usr/bin/git config --global user.email "${GIT_EMAIL_ADDRESS}"
 /usr/bin/git config --global user.name "${GIT_USER}"
