@@ -65,10 +65,11 @@ GIT_EMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_EMAIL_AD
 
 /usr/bin/git add . 
 
-/bin/echo "Press <enter> to commit and push these files to the git repo <ctrl-c> to abort"
+/usr/bin/git commit -m "${commit_message}"
+
+/bin/echo "Press <enter> to push these files to the git repo <ctrl-c> to abort"
 read x
 
-/usr/bin/git commit -m "${commit_message}"
 /usr/bin/git push -u origin ${BRANCH}
 
 ${BUILD_HOME}/installscripts/InstallRsync.sh
