@@ -64,7 +64,9 @@ GIT_EMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_EMAIL_AD
 /usr/bin/git config --global user.name "${GIT_USER}"
 
 /usr/bin/git add . 
-/bin/echo "Press <enter> to commit and push these files to the git repo <ctrl-c> to abort"
-read x
 /usr/bin/git commit -m "${commit_message}"
+
+/bin/echo "Press <enter> to push these files to the git repo <ctrl-c> to abort"
+read x
+
 /usr/bin/git push -u origin ${BRANCH}
