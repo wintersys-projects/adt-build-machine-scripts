@@ -73,5 +73,5 @@ read x
 
 ${BUILD_HOME}/installscripts/InstallRsync.sh
 
-/usr/bin/rsync -a /home/development/ ${HOME}
-/bin/chown -R www-data:www-data ${HOME}
+/usr/bin/rsync -a /home/development/ ${BUILD_HOME}
+/bin/chown -R www-data:www-data ${BUILD_HOME}
