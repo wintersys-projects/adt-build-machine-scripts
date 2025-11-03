@@ -83,22 +83,22 @@ BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
 if ( [ -f ${BUILD_HOME}/helperscripts/SyncInfrastructureScriptsUpdates.sh ] )
 then
 	/bin/cp ${BUILD_HOME}/helperscripts/SyncInfrastructureScriptsUpdates.sh /usr/sbin/sync
-	/bin/chmod 755 /usr/bin/sync
-	/bin/chown root:root /usr/bin/sync
+	/bin/chmod 755 /usr/sbin/sync
+	/bin/chown root:root /usr/sbin/sync
 fi
 
 if ( [ -f ${BUILD_HOME}/helperscripts/PushAndSyncInfrastructureScriptsUpdates.sh ] )
 then
 	/bin/cp ${BUILD_HOME}/helperscripts/PushAndSyncInfrastructureScriptsUpdates.sh /usr/sbin/push-and-sync
-	/bin/chmod 755 /usr/bin/push-and-sync
-	/bin/chown root:root /usr/bin/push-and-sync
+	/bin/chmod 755 /usr/sbin/push-and-sync
+	/bin/chown root:root /usr/sbin/push-and-sync
 fi
 
 if ( [ -f ${BUILD_HOME}/helperscripts/PushInfrastructureScriptsUpdates.sh ] )
 then
 	/bin/cp ${BUILD_HOME}/helperscripts/PushInfrastructureScriptsUpdates.sh /usr/sbin/push
-	/bin/chmod 755 /usr/bin/push
-	/bin/chown root:root /usr/bin/push
+	/bin/chmod 755 /usr/sbin/push
+	/bin/chown root:root /usr/sbin/push
 fi
 
 if ( [ ! -d /home/development ] )
