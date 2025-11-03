@@ -59,24 +59,19 @@ fi
 /bin/echo "Press <enter> to confirm <ctrl-c> to exit"
 read x
 
-GIT_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_USER`"
-GIT_EMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_EMAIL_ADDRESS`"
+GIT_USER="`/bin/sh ${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_USER`"
+GIT_EMAIL_ADDRESS="`/bin/sh ${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_EMAIL_ADDRESS`"
 
 /usr/bin/git config --global --add safe.directory /home/development
-
 /usr/bin/git config --global user.email "${GIT_EMAIL_ADDRESS}"
 /usr/bin/git config --global user.name "${GIT_USER}"
-
 /usr/bin/git add . 
-
 /usr/bin/git commit -m "${commit_message}"
 
 /bin/echo "Press <enter> to push these files to the git repo <ctrl-c> to abort"
 read x
 
 /usr/bin/git push -u origin ${BRANCH}
-
-/bin/sh ${BUILD_HOME}/installscripts/InstallRsync.sh "`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
-
+/bin/sh ${BUILD_HOME}/installscripts/InstallRsync.sh
 /usr/bin/rsync -a /home/development/ ${BUILD_HOME}
 /bin/chown -R www-data:www-data ${BUILD_HOME}
