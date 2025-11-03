@@ -30,6 +30,8 @@ branch="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
+cd /home/development
+
 if ( [ "${branch}" = "" ] )
 then
         BRANCH="`/bin/grep "^GITBRANCH:" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`"
