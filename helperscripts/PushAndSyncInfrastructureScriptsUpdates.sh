@@ -21,6 +21,10 @@
 ########################################################################################
 #set -x
 
+/bin/echo "This script will push the scripts in the development area to the git repository and will sync the development script area with the live script area"
+/bin/echo "Press <enter> to perform sync <ctrl-c> to exit"
+read x
+
 commit_message="${1}"
 branch="${2}"
 
