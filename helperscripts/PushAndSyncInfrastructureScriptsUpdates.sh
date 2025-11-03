@@ -69,5 +69,7 @@ read x
 /usr/bin/git commit -m "${commit_message}"
 /usr/bin/git push -u origin ${BRANCH}
 
+${BUILD_HOME}/installscripts/InstallRsync.sh
+
 /usr/bin/rsync -a /home/development/ ${HOME}
 /bin/chown -R www-data:www-data ${HOME}
