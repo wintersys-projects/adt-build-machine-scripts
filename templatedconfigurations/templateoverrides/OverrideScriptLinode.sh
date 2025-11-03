@@ -80,6 +80,14 @@ fi
 
 BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
 /bin/echo ${BUILD_HOME} > /home/buildhome.dat
+
+if ( [ -f ${HOME}/helperscripts/PushInfrastructureScriptsUpdates.sh ] )
+then
+	/bin/cp ${HOME}/helperscripts/PushInfrastructureScriptsUpdates.sh /usr/sbin/push
+	/bin/chmod 755 /usr/bin/push
+	/bin/chown root:root /usr/bin/push
+fi
+
 /bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
 
 /bin/sed -i "s/^GITBRANCH:.*/GITBRANCH:${git_branch}/g" ${BUILD_HOME}/builddescriptors/buildstyles.dat
