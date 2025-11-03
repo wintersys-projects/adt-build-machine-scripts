@@ -21,5 +21,9 @@
 ########################################################################################
 #set -x
 
+/bin/echo "This script will sync the scripts in the development area with the live scripts area"
+/bin/echo "Press <enter> to perform sync <ctrl-c> to exit"
+read x
+
 /usr/bin/rsync -a /home/development/ ${HOME}
 /bin/chown -R www-data:www-data ${HOME}
