@@ -25,5 +25,7 @@
 /bin/echo "Press <enter> to perform sync <ctrl-c> to exit"
 read x
 
+${BUILD_HOME}/installscripts/InstallRsync.sh
+
 /usr/bin/rsync -a /home/development/ ${HOME}
 /bin/chown -R www-data:www-data ${HOME}
