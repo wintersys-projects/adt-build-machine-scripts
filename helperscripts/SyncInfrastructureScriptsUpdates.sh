@@ -27,7 +27,7 @@ read x
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
-${BUILD_HOME}/installscripts/InstallRsync.sh "`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
+/bin/sh ${BUILD_HOME}/installscripts/InstallRsync.sh "`/bin/cat /etc/issue | /usr/bin/tr '[:upper:]' '[:lower:]' | /bin/egrep -o '(ubuntu|debian)'`"
 
 /usr/bin/rsync -a /home/development/ ${BUILD_HOME}
 /bin/chown -R www-data:www-data ${BUILD_HOME}
