@@ -25,6 +25,8 @@
 /bin/echo "Press <enter> to perform sync <ctrl-c> to exit"
 read x
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 ${BUILD_HOME}/installscripts/InstallRsync.sh
 
 /usr/bin/rsync -a /home/development/ ${BUILD_HOME}
