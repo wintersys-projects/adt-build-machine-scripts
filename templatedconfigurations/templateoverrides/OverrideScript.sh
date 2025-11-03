@@ -98,6 +98,21 @@ fi
 export BUILD_HOME="/home/${BUILDMACHINE_USER}/adt-build-machine-scripts"
 /bin/echo ${BUILD_HOME} > /home/buildhome.dat
 
+
+if ( [ -f ${HOME}/helperscripts/SyncInfrastructureScriptsUpdates.sh ] )
+then
+	/bin/cp ${HOME}/helperscripts/SyncInfrastructureScriptsUpdates.sh /usr/sbin/sync
+	/bin/chmod 755 /usr/bin/sync
+	/bin/chown root:root /usr/bin/sync
+fi
+
+if ( [ -f ${HOME}/helperscripts/PushAndSyncInfrastructureScriptsUpdates.sh ] )
+then
+	/bin/cp ${HOME}/helperscripts/PushAndSyncInfrastructureScriptsUpdates.sh /usr/sbin/push-and-sync
+	/bin/chmod 755 /usr/bin/push-and-sync
+	/bin/chown root:root /usr/bin/push-and-sync
+fi
+
 if ( [ -f ${HOME}/helperscripts/PushInfrastructureScriptsUpdates.sh ] )
 then
 	/bin/cp ${HOME}/helperscripts/PushInfrastructureScriptsUpdates.sh /usr/sbin/push
