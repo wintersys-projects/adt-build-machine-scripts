@@ -105,6 +105,8 @@ then
 	/bin/chown root:root /usr/bin/push
 fi
 
+/usr/bin/rsync -a ${BUILD_HOME}/adt-build-machine-scripts/  /home/development && /bin/chown -R www-data:www-data /home/development
+/bin/sh ${BUILD_HOME}/helperscripts/InitialiseToolkitForDevelopment.sh
 
 /bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
 
