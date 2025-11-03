@@ -3,7 +3,7 @@
 # Author : Peter Winter
 # Date   : 11/08/2021
 # Description: This script is run to push changes made in the development area to the
-# appropriate git repository and also syncs the development area with the live scripts
+# appropriate git repository
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
