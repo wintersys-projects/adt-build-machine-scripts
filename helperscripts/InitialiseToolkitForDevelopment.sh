@@ -45,7 +45,7 @@ cd /home/development
 
 if ( [ "${1}" = "main" ] )
 then
-       /bin/echo "You can't do development work against a main branch use a dev branch instead and issue a pull request in the gui"
+        /bin/echo "You can't do development work against a main branch use a dev branch instead and issue a pull request in the gui"
         exit
 fi
 
