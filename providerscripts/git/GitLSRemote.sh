@@ -26,31 +26,24 @@ repository_ownername="${3}"
 repository_name="${4}"
 repository_password="${5}"
 
+authentication_token=""
+
+if ( [ "${repository_token}" != "" ] )
+then
+        authentication_token=":${repository_token}"
+fi
+
+
 if ( [ "${repository_provider}" = "bitbucket" ] )
 then
-	if ( [ "${repository_password}" = "none" ] )
-	then
-		/usr/bin/git ls-remote https://${repository_username}@bitbucket.org/${repository_ownername}/${repository_name}.git
-	else
-		/usr/bin/git ls-remote https://${repository_username}:${repository_password}@bitbucket.org/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
-	fi
+        /usr/bin/git ls-remote https://${repository_username}${authentication_token}@bitbucket.org/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
 fi
 if ( [ "${repository_provider}" = "github" ] )
 then
-	if ( [ "${repository_password}" = "none" ] )
-	then
-		/usr/bin/git ls-remote https://${repository_username}@github.com/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
-	else
-		/usr/bin/git ls-remote https://${repository_username}:${repository_password}@github.com/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
-	fi
+        /usr/bin/git ls-remote https://${repository_username}${authentication_token}@github.com/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
 fi
 if ( [ "${repository_provider}" = "gitlab" ] )
 then
-	if ( [ "${repository_password}" = "none" ] )
-	then
-		/usr/bin/git ls-remote https://${repository_username}@gitlab.com/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
-	else
-		/usr/bin/git ls-remote https://${repository_username}:${repository_password}@gitlab.com/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
-	fi
+        /usr/bin/git ls-remote https://${repository_username}${authentication_token}@gitlab.com/${repository_ownername}/${repository_name}.git | /bin/grep 'HEAD'
 fi
 
