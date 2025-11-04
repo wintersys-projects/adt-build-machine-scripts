@@ -56,13 +56,6 @@ then
 	status "############################################"
 fi
 
-#if ( [ "${APPLICATION_REPOSITORY_TOKEN}" = "" ] )
-#then
-#	status "I find that the variable APPLICATION_REPOSITORY_TOKEN isn't set in your template so I am setting it to 'none' for you"
-# 	status "This variable has to be set to a value or 'none' it can't be blank"
-#        ${BUILD_HOME}/helperscripts/SetVariableValue.sh "APPLICATION_REPOSITORY_PASSWORD=none"
-#fi
-
 #If we want DDOS protection on our vultr instance it can be set to "on" in response to these questions
 if ( [ "${CLOUDHOST}" = "vultr" ] )
 then
