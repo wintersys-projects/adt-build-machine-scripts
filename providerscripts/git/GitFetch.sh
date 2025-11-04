@@ -38,7 +38,12 @@ then
 	then
 		/usr/bin/git fetch https://${repository_username}@bitbucket.org/${repository_ownername}/${repository_name}.git
 	else
-		/usr/bin/git fetch https://${repository_username}:${repository_password}@bitbucket.org/${repository_ownername}/${repository_name}.git
+		if ( [ "`/bin/echo ${repository_password} | /bin/egrep -o '(ssh|ecdsa)'`" = "" ] )
+		then
+			/usr/bin/git fetch https://${repository_username}:${repository_password}@bitbucket.org/${repository_ownername}/${repository_name}.git
+		else
+			/usr/bin/git fetch git@bitbucket.org:${repository_ownername}/${repository_name}.git
+		fi
 	fi
 fi
 if ( [ "${repository_provider}" = "github" ] )
@@ -61,7 +66,12 @@ then
 	then
 		/usr/bin/git fetch https://${repository_username}@gitlab.com/${repository_ownername}/${repository_name}.git
 	else
-		/usr/bin/git fetch https://${repository_username}:${repository_password}@gitlab.com/${repository_ownername}/${repository_name}.git
+		if ( [ "`/bin/echo ${repository_password} | /bin/egrep -o '(ssh|ecdsa)'`" = "" ] )
+		then
+			/usr/bin/git fetch https://${repository_username}:${repository_password}@gitlab.com/${repository_ownername}/${repository_name}.git
+		else
+			/usr/bin/git fetch git@gitlab.com:${repository_ownername}/${repository_name}.git
+		fi
 	fi
 fi
 
