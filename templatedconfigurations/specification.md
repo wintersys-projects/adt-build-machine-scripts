@@ -253,11 +253,6 @@ This is the username of the user who owns (or created) your application reposito
 
 This is the username of the user that you are currently using to access the application repositories. For example, the repositories might be owned by userA and are kept private but, userB is granted access. In this case the APPLICATION_REPOSITORY_OWNER would be userA and the APPLICATION_REPOSITORY_USERNAME would be userB. If you are the application repository owner, then this username and the owner name above will be the same.
 
------
-
-### APPLICATION_REPOSITORY_PASSWORD  
-
-This is the password for the APPLICATION_REPOSITORY_USERNAME or the application repository user. This is the password for your user account with your git provider. If the application repositories are public, then a password is not needed in which case this can be set to "".
 
 -----
 
@@ -268,7 +263,7 @@ Github and Gitlab prefer personal access tokens to passwords, so, if you wish to
 Github: www.github.com/settings/tokens  
 Gitlab: www.gitlab.com/profile/personal_access_tokens
 
-Make sure these tokens have the rights to create and destroy repositories as well as to read and write from them. Most likely, you want to have a separate git provider account for your associated deployments. This will override APPLICATION_REPOSITORY_PASSWORD
+Make sure these tokens have the rights to create and destroy repositories as well as to read and write from them. Most likely, you want to have a separate git provider account for your associated deployments. 
 
 ------
 
