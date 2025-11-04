@@ -37,17 +37,9 @@ BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARC
 APPLICATION_REPOSITORY_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_PROVIDER`"
 APPLICATION_REPOSITORY_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_USERNAME`"
 APPLICATION_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_OWNER`"
+APPLICATION_REPOSITORY_TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_TOKEN`"
 APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_BASELINE_SOURCECODE_REPOSITORY`"
 BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
-
-APPLICATION_REPOSITORY_TOKEN="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_TOKEN`"
-
-if ( [ "${APPLICATION_REPOSITORY_TOKEN}" = "" ] )
-then
-        APPLICATION_REPOSITORY_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_PASSWORD`"
-else
-        APPLICATION_REPOSITORY_PASSWORD="${APPLICATION_REPOSITORY_TOKEN}"
-fi
 
 website_subdomain="`/bin/echo ${WEBSITE_URL} | /usr/bin/awk -F'.' '{print $1}'`"
 interrogation_home="${BUILD_HOME}/interrogation"
@@ -71,7 +63,7 @@ if ( [ "${BUILD_ARCHIVE_CHOICE}" = "baseline" ] )
 then
 	gitrepo="0"
 
-	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} ${APPLICATION_REPOSITORY_PASSWORD} 2>/dev/null`" = "" ] )
+	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_OWNER} ${APPLICATION_BASELINE_SOURCECODE_REPOSITORY} ${APPLICATION_REPOSITORY_TOKEN} 2>/dev/null`" = "" ] )
 	then
 		status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
 		/bin/touch /tmp/END_IT_ALL
@@ -80,7 +72,7 @@ then
 		gitrepo="1"
 	fi
 
-	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_OWNER} ${BASELINE_DB_REPOSITORY} ${APPLICATION_REPOSITORY_PASSWORD} 2>/dev/null`" = "" ] )
+	if ( [ "`${BUILD_HOME}/providerscripts/git/GitLSRemote.sh ${APPLICATION_REPOSITORY_PROVIDER} ${APPLICATION_REPOSITORY_USERNAME} ${APPLICATION_REPOSITORY_OWNER} ${BASELINE_DB_REPOSITORY} ${APPLICATION_REPOSITORY_TOKEN} 2>/dev/null`" = "" ] )
 	then
 		status "Sorry, could not find the baseline repository for you application when I was expecting to, will have to exit..."
 		/bin/touch /tmp/END_IT_ALL
