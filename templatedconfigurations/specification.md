@@ -258,12 +258,13 @@ This is the username of the user that you are currently using to access the appl
 
 ### APPLICATION_REPOSITORY_TOKEN
 
-Github and Gitlab prefer personal access tokens to passwords, so, if you wish to, you can generate personal access tokens at:
+Personal access tokens are preferred to passwords, so, if you wish to, you can generate personal access tokens at:
 
 Github: www.github.com/settings/tokens  
 Gitlab: www.gitlab.com/profile/personal_access_tokens
+Bitbucket: support.atlassian.com/bitbucket-cloud/docs/create-a-repository-access-token
 
-Make sure these tokens have the rights to create and destroy repositories as well as to read and write from them. Most likely, you want to have a separate git provider account for your associated deployments. 
+Make sure these tokens have the rights to create and destroy repositories as well as to read and write from them. Most likely, you will want to have a separate account with your git provider for your associated application deployments. 
 
 ------
 
