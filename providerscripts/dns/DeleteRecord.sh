@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 zoneid="${1}"
@@ -34,9 +34,14 @@ dns="${5}"
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
-	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
-	#/usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" -H "X-Auth-Email: ${email}"  -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json"
-    /usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json"
+        if ( [ "`/bin/echo ${credentials} | /bin/grep ':::'`" != "" ] )
+        then
+                api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+                /usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json"
+        else
+                authkey="${credentials}"
+                /usr/bin/curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records/${recordid}" -H "X-Auth-Email: ${email}"  -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json"
+        fi
 fi
 
 
@@ -47,7 +52,7 @@ dns="${5}"
 
 if ( [ "${dns}" = "digitalocean" ] )
 then
-	/usr/local/bin/doctl compute domain records delete --force ${domainurl} ${recordid}
+        /usr/local/bin/doctl compute domain records delete --force ${domainurl} ${recordid}
 fi
 
 recordid="${2}"
@@ -56,7 +61,7 @@ domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
-	/usr/bin/exo dns remove ${domainurl} ${recordid} -Q -f
+        /usr/bin/exo dns remove ${domainurl} ${recordid} -Q -f
 fi
 
 record_id="${2}"
@@ -65,10 +70,10 @@ domain_url="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "linode" ] )
 then
-	export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
-	domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
-	/usr/local/bin/linode-cli domains records-delete ${domain_id} ${record_id}
-	unset LINODE_CLI_CONFIG
+        export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
+        domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
+        /usr/local/bin/linode-cli domains records-delete ${domain_id} ${record_id}
+        unset LINODE_CLI_CONFIG
 fi
 
 recordid="${2}"
@@ -77,7 +82,7 @@ domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "vultr" ] )
 then
-	/usr/bin/vultr dns record delete ${domainurl} ${recordid}
+        /usr/bin/vultr dns record delete ${domainurl} ${recordid}
 fi
 
 
