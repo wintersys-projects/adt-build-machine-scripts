@@ -82,12 +82,12 @@ then
 
                 if ( [ "${database_type}" = "MySQL" ] )
                 then
-                        database_id="`/usr/local/bin/linode-cli --json databases mysql-list | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
-                        /usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list ${VPC_IP_RANGE}
+                        database_id="`/usr/local/bin/linode-cli databases mysql-list --no-defaults --json | jq -r '.[] | select(.label | contains ("'${label}'")) | .id'`"
+                        /usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list ${VPC_IP_RANGE} --no-defaults
                 elif ( [ "${database_type}" = "Postgres" ] )
                 then
-                        database_id="`/usr/local/bin/linode-cli --json databases postgresql-list | /usr/bin/jq '.[] | select(.label | contains ("'${label}'")) | .id'`"
-                        /usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list ${VPC_IP_RANGE}
+                        database_id="`/usr/local/bin/linode-cli databases postgresql-list --no-defaults --json | /usr/bin/jq '.[] | select(.label | contains ("'${label}'")) | .id'`"
+                        /usr/local/bin/linode-cli databases mysql-update ${database_id} --allow_list ${VPC_IP_RANGE} --no-defaults 
                 fi
         fi
 
