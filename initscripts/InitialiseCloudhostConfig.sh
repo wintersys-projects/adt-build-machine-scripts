@@ -206,8 +206,8 @@ then
 	/bin/cp ${BUILD_HOME}/.linode-cli ${BUILD_HOME}/.dns-linode-cli
 	/bin/cp /root/.config/linode-cli /root/.config/dns-linode-cli
 
-	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}" ${BUILD_HOME}/.dns-linode-cli
-	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}" /root/.config/dns-linode-cli
+	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}/" ${BUILD_HOME}/.dns-linode-cli
+	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}/" /root/.config/dns-linode-cli
 
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 	then
