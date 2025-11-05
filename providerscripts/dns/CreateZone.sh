@@ -77,6 +77,7 @@ else
 
 	if ( [ "${dns}" = "linode" ] )
 	then
+		LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
 		if ( [ "`/usr/local/bin/linode-cli domains list --json | /usr/bin/jq -r '.[] | select ( .domain == "'${domainurl}'").domain'`" = "" ] )
 		then
 			/usr/local/bin/linode-cli domains create --type master --domain ${domainurl} --soa_email ${email}
