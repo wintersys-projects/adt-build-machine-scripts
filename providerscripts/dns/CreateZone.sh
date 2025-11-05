@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 email="${1}"
@@ -33,68 +33,73 @@ dns="${4}"
 
 if ( [ "${dns}" = "" ] )
 then
-	/bin/echo "-1"
+        /bin/echo "-1"
 else
-	if ( [ "${dns}" = "cloudflare" ] )
-	then
-		api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
-		#/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${apikey}" -H "Content-Type: application/json" --data "{\"name\":\"${websiteurl}\"}" > /dev/null 2>&1
-    	/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"name":"'${websiteurl}'"}' > /dev/null 2>&1
- 	fi
+        if ( [ "${dns}" = "cloudflare" ] )
+        then
+                if ( [ "`/bin/echo ${credentials} | /bin/grep ':::'`" != "" ] )
+                then
+                        api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+                        /usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"name":"'${websiteurl}'"}' > /dev/null 2>&1
+                else
+                        authkey="${credentials}"
+                        /usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"name":"'${websiteurl}'"' > /dev/null 2>&1
+                fi
+        fi
 
-	domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
-	dns="${4}"
+        domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
+        dns="${4}"
 
-	if ( [ "${dns}" = "digitalocean" ] )
-	then
-		if ( [ "`/usr/local/bin/doctl compute domain list -o json | /usr/bin/jq -r '.[] | select ( .name == "'${domainurl}'").name'`" = "" ] )
-		then
-			/usr/local/bin/doctl compute domain create ${domainurl}
-		fi
-	fi
+        if ( [ "${dns}" = "digitalocean" ] )
+        then
+                if ( [ "`/usr/local/bin/doctl compute domain list -o json | /usr/bin/jq -r '.[] | select ( .name == "'${domainurl}'").name'`" = "" ] )
+                then
+                        /usr/local/bin/doctl compute domain create ${domainurl}
+                fi
+        fi
 
-	email="${1}"
-	apikey="${2}"
-	websiteurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
-	domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
-	dns="${4}"
+        email="${1}"
+        apikey="${2}"
+        websiteurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
+        domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
+        dns="${4}"
 
-	if ( [ "${dns}" = "exoscale" ] )
-	then
-		if ( [ "`/usr/bin/exo dns list -O json | /usr/bin/jq -r '.[] | select (.name ="'${domainurl}'").id'`" = "" ] )
-		then
-			/usr/bin/exo dns create ${domainurl}
-		fi
-		#Alternatively:
-		# /usr/bin/curl -H "X-DNS-Token: ${apikey}" -H 'Accept: application/json' -X DELETE https://api.exoscale.com/dns/v1/domains/${domainurl}/zone 1>/dev/null 2>/dev/null
-		# /bin/sleep 5
-		# /usr/bin/curl -H "X-DNS-Token: ${apikey}" -H 'Accept: application/json' -H 'Content-Type: application/json' -d "{\"domain\":{\"name\":\"${websiteurl}\"}}" -X POST https://api.exoscale.com/dns/v1/domains 1>/dev/null 2>/dev/null
-	fi
+        if ( [ "${dns}" = "exoscale" ] )
+        then
+                if ( [ "`/usr/bin/exo dns list -O json | /usr/bin/jq -r '.[] | select (.name ="'${domainurl}'").id'`" = "" ] )
+                then
+                        /usr/bin/exo dns create ${domainurl}
+                fi
+                #Alternatively:
+                # /usr/bin/curl -H "X-DNS-Token: ${apikey}" -H 'Accept: application/json' -X DELETE https://api.exoscale.com/dns/v1/domains/${domainurl}/zone 1>/dev/null 2>/dev/null
+                # /bin/sleep 5
+                # /usr/bin/curl -H "X-DNS-Token: ${apikey}" -H 'Accept: application/json' -H 'Content-Type: application/json' -d "{\"domain\":{\"name\":\"${websiteurl}\"}}" -X POST https://api.exoscale.com/dns/v1/domains 1>/dev/null 2>/dev/null
+        fi
 
-	email="${1}"
-	domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
-	dns="${4}"
+        email="${1}"
+        domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
+        dns="${4}"
 
-	if ( [ "${dns}" = "linode" ] )
-	then
-		export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
-		if ( [ "`/usr/local/bin/linode-cli domains list --json | /usr/bin/jq -r '.[] | select ( .domain == "'${domainurl}'").domain'`" = "" ] )
-		then
-			/usr/local/bin/linode-cli domains create --type master --domain ${domainurl} --soa_email ${email}
-		fi
-		unset LINODE_CLI_CONFIG
-	fi
+        if ( [ "${dns}" = "linode" ] )
+        then
+                export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
+                if ( [ "`/usr/local/bin/linode-cli domains list --json | /usr/bin/jq -r '.[] | select ( .domain == "'${domainurl}'").domain'`" = "" ] )
+                then
+                        /usr/local/bin/linode-cli domains create --type master --domain ${domainurl} --soa_email ${email}
+                fi
+                unset LINODE_CLI_CONFIG
+        fi
 
-	email="${1}"
-	authkey="${2}"
-	domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
-	dns="${4}"
+        email="${1}"
+        authkey="${2}"
+        domainurl="`/bin/echo ${3} | /usr/bin/cut -d'.' -f2-`"
+        dns="${4}"
 
-	if ( [ "${dns}" = "vultr" ] )
-	then
-		if ( [ "`/usr/bin/vultr dns domain list -o json | /usr/bin/jq -r '.domains[] | select ( .domain == "'${domain_name}'").domain'`" = "" ] )
-		then
-			/usr/bin/vultr dns domain create -d ${domainurl}
-		fi
-	fi
+        if ( [ "${dns}" = "vultr" ] )
+        then
+                if ( [ "`/usr/bin/vultr dns domain list -o json | /usr/bin/jq -r '.domains[] | select ( .domain == "'${domain_name}'").domain'`" = "" ] )
+                then
+                        /usr/bin/vultr dns domain create -d ${domainurl}
+                fi
+        fi
 fi
