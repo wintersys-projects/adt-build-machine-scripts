@@ -114,11 +114,18 @@ then
                 ${BUILD_HOME}/providerscripts/dns/CreateZone.sh "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${DNS_CHOICE}"
         fi
 
-        account_id="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $1}'`"
-        api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
+        if ( [ "`/bin/echo ${DNS_SECURITY_KEY} | /bin/grep ':::'`" != "" ] )
+        then
+                account_id="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $1}'`"
+                api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
 
-        export CF_Account_ID="${account_id}"
-        export CF_Token="${api_token}"
+                export CF_Account_ID="${account_id}"
+                export CF_Token="${api_token}"
+        else
+                export CF_Key="${DNS_SECURITY_KEY}"
+                export CF_Email="${DNS_USERNAME}"
+        fi
+
         ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
 fi
 
