@@ -5,6 +5,7 @@ Deprecated. Use dns_linode_v4
 Site: Linode.com
 '
 
+LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
 
 ########  Public functions #####################
 #
