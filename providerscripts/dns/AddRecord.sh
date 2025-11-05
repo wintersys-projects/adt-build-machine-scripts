@@ -111,7 +111,7 @@ dns="${7}"
 
 if ( [ "${dns}" = "linode" ] )
 then
-        LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
+        export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
         domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
         #Make damn sure that the DNS record gets added to the DNS system
         count="0"
@@ -120,6 +120,8 @@ then
                 count="`/usr/bin/expr ${count} + 1`"
                 /usr/local/bin/linode-cli domains records-create ${domain_id} --type A --name ${subdomain} --target ${ip} --ttl_sec 60
         done
+
+        unset LINODE_CLI_CONFIG
 
         if ( [ "${count}" = "5" ] )
         then
