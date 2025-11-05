@@ -76,25 +76,26 @@ then
 	if ( [ "${zoneid}" = "" ] )
 	then
 		${BUILD_HOME}/providerscripts/dns/CreateZone.sh "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${DNS_CHOICE}"
+		/bin/sleep 10
+		zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
 	fi
 
-	status "We are adding our DNS records to the DNS provider you selected, in this case ${DNS_CHOICE}"
-	zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
+	#status "We are adding our DNS records to the DNS provider you selected, in this case ${DNS_CHOICE}"
+	#zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
 
-	if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
-	then
-		while ( [ "${zoneid}" = "" ] )
-		do
-			status "Attempting to get zone id for the DNS system (this may take a few retries)....if, after some time, I can't get your zone id check that your nameservers are configured correctly. Please wait...."
-			/bin/sleep 30
-			zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
-		done
-	fi
+	#if ( [ "${DNS_CHOICE}" = "cloudflare" ] )
+	#then
+#		while ( [ "${zoneid}" = "" ] )#
+		#do
+	#		status "Attempting to get zone id for the DNS system (this may take a few retries)....if, after some time, I can't get your zone id check that your nameservers are configured correctly. Please wait...."
+#			/bin/sleep 30
+	#		zoneid="`${BUILD_HOME}/providerscripts/dns/GetZoneID.sh "${zonename}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
+#		done
+#	fi
 
 	if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 	then 
 		recordids="`${BUILD_HOME}/providerscripts/dns/GetAllRecordIDs.sh  "${zoneid}" "${WEBSITE_URL}" "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${DNS_CHOICE}"`"
-
 
 		if ( [ "${record}" = "primary" ] )
 		then
