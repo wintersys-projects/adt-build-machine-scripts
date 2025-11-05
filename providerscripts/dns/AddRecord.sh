@@ -36,22 +36,13 @@ dns="${7}"
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
-        #authkey="${credentials}"
-        api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
-        #Make damn sure that the DNS record gets added to the DNS system
-        count="0"
-        while ( ( [ "$?" != "0" ] || [ "${count}" = "0" ] ) && [ "${count}" -lt "5" ] )
-        do
-                count="`/usr/bin/expr ${count} + 1`"
-                #keu
-                #/usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
-                #token
-                /usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
-        done
-
-        if ( [ "${count}" = "5" ] )
+        if ( [ "`/bin/echo ${credentials} | /bin/grep ':::'`" != "" ] )
         then
-                /bin/touch /tmp/END_IT_ALL
+                api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+                /usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
+        else
+                authkey="${credentials}"
+                /usr/bin/curl -X POST "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" --data '{"type":"A","name":"'${websiteurl}'","content":"'${ip}'","proxiable":true,"proxied":'${proxied}',"ttl":120}'
         fi
 fi
 
@@ -149,6 +140,3 @@ then
                 /bin/touch /tmp/END_IT_ALL
         fi
 fi
-
-
-
