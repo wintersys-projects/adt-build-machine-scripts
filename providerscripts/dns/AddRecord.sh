@@ -111,6 +111,7 @@ dns="${7}"
 
 if ( [ "${dns}" = "linode" ] )
 then
+        LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
         domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
         #Make damn sure that the DNS record gets added to the DNS system
         count="0"
