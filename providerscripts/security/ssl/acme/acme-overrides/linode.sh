@@ -22,14 +22,14 @@ dns_linode_v4_add() {
 
         export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
 
-        _domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
+        _domain_id="`/usr/local/bin/linode-cli domains list --no-defaults --json | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
 
-        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
+        if ( [ "`/usr/local/bin/linode-cli domains records-list $_domain_id --no-defaults --json | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
         then
-                /usr/local/bin/linode-cli domains records-create $_domain_id --type TXT --name $_sub_domain --target $txtvalue --ttl_sec 60
+                /usr/local/bin/linode-cli domains records-create $_domain_id --no-defaults --type TXT --name $_sub_domain --target $txtvalue --ttl_sec 60
         fi
 
-        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/local/bin/linode-cli domains records-list $_domain_id --no-defaults --json | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" != "" ] )
         then
                 _info "Added, OK"
                 unset LINODE_CLI_CONFIG
@@ -50,15 +50,15 @@ dns_linode_v4_rm() {
         export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
-        _domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
-        _record_id="`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`"
+        _domain_id="`/usr/local/bin/linode-cli domains list --no-defaults --json | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
+        _record_id="`/usr/local/bin/linode-cli domains records-list $_domain_id --no-defaults --json | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`"
 
-        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/local/bin/linode-cli domains records-list $_domain_id --no-defaults --json | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" != "" ] )
         then
-                /usr/local/bin/linode-cli domains records-delete $_domain_id $_record_id
+                /usr/local/bin/linode-cli domains records-delete $_domain_id $_record_id --no-defaults 
         fi
 
-        if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
+        if ( [ "`/usr/local/bin/linode-cli domains records-list $_domain_id --no-defaults --json | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
         then
                 _info "Removed, OK"
                 unset LINODE_CLI_CONFIG
