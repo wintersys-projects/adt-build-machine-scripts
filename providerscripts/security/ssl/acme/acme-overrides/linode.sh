@@ -5,8 +5,6 @@ Deprecated. Use dns_linode_v4
 Site: Linode.com
 '
 
-LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
-
 ########  Public functions #####################
 #
 #Usage: add  _acme-challenge.www.domain.com   "XKrxpRBosdIKFzxW_CT3KLZNf6q0HG9i01zxXp5CPBs"
@@ -22,6 +20,8 @@ dns_linode_v4_add() {
 
         _info "Adding record"
 
+        export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
+
         _domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
 
         if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
@@ -32,8 +32,11 @@ dns_linode_v4_add() {
         if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" != "" ] )
         then
                 _info "Added, OK"
+                unset LINODE_CLI_CONFIG
                 return 0
         fi
+
+        unset LINODE_CLI_CONFIG
 
         _err "Add txt record error."
         return 1
@@ -43,6 +46,8 @@ dns_linode_v4_add() {
 dns_linode_v4_rm() {
         fulldomain=$1
         txtvalue=$2
+
+        export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
         _domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'$_domain'")).id'`"
@@ -56,8 +61,12 @@ dns_linode_v4_rm() {
         if ( [ "`/usr/local/bin/linode-cli --json domains records-list $_domain_id | /usr/bin/jq -r '.[] | select (.target | contains("'$txtvalue'")).id'`" = "" ] )
         then
                 _info "Removed, OK"
+                unset LINODE_CLI_CONFIG
                 return 0
         fi
+
+        unset LINODE_CLI_CONFIG
+
 
         _err "Remove txt record error."
         return 1
