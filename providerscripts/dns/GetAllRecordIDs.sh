@@ -68,9 +68,10 @@ dns="${5}"
 
 if ( [ "${dns}" = "linode" ] )
 then
-	LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
+	export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
 	domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
 	/usr/local/bin/linode-cli domains records-list ${domain_id} --json | /usr/bin/jq -r '.[] | select (.name == "'${subdomain}'").id'
+	unset LINODE_CLI_CONFIG
 fi
 
 domainurl="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
