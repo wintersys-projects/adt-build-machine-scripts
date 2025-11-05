@@ -191,8 +191,8 @@ then
 			/usr/sbin/ip6tables -P INPUT DROP
 			/usr/sbin/ip6tables -P FORWARD DROP
 			/usr/sbin/ip6tables -P OUTPUT DROP
-            /usr/sbin/iptables-save
-			/usr/sbin/ip6tables-save
+        	/usr/sbin/iptables-save > /etc/iptables/rules.v4
+        	/usr/sbin/ip6tables-save > /etc/iptables/rules.v6
 		fi
 	fi
 
