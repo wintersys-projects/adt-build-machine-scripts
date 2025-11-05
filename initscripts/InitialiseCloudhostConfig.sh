@@ -36,6 +36,7 @@ CLOUDHOST_ACCOUNT_ID="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ACCESS_KEY`"
 SECRET_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SECRET_KEY`"
+DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_SECURITY_KEY`"
 
 if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 then
@@ -201,6 +202,12 @@ then
 	/bin/cp  ${BUILD_HOME}/.linode-cli /root/.config/linode-cli
 	/bin/chown root:root /root/.config/linode-cli ${BUILD_HOME}/.linode-cli
 	/bin/chmod 400 /root/.config/linode-cli ${BUILD_HOME}/.linode-cli
+
+	/bin/cp ${BUILD_HOME}/.linode-cli ${BUILD_HOME}/.dns-linode-cli
+	/bin/cp /root/.config/linode-cli /root/.config/dns-linode-cli
+
+	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}" ${BUILD_HOME}/.dns-linode-cli
+	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}" /root/.config/dns-linode-cli
 
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 	then
