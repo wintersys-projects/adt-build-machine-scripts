@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 zoneid="${1}"
@@ -35,9 +35,14 @@ dns="${5}"
 
 if ( [ "${dns}" = "cloudflare" ] )
 then
-	api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
-	# /usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records?type=A&name=${websiteurl}&page=1&per_page=20&order=type&direction=desc&match=all" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'
-	/usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records?type=A&name=${websiteurl}&page=1&per_page=20&order=type&direction=desc&match=all" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json"  | /usr/bin/jq -r '.result[].id'
+        if ( [ "`/bin/echo ${credentials} | /bin/grep ':::'`" = "" ] )
+        then
+                api_token="`/bin/echo ${credentials} | /usr/bin/awk -F':::' '{print $2}'`"
+                /usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records?type=A&name=${websiteurl}&page=1&per_page=20&order=type&direction=desc&match=all" --header "Authorization: Bearer ${api_token}" --header "Content-Type: application/json"  | /usr/bin/jq -r '.result[].id'
+        else
+                authkey="${credentials}"
+                /usr/bin/curl -X GET "https://api.cloudflare.com/client/v4/zones/${zoneid}/dns_records?type=A&name=${websiteurl}&page=1&per_page=20&order=type&direction=desc&match=all" -H "X-Auth-Email: ${email}" -H "X-Auth-Key: ${authkey}" -H "Content-Type: application/json" | /usr/bin/jq -r '.result[].id'
+        fi
 fi
 
 websiteurl="${2}"
@@ -47,7 +52,7 @@ dns="${5}"
 
 if ( [ "${dns}" = "digitalocean" ] )
 then
-	/usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.type == "A") | select (.name == "'${subdomain}'").id'
+        /usr/local/bin/doctl compute domain records list ${domainurl} -o json | /usr/bin/jq -r '.[] | select (.type == "A") | select (.name == "'${subdomain}'").id'
 fi
 
 domainurl="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
@@ -57,9 +62,9 @@ dns="${5}"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
-	/usr/bin/exo -O json dns show ${domainurl}  | /usr/bin/jq -r '.[] | select (.name | contains("'${subdomain}'")).id'
-	#Alternative
-	#/usr/bin/curl  -H "X-DNS-Token: ${authkey}" -H 'Accept: application/json' https://api.exoscale.com/dns/v1/domains/${domainurl}/records | /usr/bin/jq --arg tmp_subdomain "${subdomain}" '.[].record | select (.name == $tmp_subdomain) | .id'
+        /usr/bin/exo -O json dns show ${domainurl}  | /usr/bin/jq -r '.[] | select (.name | contains("'${subdomain}'")).id'
+        #Alternative
+        #/usr/bin/curl  -H "X-DNS-Token: ${authkey}" -H 'Accept: application/json' https://api.exoscale.com/dns/v1/domains/${domainurl}/records | /usr/bin/jq --arg tmp_subdomain "${subdomain}" '.[].record | select (.name == $tmp_subdomain) | .id'
 fi
 
 domain_url="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
@@ -68,10 +73,10 @@ dns="${5}"
 
 if ( [ "${dns}" = "linode" ] )
 then
-	export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
-	domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
-	/usr/local/bin/linode-cli domains records-list ${domain_id} --json | /usr/bin/jq -r '.[] | select (.name == "'${subdomain}'").id'
-	unset LINODE_CLI_CONFIG
+        export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
+        domain_id="`/usr/local/bin/linode-cli --json domains list | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
+        /usr/local/bin/linode-cli domains records-list ${domain_id} --json | /usr/bin/jq -r '.[] | select (.name == "'${subdomain}'").id'
+        unset LINODE_CLI_CONFIG
 fi
 
 domainurl="`/bin/echo ${2} | /usr/bin/cut -d'.' -f2-`"
@@ -81,5 +86,5 @@ dns="${5}"
 
 if ( [ "${dns}" = "vultr" ] )
 then
-	/usr/bin/vultr dns record list ${domainurl} -o json | /usr/bin/jq -r '.records[] | select (.name == "'${subdomain}'").id'
+        /usr/bin/vultr dns record list ${domainurl} -o json | /usr/bin/jq -r '.records[] | select (.name == "'${subdomain}'").id'
 fi
