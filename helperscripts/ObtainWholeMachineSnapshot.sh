@@ -179,14 +179,14 @@ fi
 
 if ( [ "${CLOUDHOST}" = "linode" ] )
 then
-	machine_name="`/usr/local/bin/linode-cli linodes list --json | /usr/bin/jq -r '.[] | select (.id == '${machine_id}').label'`"
-	disk_id="`/usr/local/bin/linode-cli linodes disks-list ${machine_id} --json | /usr/bin/jq -r '.[] | select (.filesystem == "ext4").id'`"
+	machine_name="`/usr/local/bin/linode-cli linodes list --no-defaults --json | /usr/bin/jq -r '.[] | select (.id == '${machine_id}').label'`"
+	disk_id="`/usr/local/bin/linode-cli linodes disks-list ${machine_id} --no-defaults --json | /usr/bin/jq -r '.[] | select (.filesystem == "ext4").id'`"
 
 	/bin/echo "##############################################################################################"
 	/bin/echo "################MAKING A SNAPSHOT OF MACHINE: ${machine_label} #####################"
 	/bin/echo "##############################################################################################"
 
-	snapshot_id="`/usr/local/bin/linode-cli images create --disk_id ${disk_id} --label ${machine_name} --json | /usr/bin/jq -r '.[].id'`"
+	snapshot_id="`/usr/local/bin/linode-cli images create --disk_id ${disk_id} --label ${machine_name} --no-defaults --json | /usr/bin/jq -r '.[].id'`"
 fi
 
 if ( [ "${CLOUDHOST}" = "vultr" ] )
