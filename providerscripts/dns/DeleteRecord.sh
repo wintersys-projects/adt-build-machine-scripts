@@ -61,7 +61,7 @@ domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "exoscale" ] )
 then
-        /usr/bin/exo dns remove ${domainurl} ${recordid} -Q -f
+        /usr/bin/exo dns remove ${domainurl} ${recordid} -Q -f  --config /root/.config/exoscale/dns-exoscale.toml 
 fi
 
 record_id="${2}"
