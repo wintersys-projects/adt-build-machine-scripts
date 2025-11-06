@@ -97,9 +97,9 @@ else
 
         if ( [ "${dns}" = "vultr" ] )
         then
-                if ( [ "`/usr/bin/vultr dns domain list -o json | /usr/bin/jq -r '.domains[] | select ( .domain == "'${domain_name}'").domain'`" = "" ] )
+                if ( [ "`/usr/bin/vultr dns domain list --config /root/.dns-vultr-cli.yaml -o json | /usr/bin/jq -r '.domains[] | select ( .domain == "'${domain_name}'").domain'`" = "" ] )
                 then
-                        /usr/bin/vultr dns domain create -d ${domainurl}
+                        /usr/bin/vultr dns domain create -d ${domainurl} --config /root/.dns-vultr-cli.yaml 
                 fi
         fi
 fi
