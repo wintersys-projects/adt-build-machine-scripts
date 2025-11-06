@@ -1,4 +1,6 @@
-#!/usr/bin/bash
+#!/bin/sh
+
+#set -x
 
 # shellcheck disable=SC2034
 dns_exoscale_info='Exoscale.com
@@ -22,13 +24,13 @@ dns_exoscale_add() {
         _debug _domain "$_domain"
 
         _info "Adding record"
-        
-        if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" = "" ] )
+
+        if ( [ "`/usr/bin/exo dns show $_domain --config /root/.config/exoscale/dns-exoscale.toml -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" = "" ] )
         then
-                /usr/bin/exo dns add TXT $_domain -c $txtvalue -n $_sub_domain -t 120
+                /usr/bin/exo dns add TXT $_domain -c $txtvalue -n $_sub_domain -t 120 --config /root/.config/exoscale/dns-exoscale.toml
         fi
-        
-        if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" != "" ] )
+
+        if ( [ "`/usr/bin/exo dns show $_domain --config /root/.config/exoscale/dns-exoscale.toml -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" != "" ] )
         then
                 _info "Added, OK"
                 return 0
@@ -46,14 +48,14 @@ dns_exoscale_rm() {
         txtvalue=$2
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
-        _domain_id="`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" 
+        _domain_id="`/usr/bin/exo dns show $_domain --config /root/.config/exoscale/dns-exoscale.toml -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" 
 
-        if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/bin/exo dns show $_domain --config /root/.config/exoscale/dns-exoscale.toml -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" != "" ] )
         then
-                /usr/bin/exo dns remove $_domain $_domain_id --force
+                /usr/bin/exo dns remove $_domain $_domain_id --force --config /root/.config/exoscale/dns-exoscale.toml
         fi
-        
-        if ( [ "`/usr/bin/exo dns show $_domain -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" = "" ] )
+
+        if ( [ "`/usr/bin/exo dns show $_domain --config /root/.config/exoscale/dns-exoscale.toml -O json | /usr/bin/jq -r '.[] | select ( .content | contains ( "'$txtvalue'")).id'`" = "" ] )
         then
                 _info "Removed, OK"
                 return 0
