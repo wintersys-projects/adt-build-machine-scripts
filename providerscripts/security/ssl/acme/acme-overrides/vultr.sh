@@ -24,12 +24,12 @@ dns_vultr_add() {
 
         _info "Adding record"
 
-        if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" = "" ] )
+        if ( [ "`/usr/bin/vultr dns record list $_domain --config /root/.dns-vultr-cli.yaml -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" = "" ] )
         then
-                /usr/bin/vultr dns record create $_domain -n $_sub_domain -t TXT -d "$txtvalue" --ttl=60
+                /usr/bin/vultr dns record create $_domain -n $_sub_domain -t TXT -d "$txtvalue" --ttl=60 --config /root/.dns-vultr-cli.yaml 
         fi
 
-        if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/bin/vultr dns record list $_domain --config /root/.dns-vultr-cli.yaml -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" != "" ] )
         then
                 _info "Added, OK"
                 return 0
@@ -45,15 +45,15 @@ dns_vultr_rm() {
         txtvalue=$2
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
-        _domain_id="`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`"
+        _domain_id="`/usr/bin/vultr dns record list $_domain --config /root/.dns-vultr-cli.yaml -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`"
 
 
-        if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/bin/vultr dns record list $_domain --config /root/.dns-vultr-cli.yaml -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" != "" ] )
         then
-                /usr/bin/vultr dns record delete $_domain $_domain_id
+                /usr/bin/vultr dns record delete $_domain $_domain_id --config /root/.dns-vultr-cli.yaml 
         fi
 
-        if ( [ "`/usr/bin/vultr dns record list $_domain -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" = "" ] )
+        if ( [ "`/usr/bin/vultr dns record list $_domain --config /root/.dns-vultr-cli.yaml  -o json | /usr/bin/jq -r '.records[] | select (.data | contains("'$txtvalue'")).id'`" = "" ] )
         then
                 _info "Removed, OK"
                 return 0
