@@ -30,7 +30,7 @@ dns_dgon_add() {
 
         if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" = "" ] )
         then
-                /usr/local/bin/doctl compute domain records create --record-type TXT --record-name $_sub_domain --record-data $txtvalue  --record-ttl 60 $_domain --config /root/.config/doctl/dns-do-config.yaml
+                /usr/local/bin/doctl compute domain records create --record-type TXT --record-name $_sub_domain --record-data $txtvalue  --record-ttl 60 --config /root/.config/doctl/dns-do-config.yaml $_domain 
         fi
 
         if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" != "" ] )
@@ -56,7 +56,7 @@ dns_dgon_rm() {
 
         if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" != "" ] )
         then
-                /usr/local/bin/doctl compute domain records delete --force $_domain ${_domain_id} --config /root/.config/doctl/dns-do-config.yaml
+                /usr/local/bin/doctl compute domain records delete $_domain ${_domain_id}  --force --config /root/.config/doctl/dns-do-config.yaml
         fi
 
         if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" = "" ] )
