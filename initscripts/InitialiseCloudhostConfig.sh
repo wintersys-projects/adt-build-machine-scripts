@@ -74,6 +74,14 @@ then
 	/bin/chown root:root ${BUILD_HOME}/.config/doctl/config.yaml /root/.config/doctl/config.yaml
 	/bin/chmod 400 ${BUILD_HOME}/.config/doctl/config.yaml /root/.config/doctl/config.yaml
 
+	/bin/cp ${BUILD_HOME}/.config/doctl/config.yaml ${BUILD_HOME}/.config/doctl/dns-do-config.yaml
+	/bin/cp ${BUILD_HOME}/.config/doctl/config.yaml /root/.config/doctl/dns-do-config.yaml
+	/bin/chown root:root ${BUILD_HOME}/.config/doctl/dns-do-config.yaml /root/.config/doctl/dns-do-config.yaml
+	/bin/chmod 400 ${BUILD_HOME}/.config/doctl/dns-do-config.yaml /root/.config/doctl/dns-do-config.yaml
+
+	/bin/sed -i "s/^access-token.*/access-token: ${DNS_SECURITY_KEY}/" ${BUILD_HOME}/.config/doctl/dns-do-config.yaml
+	/bin/sed -i "s/^access-token.*/access-token: ${DNS_SECURITY_KEY}/" /root/.config/doctl/dns-do-config.yaml
+
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 	then
 		/usr/local/bin/doctl balance get >&3
