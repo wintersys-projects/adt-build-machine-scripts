@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/bin/sh
+
 # shellcheck disable=SC2034
 dns_dgon_info='DigitalOcean.com
 Site: DigitalOcean.com/help/api/
