@@ -86,5 +86,5 @@ dns="${5}"
 
 if ( [ "${dns}" = "vultr" ] )
 then
-        /usr/bin/vultr dns record list ${domainurl} -o json | /usr/bin/jq -r '.records[] | select (.name == "'${subdomain}'").id'
+        /usr/bin/vultr dns record list ${domainurl} --config /root/.dns-vultr-cli.yaml -o json | /usr/bin/jq -r '.records[] | select (.name == "'${subdomain}'").id'
 fi
