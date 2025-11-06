@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/bin/sh
+
 # shellcheck disable=SC2034
 dns_linode_info='Linode.com (Old)
 Deprecated. Use dns_linode_v4
