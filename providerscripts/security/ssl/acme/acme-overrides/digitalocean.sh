@@ -9,6 +9,8 @@ DO_API_KEY API Key
 Author: <github@thewer.com>
 '
 
+#set -x
+
 #####################  Public functions  #####################
 
 ## Create the text record for validation.
@@ -21,25 +23,17 @@ dns_dgon_add() {
         _sub_domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f -2`"
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
 
-        #       if ( [ "${DO_API_KEY}" = '' ] )
-        #       then
-        #               _err 'DO_API_KEY was not exported'
-        #               return 1
-        #       fi
-        #
-        #       _saveaccountconf_mutable DO_API_KEY "${DO_API_KEY}"
-
         _debug _sub_domain "$_sub_domain"
         _debug _domain "$_domain"
 
         _info "Adding record"
 
-        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" = "" ] )
+        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" = "" ] )
         then
-                /usr/local/bin/doctl compute domain records create --record-type TXT --record-name $_sub_domain --record-data $txtvalue  --record-ttl 60 $_domain
+                /usr/local/bin/doctl compute domain records create --record-type TXT --record-name $_sub_domain --record-data $txtvalue  --record-ttl 60 $_domain --config /root/.config/doctl/dns-do-config.yaml
         fi
 
-        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" != "" ] )
         then
                 _info "Added, OK"
                 return 0
@@ -58,23 +52,14 @@ dns_dgon_rm() {
         txtvalue=$2
 
         _domain="`/bin/echo ${fulldomain} | /usr/bin/cut -d '.' -f 3-`"
-        _domain_id="`/usr/local/bin/doctl compute domain records list $_domain -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`"
+        _domain_id="`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`"
 
-    #    DO_API_KEY="${DO_API_KEY:-$(_readaccountconf_mutable DO_API_KEY)}"
-    #    # Check if API Key Exists
-    #    if [ -z "$DO_API_KEY" ]; then
-    #            DO_API_KEY=""
-    #            _err "You did not specify DigitalOcean API key."
-    #            _err "Please export DO_API_KEY and try again."
-    #            return 1
-     #   fi
-
-        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" != "" ] )
+        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" != "" ] )
         then
-                /usr/local/bin/doctl compute domain records delete --force $_domain ${_domain_id}
+                /usr/local/bin/doctl compute domain records delete --force $_domain ${_domain_id} --config /root/.config/doctl/dns-do-config.yaml
         fi
 
-        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" = "" ] )
+        if ( [ "`/usr/local/bin/doctl compute domain records list $_domain --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .data | contains ( "'$txtvalue'")).id'`" = "" ] )
         then
                 _info "Removed, OK"
                 return 0
