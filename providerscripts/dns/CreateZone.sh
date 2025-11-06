@@ -52,9 +52,9 @@ else
 
         if ( [ "${dns}" = "digitalocean" ] )
         then
-                if ( [ "`/usr/local/bin/doctl compute domain list -o json | /usr/bin/jq -r '.[] | select ( .name == "'${domainurl}'").name'`" = "" ] )
+                if ( [ "`/usr/local/bin/doctl compute domain list --config /root/.config/doctl/dns-do-config.yaml -o json | /usr/bin/jq -r '.[] | select ( .name == "'${domainurl}'").name'`" = "" ] )
                 then
-                        /usr/local/bin/doctl compute domain create ${domainurl}
+                        /usr/local/bin/doctl compute domain create ${domainurl} --config /root/.config/doctl/dns-do-config.yaml 
                 fi
         fi
 
