@@ -252,6 +252,12 @@ then
 		/bin/echo "api-key: ${TOKEN}" > /root/.vultr-cli.yaml
 		/bin/chown root:root ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN ${BUILD_HOME}/.vultr-cli.yaml /root/.vultr-cli.yaml
 		/bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/TOKEN ${BUILD_HOME}/.vultr-cli.yaml /root/.vultr-cli.yaml
+                
+		/bin/echo ${DNS_SECURITY_KEY} > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_TOKEN
+        /bin/echo "api-key: ${DNS_SECURITY_KEY}" > ${BUILD_HOME}/.dns-vultr-cli.yaml
+        /bin/echo "api-key: ${DNS_SECURITY_KEY}" > /root/.dns-vultr-cli.yaml
+        /bin/chown root:root ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_TOKEN ${BUILD_HOME}/.dns-vultr-cli.yaml /root/.dns-vultr-cli.yaml
+        /bin/chmod 400 ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_TOKEN ${BUILD_HOME}/.dns-vultr-cli.yaml /root/.dns-vultr-cli.yaml
 	else
 		status "Couldn't find your vultr API key from your template - will have to exit...."
 		/bin/touch /tmp/END_IT_ALL
