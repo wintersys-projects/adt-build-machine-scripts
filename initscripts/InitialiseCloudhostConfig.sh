@@ -142,6 +142,17 @@ then
 	/bin/chown root:root ${BUILD_HOME}/.exoscale.toml /root/.config/exoscale/exoscale.toml
 	/bin/chmod 400 ${BUILD_HOME}/.exoscale.toml /root/.config/exoscale/exoscale.toml
 
+	/bin/cp ${BUILD_HOME}/.exoscale.toml ${BUILD_HOME}/.dns-exoscale.toml
+    /bin/cp /root/.config/exoscale/exoscale.toml /root/.config/exoscale/dns-exoscale.toml
+
+    DNS_ACCESS_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
+    DNS_SECRET_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $2}'`"
+
+    /bin/sed -i 's/key.*/key = "'${DNS_ACCESS_KEY}'"/' ${BUILD_HOME}/.dns-exoscale.toml
+    /bin/sed -i 's/secret.*/secret = "'${DNS_SECRET_KEY}'"/' ${BUILD_HOME}/.dns-exoscale.toml
+    /bin/sed -i 's/key.*/key = "'${DNS_ACCESS_KEY}'"/' /root/.config/exoscale/dns-exoscale.toml
+    /bin/sed -i 's/secret.*/secret = "'${DNS_SECRET_KEY}'"/' /root/.config/exoscale/dns-exoscale.toml
+
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 	then
 		/usr/bin/exo status >&3
