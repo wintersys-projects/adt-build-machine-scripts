@@ -82,7 +82,7 @@ domainurl="`/bin/echo ${6} | /usr/bin/cut -d'.' -f2-`"
 
 if ( [ "${dns}" = "vultr" ] )
 then
-        /usr/bin/vultr dns record delete ${domainurl} ${recordid}
+        /usr/bin/vultr dns record delete ${domainurl} ${recordid} --config /root/.dns-vultr-cli.yaml 
 fi
 
 
