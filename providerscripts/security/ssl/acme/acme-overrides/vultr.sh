@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/bin/sh
+
 # shellcheck disable=SC2034
 dns_vultr_info='vultr.com
 Site: vultr.com
