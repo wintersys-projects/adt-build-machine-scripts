@@ -7,6 +7,10 @@ CLOUDHOST="`${HOME}/utilities/config/ExtractConfigValue.sh 'CLOUDHOST'`"
 BUILD_IDENTIFIER="`${HOME}/utilities/config/ExtractConfigValue.sh 'BUILD_IDENTIFIER'`"
 
 
+if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/firewallports.dat ] )
+then
+  /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/firewallports.dat
+fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER} ] )
 then
