@@ -23,6 +23,24 @@
 #######################################################################################################
 #set -x
 
+digitalocean_custom_rules ()
+{
+        custom_ports="${1}"
+        custom_rules=""
+        for custom_port_token in ${custom_ports}
+        do
+                if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+                then
+                        port="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+                        ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+                        custom_rules=${custom_rules}' protocol:tcp,ports:${port},address:${ip_address}'
+               
+                fi
+        done
+        custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
+        /bin/echo "${custom_rules}"
+}
+
 linode_custom_rules ()
 {
         custom_ports="${1}"
@@ -101,6 +119,33 @@ then
 
                 firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
 
+                custom_rules=""
+                
+                if ( [ "${firewall_name}" = "adt-authenticator" ] )
+                then
+                        custom_rules="`digitalocean_custom_rules "${authenticator_custom_ports}"`"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
+                then
+                        custom_rules="`digitalocean_custom_rules "${reverseproxy_custom_ports}"`"
+                fi
+                
+                if ( [ "${firewall_name}" = "adt-autoscaler" ] )
+                then
+                        custom_rules="`digitalocean_custom_rules "${autoscaler_custom_ports}"`"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-webserver" ] )
+                then
+                        custom_rules="`digitalocean_custom_rules "${webserver_custom_ports}"`"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-database" ] )
+                then
+                        custom_rules="`digitalocean_custom_rules "${database_custom_ports}"`"
+                fi
+                
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
                 then
                         machine_identifier="as-${REGION}-${BUILD_IDENTIFIER}"
@@ -185,6 +230,10 @@ then
                         rules="${rules} protocol:tcp,ports:${SSH_PORT},address:${VPC_IP_RANGE} protocol:tcp,ports:${DB_PORT},address:${VPC_IP_RANGE} protocol:icmp,address:0.0.0.0/0"
                         rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                
                 fi
+
+                if ( [ "${custom_rules}" != "" ] )
+                then
+                        rules="${rules} ${custom_rules}"
 
                 /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
 
