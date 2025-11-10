@@ -14,7 +14,7 @@
 #if reverse proxy = 1 and authenticator=0 and autoscaler = 1 webservers!=0 and DNS_CHOICE=cloudflare
 #REVERSEPROXYOPENPORTS:SSH_PORT|ipv4|BUILD_MACHINE CLOUDFLARE|ipv4|CUSTOM
 #AUTOSCALEROPENPORTS:SSH_PORT|ipv4|BUILD_MACHINE
-#WEBSERVEROPENPORTS:SSH_PORT|ipv4|BUILD_MACHINET 443|ipv4|ALL
+#WEBSERVEROPENPORTS:SSH_PORT|ipv4|BUILD_MACHINE 443|ipv4|ALL
 #DATABASEOPENPORTS:SSH_PORT|ipv4|BUILD_MACHINE 
 
 #if reverse proxy=0 and authenticator=0 and autoscaler=1 and webservers!=0
