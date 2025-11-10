@@ -23,6 +23,8 @@
 #######################################################################################################
 #set -x
 
+
+
 digitalocean_custom_rules ()
 {
         custom_ports="${1}"
@@ -35,6 +37,26 @@ digitalocean_custom_rules ()
                         ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
                         custom_rules=${custom_rules}' protocol:tcp,ports:${port},address:${ip_address}'
                
+                fi
+        done
+        custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
+        /bin/echo "${custom_rules}"
+}
+
+exoscale_custom_rules ()
+{
+        firewall_name="${1}"
+        custom_ports="${2}"
+        BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+        
+        custom_rules=""
+        for custom_port_token in ${custom_ports}
+        do
+                if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+                then
+                        port="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+                        ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+                        /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${ip_address} --port ${port} &
                 fi
         done
         custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
@@ -273,14 +295,39 @@ then
                         done
                 fi
 
+                if ( [ "${firewall_name}" = "adt-authenticator" ] )
+                then
+                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${authenticator_custom_ports}"`"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
+                then
+                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${reverseproxy_custom_ports}"`"
+                fi
+                
+                if ( [ "${firewall_name}" = "adt-autoscaler" ] )
+                then
+                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${autoscaler_custom_ports}"`"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-webserver" ] )
+                then
+                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${webserver_custom_ports}"`"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-database" ] )
+                then
+                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${database_custom_ports}"`"
+                fi
+
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
                 then
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                         then
-                                /usr/bin/exo compute security-group rule add adt-autoscaler-${BUILD_IDENTIFIER} --network ${build_machine_ip}/32 --port ${SSH_PORT} &
+                                /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${build_machine_ip}/32 --port ${SSH_PORT} &
                         fi
-                        /usr/bin/exo compute security-group rule add adt-autoscaler-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${SSH_PORT} &
-                        /usr/bin/exo compute security-group rule add adt-autoscaler-${BUILD_IDENTIFIER} --protocol icmp --network 0.0.0.0/0 --icmp-code 0 --icmp-type 8 &
+                        /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${SSH_PORT} &
+                        /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --protocol icmp --network 0.0.0.0/0 --icmp-code 0 --icmp-type 8 &
                 fi
 
                 if ( [ "${firewall_name}" = "adt-webserver" ] ||  [ "${firewall_name}" = "adt-authenticator" ]  ||  [ "${firewall_name}" = "adt-reverseproxy" ] )
@@ -324,13 +371,13 @@ then
                 then
                         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
                         then
-                                /usr/bin/exo compute security-group rule add adt-database-${BUILD_IDENTIFIER} --network ${build_machine_ip}/32 --port ${SSH_PORT} &
-                                /usr/bin/exo compute security-group rule add adt-database-${BUILD_IDENTIFIER} --network ${build_machine_ip}/32 --port ${DB_PORT} &
+                                /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${build_machine_ip}/32 --port ${SSH_PORT} &
+                                /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${build_machine_ip}/32 --port ${DB_PORT} &
                         fi
 
-                        /usr/bin/exo compute security-group rule add adt-database-${BUILD_IDENTIFIER} --protocol icmp --network 0.0.0.0/0 --icmp-code 0 --icmp-type 8 &
-                        /usr/bin/exo compute security-group rule add adt-database-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${SSH_PORT} &
-                        /usr/bin/exo compute security-group rule add adt-database-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${DB_PORT} &
+                        /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --protocol icmp --network 0.0.0.0/0 --icmp-code 0 --icmp-type 8 &
+                        /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${SSH_PORT} &
+                        /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${VPC_IP_RANGE} --port ${DB_PORT} &
                 fi
 
                 /bin/echo "ADT_FIREWALL_ID:${firewall_name}-${BUILD_IDENTIFIER}"
