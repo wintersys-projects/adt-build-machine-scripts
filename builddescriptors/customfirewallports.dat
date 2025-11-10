@@ -1,5 +1,5 @@
 ############################################################################################################
-# This confifuration file is so that you can easily enable adhoc firewall ports if you need ports to be open
+# This configuration file is so that you can easily enable adhoc firewall ports if you need ports to be open
 # that aren't open in the default configurations for an application need. Say, for example you modified the 
 # scripts to support phpmyadmin then you might want port 8080 to be open to your ip addres 81.10.166.111/32
 # on your webserver so to achieve that you would put this line into this file 
