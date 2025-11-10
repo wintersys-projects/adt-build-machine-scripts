@@ -47,10 +47,7 @@ exoscale_custom_rules ()
 {
         firewall_name="${1}"
         custom_ports="${2}"
-        BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
-        BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
         
-        custom_rules=""
         for custom_port_token in ${custom_ports}
         do
                 if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
@@ -83,10 +80,7 @@ vultr_custom_rules ()
 {
         firewall_id="${1}"
         custom_ports="${2}"
-        BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
-        BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
         
-        custom_rules=""
         for custom_port_token in ${custom_ports}
         do
                 if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
