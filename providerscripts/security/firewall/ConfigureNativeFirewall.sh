@@ -59,8 +59,6 @@ exoscale_custom_rules ()
                         /usr/bin/exo compute security-group rule add ${firewall_name}-${BUILD_IDENTIFIER} --network ${ip_address} --port ${port} &
                 fi
         done
-        custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
-        /bin/echo "${custom_rules}"
 }
 
 linode_custom_rules ()
