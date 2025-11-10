@@ -47,6 +47,7 @@ exoscale_custom_rules ()
 {
         firewall_name="${1}"
         custom_ports="${2}"
+        BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
         BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
         
         custom_rules=""
@@ -76,6 +77,25 @@ linode_custom_rules ()
         done
         custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
         /bin/echo "${custom_rules}"
+}
+
+vultr_custom_rules ()
+{
+        firewall_id="${1}"
+        custom_ports="${2}"
+        BUILD_HOME="`/bin/cat /home/buildhome.dat`" 
+        BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+        
+        custom_rules=""
+        for custom_port_token in ${custom_ports}
+        do
+                if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+                then
+                        port="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+                        ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+                        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${port} --size=32 --ip-type=v4 --subnet=${ip_address}                      
+                fi
+        done
 }
 
 
@@ -295,27 +315,27 @@ then
 
                 if ( [ "${firewall_name}" = "adt-authenticator" ] )
                 then
-                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${authenticator_custom_ports}"`"
+                        exoscale_custom_rules "${firewall_name}" "${authenticator_custom_ports}"
                 fi
 
                 if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
                 then
-                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${reverseproxy_custom_ports}"`"
+                        exoscale_custom_rules "${firewall_name}" "${reverseproxy_custom_ports}"
                 fi
                 
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
                 then
-                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${autoscaler_custom_ports}"`"
+                        exoscale_custom_rules "${firewall_name}" "${autoscaler_custom_ports}"
                 fi
 
                 if ( [ "${firewall_name}" = "adt-webserver" ] )
                 then
-                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${webserver_custom_ports}"`"
+                        exoscale_custom_rules "${firewall_name}" "${webserver_custom_ports}"
                 fi
 
                 if ( [ "${firewall_name}" = "adt-database" ] )
                 then
-                        custom_rules="`exoscale_custom_rules "${firewall_name}" "${database_custom_ports}"`"
+                        exoscale_custom_rules "${firewall_name}" "${database_custom_ports}"
                 fi
 
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
@@ -497,6 +517,31 @@ then
                         do
                                 /usr/bin/vultr firewall rule delete ${firewall_id} ${rule}
                         done
+                fi
+
+                if ( [ "${firewall_name}" = "adt-authenticator" ] )
+                then
+                        vultr_custom_rules "${firewall_id}" "${authenticator_custom_ports}"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
+                then
+                        vultr_custom_rules "${firewall_id}" "${reverseproxy_custom_ports}"
+                fi
+                
+                if ( [ "${firewall_name}" = "adt-autoscaler" ] )
+                then
+                        vultr_custom_rules "${firewall_id}" "${autoscaler_custom_ports}"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-webserver" ] )
+                then
+                        vultr_custom_rules "${firewall_id}" "${webserver_custom_ports}"
+                fi
+
+                if ( [ "${firewall_name}" = "adt-database" ] )
+                then
+                        vultr_custom_rules "${firewall_id}" "${database_custom_ports}"
                 fi
 
                 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
