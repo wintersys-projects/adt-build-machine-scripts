@@ -1,10 +1,10 @@
 #!/bin/sh
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-SSH_PORT="`${HOME}/utilities/config/ExtractConfigValue.sh 'SSHPORT'`"
-DB_PORT="`${HOME}/utilities/config/ExtractConfigValue.sh 'DBPORT'`"
-CLOUDHOST="`${HOME}/utilities/config/ExtractConfigValue.sh 'CLOUDHOST'`"
-BUILD_IDENTIFIER="`${HOME}/utilities/config/ExtractConfigValue.sh 'BUILD_IDENTIFIER'`"
+SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
+DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/firewallports.dat ] )
