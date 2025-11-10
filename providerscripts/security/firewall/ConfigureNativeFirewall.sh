@@ -47,6 +47,16 @@ build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
+
+	if ( [ -f ${BUILD_HOME}/builddescriptors/firewallports.dat ] )
+	then
+		authenticator_custom_ports="`/bin/grep "^AUTHENTICATORCUSTOMPORTS ${BUILD_HOME}/builddescriptors/firewallports.dat" | /usr/bin/awk -F':' '{print $2}'`"
+		autoscaler_custom_ports="`/bin/grep "^AUTOSCALERCUSTOMPORTS ${BUILD_HOME}/builddescriptors/firewallports.dat" | /usr/bin/awk -F':' '{print $2}'`"
+		reverseproxy_custom_ports="`/bin/grep "^REVERSEPROXYCUSTOMPORTS ${BUILD_HOME}/builddescriptors/firewallports.dat" | /usr/bin/awk -F':' '{print $2}'`"
+		webserver_custom_ports="`/bin/grep "^WEBSERVERCUSTOMPORTS ${BUILD_HOME}/builddescriptors/firewallports.dat" | /usr/bin/awk -F':' '{print $2}'`"
+		database_custom_ports="`/bin/grep "^DATABASECUSTOMPORTS ${BUILD_HOME}/builddescriptors/firewallports.dat" | /usr/bin/awk -F':' '{print $2}'`"
+	fi
+	
 	if ( [ "${firewall_name}" = "adt-authenticator" ] )
 	then
 		all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/dns/GetProxyDNSIPs.sh "auth"`"
@@ -266,6 +276,24 @@ then
 		rule_build_machine='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"}'
 		rule_build_machine_ssl='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"443"}'
 		rule_icmp='{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}'
+		custom_rules=""
+
+		if ( [ "${firewall_name}" = "adt-autoscaler" ] )
+		then
+			if ( [ "${autoscaler_custom_ports}" != "" ] )
+			then
+				for autoscaler_custom_port_token in ${autoscaler_custom_ports}
+				do
+					if ( [ "`/bin/echo ${autoscaler_custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+					then
+						port="`/bin/echo ${autoscaler_custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+						ip_address="`/bin/echo ${autoscaler_custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+						custom_rules=${custom_rules}'{"addresses":{"ipv4":["'${ip_address}'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${port}'"},'
+					fi
+				done
+				custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
+			fi
+		fi
 
 		if ( [ "${all_dns_proxy_ips}" = "" ] )
 		then
@@ -289,7 +317,7 @@ then
 		then
 			if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 			then
-				ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}']'
+				ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${custom_rules}']'
 			elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 			then
 				ruleset='['${rule_vpc}','${rule_icmp}']'
