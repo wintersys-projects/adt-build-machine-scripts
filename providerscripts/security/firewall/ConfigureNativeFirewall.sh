@@ -278,16 +278,16 @@ then
 		rule_icmp='{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}'
 		custom_rules=""
 
-		if ( [ "${firewall_name}" = "adt-autoscaler" ] )
+		if ( [ "${firewall_name}" = "adt-webserver" ] )
 		then
-			if ( [ "${autoscaler_custom_ports}" != "" ] )
+			if ( [ "${webserver_custom_ports}" != "" ] )
 			then
-				for autoscaler_custom_port_token in ${autoscaler_custom_ports}
+				for webserver_custom_port_token in ${webserver_custom_ports}
 				do
-					if ( [ "`/bin/echo ${autoscaler_custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+					if ( [ "`/bin/echo ${webserver_custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
 					then
-						port="`/bin/echo ${autoscaler_custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
-						ip_address="`/bin/echo ${autoscaler_custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+						port="`/bin/echo ${webserver_custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+						ip_address="`/bin/echo ${webserver_custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
 						custom_rules=${custom_rules}'{"addresses":{"ipv4":["'${ip_address}'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${port}'"},'
 					fi
 				done
