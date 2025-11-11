@@ -29,9 +29,10 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 GIT_SSH_PRIVATE_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_SSH_PRIVATE_KEY`"
-
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 if ( [ "${GIT_SSH_PRIVATE_KEY}" != "" ] )
 then
-	/bin/echo "${GIT_SSH_PRIVATE_KET}" >
+	/bin/echo "${GIT_SSH_PRIVATE_KET}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/GIT_SSH_KEY
 fi
