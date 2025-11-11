@@ -33,10 +33,10 @@ linode_custom_rules ()
 		then
 			port="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
 			ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
-			custom_rules=${custom_rules}'{"addresses":{"ipv4":["'${ip_address}'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${port}'"},'
+			custom_rules=${custom_rules}',{"addresses":{"ipv4":["'${ip_address}'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${port}'"}'
 		fi
 	done
-	custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
+	#custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
 	/bin/echo "${custom_rules}"
 }
 
@@ -133,10 +133,12 @@ if ( [ "${firewall_name}" = "adt-autoscaler" ] )
 then
 	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 	then
-		ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${custom_rules}']'
+		ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${custom_rules}
+		#ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${custom_rules}']'
 	elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 	then
-		ruleset='['${rule_vpc}','${rule_icmp}','${custom_rules}']'
+		ruleset=${rule_vpc}','${rule_icmp}${custom_rules}
+		#ruleset='['${rule_vpc}','${rule_icmp}','${custom_rules}']'
 	fi
 fi
 
@@ -144,19 +146,23 @@ if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver"
 then
 	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 	then
-		ruleset='['${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}','${custom_rules}']'
+		ruleset=${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}${custom_rules}
+	#	ruleset='['${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}','${custom_rules}']'
 	else
-		ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}','${custom_rules}']'
+		ruleset=${rule_vpc}','${rule_icmp}','${rule_ssl}${custom_rules}
+	#	ruleset='['${rule_vpc}','${rule_icmp}','${rule_ssl}','${custom_rules}']'
 	fi
 else
 	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 	then
 		if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${firewall_name}" = "adt-webserver" ] )
 		then
-			ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${custom_rules}']'
+			ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${custom_rules}
+			#ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${custom_rules}']'
 		fi
 	else
-		ruleset='['${rule_vpc}','${rule_icmp}','${custom_rules}']'
+		ruleset=${rule_vpc}','${rule_icmp}${custom_rules}
+		#ruleset='['${rule_vpc}','${rule_icmp}','${custom_rules}']'
 	fi
 fi
 
@@ -164,10 +170,12 @@ if ( [ "${firewall_name}" = "adt-database" ] )
 then
 	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
 	then
-		ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${custom_rules}']'
+		ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${custom_rules}
+		#ruleset='['${rule_vpc}','${rule_build_machine}','${rule_icmp}','${custom_rules}']'
 	elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
 	then
-		ruleset='['${rule_vpc}','${rule_icmp}','${custom_rules}']'
+		ruleset=${rule_vpc}','${rule_icmp}${custom_rules}
+		#ruleset='['${rule_vpc}','${rule_icmp}','${custom_rules}']'
 	fi
 fi
 
