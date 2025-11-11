@@ -29,21 +29,24 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 GIT_SSH_PRIVATE_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_SSH_PRIVATE_KEY`"
+APPLICATION_REPOSITORY_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_REPOSITORY_PROVIDER`"
 
 if ( [ "${GIT_SSH_PRIVATE_KEY}" != "" ] )
 then
-	if ( [ -f ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ] )
+	if ( [ "${APPLICATION_REPOSITORY_PROVIDER}" = "github" ] )
 	then
-		if ( [ "`/bin/grep "${GIT_SSH_PRIVATE_KEY}" ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY`" = "" ] )
+		if ( [ -f ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ] )
 		then
-			/bin/mv ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY.$$
-			/bin/echo "${GIT_SSH_PRIVATE_KEY}" > ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY
-			if ( [ "`/bin/grep github.com ~/.ssh/config`" = "" ] )
+			if ( [ "`/bin/grep "${GIT_SSH_PRIVATE_KEY}" ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY`" = "" ] )
 			then
-				/bin/echo "Host github.com
+				/bin/mv ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY.$$
+				/bin/echo "${GIT_SSH_PRIVATE_KEY}" > ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY
+				if ( [ "`/bin/grep github.com ~/.ssh/config`" = "" ] )
+				then
+					/bin/echo "Host github.com
 	User git
 	IdentityFile ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY" >> ~/.ssh/config
-			fi
+			fi	fi
 		fi
 	fi
 fi
