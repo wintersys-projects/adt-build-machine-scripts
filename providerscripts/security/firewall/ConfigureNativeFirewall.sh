@@ -40,16 +40,16 @@ if ( [ "${ACTIVE_FIREWALLS}" = "2" ] || [ "${ACTIVE_FIREWALLS}" = "3" ] )
 then
 	if ( [ "${CLOUDHOST}" = "digitalocean" ] )
 	then
-		${BUILD_HOME}/providerscripts/security/firewall/digitalocean/ConfigureNativeFirewall.sh ${firewall_name}
+		/bin/echo "`${BUILD_HOME}/providerscripts/security/firewall/digitalocean/ConfigureNativeFirewall.sh ${firewall_name}`"
 	elif ( [ "${CLOUDHOST}" = "exoscale" ] )
 	then
-		${BUILD_HOME}/providerscripts/security/firewall/exoscale/ConfigureNativeFirewall.sh ${firewall_name}
+		/bin/echo "`${BUILD_HOME}/providerscripts/security/firewall/exoscale/ConfigureNativeFirewall.sh ${firewall_name}`"
 	elif ( [ "${CLOUDHOST}" = "linode" ] )
 	then
-		${BUILD_HOME}/providerscripts/security/firewall/linode/ConfigureNativeFirewall.sh ${firewall_name}
+		/bin/echo "`${BUILD_HOME}/providerscripts/security/firewall/linode/ConfigureNativeFirewall.sh ${firewall_name}`"
 	elif ( [ "${CLOUDHOST}" = "vultr" ] )
 	then
-		${BUILD_HOME}/providerscripts/security/firewall/vultr/ConfigureNativeFirewall.sh ${firewall_name}
+		/bin/echo "`${BUILD_HOME}/providerscripts/security/firewall/vultr/ConfigureNativeFirewall.sh ${firewall_name}`"
 	fi
 fi
     
