@@ -29,10 +29,21 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 GIT_SSH_PRIVATE_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_SSH_PRIVATE_KEY`"
-CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
-BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 if ( [ "${GIT_SSH_PRIVATE_KEY}" != "" ] )
 then
-	/bin/echo "${GIT_SSH_PRIVATE_KET}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/GIT_SSH_KEY
+	if ( [ -f ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ] )
+	then
+		if ( [ "`/bin/grep "${GIT_SSH_PRIVATE_KEY}" ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY`" = "" ] )
+		then
+			/bin/mv ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY.$$
+			/bin/echo "${GIT_SSH_PRIVATE_KEY}" > ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY
+			if ( [ "`/bin/grep github.com ~/.ssh/config`" = "" ] )
+			then
+				/bin/echo "Host github.com
+	User git
+	IdentityFile ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY" >> ~/.ssh/config
+			fi
+		fi
+	fi
 fi
