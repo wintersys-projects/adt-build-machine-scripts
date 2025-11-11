@@ -29,3 +29,9 @@ status () {
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 GIT_SSH_PRIVATE_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh GIT_SSH_PRIVATE_KEY`"
+
+
+if ( [ "${GIT_SSH_PRIVATE_KEY}" != "" ] )
+then
+	/bin/echo "${GIT_SSH_PRIVATE_KET}" >
+fi
