@@ -375,6 +375,8 @@ fi
 export WEBSITE_DISPLAY_NAME="`/bin/echo ${WEBSITE_DISPLAY_NAME} | /bin/sed "s/'//g" | /bin/sed 's/ /_/g'`"
 ${BUILD_HOME}/initscripts/InitialiseDirectoryStructure.sh ${CLOUDHOST} ${BUILD_IDENTIFIER} 
 
+${BUILD_HOME}/initscripts/InitialiseSSHPrivateKeyForGit.sh
+
 /usr/bin/env > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/build_environment 2>/dev/null
 
 # Intialise the configuration values for the VPS provider we are using (access tokens/keys) and so on
