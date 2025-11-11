@@ -3,16 +3,21 @@
 # that aren't open in the default configurations for an application need. Say, for example you modified the 
 # scripts to support phpmyadmin then you might want port 8080 to be open to your ip addres 81.10.166.111/32
 # on your webserver so to achieve that you would put this line into this file 
+#
 # WEBSERVERCUSTOMPORTS:8080|ipv4|81.10.166.111/32
-# if you had some further need that additionally required port 1111 to be open to all machines you would use:
+#
+# if your application had some further need that additionally required port 1111 to be open to all machines 
+# you would use:
+#
 # WEBSERVERCUSTOMPORTS:8080|ipv4|81.10.166.111/32 1111|ipv4|0.0.0.0/0
+#
 # as long as you follow this exact format the webserver machine and the firewall of your provider will
 # be automatically configured to reflect this configurations and the ports defined will be opened as defined
 # by default there are no custom ports configured to be open
 ############################################################################################################
 AUTHENTICATORCUSTOMPORTS:
-REVERSEPROXYCUSTOMPORTS:1111|ipv4|111.111.111.111/32 3021|ipv4|0.0.0.0/0
-AUTOSCALERCUSTOMPORTS:1111|ipv4|111.111.111.111/32 3021|ipv4|0.0.0.0/0
-WEBSERVERCUSTOMPORTS:1111|ipv4|111.111.111.111/32 3021|ipv4|0.0.0.0/0
-DATABASECUSTOMPORTS:1111|ipv4|111.111.111.111/32 3021|ipv4|0.0.0.0/0
+REVERSEPROXYCUSTOMPORTS:
+AUTOSCALERCUSTOMPORTS:
+WEBSERVERCUSTOMPORTS:
+DATABASECUSTOMPORTS:
 
