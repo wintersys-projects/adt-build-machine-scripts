@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -33,20 +33,21 @@ APPLICATION_REPOSITORY_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.s
 
 if ( [ "${GIT_SSH_PRIVATE_KEY}" != "" ] )
 then
-	if ( [ "${APPLICATION_REPOSITORY_PROVIDER}" = "github" ] )
-	then
-		if ( [ -f ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ] )
-		then
-			if ( [ "`/bin/grep "${GIT_SSH_PRIVATE_KEY}" ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY`" = "" ] )
-			then
-				/bin/mv ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY.$$
-				/bin/echo "${GIT_SSH_PRIVATE_KEY}" > ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY
-				if ( [ "`/bin/grep github.com ~/.ssh/config`" = "" ] )
-				then
-					/bin/echo "Host github.com
-	User git
-	IdentityFile ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY" >> ~/.ssh/config
-			fi	fi
-		fi
-	fi
+        if ( [ "${APPLICATION_REPOSITORY_PROVIDER}" = "github" ] )
+        then
+                if ( [ ! -f ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ] || [ "`/bin/grep "${GIT_SSH_PRIVATE_KEY}" ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY`" = "" ] )
+                then
+                        if ( [ -f ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ] )
+                        then
+                                /bin/mv ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY.$$
+                        fi
+                        /bin/echo "${GIT_SSH_PRIVATE_KEY}" > ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY
+                        if ( [ "`/bin/grep github.com ~/.ssh/config`" = "" ] )
+                        then
+                                /bin/echo "Host github.com
+                                User git
+                                IdentityFile ${BUILD_HOME}/runtimedata/GITHUB_SSH_KEY" >> ~/.ssh/config
+                        fi
+                fi
+        fi
 fi
