@@ -38,9 +38,10 @@ WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MULTI_REGION`"
 PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
-if ( [ "`/bin/grep '|' ${S3_ACCESS_KEY}`" != "" ] )
+if ( [ "`/bin/echo ${S3_ACCESS_KEY} | /bin/grep '|'`" != "" ] )
 then
         S3_ACCESS_KEY="`/bin/echo ${S3_ACCESS_KEY} | /usr/bin/awk -F'|' '{print $1}'`"
         S3_SECRET_KEY="`/bin/echo ${S3_SECRET_KEY} | /usr/bin/awk -F'|' '{print $1}'`"
