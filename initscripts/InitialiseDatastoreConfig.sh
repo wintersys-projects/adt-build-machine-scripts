@@ -40,6 +40,14 @@ MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MULTI_REGION`"
 PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
+if ( [ "`/bin/grep '|' ${S3_ACCESS_KEY}`" != "" ] )
+then
+        S3_ACCESS_KEY="`/bin/echo ${S3_ACCESS_KEY} | /usr/bin/awk -F'|' '{print $1}'`"
+        S3_SECRET_KEY="`/bin/echo ${S3_SECRET_KEY} | /usr/bin/awk -F'|' '{print $1}'`"
+        S3_LOCATION="`/bin/echo ${S3_LOCATION} | /usr/bin/awk -F'|' '{print $1}'`"
+        S3_HOST_BASE="`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F'|' '{print $1}'`"
+fi
+
 status ""
 status "##############################"
 status "Configuring datastore tools..."
