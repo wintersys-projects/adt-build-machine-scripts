@@ -77,7 +77,7 @@ You can get your S3_ACCESS_KEY and S3_SECRET KEY as follows:
 
 **vultr** - You need to subscribe to S3 Object Storage and this will grant you a pair of S3 access keys which you can copy and paste into your template.
 
-S3_ACCESS_KEY and S3_SECRET_KEY CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS
+**S3_ACCESS_KEY and S3_SECRET_KEY CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS**
 
 Please review [chaining keys](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/AdvancedDatastoreConfiguration/)
 
@@ -95,8 +95,7 @@ This parameter is the S3 endpoint for your deployment. It should be located as n
 
 **vultr** - Available endpints to choose from (2024) - ewr1.vultrobjects.com, ams1.vultrobjects.com, sjc1.vultrobjects.com, sgp1.vultrobjects.com
 
-
-S3_HOST_BASE CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS
+**S3_HOST_BASE CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS**
 
 Please review [chaining keys](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/AdvancedDatastoreConfiguration/)
 
@@ -112,7 +111,7 @@ Please review [chaining keys](https://www.wintersys-projects.uk/Agile%20Deployme
 
 **vultr** - the location should always be set to one of ams atl cdg dfw ewr fra icn lax lhr mex mia nrt ord sea sgp sjc sto syd yto  
 
-S3_LOCATION KEYS CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS
+**S3_LOCATION KEYS CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS**
 
 Please review [chaining keys](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/AdvancedDatastoreConfiguration/)
 -----
