@@ -75,7 +75,11 @@ You can get your S3_ACCESS_KEY and S3_SECRET KEY as follows:
 
 **linode** - Login to your Linode account and go to the Object Storage menu on the right then select the Access Key menu and select "Create an Access Key" and that will generate an access key and a secret key which you can copy into your template as S3_ACCESS_KEY and S3_SECRET_KEY.
 
-**vultr** - You need to subscribe to S3 Object Storage and this will grant you a pair of S3 access keys which you can copy and paste into your template. 
+**vultr** - You need to subscribe to S3 Object Storage and this will grant you a pair of S3 access keys which you can copy and paste into your template.
+
+S3_ACCESS_KEY and S3_SECRET_KEY CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS
+
+Please review [chaining keys](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/AdvancedDatastoreConfiguration/)
 
 -----
 
@@ -91,14 +95,10 @@ This parameter is the S3 endpoint for your deployment. It should be located as n
 
 **vultr** - Available endpints to choose from (2024) - ewr1.vultrobjects.com, ams1.vultrobjects.com, sjc1.vultrobjects.com, sgp1.vultrobjects.com
 
-**SPECIAL NOTE:**  
 
-A trick you can use with this value is that you can provide a "chain" of S3_HOST_BASE values in your template. What this will do is that whenever the system makes a backup it will make backups to all the regions in your s3_HOST_BASE region chain and that means you can make backups of your sourcecode/databases to multiple regions therefore making yourself more resilient. If a region for your provider is down you will still have backups in different regions that you can fall back on.
-To make a region chain you just set your template value to be a colon separated list. Using linode as an example your region chain could look like:  
+S3_HOST_BASE CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS
 
-**S3_HOST_BASE="nl-ams-1.linodeobjects.com:us-southeast-1.linodeobjects.com:in-maa-1.linodeobjects.com"**   
-
-To make it clear just setting this value as described to a region chain will get you backups to **nl-ams-1,us-southeast-1 and in-maa-1**  
+Please review [chaining keys](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/AdvancedDatastoreConfiguration/)
 
 -----
 
@@ -112,6 +112,9 @@ To make it clear just setting this value as described to a region chain will get
 
 **vultr** - the location should always be set to one of ams atl cdg dfw ewr fra icn lax lhr mex mia nrt ord sea sgp sjc sto syd yto  
 
+S3_LOCATION KEYS CAN BE CHAINED FOR MULTI-REGION AND MULTI-PROVIDER DEPLOYMENTS
+
+Please review [chaining keys](https://www.wintersys-projects.uk/Agile%20Deployment%20Toolkit/Deployment/AdvancedDatastoreConfiguration/)
 -----
 
 ### TOKEN
