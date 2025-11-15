@@ -337,7 +337,7 @@ Each CMS system is likely to have directories where assets are generated from ap
 
 Joomla  
 
->     export DIRECTORIES_TO_MOUNT="/var/www/html/images"
+>     export DIRECTORIES_TO_MOUNT="images"
 
  When the CMS is joomla, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount 
  
@@ -347,7 +347,7 @@ Joomla
 
 Worpress  
 
->     export DIRECTORIES_TO_MOUNT="/var/www/html/wp-content/uploads"
+>     export DIRECTORIES_TO_MOUNT="wp-content/uploads"
 
 When the CMS is WordPress, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount 
 
@@ -357,7 +357,7 @@ from an associated asset bucket in your datastore
 
 Drupal  
 
->     export DIRECTORIES_TO_MOUNT="/var/www/html/sites/default/files"
+>     export DIRECTORIES_TO_MOUNT="sites/default/files"
 
 When the CMS is Drupal, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount 
 
@@ -367,7 +367,7 @@ from an associated asset bucket in your datastore
  
 Opensocial 
 
->     export DIRECTORIES_TO_MOUNT="/var/www/html/sites/default/files:/var/www/private"
+>     export DIRECTORIES_TO_MOUNT="sites/default/files:/var/www/private"
 
 When the CMS is Opensocial, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount  
 
@@ -377,7 +377,7 @@ from associated asset buckets in your datastore
 
 Moodle 
 
->     export DIRECTORIES_TO_MOUNT="moodledata.filedir"
+>     export DIRECTORIES_TO_MOUNT="moodledata/filedir"
 
 When the CMS is Moodle, and PERSIST_ASSETS_TO_DATASTORE="1", this will mount  
 
