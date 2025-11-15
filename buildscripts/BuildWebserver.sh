@@ -24,7 +24,7 @@
 
 finished="0" #This will tell us if the build has failed or succeeded finished="1" means the build succeeded
 counter="0" #This tracks how many build attempts there has been
-
+webserver_no="${1}"
 
 status () {
 	cyan="`/usr/bin/tput setaf 4`"
@@ -73,7 +73,6 @@ SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bi
 while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
-	webserver_no="${1}"
 
 	status "OK... Building webserver ${webserver_no}. This is the ${counter} attempt of 5"
 	WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
