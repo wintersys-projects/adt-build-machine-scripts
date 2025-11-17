@@ -34,21 +34,31 @@ then
 	BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 fi
 
+datastore_tool=""
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-	datastore_tool="/usr/bin/s3cmd --force "
+        datastore_tool="/usr/bin/s3cmd"
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
+        datastore_tool="/usr/bin/s5cmd"
+fi
+
+if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
+then
+	datastore_cmd="/usr/bin/s3cmd --force "
+elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
+then
 	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-	datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
+	datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg --endpoint-url https://${host_base} ls "
+
 fi
 
 if ( [ "${file_to_list}" = "" ] )
 then
-	${datastore_tool} ls 2>/dev/null
+	${datastore_cmd} 2>/dev/null
 else
-	${datastore_tool} ls s3://${file_to_list} 2>/dev/null
+	${datastore_cmd} s3://${file_to_list} 2>/dev/null
 fi
 
 
