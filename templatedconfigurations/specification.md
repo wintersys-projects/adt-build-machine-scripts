@@ -341,6 +341,8 @@ Anyway the way that you mount S3 buckets into your application directory tree is
 
 In other words the system will generat 3 S3 buckets and mount them as "/var/www/html/media, /var/www/html/images and /var/www/profile" you can then add files to these directories and the files will be written directly to the S3 datastore which will persist across deployments meaning that you could take your servers offline and rebuild them and the same assets will still be available. 
 
+Please see S3_ACCESS_KEY, S3_SECRET_KEY, S3_HOST_BASE, S3_LOCATION in this specification for how to chain S3 datastore access from different providers so that your S3 assets mounted using this technique are replicated to multiple regions/providers for improved resilience. 
+
 Joomla  
 
 >     export DIRECTORIES_TO_MOUNT="images"
