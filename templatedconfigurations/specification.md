@@ -331,9 +331,15 @@ This is the password of your SMTP user. For Amazon SES, for example, this will b
 
 ----
 
-### DIRECTORIES_TO_MOUNT
+### DIRECTORIES_TO_MOUNT 
 
-Each CMS system is likely to have directories where assets are generated from application usage and so on. Assets and media that are generated at runtime need to be immediately shared between all webservers and the way I do this is as a general solution, I mount the assets directories specific to the CMS type from a shared S3 bucket to each webserver.  
+The preferred way to access your application's assets if you don't have extensive diskspace (in other words you likely have a small budget) on your server itself is to use an application level plugin to offload the assets to an S3 datastore so that you have terabytes of storage available for your application assets. But I know of cases where its not possible to offload assets to an S3 datastore at the application level so I implemented a solution that makes use of mounting a pseudo filesystem backed by S3 into your application directory tree such that the application can then use an S3 backed mount point or mount points in your application directory tree so that you have  the (relatively cheap) access to S3 backed storage from within your application. Also if you want to mount S3 backed assets that are mounted outside of your application webroot (usually for security purposes) then this solution might be acceptable to you. It most likely just comes down to budget whether you want to do it like this or simply have bigger disks available directly  on your server. 
+
+Anyway the way that you mount S3 buckets into your application directory tree is to provide a colon separated list of directories. If the directory name begins with a "/" it is presumed to be an absolte path. If it begins without a '/' it is presumed to be a path relative to /var/www/html. An adhoc example might be
+
+>     export DIRECTORIES_TO_MOUNT="media/videos:media/images:/var/www/profile"
+
+In other words the system will generat 3 S3 buckets and mount them as "/var/www/html/media, /var/www/html/images and /var/www/profile" you can then add files to these directories and the files will be written directly to the S3 datastore which will persist across deployments meaning that you could take your servers offline and rebuild them and the same assets will still be available. 
 
 Joomla  
 
