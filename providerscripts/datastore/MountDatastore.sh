@@ -33,13 +33,24 @@ then
 	BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 fi
 
+datastore_tool=""
+
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-	datastore_tool="/usr/bin/s3cmd"
+        datastore_tool="/usr/bin/s3cmd"
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
-	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-	datastore_tool="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} "
+        datastore_tool="/usr/bin/s5cmd"
 fi
 
-${datastore_tool} mb s3://${datastore_to_mount} 2>/dev/null
+if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
+then
+	datastore_cmd="${datastore_tool} mb "
+elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
+then
+	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+	datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg --endpoint-url https://${host_base} mb "
+fi
+
+
+${datastore_cmd} s3://${datastore_to_mount} 2>/dev/null
