@@ -37,15 +37,74 @@ fi
 export DEBIAN_FRONTEND=noninteractive 
 install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install " 
 
+cwd="`/usr/bin/pwd`"
+
 if ( [ "${apt}" != "" ] )
 then
-        if ( [ "${buildos}" = "ubuntu" ] )
-        then
-                eval ${install_command} curl
-        fi
+	if ( [ "${buildos}" = "ubuntu" ] )
+	then
+		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:repo'`" = "1" ] )
+		then
+			eval ${install_command} fuse3 rclone	
+		fi
+		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:binary'`" = "1" ] )
+		then
+			eval ${install_command} unzip	
+			cd /opt
+			/usr/bin/wget https://downloads.rclone.org/rclone-current-linux-amd64.zip
+			/usr/bin/unzip /opt/rclone*.zip
+			/bin/cp rclone*amd64/rclone /usr/bin/rclone
+			cd ${cwd}
+		fi
+		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:source'`" = "1" ] )
+		then
+			eval ${install_command} fuse3
+			${HOME}/installscripts/InstallGo.sh ${BUILDOS}
+			cd /opt
+			/usr/bin/git clone https://github.com/rclone/rclone.git 
+			cd /opt/rclone
+			/usr/bin/go build
+			/bin/mv /opt/rclone/rclone /usr/bin/rclone
+			/usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
+			/bin/rm -r /opt/rclone
+			cd ${cwd}
+		fi
+	fi
 
-        if ( [ "${buildos}" = "debian" ] )
-        then
-                eval ${install_command} curl
-        fi
+	if ( [ "${buildos}" = "debian" ] )
+	then
+		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:repo'`" = "1" ] )
+		then
+			eval ${install_command} fuse3 rclone
+		fi
+		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:binary'`" = "1" ] )
+		then
+			eval ${install_command} unzip fuse3
+			cd /opt
+			/usr/bin/wget https://downloads.rclone.org/rclone-current-linux-amd64.zip
+			/usr/bin/unzip /opt/rclone*.zip
+			/bin/cp rclone*amd64/rclone /usr/bin/rclone
+			cd ${cwd}	
+		fi
+		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:source'`" = "1" ] )
+		then
+			eval ${install_command} fuse3
+			${HOME}/installscripts/InstallGo.sh ${BUILDOS}
+			cd /opt
+			/usr/bin/git clone https://github.com/rclone/rclone.git 
+			cd /opt/rclone
+			/usr/bin/go build
+			/bin/mv /opt/rclone/rclone /usr/bin/rclone
+			/usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
+			/bin/rm -r /opt/rclone
+			cd ${cwd}
+		fi
+	fi
+fi
+
+if ( [ ! -f /usr/bin/rclone ] )
+then
+	${HOME}/providerscripts/email/SendEmail.sh "INSTALLATION ERROR RCLONE" "I believe that rclone hasn't installed correctly, please investigate" "ERROR"
+else
+	/bin/touch ${HOME}/runtime/installedsoftware/InstallRClone.sh	
 fi
