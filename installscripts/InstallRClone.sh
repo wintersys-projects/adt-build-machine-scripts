@@ -102,9 +102,3 @@ then
 	fi
 fi
 
-if ( [ ! -f /usr/bin/rclone ] )
-then
-	${HOME}/providerscripts/email/SendEmail.sh "INSTALLATION ERROR RCLONE" "I believe that rclone hasn't installed correctly, please investigate" "ERROR"
-else
-	/bin/touch ${HOME}/runtime/installedsoftware/InstallRClone.sh	
-fi
