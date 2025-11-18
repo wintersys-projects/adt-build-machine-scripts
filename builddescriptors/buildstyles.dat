@@ -44,6 +44,7 @@
 # DATASTOREMOUNTTOOL:goof:source
 # DATASTOREMOUNTTOOL:rclone:repo
 # DATASTOREMOUNTTOOL:rclone:binary
+# DATASTOREMOUNTTOOL:rclone:script
 # DATASTOREMOUNTTOOL:rclone:source
 # DATASTOREMOUNTTOOL:geesefs:binary
 # DATASTOREMOUNTTOOL:geesefs:source
