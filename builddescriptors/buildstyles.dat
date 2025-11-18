@@ -170,8 +170,8 @@ MYSQL:repo:9.2.0
 POSTGRES:repo:17
 BUILDCHAINTYPE:standard
 #DATASTORETOOL:s3cmd:source
-#DATASTORETOOL:s5cmd:binary
-DATASTORETOOL:rclone:binary
+DATASTORETOOL:s5cmd:binary
+#DATASTORETOOL:rclone:binary
 PACKAGEMANAGER:apt-get
 FIREWALL:ufw
 EMAILUTIL:sendemail
