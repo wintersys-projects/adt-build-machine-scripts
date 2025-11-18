@@ -71,7 +71,6 @@ then
                         cd /opt/rclone
                         /usr/bin/go build
                         /bin/mv /opt/rclone/rclone /usr/bin/rclone
-#                        /usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
                         /bin/rm -r /opt/rclone
                         cd ${cwd}
                 fi
@@ -105,7 +104,6 @@ then
                         cd /opt/rclone
                         /usr/bin/go build
                         /bin/mv /opt/rclone/rclone /usr/bin/rclone
-#                        /usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
                         /bin/rm -r /opt/rclone
                         cd ${cwd}
                 fi
