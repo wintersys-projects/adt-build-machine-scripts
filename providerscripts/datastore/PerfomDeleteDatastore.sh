@@ -1,0 +1,61 @@
+#!/bin/sh
+#########################################################################################
+# Author: Peter Winter
+# Date :  9/4/2016
+# Description: Delete a datastore bucket which has to be already empty
+##########################################################################################
+# License Agreement:
+# This file is part of The Agile Deployment Toolkit.
+# The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# The Agile Deployment Toolkit is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
+#########################################################################################
+#########################################################################################
+#set -x
+
+status () {
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+}
+
+datastore_to_delete="$1"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+S3_HOST_BASE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_HOST_BASE`"
+datastore_region="`/bin/echo "${S3_HOST_BASE}" | /bin/sed 's/|/ /g' | /usr/bin/awk '{print $1}' | /bin/sed -E 's/(.digitaloceanspaces.com|sos-|.exo.io|.linodeobjects.com|.vultrobjects.com)//g'`"
+datastore_tool=""
+
+if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
+then
+        datastore_tool="/usr/bin/s3cmd"
+elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
+then
+        datastore_tool="/usr/bin/s5cmd"
+elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone`" != "" ] )
+then
+        datastore_tool="/usr/bin/rclone"
+fi
+
+if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
+then
+        config_file="`/bin/grep -H ${datastore_region} ${BUILD_HOME}/.s3cfg-* | /usr/bin/awk -F':' '{print $1}'`"
+        datastore_cmd="${datastore_tool} --config=${config_file} rb s3://"
+elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
+then
+        config_file="`/bin/grep -H ${datastore_region} ${BUILD_HOME}/.s5cfg-* | /usr/bin/awk -F':' '{print $1}'`"
+        host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
+        datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} rb s3://" 
+elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
+then
+        config_file="`/bin/grep -H ${datastore_region} ${BUILD_HOME}/.config/rclone/rclone.conf-* | /usr/bin/awk -F':' '{print $1}'`"
+        datastore_cmd="${datastore_tool} --config ${config_file} purge s3:"
+fi
+
+${datastore_cmd} ${datastore_to_delete}
