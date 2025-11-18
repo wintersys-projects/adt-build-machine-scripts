@@ -25,6 +25,8 @@ then
         buildos="${1}"
 fi
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 apt=""
 if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 then
@@ -41,64 +43,64 @@ cwd="`/usr/bin/pwd`"
 
 if ( [ "${apt}" != "" ] )
 then
-	if ( [ "${buildos}" = "ubuntu" ] )
-	then
-		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:repo'`" = "1" ] )
-		then
-			eval ${install_command} fuse3 rclone	
-		fi
-		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:binary'`" = "1" ] )
-		then
-			eval ${install_command} unzip	
-			cd /opt
-			/usr/bin/wget https://downloads.rclone.org/rclone-current-linux-amd64.zip
-			/usr/bin/unzip /opt/rclone*.zip
-			/bin/cp rclone*amd64/rclone /usr/bin/rclone
-			cd ${cwd}
-		fi
-		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:source'`" = "1" ] )
-		then
-			eval ${install_command} fuse3
-			${HOME}/installscripts/InstallGo.sh ${BUILDOS}
-			cd /opt
-			/usr/bin/git clone https://github.com/rclone/rclone.git 
-			cd /opt/rclone
-			/usr/bin/go build
-			/bin/mv /opt/rclone/rclone /usr/bin/rclone
-			/usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
-			/bin/rm -r /opt/rclone
-			cd ${cwd}
-		fi
-	fi
+        if ( [ "${buildos}" = "ubuntu" ] )
+        then
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:repo`" != "" ] )
+                then
+                        eval ${install_command} fuse3 rclone
+                fi
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:binary`" != "" ] )
+                then
+                        eval ${install_command} unzip
+                        cd /opt
+                        /usr/bin/wget https://downloads.rclone.org/rclone-current-linux-amd64.zip
+                        /usr/bin/unzip /opt/rclone*.zip
+                        /bin/cp rclone*amd64/rclone /usr/bin/rclone
+                        cd ${cwd}
+                fi
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:source`" != "" ] )
+                then
+                        eval ${install_command} fuse3
+                        ${HOME}/installscripts/InstallGo.sh ${BUILDOS}
+                        cd /opt
+                        /usr/bin/git clone https://github.com/rclone/rclone.git 
+                        cd /opt/rclone
+                        /usr/bin/go build
+                        /bin/mv /opt/rclone/rclone /usr/bin/rclone
+                        /usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
+                        /bin/rm -r /opt/rclone
+                        cd ${cwd}
+                fi
+        fi
 
-	if ( [ "${buildos}" = "debian" ] )
-	then
-		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:repo'`" = "1" ] )
-		then
-			eval ${install_command} fuse3 rclone
-		fi
-		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:binary'`" = "1" ] )
-		then
-			eval ${install_command} unzip fuse3
-			cd /opt
-			/usr/bin/wget https://downloads.rclone.org/rclone-current-linux-amd64.zip
-			/usr/bin/unzip /opt/rclone*.zip
-			/bin/cp rclone*amd64/rclone /usr/bin/rclone
-			cd ${cwd}	
-		fi
-		if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTOREMOUNTTOOL:rclone:source'`" = "1" ] )
-		then
-			eval ${install_command} fuse3
-			${HOME}/installscripts/InstallGo.sh ${BUILDOS}
-			cd /opt
-			/usr/bin/git clone https://github.com/rclone/rclone.git 
-			cd /opt/rclone
-			/usr/bin/go build
-			/bin/mv /opt/rclone/rclone /usr/bin/rclone
-			/usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
-			/bin/rm -r /opt/rclone
-			cd ${cwd}
-		fi
-	fi
+        if ( [ "${buildos}" = "debian" ] )
+        then
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:repo`" != "" ] )
+                then
+                        eval ${install_command} fuse3 rclone
+                fi
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:binary`" != "" ] )
+                then
+                        eval ${install_command} unzip fuse3
+                        cd /opt
+                        /usr/bin/wget https://downloads.rclone.org/rclone-current-linux-amd64.zip
+                        /usr/bin/unzip /opt/rclone*.zip
+                        /bin/cp rclone*amd64/rclone /usr/bin/rclone
+                        cd ${cwd}
+                fi
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:source`" != "" ] )
+                then
+                        eval ${install_command} fuse3
+                        ${HOME}/installscripts/InstallGo.sh ${BUILDOS}
+                        cd /opt
+                        /usr/bin/git clone https://github.com/rclone/rclone.git 
+                        cd /opt/rclone
+                        /usr/bin/go build
+                        /bin/mv /opt/rclone/rclone /usr/bin/rclone
+                        /usr/bin/ln -s /usr/bin/fusermount /usr/bin/fusermount3
+                        /bin/rm -r /opt/rclone
+                        cd ${cwd}
+                fi
+        fi
 fi
 
