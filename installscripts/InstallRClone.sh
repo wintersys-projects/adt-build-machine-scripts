@@ -47,7 +47,8 @@ then
         then
                 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:repo`" != "" ] )
                 then
-                        eval ${install_command} fuse3 rclone
+                      #  eval ${install_command} fuse3 rclone
+                        eval ${install_command} rclone
                 fi
                 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:binary`" != "" ] )
                 then
@@ -58,9 +59,14 @@ then
                         /bin/cp rclone*amd64/rclone /usr/bin/rclone
                         cd ${cwd}
                 fi
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:script`" != "" ] )
+                then
+                        /usr/bin/curl https://rclone.org/install.sh | /usr/bin/bash
+                        cd ${cwd}
+                fi   
                 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:source`" != "" ] )
                 then
-                        eval ${install_command} fuse3
+                       # eval ${install_command} fuse3
                         ${HOME}/installscripts/InstallGo.sh ${BUILDOS}
                         cd /opt
                         /usr/bin/git clone https://github.com/rclone/rclone.git 
@@ -77,20 +83,26 @@ then
         then
                 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:repo`" != "" ] )
                 then
-                        eval ${install_command} fuse3 rclone
+                       # eval ${install_command} fuse3 rclone
+                        eval ${install_command} rclone
                 fi
                 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:binary`" != "" ] )
                 then
-                        eval ${install_command} unzip fuse3
+                      #  eval ${install_command} unzip fuse3
                         cd /opt
                         /usr/bin/wget https://downloads.rclone.org/rclone-current-linux-amd64.zip
                         /usr/bin/unzip /opt/rclone*.zip
                         /bin/cp rclone*amd64/rclone /usr/bin/rclone
                         cd ${cwd}
                 fi
+                if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:script`" != "" ] )
+                then
+                        /usr/bin/curl https://rclone.org/install.sh | /usr/bin/bash
+                        cd ${cwd}
+                fi     
                 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone:source`" != "" ] )
                 then
-                        eval ${install_command} fuse3
+                       # eval ${install_command} fuse3
                         ${HOME}/installscripts/InstallGo.sh ${BUILDOS}
                         cd /opt
                         /usr/bin/git clone https://github.com/rclone/rclone.git 
