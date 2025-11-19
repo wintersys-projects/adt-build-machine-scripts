@@ -132,7 +132,7 @@ then
 
         if ( [ "${S3_ACCESS_KEY}" != "" ] )
         then
-                /bin/echo "[default]" > ${BUILD_HOME}/.s5cfgi-${count}
+                /bin/echo "[default]" > ${BUILD_HOME}/.s5cfg-${count}
                 /bin/echo "aws_access_key_id = ${S3_ACCESS_KEY}" >> ${BUILD_HOME}/.s5cfg-${count}
         else 
                 status "Couldn't find the access key for your datastore, can't go on without it, will have to exit"
