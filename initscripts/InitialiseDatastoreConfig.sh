@@ -41,11 +41,14 @@ PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
-count="${1}"
-
 if ( [ "${1}" != "" ] )
 then
-        S3_ACCESS_KEY="${1}"
+        if ( [ "${1}" -eq "${1}" 2>/dev/null ] )
+        then
+                count="${1}"
+        else
+                S3_ACCESS_KEY="${1}"
+        fi
 fi
 
 if ( [ "${2}" != "" ] )
@@ -230,13 +233,7 @@ then
 
         /bin/cp ${BUILD_HOME}/.rclone.cfg-${count} /root/.config/rclone/rclone.conf-${count}
         /bin/cp ${BUILD_HOME}/.rclone.cfg-${count} ${BUILD_HOME}/.config/rclone/rclone.conf-${count}
-        /bin/chown ${SERVER_USER}:${SERVER_USER} /root/.config/rclone/rclone.conf-${count}
-        /bin/chown ${SERVER_USER}:${SERVER_USER} ${BUILD_HOME}/.config/rclone/rclone.conf-${count}
 
-        if ( [ "${count}" = "1" ] )
-        then
-                /bin/cp /root/.config/rclone/rclone.conf-${count} /root/.config/rclone/rclone.conf
-        fi
 fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "1$$agile" 3>&1 2>/dev/null
