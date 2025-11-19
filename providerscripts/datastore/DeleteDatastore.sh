@@ -2,7 +2,9 @@
 ####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Delete a file from a bucket in the datastore
+# Description: This script will delete a bucket of a specific name. The bucket has to be
+# already empty and it will delete it across multiple regions/providers if configured
+# to replicate to multiple regions
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
