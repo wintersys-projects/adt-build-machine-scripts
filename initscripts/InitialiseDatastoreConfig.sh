@@ -41,6 +41,8 @@ PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
+count="${1}"
+
 if ( [ "${1}" != "" ] )
 then
         S3_ACCESS_KEY="${1}"
@@ -61,7 +63,10 @@ then
         S3_HOST_BASE="${4}"
 fi
 
-count="${5}"
+if ( [ "${5}" != "" ] )
+then
+        count="${5}"
+fi
 
 status ""
 status "##############################"
@@ -154,7 +159,7 @@ then
         then
                 host_base="`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F':' '{print $1}'`"
                 /bin/echo "host_base = ${host_base}" >> ${BUILD_HOME}/.s5cfg-${count}
-                
+
                 if ( [ "`/bin/grep '^alias s5cmd=' /root/.bashrc`" = "" ] )
                 then
                         /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} '" >> /root/.bashrc
@@ -170,6 +175,68 @@ then
         fi
 
         /bin/cp ${BUILD_HOME}/.s5cfg-${count} /root/.s5cfg-${count}
+fi
+
+
+if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone`" != "" ] )
+then
+        if ( [ -f ${BUILD_HOME}/.rclone.cfg-${count} ] )
+        then
+                /bin/rm ${BUILD_HOME}/.rclone.cfg-${count}
+        fi
+
+        /bin/cp ${BUILD_HOME}/initscripts/configfiles/datastore/rclone-cfg.tmpl ${BUILD_HOME}/.rclone.cfg-${count}
+
+        if ( [ "${S3_ACCESS_KEY}" != "" ] )  
+        then
+                /bin/sed -i "s/XXXXACCESSKEYXXXX/${S3_ACCESS_KEY}/" ${BUILD_HOME}/.rclone.cfg-${count}
+        else
+                /bin/echo "Couldn't find the S3_ACCESS_KEY setting"
+                /bin/touch /tmp/END_IT_ALL
+        fi
+
+        if ( [ "${S3_SECRET_KEY}" != "" ] )
+        then
+                /bin/sed -i "s/XXXXSECRETKEYXXXX/${S3_SECRET_KEY}/" ${BUILD_HOME}/.rclone.cfg-${count}
+        else
+                /bin/echo "Couldn't find the S3_SECRET_KEY setting" 
+                /bin/touch /tmp/END_IT_ALL
+        fi
+
+        if ( [ "${S3_LOCATION}" != "" ] )
+        then
+                /bin/sed -i "s/XXXXLOCATIONXXXX/${S3_LOCATION}/" ${BUILD_HOME}/.rclone.cfg-${count}
+        else
+                /bin/echo "Couldn't find the S3_LOCATION setting" 
+                /bin/touch /tmp/END_IT_ALL
+        fi
+
+        if ( [ "${S3_HOST_BASE}" != "" ] )
+        then
+                /bin/sed -i "s/XXXXHOSTBASEXXXX/${S3_HOST_BASE}/" ${BUILD_HOME}/.rclone.cfg-${count}
+        else
+                /bin/echo "Couldn't find the S3_HOST_BASE setting" 
+                /bin/touch /tmp/END_IT_ALL
+        fi
+        if ( [ ! -d /root/.config/rclone ] )
+        then
+                /bin/mkdir -p /root/.config/rclone
+        fi
+
+        if ( [ ! -d ${BUILD_HOME}/.config/rclone ] )
+        then
+                /bin/mkdir -p ${BUILD_HOME}/.config/rclone
+        fi
+
+        /bin/cp ${BUILD_HOME}/.rclone.cfg-${count} /root/.config/rclone/rclone.conf-${count}
+        /bin/cp ${BUILD_HOME}/.rclone.cfg-${count} ${BUILD_HOME}/.config/rclone/rclone.conf-${count}
+        /bin/chown ${SERVER_USER}:${SERVER_USER} /root/.config/rclone/rclone.conf-${count}
+        /bin/chown ${SERVER_USER}:${SERVER_USER} ${BUILD_HOME}/.config/rclone/rclone.conf-${count}
+
+        if ( [ "${count}" = "1" ] )
+        then
+                /bin/cp /root/.config/rclone/rclone.conf-${count} /root/.config/rclone/rclone.conf
+        fi
 fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "1$$agile" 3>&1 2>/dev/null
