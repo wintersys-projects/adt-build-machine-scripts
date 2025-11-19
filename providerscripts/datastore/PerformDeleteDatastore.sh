@@ -50,7 +50,7 @@ then
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
         host_base="`/bin/grep host_base /root/.s5cfg-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
-        datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-${count}  --endpoint-url https://${host_base} rm s3://"
+        datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-${count}  --endpoint-url https://${host_base} rb s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} purge s3:"
