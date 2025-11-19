@@ -41,11 +41,13 @@ fi
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
         config_file="`/bin/grep -H ${datastore_region} /root/.s3cfg-* | /usr/bin/awk -F':' '{print $1}'`"
+		host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        
 		if ( [ "${file_to_list}" = "" ] )
         then
-        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive ls"
+        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive --host=https://${host_base} ls"
         else
-        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive ls s3://"
+        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive --host=https://${host_base} ls s3://"
         fi
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
