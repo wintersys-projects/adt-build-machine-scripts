@@ -2,7 +2,10 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Get a file from a bucket in the datastore
+# Description: Get a file from a bucket in the datastore. The file is obtained from the
+# first s3 bucket in the chain of buckets when replication is being used. In other words
+# the first region listed in S3_HOST_BASE in the template is considered to be the authoritative
+# bucket 
 #########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
