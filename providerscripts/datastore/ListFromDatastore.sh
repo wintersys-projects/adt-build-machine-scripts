@@ -73,7 +73,7 @@ if ( [ "${file_to_list}" = "" ] )
 then
 	${datastore_cmd} 2>/dev/null
 else
-	${datastore_cmd} ${file_to_list} 2>/dev/null
+	${datastore_cmd}${file_to_list} 2>/dev/null
 fi
 
 
