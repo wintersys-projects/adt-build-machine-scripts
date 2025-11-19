@@ -21,8 +21,7 @@
 #set -x
 
 file_to_delete="$1"
-count="$2"
-recursive="$3"
+recursive="$2"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_HOST_BASE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_HOST_BASE`"
