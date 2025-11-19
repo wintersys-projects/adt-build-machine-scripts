@@ -40,42 +40,39 @@ fi
 
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
-        config_file="`/bin/grep -H ${datastore_region} /root/.s3cfg-* | /usr/bin/awk -F':' '{print $1}'`"
-		host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g' | /usr/bin/head -1`" 
-        
-		if ( [ "${file_to_list}" = "" ] )
-        then
-        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive --host=https://${host_base} ls"
-        else
-        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive --host=https://${host_base} ls s3://"
-        fi
-elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
-then
-        config_file="`/bin/grep -H ${datastore_region} /root/.s5cfg-* | /usr/bin/awk -F':' '{print $1}'`"
-        host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-		if ( [ "${file_to_list}" = "" ] )
-        then
-        	datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} ls"
-        else
-        	datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} ls s3://"
-        fi
-elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
-then
-        config_file="`/bin/grep -H ${datastore_region} /root/.config/rclone/rclone.conf-* | /usr/bin/awk -F':' '{print $1}'`"
+        host_base="`/bin/grep host_base /root/.s3cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
 
         if ( [ "${file_to_list}" = "" ] )
         then
-                datastore_cmd="${datastore_tool} --config ${config_file} lsd s3:"
+                datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --recursive --host=https://${host_base} ls"
         else
-                datastore_cmd="${datastore_tool} --config ${config_file} ls s3:"
+                datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --recursive --host=https://${host_base} ls s3://"
+        fi
+elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
+then
+        host_base="`/bin/grep host_base /root/.s5cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
+
+        if ( [ "${file_to_list}" = "" ] )
+        then
+                datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} ls"
+        else
+                datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} ls s3://"
+        fi
+elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
+then
+        if ( [ "${file_to_list}" = "" ] )
+        then
+                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 lsd s3:"
+        else
+                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 ls s3:"
         fi
 fi
 
 if ( [ "${file_to_list}" = "" ] )
 then
-	${datastore_cmd} 2>/dev/null
+        ${datastore_cmd} | /usr/bin/awk '{print $NF}' 2>/dev/null
 else
-	${datastore_cmd}${file_to_list} 2>/dev/null
+        ${datastore_cmd}${file_to_list} | /usr/bin/awk '{print $NF}' 2>/dev/null
 fi
 
 
