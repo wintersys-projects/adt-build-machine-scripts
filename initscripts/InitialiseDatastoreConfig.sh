@@ -76,7 +76,7 @@ status "##############################"
 status "Configuring datastore tools..."
 status "##############################"
 
-${BUILD_HOME}/installscripts/InstallDatastoreTools.sh "${BUILDOS}" 2>&1 >/dev/null
+#${BUILD_HOME}/installscripts/InstallDatastoreTools.sh "${BUILDOS}" 2>&1 >/dev/null
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
