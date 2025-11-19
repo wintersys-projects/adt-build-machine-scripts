@@ -2,7 +2,8 @@
 ####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Delete a file from a bucket in the datastore
+# Description: Delete a file(s) from a datastore it will delete the file(s) from multiple
+# regions/providers if configured to replicate across multiple regions/providers
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
