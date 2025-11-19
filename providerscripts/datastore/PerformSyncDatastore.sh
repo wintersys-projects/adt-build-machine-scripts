@@ -2,7 +2,8 @@
 ######################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Sync one bucket to another
+# Description: Sync from one S3 bucket to another for the current S3 provider and using the
+# tool that is currently configured as active
 ######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
