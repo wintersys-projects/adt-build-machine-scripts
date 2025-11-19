@@ -111,7 +111,7 @@ then
 
                 if ( [ "`/bin/grep '^alias s3cmd=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --credentials-file /root/.s3cfg-1 --host=https://${host_base}'" >> /root/.bashrc
+                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --credentials-file /root/.s3cfg-1 --host=https://${host_base} '" >> /root/.bashrc
                 fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
@@ -157,7 +157,7 @@ then
                 
                 if ( [ "`/bin/grep '^alias s5cmd=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base}'" >> /root/.bashrc
+                        /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} '" >> /root/.bashrc
                 fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
