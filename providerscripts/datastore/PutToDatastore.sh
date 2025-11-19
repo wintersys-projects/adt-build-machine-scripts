@@ -2,7 +2,8 @@
 ####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Put a file from the file system to a datastore
+# Description: Put a file to a bucket in the datastore. The file is obtained from the filesystem.
+# and replicated according to the replication configuration set by S3_HOST_BASE
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
