@@ -2,7 +2,7 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Get a file from a bucket in the datastore
+# Description: Mount the config datastore
 #########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
