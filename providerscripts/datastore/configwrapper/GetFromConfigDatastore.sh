@@ -49,15 +49,18 @@ fi
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
         host_base="`/bin/grep host_base /root/.s3cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --force --recursive --host=https://${host_base} get s3://${config_bucket}/"
+        datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --force --recursive --host=https://${host_base} ls s3://${config_bucket}/"
+        datastore_cmd1="${datastore_tool} --config=/root/.s3cfg-1 --force --recursive --host=https://${host_base} get s3://${config_bucket}/"
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
         host_base="`/bin/grep host_base /root/.s5cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} cp s3://${config_bucket}/"
+        datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} ls s3://${config_bucket}/"
+        datastore_cmd1="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} cp s3://${config_bucket}/"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         config_file="`/bin/grep -H ${datastore_region} /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F':' '{print $1}'`"
-        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 copy s3:${config_bucket}/"
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 ls s3:${config_bucket}/"
+        datastore_cmd1="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 copy s3:${config_bucket}/"
 fi
 
 if ( [ "${destination}" = "" ] )
@@ -65,11 +68,16 @@ then
         destination="."
 fi
 
-count="0"
-while ( [ "`${datastore_cmd}${file_to_get} ${destination} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
-do
-        /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-        /bin/sleep 5
-        count="`/usr/bin/expr ${count} + 1`"
-done
+if ( [ "`${datastore_cmd}${file_to_get}`" = "" ] )
+then
+        /bin/echo "Key doesn't exist"
+else
+        count="0"
+        while ( [ "`${datastore_cmd1}${file_to_get} ${destination} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
+        do
+                /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
+                /bin/sleep 5
+                count="`/usr/bin/expr ${count} + 1`"
+        done
+fi
 
