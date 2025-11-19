@@ -29,11 +29,11 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-	${BUILD_HOME}/installscripts/InstallS3CMD.sh
+	${BUILD_HOME}/installscripts/InstallS3CMD.sh ${buildos}
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
-	${BUILD_HOME}/installscripts/InstallS5CMD.sh
+	${BUILD_HOME}/installscripts/InstallS5CMD.sh ${buildos}
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone`" != "" ] )
 then
-	${BUILD_HOME}/installscripts/InstallRClone.sh
+	${BUILD_HOME}/installscripts/InstallRClone.sh ${buildos}
 fi
