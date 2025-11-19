@@ -18,7 +18,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #########################################################################################
 #########################################################################################
-set -x
+#set -x
 
 file_to_put="${1}"
 place_to_put="${2}"
@@ -49,7 +49,7 @@ fi
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
         host_base="`/bin/grep host_base /root/.s3cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --force -host=https://${host_base} put "
+        datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --force --host=https://${host_base} put "
         bucket_prefix="s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
