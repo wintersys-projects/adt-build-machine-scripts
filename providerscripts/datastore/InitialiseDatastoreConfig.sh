@@ -2,7 +2,10 @@
 #####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Coordinate datastore initialisation
+# Description: There are various tools that can be integrated with S3 storage providers
+# and here is where they are configured ready for use. The credentials and configurations
+# necessary for each class of tool are configured here such that the servers can communicate
+# with the S3 service in any manner. 
 #####################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
