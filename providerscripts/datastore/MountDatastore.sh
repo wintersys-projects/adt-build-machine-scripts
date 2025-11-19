@@ -2,7 +2,8 @@
 ####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Delete a file from a bucket in the datastore
+# Description: Mount a datastore to S3 and replicate it to additional provider/regions
+# if replication is configured to be active. 
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
