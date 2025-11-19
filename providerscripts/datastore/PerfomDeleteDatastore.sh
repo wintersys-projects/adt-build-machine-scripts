@@ -27,6 +27,7 @@ status () {
 }
 
 datastore_to_delete="$1"
+count="$2"
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_HOST_BASE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_HOST_BASE`"
 datastore_region="`/bin/echo "${S3_HOST_BASE}" | /bin/sed 's/|/ /g' | /usr/bin/awk '{print $1}' | /bin/sed -E 's/(.digitaloceanspaces.com|sos-|.exo.io|.linodeobjects.com|.vultrobjects.com)//g'`"
@@ -45,17 +46,14 @@ fi
 
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
-        config_file="`/bin/grep -H ${datastore_region} ${BUILD_HOME}/.s3cfg-* | /usr/bin/awk -F':' '{print $1}'`"
-        datastore_cmd="${datastore_tool} --config=${config_file} rb s3://"
+        datastore_cmd="${datastore_tool} --config=/root/.s3cfg-${count} rb s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
-        config_file="`/bin/grep -H ${datastore_region} ${BUILD_HOME}/.s5cfg-* | /usr/bin/awk -F':' '{print $1}'`"
-        host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
-        datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} rb s3://" 
+        host_base="`/bin/grep host_base /root/.s5cfg-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
+        datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-${count}  --endpoint-url https://${host_base} rm s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
-        config_file="`/bin/grep -H ${datastore_region} ${BUILD_HOME}/.config/rclone/rclone.conf-* | /usr/bin/awk -F':' '{print $1}'`"
-        datastore_cmd="${datastore_tool} --config ${config_file} purge s3:"
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} purge s3:"
 fi
 
-${datastore_cmd} ${datastore_to_delete}
+${datastore_cmd}${datastore_to_delete}
