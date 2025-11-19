@@ -151,7 +151,11 @@ then
         then
                 host_base="`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F':' '{print $1}'`"
                 /bin/echo "host_base = ${host_base}" >> ${BUILD_HOME}/.s5cfg-${count}
-                /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base}'" >> /root/.bashrc
+                
+                if ( [ "`/bin/grep '^alias s5cmd=' /root/.bashrc`" = "" ] )
+                then
+                        /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base}'" >> /root/.bashrc
+                fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
                 /bin/touch /tmp/END_IT_ALL
