@@ -2,7 +2,8 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Delete a file from a bucket in the datastore
+# Description: Actually delte file(s) from a datastore bucket with the current S3 provider and 
+# using the tool that is currently configured as active
 ##########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
