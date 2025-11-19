@@ -2,7 +2,7 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Actually delte an (empty) datastore bucket for the current S3 provider and using the
+# Description: Actually delete an (empty) datastore bucket for the current S3 provider and using the
 # tool that is currently configured as active
 ##########################################################################################
 # License Agreement:
