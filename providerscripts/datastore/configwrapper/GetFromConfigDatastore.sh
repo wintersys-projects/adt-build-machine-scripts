@@ -1,9 +1,9 @@
 #!/bin/sh
-####################################################################################
+#########################################################################################
 # Author: Peter Winter
-# Date :  24/02/2022
-# Description: This will get a particular file from the configuration datastore
-#######################################################################################
+# Date :  9/4/2016
+# Description: Get a file from a bucket in the datastore
+#########################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
 # The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
@@ -16,24 +16,23 @@
 # GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
-######################################################################################
-######################################################################################
-#set -x
+#########################################################################################
+#########################################################################################
+set -x
 
-status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
-}
+file_to_get="${1}"
+destination="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
-BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+S3_HOST_BASE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_HOST_BASE`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
-configbucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
+config_bucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
 
+datastore_region="`/bin/echo "${S3_HOST_BASE}" | /bin/sed 's/|/ /g' | /usr/bin/awk '{print $1}' | /bin/sed -E 's/(.digitaloceanspaces.com|sos-|.exo.io|.linodeobjects.com|.vultrobjects.com)//g'`"
 datastore_tool=""
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
@@ -42,22 +41,36 @@ then
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
         datastore_tool="/usr/bin/s5cmd"
+elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone`" != "" ] )
+then
+        datastore_tool="/usr/bin/rclone"
 fi
 
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
-	datastore_cmd="${datastore_tool} --force --recursive get"
+        config_file="`/bin/grep -H ${datastore_region} /root/.s3cfg-* | /usr/bin/awk -F':' '{print $1}' | /usr/bin/head -1`"
+        host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        datastore_cmd="${datastore_tool} --config=${config_file} --force --recursive --host=https://${host_base} get s3://${config_bucket}/"
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
-	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-	datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg --endpoint-url https://${host_base} cp "
+        config_file="`/bin/grep -H ${datastore_region} /root/.s5cfg-* | /usr/bin/awk -F':' '{print $1}'`"
+        host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} cp s3://${config_bucket}/"
+        if ( [ "${destination}" = "" ] )
+        then
+                destination="."
+        fi
+elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
+then
+        config_file="`/bin/grep -H ${datastore_region} /root/.config/rclone/rclone.conf-* | /usr/bin/awk -F':' '{print $1}'`"
+        datastore_cmd="${datastore_tool} --config ${config_file} copy s3:${config_bucket}/"
 fi
 
 count="0"
-while ( [ "`${datastore_cmd} s3://${configbucket}/$1 $2 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
+while ( [ "`${datastore_cmd}${file_to_get} ${destination} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
 do
-	/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-	/bin/sleep 5
-	count="`/usr/bin/expr ${count} + 1`"
-done 
+        /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
+        /bin/sleep 5
+        count="`/usr/bin/expr ${count} + 1`"
+done
 
