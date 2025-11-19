@@ -114,12 +114,11 @@ then
 
         if ( [ "${S3_HOST_BASE}" != "" ] )
         then
-                host_base="`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F':' '{print $1}'`"
-                /bin/sed -i "s/XXXXHOSTBASEXXXX/${host_base}/" ${BUILD_HOME}/.s3cfg-${count}
+                /bin/sed -i "s/XXXXHOSTBASEXXXX/${HOST_BASE}/" ${BUILD_HOME}/.s3cfg-${count}
 
                 if ( [ "`/bin/grep '^alias s3cmd=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --config=/root/.s3cfg-1 --host=https://${host_base} '" >> /root/.bashrc
+                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --config=/root/.s3cfg-1 --host=https://${HOST_BASE} '" >> /root/.bashrc
                 fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
@@ -160,12 +159,11 @@ then
 
         if ( [ "${S3_HOST_BASE}" != "" ] )
         then
-                host_base="`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F':' '{print $1}'`"
-                /bin/echo "host_base = ${host_base}" >> ${BUILD_HOME}/.s5cfg-${count}
+                /bin/echo "host_base = ${S3_HOST_BASE}" >> ${BUILD_HOME}/.s5cfg-${count}
 
                 if ( [ "`/bin/grep '^alias s5cmd=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} '" >> /root/.bashrc
+                        /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${HOST_BASE} '" >> /root/.bashrc
                 fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
@@ -217,6 +215,10 @@ then
         if ( [ "${S3_HOST_BASE}" != "" ] )
         then
                 /bin/sed -i "s/XXXXHOSTBASEXXXX/${S3_HOST_BASE}/" ${BUILD_HOME}/.rclone.cfg-${count}
+                if ( [ "`/bin/grep '^alias rclone=' /root/.bashrc`" = "" ] )
+                then
+                        /bin/echo "alias rclone='/usr/bin/rclone --config /root/.config/rclone/rclone.conf-1 --s3-endpoint https://${HOST_BASE} '"
+                fi
         else
                 /bin/echo "Couldn't find the S3_HOST_BASE setting" 
                 /bin/touch /tmp/END_IT_ALL
