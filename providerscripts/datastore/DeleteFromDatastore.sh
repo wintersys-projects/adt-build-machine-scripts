@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh 
 ####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
@@ -20,37 +20,16 @@
 ######################################################################################
 #set -x
 
-status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
-}
+file_to_delete="${1}"
 
-file_to_delete="$1"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
+no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
+no_tokens="`/usr/bin/expr ${no_tokens} + 1`"
+count="1"
 
-if ( [ "${BUILD_HOME}" = "" ] )
-then 
-	BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-fi
-
-datastore_tool=""
-
-if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
-then
-        datastore_tool="/usr/bin/s3cmd"
-elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
-then
-        datastore_tool="/usr/bin/s5cmd"
-fi
-
-if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
-then
-	file_to_delete="`/bin/echo ${file_to_delete} | /bin/sed 's/\*$//g'`"
-	datastore_cmd="${datastore_tool} --recursive --force del "
-elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
-then
-	host_base="`/bin/grep host_base /root/.s5cfg | /bin/grep host_base | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-	datastore_cmd="/usr/bin/s5cmd --credentials-file /root/.s5cfg --endpoint-url https://${host_base} rm "
-fi
-
-${datastore_cmd} s3://${file_to_delete}
+while ( [ "${count}" -le "${no_tokens}" ] )
+do
+        ${BUILD_HOME}/providerscripts/datastore/PerformDeleteFromDatastore.sh ${file_to_delete} ${count}
+        count="`/usr/bin/expr ${count} + 1`"
+done
