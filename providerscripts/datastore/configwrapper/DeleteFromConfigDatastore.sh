@@ -22,6 +22,7 @@
 
 file_to_delete="$1"
 count="$2"
+recursive="$3"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_HOST_BASE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_HOST_BASE`"
@@ -31,6 +32,13 @@ SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 config_bucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
+
+if ( [ "${recursive}" = "yes" ] )
+then
+        recursive="--recursive"
+else
+        recursive=""
+fi
 
 datastore_region="`/bin/echo "${S3_HOST_BASE}" | /bin/sed 's/|/ /g' | /usr/bin/awk '{print $1}' | /bin/sed -E 's/(.digitaloceanspaces.com|sos-|.exo.io|.linodeobjects.com|.vultrobjects.com)//g'`"
 datastore_tool=""
@@ -50,14 +58,14 @@ if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
         file_to_delete="`/bin/echo ${file_to_delete} | /bin/sed 's/\*$//g'`"
         host_base="`/bin/grep host_base /root/.s3cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --recursive --force  --config=/root/.s3cfg-1 --host=https://${host_base} del s3://${config_bucket}/"
+        datastore_cmd="${datastore_tool} ${recursive} --force  --config=/root/.s3cfg-1 --host=https://${host_base} del s3://${config_bucket}/"
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
         host_base="`/bin/grep host_base /root/.s5cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
-        datastore_cmd="/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} rm s3://${config_bucket}/"
+        datastore_cmd="/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} ${recursive} rm s3://${config_bucket}/"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
-        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 purge s3:${config_bucket}/"
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 ${recursive} purge s3:${config_bucket}/"
 fi
 
 ${datastore_cmd}${file_to_delete}
