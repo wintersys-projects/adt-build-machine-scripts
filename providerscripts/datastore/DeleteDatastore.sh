@@ -20,7 +20,7 @@
 ######################################################################################
 #set -x
 
-datastore_to_delete="${1}" 
+datastore_to_delete="${1}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
@@ -30,6 +30,6 @@ count="1"
 
 while ( [ "${count}" -le "${no_tokens}" ] )
 do
-        ${HOME}/providerscripts/datastore/PerformDatastoreDelete.sh ${datastore_to_delete} ${count}
+        ${BUILD_HOME}/providerscripts/datastore/PerfomDeleteDatastore.sh ${datastore_to_delete} ${count}
         count="`/usr/bin/expr ${count} + 1`"
 done
