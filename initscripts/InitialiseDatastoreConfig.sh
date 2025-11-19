@@ -41,6 +41,8 @@ PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 
+count="${1}"
+
 if ( [ "${1}" != "" ] )
 then
         S3_ACCESS_KEY="${1}"
@@ -118,7 +120,7 @@ then
                 /bin/rm /root/.s3cfg-${count}
         fi
 
-        /bin/cp ${BUILD_HOME}/.s3cfg /root/.s3cfg-${count}
+        /bin/cp ${BUILD_HOME}/.s3cfg-${count} /root/.s3cfg-${count}
 fi
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
@@ -149,7 +151,7 @@ then
         then
                 host_base="`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F':' '{print $1}'`"
                 /bin/echo "host_base = ${host_base}" >> ${BUILD_HOME}/.s5cfg-${count}
-                /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-${count} --endpoint-url https://${host_base}'" >> /root/.bashrc
+                /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base}'" >> /root/.bashrc
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
                 /bin/touch /tmp/END_IT_ALL
@@ -160,7 +162,7 @@ then
                 /bin/rm /root/.s5cfg-${count}
         fi
 
-        /bin/cp ${BUILD_HOME}/.s5cfg /root/.s5cfg-${count}
+        /bin/cp ${BUILD_HOME}/.s5cfg-${count} /root/.s5cfg-${count}
 fi
 
 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "1$$agile" 3>&1 2>/dev/null
