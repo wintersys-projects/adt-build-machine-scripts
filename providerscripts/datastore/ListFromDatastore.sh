@@ -41,12 +41,22 @@ fi
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
         config_file="`/bin/grep -H ${datastore_region} /root/.s3cfg-* | /usr/bin/awk -F':' '{print $1}'`"
-        datastore_cmd="${datastore_tool} --config=${config_file} --recursive ls s3://"
+		if ( [ "${file_to_list}" = "" ] )
+        then
+        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive ls"
+        else
+        	datastore_cmd="${datastore_tool} --config=${config_file} --recursive ls s3://"
+        fi
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
         config_file="`/bin/grep -H ${datastore_region} /root/.s5cfg-* | /usr/bin/awk -F':' '{print $1}'`"
         host_base="`/bin/grep host_base ${config_file} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} ls s3://"
+		if ( [ "${file_to_list}" = "" ] )
+        then
+        	datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} ls"
+        else
+        	datastore_cmd="${datastore_tool} --credentials-file ${config_file} --endpoint-url https://${host_base} ls s3://"
+        fi
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         config_file="`/bin/grep -H ${datastore_region} /root/.config/rclone/rclone.conf-* | /usr/bin/awk -F':' '{print $1}'`"
