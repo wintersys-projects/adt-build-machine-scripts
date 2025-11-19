@@ -2,7 +2,9 @@
 ####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Delete a file from a bucket in the datastore
+# Description: Perform synchronisation (it has to be within the same region if its an
+# inter region sync) but if its a filesystem sync then the file system can be synced to
+# multiple regions and providers
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
