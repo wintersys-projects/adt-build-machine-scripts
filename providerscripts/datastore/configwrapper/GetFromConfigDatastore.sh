@@ -58,7 +58,7 @@ then
         datastore_cmd1="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} cp s3://${config_bucket}/"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
-        host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /bin/grep "^endpoint" | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} ls s3:${config_bucket}/"
         datastore_cmd1="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} copy s3:${config_bucket}/"
 fi
