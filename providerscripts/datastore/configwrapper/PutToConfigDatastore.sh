@@ -58,8 +58,8 @@ then
         bucket_prefix="s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
-        config_file="`/bin/grep -H ${datastore_region} /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F':' '{print $1}'`"
-        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 copy "
+        host_base="`/bin/grep host_base /root/.s5cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} copy "
         bucket_prefix="s3:"
 fi
 
