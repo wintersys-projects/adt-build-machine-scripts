@@ -217,7 +217,7 @@ then
                 /bin/sed -i "s/XXXXHOSTBASEXXXX/${S3_HOST_BASE}/" ${BUILD_HOME}/.rclone.cfg-${count}
                 if ( [ "`/bin/grep '^alias rclone=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias rclone='/usr/bin/rclone --config /root/.config/rclone/rclone.conf-1 --s3-endpoint https://${HOST_BASE} '" >> /root/.bashrc
+                        /bin/echo "alias rclone='/usr/bin/rclone --config /root/.config/rclone/rclone.conf-1 --s3-endpoint https://${S3_HOST_BASE} '" >> /root/.bashrc
                 fi
         else
                 /bin/echo "Couldn't find the S3_HOST_BASE setting" 
