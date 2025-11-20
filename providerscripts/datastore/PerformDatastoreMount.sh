@@ -58,10 +58,10 @@ then
         exit
 fi
 
-count="0"
-while ( [ "`${datastore_cmd1}${datastore_to_mount} | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
+count1="0"
+while ( [ "`${datastore_cmd1}${datastore_to_mount} | /bin/grep "ERROR"`" != "" ] && [ "${count1}" -lt "5" ] )
 do
-        /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
+        /bin/echo "An error has occured `/usr/bin/expr ${count1} + 1` times in script ${0}"
         /bin/sleep 5
-        count="`/usr/bin/expr ${count} + 1`"
+        count1="`/usr/bin/expr ${coun1t} + 1`"
 done
