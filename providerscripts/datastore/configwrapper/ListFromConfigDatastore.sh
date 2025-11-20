@@ -62,7 +62,7 @@ then
         fi
 fi
 
-${datastore_cmd}${file_to_list} 
+${datastore_cmd}${file_to_list}  | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
 
 
 
