@@ -20,7 +20,7 @@
 #########################################################################################
 #set -x
 
-file_to_get="${1}"
+datastore_file_to_get="${1}"
 destination="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -71,12 +71,12 @@ then
         /bin/mkdir -p ${destination}
 fi
 
-if ( [ "`${datastore_cmd}${file_to_get}`" = "" ] )
+if ( [ "`${datastore_cmd}${datastore_file_to_get}`" = "" ] )
 then
         /bin/echo "Key doesn't exist"
 else
         count="0"
-        while ( [ "`${datastore_cmd1}${file_to_get} ${destination} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
+        while ( [ "`${datastore_cmd1}${datastore_file_to_get} ${destination} 2>&1 >/dev/null | /bin/grep "ERROR"`" != "" ] && [ "${count}" -lt "5" ] )
         do
                 /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
                 /bin/sleep 5
