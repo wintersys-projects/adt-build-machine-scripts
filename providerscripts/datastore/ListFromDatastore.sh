@@ -63,11 +63,12 @@ then
         fi
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
+        host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /bin/grep "^endpoint" | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
         if ( [ "${file_to_list}" = "" ] )
         then
-                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 lsd s3:"
+                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} lsd s3:"
         else
-                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 ls s3:"
+                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} ls s3:"
         fi
 fi
 
