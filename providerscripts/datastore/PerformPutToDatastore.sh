@@ -22,7 +22,7 @@
 #set -x
 
 file_to_put="$1"
-datastore_to_put_in="$2"
+place_to_put="$2"
 count="$3"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
