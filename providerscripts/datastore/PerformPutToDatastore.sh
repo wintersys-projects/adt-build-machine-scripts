@@ -62,6 +62,11 @@ then
         /bin/touch ${file_to_put}
 fi
 
+if ( [ "`/bin/echo ${place_to_put} | /bin/grep '/'`" != "" ] && [ "`/bin/echo ${place_to_put} | /bin/grep  '/$'`" = "" ] )
+then
+        place_to_put="`/bin/echo ${place_to_put} | /usr/bin/awk -F'/' '{$NF=""; print $0}' | /bin/sed 's, ,/,g'`"
+fi
+
 if ( [ "`/bin/echo ${datastore_to_put_in} | /bin/grep  '/$'`" = "" ] )
 then
         datastore_to_put_in="`/bin/echo ${datastore_to_put_in} | /usr/bin/awk -F'/' '{$NF=""; print $0}' | /bin/sed 's, ,/,g'`"
