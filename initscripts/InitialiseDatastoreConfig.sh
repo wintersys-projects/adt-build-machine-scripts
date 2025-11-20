@@ -114,11 +114,11 @@ then
 
         if ( [ "${S3_HOST_BASE}" != "" ] )
         then
-                /bin/sed -i "s/XXXXHOSTBASEXXXX/${HOST_BASE}/" ${BUILD_HOME}/.s3cfg-${count}
+                /bin/sed -i "s/XXXXHOSTBASEXXXX/${S3_HOST_BASE}/" ${BUILD_HOME}/.s3cfg-${count}
 
                 if ( [ "`/bin/grep '^alias s3cmd=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --config=/root/.s3cfg-1 --host=https://${HOST_BASE} '" >> /root/.bashrc
+                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --config=/root/.s3cfg-1 --host=https://`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F'|' '{print $1}'` '" >> /root/.bashrc
                 fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
@@ -163,7 +163,7 @@ then
 
                 if ( [ "`/bin/grep '^alias s5cmd=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://${HOST_BASE} '" >> /root/.bashrc
+                        /bin/echo "alias s5cmd='/usr/bin/s5cmd --credentials-file /root/.s5cfg-1 --endpoint-url https://`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F'|' '{print $1}'` '" >> /root/.bashrc
                 fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
@@ -217,7 +217,7 @@ then
                 /bin/sed -i "s/XXXXHOSTBASEXXXX/${S3_HOST_BASE}/" ${BUILD_HOME}/.rclone.cfg-${count}
                 if ( [ "`/bin/grep '^alias rclone=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias rclone='/usr/bin/rclone --config /root/.config/rclone/rclone.conf-1 --s3-endpoint https://${S3_HOST_BASE} '" >> /root/.bashrc
+                        /bin/echo "alias rclone='/usr/bin/rclone --config /root/.config/rclone/rclone.conf-1 --s3-endpoint https://`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F'|' '{print $1}'` '" >> /root/.bashrc
                 fi
         else
                 /bin/echo "Couldn't find the S3_HOST_BASE setting" 
