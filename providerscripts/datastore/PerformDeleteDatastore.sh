@@ -49,7 +49,8 @@ then
         datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-${count}  --endpoint-url https://${host_base} rb s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
-        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} purge s3:"
+        host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-${count} | /bin/grep "^endpoint" | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} purge s3:"
 fi
 
 ${datastore_cmd}${datastore_to_delete}
