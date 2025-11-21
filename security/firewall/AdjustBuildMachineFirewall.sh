@@ -65,7 +65,7 @@ ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${auth_bucket}"
 
 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
 then
-	${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT 
+	${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ] || [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIME_FIREWALL ] )
@@ -87,7 +87,7 @@ then
 
 	if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/authorised-ips.dat`" != "" ] )
 	then
-		${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME} 
+		${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat  
 	fi
 
 	if ( [ "${laptop_ip}" = "" ] )
