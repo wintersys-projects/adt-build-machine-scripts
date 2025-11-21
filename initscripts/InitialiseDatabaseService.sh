@@ -203,7 +203,7 @@ then
                         then
                                 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS`" != "" ] )
                                 then
-                                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
+                                        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS ${BUILD_HOME}/runtimedata/${CLOUDHOST}
                                 fi
                         fi
                         
