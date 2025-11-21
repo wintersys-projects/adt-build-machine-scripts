@@ -23,6 +23,7 @@
 
 file_to_put="${1}"
 datastore_to_put_in="${2}"
+delete="${3}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
