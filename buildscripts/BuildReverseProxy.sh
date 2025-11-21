@@ -152,8 +152,8 @@ do
                 then
                         ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyips/*
                 fi
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} reverseproxypublicips/${ip}
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} reverseproxyips/${private_ip}
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} reverseproxypublicips
+                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} reverseproxyips
 
                 #If the build machine is without our VPC we want the private ip address to connect with if not within the VPC we want
                 #the public address to connect to
