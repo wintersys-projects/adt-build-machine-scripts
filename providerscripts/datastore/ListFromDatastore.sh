@@ -76,7 +76,7 @@ then
         else
                 datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} ${include} ls s3:"
         fi
-        file_to_list="`/bin/echo ${file_to_list} | /bin/sed 's/\*//g'`"
+        file_to_list=""
 fi
 
 if ( [ "${file_to_list}" = "" ] )
