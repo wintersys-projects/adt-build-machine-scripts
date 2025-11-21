@@ -54,22 +54,23 @@ then
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+
         include=""
         if ( [ "${file_to_list}" != "" ] )
         then
-                include='--include "*'${file_to_list}'*"'
+                include="--include *${file_to_list}*"
         fi
-        
-        if ( [ "${file_to_list}" = "" ] )
-        then
-                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} ${include} lsd s3:${config_bucket}/"
-        else
-                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} ${include} ls s3:${config_bucket}/"
-        fi
+
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} ${include} ls s3:${config_bucket}/"
         file_to_list=""
 fi
 
-${datastore_cmd}${file_to_list}  | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
+if ( [ "`/bin/echo ${file_to_list} | /bin/grep '\/'`" != "" ] )
+then
+        ${datastore_cmd}${file_to_list}  | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
+else
+        ${datastore_cmd}${file_to_list} | /usr/bin/awk '{print $NF}'
+fi
 
 
 
