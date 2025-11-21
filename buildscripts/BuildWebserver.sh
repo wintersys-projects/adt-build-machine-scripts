@@ -162,8 +162,8 @@ do
 		then
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips/*
 		fi
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} webserverpublicips/${ip}
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} webserverips/${private_ip}
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} webserverpublicips
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} webserverips
 
 		#If the build machine is attached to the VPC we want the private IP address if not we want the public one 
 
