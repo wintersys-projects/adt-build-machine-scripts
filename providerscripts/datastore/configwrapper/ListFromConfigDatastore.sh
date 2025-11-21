@@ -21,6 +21,7 @@
 #set -x
 
 file_to_list="${1}"
+pattern_to_match="${2}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
@@ -54,11 +55,17 @@ then
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        include=""
+        if ( [ "${pattern_to_match}" != "" ] )
+        then
+                include='--include "*'${pattern_to_match}'*"'
+        fi
+        
         if ( [ "${file_to_list}" = "" ] )
         then
-                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} lsd s3:${config_bucket}/"
+                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} ${include} lsd s3:${config_bucket}/"
         else
-                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} ls s3:${config_bucket}/"
+                datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} ${include} ls s3:${config_bucket}/"
         fi
         file_to_list="`/bin/echo ${file_to_list} | /bin/sed 's/\*//g'`"
 fi
