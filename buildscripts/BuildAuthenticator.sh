@@ -148,8 +148,8 @@ do
 		then
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip/*
 		fi
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip "no"
+		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip "no"
 
 		#If the build machine is without our VPC we want the private ip address to connect with if not within the VPC we want
 		#the public address to connect to
