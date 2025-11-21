@@ -82,7 +82,7 @@ read BUILD_IDENTIFIER
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-scaling_profile="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:*`"
+scaling_profile="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:* STATIC_SCALE:`"
 stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
 original_scale_value="0"
 
