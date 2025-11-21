@@ -93,7 +93,7 @@ do
 	read mode
 done
 
-${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ] )
 then
