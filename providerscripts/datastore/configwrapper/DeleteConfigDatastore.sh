@@ -2,7 +2,7 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Actually delete an (empty) datastore bucket for the current S3 provider and using the
+# Description: Actually delete a datastore bucket for the current S3 provider and using the
 # tool that is currently configured as active
 ##########################################################################################
 # License Agreement:
@@ -28,6 +28,11 @@ SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 config_bucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
+
+if ( [ "${1}" != "" ] )
+then
+        config_bucket="${1}"
+fi
 
 datastore_tool=""
 
@@ -56,4 +61,4 @@ then
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} purge s3:"
 fi
 
-${datastore_cmd}${datastore_to_delete}${config_bucket}
+${datastore_cmd}${config_bucket}
