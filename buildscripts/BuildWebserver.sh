@@ -148,10 +148,10 @@ do
 		WSIP_PUBLIC=${ip}
 		WSIP_PRIVATE=${private_ip}
 
-		if ( [ "${MULTI_REGION}" = "1" ] )
-		then
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${WSIP_PUBLIC} multiregionwebserverpublicips/${public_ip} "no"
-		fi
+	#	if ( [ "${MULTI_REGION}" = "1" ] )
+#		then
+#			${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${WSIP_PUBLIC} multiregionwebserverpublicips/${public_ip} "no"
+#		fi
 
 		#Store our IP addresses in the S3 datastore
 		if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh webserverpublicips/*`" != "" ] )
