@@ -58,8 +58,15 @@ do
 
 	if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
 	then
-		${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
-		${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}/*"
-		${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "${bucket}"
+		if ( [ "`/bin/echo ${bucket} | /bin/grep "config"`" = "" ] )
+		then
+			${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
+			${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}/*"
+			${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "${bucket}"
+		else
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh "${bucket}" 2>/dev/null
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh "${bucket}/*"
+			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteConfigDatastore.sh
+		fi	
 	fi
 done
