@@ -254,6 +254,9 @@ fi
 # connection might drop during  the build proccess
 ${BUILD_HOME}/initscripts/InitialiseLongLastingConnection.sh
 
+#Set up anything that we would like to set for the code editors we are using
+${BUILD_HOME}/initscripts/InitialiseEditor.sh
+
 # There is a core set of software that is needed by this toolkit. We install the software on the intial build and update the software
 # if its been more than 1 day since this script was run on the current machine
 
