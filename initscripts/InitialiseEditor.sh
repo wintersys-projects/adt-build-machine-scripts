@@ -9,5 +9,5 @@ then
         autocmd BufRead,BufWritePre *.sh normal gg=G " > /root/.vimrc-adt
 
         /bin/echo "alias vim='/usr/bin/vim -u /root/.vimrc-adt'" >> /root/.bashrc
-        /bin/echo "alias vi='/usr/bin/vim -u /root/.vimrc-adt'" >> /root/.bashrc
+        /bin/echo "alias vi='/usr/bin/vi -u /root/.vimrc-adt'" >> /root/.bashrc
 fi
