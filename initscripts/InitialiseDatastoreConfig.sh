@@ -287,7 +287,7 @@ website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 
 if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 then
-        for bucket in `${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh | /bin/grep "${website_bucket}-config" | /usr/bin/awk -F'/' '{print $1}' | /usr/bin/uniq`
+        for bucket in `${BUILD_HOME}/providerscripts/datastore/ListDatastore.sh | /bin/grep "${website_bucket}-config" | /usr/bin/awk -F'/' '{print $1}' | /usr/bin/uniq`
         do
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteConfigDatastore.sh ${bucket}
         done
