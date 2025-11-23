@@ -272,23 +272,11 @@ then
 fi
 
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-
-###can test what our datastore tool is here if needed
-#################ORIGINAL (s3cmd and s5cmd )
-#if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
-#then
-#        for bucket in `${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh | /bin/grep "${website_bucket}-config" | /usr/bin/awk '{print  $NF}' | /bin/sed 's,s3://,,'`
-#        do
-#                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${bucket}/*
-#                ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh ${bucket}
-#        done
-#fi
-########new - rclone
-
 if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 then
         for bucket in `${BUILD_HOME}/providerscripts/datastore/ListDatastore.sh | /bin/grep "${website_bucket}-config" | /usr/bin/awk -F'/' '{print $1}' | /usr/bin/uniq`
         do
+                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${bucket}/*
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteConfigDatastore.sh ${bucket}
         done
 fi
