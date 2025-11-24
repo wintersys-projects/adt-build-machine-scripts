@@ -115,7 +115,7 @@ then
 			then
 				${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${auth_bucket}
 			fi
-			${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${auth_bucket}
+			${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${auth_bucket} "no"
 		fi
 	fi
 
