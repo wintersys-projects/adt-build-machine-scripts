@@ -53,7 +53,7 @@ then
 	then
 		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' 'NF{NF--};1' | /bin/sed 's/ /-/g'`"
 		/bin/sed -i "s/XXXXAUTOSCALER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
-		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
+		/bin/sed -i "s/${server_name_match}.*$/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
 		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
@@ -68,7 +68,7 @@ then
 	then
 		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' 'NF{NF--};1' | /bin/sed 's/ /-/g'`"
 		/bin/sed -i "s/XXXXWEBSERVER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
-		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+		/bin/sed -i "s/${server_name_match}.*$/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
 		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
@@ -107,7 +107,7 @@ then
 	then		
 		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' 'NF{NF--};1' | /bin/sed 's/ /-/g'`"
 		/bin/sed -i "s/XXXXREVERSEPROXY_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
-		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+		/bin/sed -i "s/${server_name_match}.*$/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
 		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
