@@ -51,8 +51,10 @@ then
 
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml ] )
 	then
+		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' 'NF{NF--};1' | /bin/sed 's/ /-/g'`"
 		/bin/sed -i "s/XXXXAUTOSCALER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
-
+		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
+		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
 			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml | /usr/bin/base64 -w 0`"
@@ -64,7 +66,10 @@ elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
 then
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml ] )
 	then
+		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' 'NF{NF--};1' | /bin/sed 's/ /-/g'`"
 		/bin/sed -i "s/XXXXWEBSERVER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml
+		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
 			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/webserver.yaml | /usr/bin/base64 -w 0`"
@@ -99,8 +104,11 @@ then
 elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
 then
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml ] )
-	then
+	then		
+		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' 'NF{NF--};1' | /bin/sed 's/ /-/g'`"
 		/bin/sed -i "s/XXXXREVERSEPROXY_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
 			cloud_config="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml | /usr/bin/base64 -w 0`"
