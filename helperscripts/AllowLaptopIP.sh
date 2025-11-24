@@ -110,7 +110,7 @@ fi
 
 /bin/cat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat | /usr/bin/sort | /usr/bin/uniq >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
 /bin/mv ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
-${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}/authorised-ips.dat
+${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}
 /bin/touch  ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT
-${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ${IDENTIFIER}/FIREWALL-EVENT
+${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ${IDENTIFIER}
 /bin/rm ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT
