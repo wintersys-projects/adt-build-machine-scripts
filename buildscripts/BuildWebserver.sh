@@ -68,6 +68,7 @@ OPTIONS_AUTOSCALER="-o ConnectTimeout=10 -o ConnectionAttempts=5 -o UserKnownHos
 BUILD_KEY="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/id_${ALGORITHM}_AGILE_DEPLOYMENT_BUILD_KEY_${BUILD_IDENTIFIER}"
 SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bin/sudo -S -E "
 
+
 #If "finished" is set to 1, then we know that a webserver has been successfully built and is running.
 #Try up to 5 times if the webserver is failing to complete its build
 while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
@@ -225,7 +226,13 @@ do
 			#If we are here then the build did succeed and we can add the IP address to the DNS system
 			if ( [ "${NO_REVERSE_PROXY}" = "0" ] )
 			then
-				${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
+				if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_PRIMED ] )
+				then
+					/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_PRIMED
+					${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
+				else
+					${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary"	
+				fi
 			fi
 			finished="1"
 		fi
