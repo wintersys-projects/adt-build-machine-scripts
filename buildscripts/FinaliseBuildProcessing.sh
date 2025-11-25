@@ -75,7 +75,7 @@ OPTIONS_WS="-o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=
 OPTIONS_DB="-o ConnectTimeout=10 -o ConnectionAttempts=30 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 
 #Just do some checks to make sure that all the different server types are running correctly
-if ( [ "${PRODUCTION}" = "1" ] && [ "`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`" = "" ] )
+if ( [ "${PRODUCTION}" = "1" ] && [ "${NO_AUTOSCALERS}" != "0" ] && [ "`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST}`" = "" ] )
 then
 	status "It seems like something is not quite right with the build. The Autoscaler seems not to be running so the website will not function properly."
 fi
