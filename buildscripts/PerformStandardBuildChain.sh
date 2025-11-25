@@ -123,7 +123,7 @@ then
 	fi
 fi 
 
-if ( [ "${INPARALLEL}" = "0" ] )
+if ( [ "${INPARALLEL}" = "0" ] && [ "${PRODUCTION}" = "1" ] )
 then
 	tally="0"
 	while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
@@ -150,7 +150,7 @@ then
 			${BUILD_HOME}/buildscripts/BuildReverseProxy.sh ${tally}
 		done
 	fi
-elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "1" ]  )
+elif ( [ "${INPARALLEL}" = "1" ] && [ "${PRODUCATION}" = "1" ] )
 then
 	tally="0"
 	while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
@@ -186,7 +186,7 @@ then
 	fi
 fi
 
-if ( [ "${NO_AUTOSCALERS}" -eq "0" ] && [ "${INPARALLEL}" = "1" ]  && [ "${DEVELOPMENT}" = "1" ] )
+if ( [ "${INPARALLEL}" = "1" ]  && [ "${DEVELOPMENT}" = "1" ] )
 then
 	tally="0"
 	while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
