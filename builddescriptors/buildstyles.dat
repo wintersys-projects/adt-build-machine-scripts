@@ -171,7 +171,7 @@ POSTGRES:repo:17
 BUILDCHAINTYPE:standard
 #DATASTORETOOL:s3cmd:source 
 #DATASTORETOOL:s5cmd:binary
-DATASTORETOOL:rclone:script
+DATASTORETOOL:rclone:repo
 PACKAGEMANAGER:apt-get
 FIREWALL:ufw
 EMAILUTIL:sendemail
