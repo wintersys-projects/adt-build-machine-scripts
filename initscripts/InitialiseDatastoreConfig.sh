@@ -118,7 +118,7 @@ then
 
                 if ( [ "`/bin/grep '^alias s3cmd=' /root/.bashrc`" = "" ] )
                 then
-                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --config=/root/.s3cfg-1 --host=https://`/bin/echo ${S3_HOST_BASE} | /usr/bin/awk -F'|' '{print $1}'` '" >> /root/.bashrc
+                        /bin/echo "alias s3cmd='/usr/bin/s3cmd --config=/root/.s3cfg-1 --host=https://${S3_HOST_BASE} '" >> /root/.bashrc
                 fi
         else 
                 status "Couldn't find the hostbase parameter for your datastore, can't go on without it, will have to exit"
