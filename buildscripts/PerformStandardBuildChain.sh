@@ -150,7 +150,7 @@ then
 			${BUILD_HOME}/buildscripts/BuildReverseProxy.sh ${tally}
 		done
 	fi
-elif ( [ "${INPARALLEL}" = "1" ] && [ "${PRODUCATION}" = "1" ] )
+elif ( [ "${INPARALLEL}" = "1" ] && [ "${PRODUCTION}" = "1" ] )
 then
 	tally="0"
 	while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
