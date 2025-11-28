@@ -160,8 +160,8 @@ PHP:cli:simplexml:dom:gd:intl:zip:mysqli:pgsql:mbstring:curl:soap|9176
 CONFIGPHPPOOL:pm=ondemand:pm.max_children=10:pm.max_requests=200:pm.start_servers=10:pm.min_spare_servers=5:pm.max_spare_servers=20:pm.process_idle_timeout=10s
 CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.output_compression=On:cgi.fix_pathinfo=0:output_buffering=Off:disable_functions=exec,passthru,shell_exec,system,popen,parse_ini_file,show_source:allow_url_fopen=Off:allow_url_include=Off:memory_limit=256M:opcache.enable=1:opcache.memory_consumption=256:open_basedir=/var/##/tmp:upload_tmp_dir=/var/www/html/tmp:sys_temp_dir=/var/www/html/tmp:expose_php=Off:date.timezone='Europe/London':cgi.force_redirect=On                                                                    
 ##############################################################PHP###########################################################
-#DATASTOREMOUNTTOOL:rclone:binary
-DATASTOREMOUNTTOOL:s3fs:source
+DATASTOREMOUNTTOOL:rclone:binary
+#DATASTOREMOUNTTOOL:s3fs:source
 #DATASTOREMOUNTTOOL:goof:binary
 #DATASTOREMOUNTTOOL:geesefs:source
 #MARIADB:cloud-init
