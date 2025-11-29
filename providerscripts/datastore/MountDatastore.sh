@@ -29,6 +29,12 @@ no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -
 no_tokens="`/usr/bin/expr ${no_tokens} + 1`"
 count="1"
 
+#Special case of the for the build machine authorisation bucket (want to tie authorisation to the same region as the build machine is running in)
+if ( [ "`/bin/echo ${datastore_to_mount} | /bin/grep 'authip-adt-allowed'`" != "" ] )
+then
+        no_tokens="1"
+fi
+
 while ( [ "${count}" -le "${no_tokens}" ] )
 do
         ${BUILD_HOME}/providerscripts/datastore/PerformDatastoreMount.sh ${datastore_to_mount} ${count}
