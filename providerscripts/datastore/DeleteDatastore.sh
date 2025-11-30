@@ -31,7 +31,7 @@ no_tokens="`/usr/bin/expr ${no_tokens} + 1`"
 count="1"
 
 #Special case of the for the build machine authorisation bucket (want to tie authorisation to the same region as the build machine is running in)
-if ( [ "`/bin/echo ${file_to_delete} | /bin/grep 'authip-adt-allowed'`" != "" ] )
+if ( [ "`/bin/echo ${datastore_to_delete} | /bin/grep 'authip-adt-allowed'`" != "" ] )
 then
         no_tokens="1"
 fi
