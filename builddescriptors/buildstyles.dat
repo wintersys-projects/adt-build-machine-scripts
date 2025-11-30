@@ -48,6 +48,9 @@
 # DATASTOREMOUNTTOOL:rclone:source #if you choose this option you will need at least 50GB of disk space for your servers to be able to install properly (a nanode wan't enough, for example, in my testing)
 # DATASTOREMOUNTTOOL:geesefs:binary
 # DATASTOREMOUNTTOOL:geesefs:source
+# If you want to unify different individual mount points as one file system you will need a filesystem merge tool
+# MERGEFILESYSTEMSTOOL:mergefs:repo
+# MERGEFILESYSTEMSTOOL:mergefs:binary
 # When installing mariadb on your VPS systems you can give it a verion number to install like this 
 # If you put 'cloud-init' here then cloud-init will install the default version of mariadb
 # MARIADB:cloud-init
@@ -172,6 +175,7 @@ BUILDCHAINTYPE:standard
 #DATASTORETOOL:s3cmd:source 
 #DATASTORETOOL:s5cmd:source
 DATASTORETOOL:rclone:binary
+MERGEFILESYSTEMSTOOL:mergefs:binaries
 PACKAGEMANAGER:apt-get
 FIREWALL:ufw
 EMAILUTIL:sendemail
