@@ -61,11 +61,17 @@ do
 		if ( [ "`/bin/echo ${bucket} | /bin/grep "config"`" = "" ] )
 		then
 			${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
-			${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}/*"
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${bucket}`" != "" ] )
+            then
+				${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}/*"
+			fi
 			${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "${bucket}"
 		else
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh "${bucket}" 2>/dev/null
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh "${bucket}/*"
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromConfigDatastore.sh ${bucket}`" != "" ] )
+            then
+				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh "${bucket}/*"
+			fi
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteConfigDatastore.sh
 		fi	
 	fi
