@@ -31,4 +31,4 @@ then
 	exit
 fi
 
-/bin/grep "^${1}=" ${BUILD_ENVIRONMENT} | /bin/sed 's/"//g' | /usr/bin/awk -F'=' '{print $NF}'
+/bin/grep "^${1}=" ${BUILD_ENVIRONMENT} | /bin/sed -e 's/"//g' -e 's/[^=]*=//'
