@@ -23,9 +23,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -35,21 +35,24 @@ WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 
 if ( [ "${PERSIST_ASSETS_TO_DATASTORE}" = "1" ] )
 then
-	interrogation_home="${BUILD_HOME}/interrogation"
-	for directory_to_mount in ${DIRECTORIES_TO_MOUNT}
-	do
-		subdir="${directory_to_mount}"        
-		directory_to_mount="`/bin/echo ${directory_to_mount} | /usr/bin/tr '[:upper:]' '[:lower:]'`"
-		asset_datastore="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-assets-${directory_to_mount}"
+        interrogation_home="${BUILD_HOME}/interrogation"
+        for directory_to_mount in ${DIRECTORIES_TO_MOUNT}
+        do
+                if ( [ "`/bin/echo ${directory_to_mount} | /bin/grep 'merge='`" = "" ] )
+                then
+                        subdir="${directory_to_mount}"        
+                        directory_to_mount="`/bin/echo ${directory_to_mount} | /usr/bin/tr '[:upper:]' '[:lower:]'`"
+                        asset_datastore="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-assets-${directory_to_mount}"
 
-		${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${asset_datastore}"
+                        ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${asset_datastore}"
 
-		if ( [ -f ${interrogation_home}/${subdir} ] )
-		then
-			if ( [ ! -z "`/bin/ls ${interrogation_home}/${subdir}`" ] )
-			then
-				${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${interrogation_home}/${subdir}/ ${asset_datastore}
-			fi
-		fi
-	done
+                        if ( [ -f ${interrogation_home}/${subdir} ] )
+                        then
+                                if ( [ ! -z "`/bin/ls ${interrogation_home}/${subdir}`" ] )
+                                then
+                                        ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${interrogation_home}/${subdir}/ ${asset_datastore}
+                                fi
+                        fi
+                fi
+        done
 fi
