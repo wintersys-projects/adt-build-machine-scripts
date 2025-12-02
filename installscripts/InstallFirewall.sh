@@ -41,4 +41,7 @@ then
  	/bin/echo "1"
 fi
 
+${BUILD_HOME}/installscripts/InstallFail2Ban.sh ${1}
+
+
 
