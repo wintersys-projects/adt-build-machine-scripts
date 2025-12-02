@@ -98,3 +98,8 @@ then
     /usr/sbin/ip6tables-save > /etc/iptables/rules.v6
 	/bin/touch /root/FIREWALL-INITIALISED
 fi
+
+if ( [ -f /etc/fail2ban/jail.d/jail.local ] )
+then
+	/bin/sed -i "s/XXXXSSHPORTXXXX/${buildmachine_ssh_port}/g" /etc/fail2ban/jail.d/jail.local
+fi
