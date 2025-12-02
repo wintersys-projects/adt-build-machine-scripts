@@ -55,7 +55,7 @@ then
 		if ( [ "`/bin/grep "^FAIL2BAN:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep active`" != "" ] )
         then
 			eval ${install_command} fail2ban
-			/bin/cp ${BUILD_HOME}/security/firewall/config/fail2ban.conf  /etc/fail2ban/jail.local
+			/bin/cp ${BUILD_HOME}/security/firewall/config/fail2ban.conf  /etc/fail2ban/jail.d/jail.local
 		fi
 	fi
 fi
