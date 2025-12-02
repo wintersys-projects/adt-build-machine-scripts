@@ -45,19 +45,20 @@ then
 		/bin/echo "Linux Ubuntu ${buildos_version} LTS 64-bit"
 	elif ( [ "${buildos}" = "debian" ] )
 	then
+		os_name="`${BUILD_HOME}/helperscripts/GetOsName.sh | /bin/sed -e "s/\b\(.\)/\u\1/g"`"
 	#At the current time (2025), 14 and 15 are here for future proofing not for actual use
  		if ( [ "${buildos_version}" = "12" ] )
    		then
-			/bin/echo "Linux Debian ${buildos_version} (Bookworm) 64-bit"
+			/bin/echo "Linux Debian ${buildos_version} (${os_name}) 64-bit"
 		elif ( [ "${buildos_version}" = "13" ] )
 		then
-  			/bin/echo "Linux Debian ${buildos_version} (Trixie) 64-bit"
+  			/bin/echo "Linux Debian ${buildos_version} (${os_name}) 64-bit"
 		elif ( [ "${buildos_version}" = "14" ] )
 		then
-  			/bin/echo "Linux Debian ${buildos_version} (Forky) 64-bit"
+  			/bin/echo "Linux Debian ${buildos_version} (${os_name}) 64-bit"
 		elif ( [ "${buildos_version}" = "15" ] )
 		then
-  			/bin/echo "Linux Debian ${buildos_version} (Duke) 64-bit"
+  			/bin/echo "Linux Debian ${buildos_version} (${os_name}) 64-bit"
 		fi
  	fi
 fi
