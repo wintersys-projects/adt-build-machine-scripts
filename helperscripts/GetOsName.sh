@@ -20,21 +20,15 @@
 #######################################################################################################
 #set -x
 
-if ( [ "${1}" != "" ] )
+if ( [ ! -f  ./PerformDatabaseBackup.sh ] )
 then
-        buildos="${1}"
+	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+	exit
 fi
 
-if ( [ "${buildos}" = "" ] )
-then
-        BUILDOS="`${HOME}/utilities/config/ExtractConfigValue.sh 'BUILDOS'`"
-else 
-        BUILDOS="${buildos}"
-fi
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
-BUILDOS_VERSION="`${HOME}/utilities/config/ExtractConfigValue.sh 'BUILDOSVERSION'`"
 
-HOME="`/bin/cat /home/homedir.dat`"
 
 
 if ( [ "${BUILDOS}" = "ubuntu" ] )
