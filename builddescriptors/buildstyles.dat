@@ -72,6 +72,8 @@
 # PACKAGEMANAGER:apt|apt-get
 # You can choose what style of firewall you would like to have by setting the FIREWALL. You can choose ufw or iptables
 # FIREWALL:ufw|iptables
+# if you want to use fail2ban you can set this will install fail2ban on all your machines
+# FAIL2BAN:active|inactive
 # You can choose which email utility you want to send your system emails using sendemail or ssmtp
 # EMAILUTIL:sendemail|ssmtp
 # You can choose which tool you want to use to generate your ssl certificates
@@ -178,6 +180,7 @@ DATASTORETOOL:rclone:binary
 MERGEFILESYSTEMSTOOL:mergefs:repo
 PACKAGEMANAGER:apt-get
 FIREWALL:ufw
+FAIL2BAN:active
 EMAILUTIL:sendemail
 SSLCERTCLIENT:acme
 GITBRANCH:main
