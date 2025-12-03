@@ -395,6 +395,13 @@ from an associated asset bucket in your datastore
 
 The associated asset buckets are generated when you make your first temporal backup of a baselined application according to what you have the DIRECTORIES_TO_MOUNT value set to along with PERSIST_ASSETS_TO_DATASTORE being set to "1"
 
+You can mount multiple buckets into a single webroot directory my indicating that there should be a merge. All you have to do is define how many buckets should be merged (up to a maximum of 9) into a single webroot mountpoint. Below is an example which mounts 4 buckets as /var/www/html/images
+
+DIRECTORIES_TO_MOUNT="merge=images4"
+
+And so "merge=" signals that the bucket file system should be merged into one mountpoint (/var/www/html/images)  
+The "images4" part indicates that four buckets should be created and mounted as "/var/www/images1 /var/www/images2 /var/www/images3 /var/www/images4"  
+
 ----- 
 
 ### SYNC_WEBROOTS
