@@ -22,7 +22,7 @@
 
 if ( [ "${1}" != "" ] )
 then
-	buildos="${1}"
+        buildos="${1}"
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -30,35 +30,35 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 apt=""
 if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 then
-	apt="/usr/bin/apt"
+        apt="/usr/bin/apt"
 elif ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-get" ] )
 then
-	apt="/usr/bin/apt-get"
+        apt="/usr/bin/apt-get"
 fi
 
 export DEBIAN_FRONTEND=noninteractive 
 install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install " 
 
 if ( [ "${buildos}" = "ubuntu" ] )
-then	
-	eval ${install_command} jq                       
-	version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
-	/usr/bin/wget -c https://storage.googleapis.com/golang/go${version}.linux-amd64.tar.gz  -O - | /usr/bin/tar -xz -C /usr/local  
-	
-	if ( [ ! -L /usr/bin/go ] )
-	then
-		/usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
- 	fi	
+then
+        eval ${install_command} jq                       
+        version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
+        /usr/bin/wget -c https://dl.google.com/go/go${version}.linux-amd64.tar.gz -O - | /usr/bin/tar -xz -C /usr/local  
+
+        if ( [ ! -L /usr/bin/go ] )
+        then
+                /usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
+        fi
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	eval ${install_command} jq                       
-	version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
-	/usr/bin/wget -c https://storage.googleapis.com/golang/go${version}.linux-amd64.tar.gz  -O - | /usr/bin/tar -xz -C /usr/local   
- 	
-	if ( [ ! -L /usr/bin/go ] )
-	then
-		/usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
-	fi
+        eval ${install_command} jq                       
+        version="`/usr/bin/curl https://go.dev/dl/?mode=json | /usr/bin/jq -r '.[0].version' | /bin/sed 's/go//g'1`"            
+        /usr/bin/wget -c https://dl.google.com/go/go${version}.linux-amd64.tar.gz -O - | /usr/bin/tar -xz -C /usr/local  
+
+        if ( [ ! -L /usr/bin/go ] )
+        then
+                /usr/bin/ln -s /usr/local/go/bin/go /usr/bin/go 
+        fi
 fi
