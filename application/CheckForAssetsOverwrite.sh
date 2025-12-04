@@ -39,7 +39,6 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 DIRECTORIES_TO_MOUNT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DIRECTORIES_TO_MOUNT`"
-DATASTORE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATASTORE_CHOICE`"
 
 #When we are a baseline, we want to persist all our assets to our datastore. This involves deleting any existing assets from the bucket
 #we are persisting to so we issue a warning here, that the existing assets will be purged
@@ -93,13 +92,13 @@ then
 
                         if ( [ "${input}" = "Y" ] || [ "${input}" = "Y" ] ) 
                         then
-                                status "Making a safety backup: s3://${assets_bucket}-backup-$$ in your ${DATASTORE_CHOICE} datastore from a previous build of this website - ${WEBSITE_URL} , please wait....."
+                                status "Making a safety backup: s3://${assets_bucket}-backup-$$ in your primary datastore from a previous build of this website - ${WEBSITE_URL} , please wait....."
 
                                 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${assets_bucket}-backup-$$
                                 ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${assets_bucket} ${assets_bucket}-backup-$$
                                 ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
 
-                                status "OK, thanks for waiting. You can find your previously deployed assets in s3://${assets_bucket}-backup-$$ in your ${DATASTORE_CHOICE} datastore."
+                                status "OK, thanks for waiting. You can find your previously deployed assets in s3://${assets_bucket}-backup-$$ in your primary datastore."
                                 status " please press <enter> to continue"
                                 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ]  || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
                                 then
