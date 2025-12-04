@@ -60,6 +60,10 @@ then
         do
                 count="`/usr/bin/expr ${count} + 1`"
                 /usr/local/bin/doctl compute domain records create --record-type A --record-name ${subdomain} --record-data ${ip}  --record-ttl 60 ${domainurl} --config /root/.config/doctl/dns-do-config.yaml
+                if ( [ "$?" != "0" ] )
+                then
+                        /bin/sleep 10
+                fi
         done
 
         if ( [ "${count}" = "5" ] )
@@ -86,6 +90,10 @@ then
                 do
                         count="`/usr/bin/expr ${count} + 1`"
                         /usr/bin/exo dns add A ${domainurl} -a ${ip} -n ${subdomain} -t 60  --config /root/.config/exoscale/dns-exoscale.toml 
+                        if ( [ "$?" != "0" ] )
+                        then
+                                /bin/sleep 10
+                        fi
                 done
         fi
 
@@ -110,6 +118,10 @@ then
         do
                 count="`/usr/bin/expr ${count} + 1`"
                 /usr/local/bin/linode-cli domains records-create ${domain_id} --type A --name ${subdomain} --target ${ip} --ttl_sec 60 --no-defaults
+                if ( [ "$?" != "0" ] )
+                then
+                        /bin/sleep 10
+                fi
         done
 
         unset LINODE_CLI_CONFIG
@@ -133,6 +145,10 @@ then
         do
                 count="`/usr/bin/expr ${count} + 1`"
                 /usr/bin/vultr dns record create ${domainurl} -n ${subdomain} -t A -d "${ip}" --priority=10 --ttl=60 --config /root/.dns-vultr-cli.yaml 
+                if ( [ "$?" != "0" ] )
+                then
+                        /bin/sleep 10
+                fi
         done
 
         if ( [ "${count}" = "5" ] )
