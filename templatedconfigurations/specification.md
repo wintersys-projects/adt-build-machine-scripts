@@ -731,21 +731,6 @@ INFRASTRUCTURE_REPOSITORY_PROVIDER="github"
 INFRASTRUCTURE_REPOSITORY_OWNER="wintersys-projects"  
 
 INFRASTRUCTURE_REPOSITORY_USERNAME="wintersys-projects"  
-
------
-
-### DATASTORE_CHOICE
-
-This value determines who your object store provider will be (very likely the same as your compute services provider, but, doesn't have to be)
-DATASTORE_CHOICE should be set to one of the following values:
-  
- For DigitalOcean spaces: "digitalocean"  
- 
- For Exoscale Object Store: "exoscale"  
- 
- For Linode Object Store: "linode"  
- 
- For Vultr Object Store: "vultr"  
  
 
 ------
