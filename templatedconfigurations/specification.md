@@ -65,7 +65,7 @@ If you are deploying a virgin application, you can set APPLICATION_BASELINE_SOUR
 ### S3_ACCESS_KEY 
 ### S3_SECRET_KEY
 
-These grant you access to manipulate an object store. Under the principle of least privileges, you should grant as few privileges to these keys when you create them as possible. The DATASTORE_CHOICE setting (see below) will determine which Object Storage you are using and you will need to generate access keys appropriate to that setting. 
+These grant you access to manipulate an object store. Under the principle of least privileges, you should grant as few privileges to these keys when you create them as possible. 
 
 You can get your S3_ACCESS_KEY and S3_SECRET KEY as follows:
 
