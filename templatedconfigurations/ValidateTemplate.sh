@@ -127,6 +127,29 @@ do
 	fi
 done
 
+S3_ACCESS_KEY="`${HOME}/utilities/config/ExtractConfigValue.sh 'S3ACCESSKEY'`"
+no_tokens1="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
+no_tokens1="`/usr/bin/expr ${no_tokens} + 1`"
+
+S3_SECRET_KEY="`${HOME}/utilities/config/ExtractConfigValue.sh 'S3ACCESSKEY'`"
+no_tokens2="`/bin/echo "${S3_SECRET_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
+no_tokens2="`/usr/bin/expr ${no_tokens} + 1`"
+
+S3_LOCATION="`${HOME}/utilities/config/ExtractConfigValue.sh 'S3ACCESSKEY'`"
+no_tokens3="`/bin/echo "${S3_LOCATION}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
+no_tokens3="`/usr/bin/expr ${no_tokens} + 1`"
+
+S3_HOST_BASE="`${HOME}/utilities/config/ExtractConfigValue.sh 'S3HOSTBASE'`"
+no_tokens4="`/bin/echo "${S3_HOST_BASE}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
+no_tokens4="`/usr/bin/expr ${no_tokens} + 1`"
+
+if ( [ "${no_tokens1}" != "${no_tokens2}" ] || [ "${no_tokens2}" != "${no_tokens3}" ] || [ "${no_tokens3}" != "${no_tokens4}" ] )
+then
+	${log_command} "There seems to be an inconsistent number of values for your datastore parameters"
+	${log_command} "S3_ACCESS_KEY ( ${no_tokens1} values configured ) S3_SECRET_KEY ( ${no_tokens2} values configured )"
+	${log_command} "S3_LOCATION ( ${no_tokens3} values configured )  S3_HOST_BASE ( ${no_tokens4} values configured )"
+fi
+
 if ( [ "`/bin/grep "^S3_LOCATION " ${quick_specification} | /bin/grep -w "${S3_LOCATION}" 2>/dev/null `" = "" ] )
 then
 	datastore_choice="`/bin/echo ${DATASTORE_CHOICE} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
