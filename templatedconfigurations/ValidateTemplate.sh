@@ -420,11 +420,6 @@ then
 	${log_command} "Your value for the variable INFRASTRUCTURE_REPOSITORY_PROVIDER (${INFRASTRUCTURE_REPOSITORY_PROVIDER}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^DATASTORE_CHOICE " ${quick_specification} | /bin/grep -w "${DATASTORE_CHOICE}"  2>/dev/null `" = "" ] )
-then
-	${log_command} "Your value for the variable DATASTORE_CHOICE (${DATASTORE_CHOICE}) doesn't appear to be valid please review"
-fi
-
 if ( [ "`/bin/grep "^BYPASS_DB_LAYER " ${quick_specification} | /bin/grep -w "${BYPASS_DB_LAYER}"  2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable BYPASS_DB_LAYER (${BYPASS_DB_LAYER}) doesn't appear to be valid please review"
