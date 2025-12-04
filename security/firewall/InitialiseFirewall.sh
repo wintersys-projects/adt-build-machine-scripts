@@ -99,7 +99,10 @@ then
 	/bin/touch /root/FIREWALL-INITIALISED
 fi
 
-if ( [ -f /etc/fail2ban/jail.d/jail.local ] )
+if ( [ "`/bin/grep "^FAIL2BAN:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep active`" != "" ] )
 then
-	/bin/sed -i "s/XXXXSSHPORTXXXX/${buildmachine_ssh_port}/g" /etc/fail2ban/jail.d/jail.local
+	if ( [ -f /etc/fail2ban/jail.d/jail.local ] )
+	then
+		/bin/sed -i "s/XXXXSSHPORTXXXX/${buildmachine_ssh_port}/g" /etc/fail2ban/jail.d/jail.local
+	fi
 fi
