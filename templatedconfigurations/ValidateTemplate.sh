@@ -148,11 +148,7 @@ fi
 
 if ( [ "`/bin/grep "^S3_LOCATION " ${quick_specification} | /bin/grep -w "${S3_LOCATION}" 2>/dev/null `" = "" ] )
 then
-	datastore_choice="`/bin/echo ${DATASTORE_CHOICE} | /usr/bin/tr '[:lower:]' '[:upper:]'`"
-	if ( [ "`/bin/grep "^S3_LOCATION " ${quick_specification} | /bin/grep -w "${S3_LOCATION}" | /bin/grep ${datastore_choice}  2>/dev/null `" = "" ] )
-	then
-		${log_command} "Your value for the variable S3_LOCATION (${S3_LOCATION}) doesn't appear to be valid please review"
-	fi
+	${log_command} "Your value for the variable S3_LOCATION (${S3_LOCATION}) doesn't appear to be valid please review"
 fi
 
 if ( [ "`/bin/grep "^EMAIL_NOTIFICATION_LEVEL " ${quick_specification} | /bin/grep -w "${EMAIL_NOTIFICATION_LEVEL}"  2>/dev/null `" = "" ] )
