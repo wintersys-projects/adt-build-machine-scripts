@@ -29,20 +29,6 @@
 ###############################################################################################
 #set -x
 
-#comment/amend as desired
-#if ( [ "`/bin/grep 'ADT-ADDED' /root/.vimrc`" = "" ] )
-#then
-#        /bin/echo "####ADT-ADDED####
-#set mouse=r
-#syntax on
-#filetype indent on
-#set smartindent
-#set fo-=or
-#autocmd BufRead,BufWritePre *.sh normal gg=G
-####ADT-ADDED####" >> /root/.vimrc
-#fi
-
-
 end_it_all() {
 	cwd="`/usr/bin/pwd`"
 
