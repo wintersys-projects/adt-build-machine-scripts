@@ -197,28 +197,23 @@ then
 	${log_command} "It looks like your values for PRODUCTION ( ${PRODUCTION}) and DEVELOPMENT (${DEVELOPMENT}) are inconsistent"
 fi
 
-if ( [ "`/bin/grep "^AUTHENTICATION_SERVER " ${quick_specification} | /bin/grep -w "${AUTHENTICATION_SERVER}"  2>/dev/null `" = "" ] )
-then
-	${log_command} "Your value for the variable AUTHENTICATION_SERVER (${AUTHENTICATION_SERVER}) doesn't appear to be valid please review"
-fi
 
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && ( [ "${SYSTEM_EMAIL_PROVIDER}" = "" ] || [ "${SYSTEM_TOEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_EMAIL_USERNAME}" = "" ] || [ "${SYSTEM_EMAIL_PASSWORD}" = "" ] ) )
+if ( [ "${NO_AUTHENTICATORS}" != "0" ] && ( [ "${SYSTEM_EMAIL_PROVIDER}" = "" ] || [ "${SYSTEM_TOEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] || [ "${SYSTEM_EMAIL_USERNAME}" = "" ] || [ "${SYSTEM_EMAIL_PASSWORD}" = "" ] ) )
 then
 	${log_command} "You are deploying an authentication server and so SMTP must be fully setup and it looks like it isn't"
 fi
 
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && ( [ "${AUTH_SERVER_URL}" = "" ] || [ "${AUTH_DNS_USERNAME}" = "" ] || [ "${AUTH_DNS_SECURITY_KEY}" = "" ] || [ "${USER_EMAIL_DOMAIN}" = "" ] ) )
+if ( [ "${NO_AUTHENTICATORS}" != "0" ]  && ( [ "${AUTH_SERVER_URL}" = "" ] || [ "${AUTH_DNS_USERNAME}" = "" ] || [ "${AUTH_DNS_SECURITY_KEY}" = "" ] || [ "${USER_EMAIL_DOMAIN}" = "" ] ) )
 then
 	${log_command} "You are deploying an authentication server and it looks like its DNS system might not be set up"
 fi
 
-
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "`/bin/grep "^AUTH_DNS_CHOICE " ${quick_specification} | /bin/grep -w "${AUTH_DNS_CHOICE}" 2>/dev/null `" = "" ] )
+if ( [ "${NO_AUTHENTICATORS}" != "0" ]  && [ "`/bin/grep "^AUTH_DNS_CHOICE " ${quick_specification} | /bin/grep -w "${AUTH_DNS_CHOICE}" 2>/dev/null `" = "" ] )
 then
 	${log_command} "Your value for the variable AUTH_DNS_CHOICE (${AUTH_DNS_CHOICE}) doesn't appear to be valid please review"
 fi
 
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "${DNS_CHOICE}" = "cloudflare" ] )
+if ( [ "${NO_AUTHENTICATORS}" != "0" ] && [ "${DNS_CHOICE}" = "cloudflare" ] )
 then
 	${log_command} "You are deploying an authentication server and it looks like your main DNS provider is set to cloudflare which it shouldn't be"
 fi
