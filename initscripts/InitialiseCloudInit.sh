@@ -30,7 +30,7 @@ status () {
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
+NO_AUTHENTICATORS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTHENTICATORS`"
 PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 DEVELOPMENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEVELOPMENT`"
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
@@ -39,7 +39,7 @@ BYPASS_DB_LAYER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BYPASS_DB_LAYE
 NO_WEBSERVERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_WEBSERVERS`"
 
 
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 then
 	${BUILD_HOME}/initscripts/cloud-init/AuthenticatorCloudInit.sh
 fi
