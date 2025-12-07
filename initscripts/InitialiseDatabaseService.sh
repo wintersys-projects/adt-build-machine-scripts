@@ -486,7 +486,7 @@ then
                                         read response
                                         if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
                                         then
-                                                BYPASS_DB_LAYER="0"
+                                                DB_INSTALL_MODE="1"
                                         else
                                                 /bin/touch /tmp/END_IT_ALL
                                         fi
