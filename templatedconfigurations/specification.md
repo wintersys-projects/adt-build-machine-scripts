@@ -627,6 +627,12 @@ You can set the cloudhost to Digital Ocean, for example by setting the CLOUDHOST
 
 If you want to deploy an authentication server then set this to "1" otherwise set it to "0"
 
+----------------------
+
+#### NO_AUTHENTICATORS
+
+The number of authenticators you want to deploy. This is ignored if AUTHENTICATION_SERVER!="1"
+
 ------------
 
 ### AUTH_SERVER_URL  
