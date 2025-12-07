@@ -46,7 +46,7 @@ TIMEZONE_CITY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_TIMEZONE_
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 TIMEZONE="${TIMEZONE_CONTINENT}/${TIMEZONE_CITY}"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
-AUTHENTICATION_SERVER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATION_SERVER`"
+NO_AUTHENTICATORS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTHENTICATORS`"
 GIT_BRANCH="`/bin/grep "^GITBRANCH:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`"
 
 
