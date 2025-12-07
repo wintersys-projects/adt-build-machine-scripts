@@ -54,6 +54,7 @@ MOD_SECURITY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MOD_SECURITY`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_SERVER_URL`"
+NO_AUTHENTICATORS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTHENTICATORS`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
 
@@ -70,9 +71,9 @@ do
 
 	status "OK... Building an authentication server. This is the ${counter} attempt of 5"
 
-	#Check if there is an authenticator already running. If there is, then skip building the authenticator
-	if ( [ "`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "auth-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`" -eq "0" ] )
-	then
+	#Check if there is an reverse proxy already running. If there is, then skip building the reverse proxy
+    if ( [ "${authentication_no}" -le "${NO_AUTHENTICATORS}" ] )
+    then
 		ip=""
 		#Construct a unique name for this authentication server
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
