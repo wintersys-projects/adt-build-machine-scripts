@@ -24,6 +24,8 @@
 finished=0 #This will be set to 1 if the build is valid
 counter="0" #This counts how many attempted builds there have been
 
+authenticator_no="${1}"
+
 status () {
 	yellow="`/usr/bin/tput setaf 11`"
 	norm="`/usr/bin/tput sgr0`"
@@ -74,7 +76,7 @@ do
 		ip=""
 		#Construct a unique name for this authentication server
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-		authenticator_name="auth-${REGION}-${BUILD_IDENTIFIER}-0-${RND}"
+		authenticator_name="NO-${authenticator_no}-auth-${REGION}-${BUILD_IDENTIFIER}-${RND}"
 
 		status "Initialising a new server machine, please wait......"
 
