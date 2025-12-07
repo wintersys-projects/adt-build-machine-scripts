@@ -36,7 +36,7 @@ DEVELOPMENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEVELOPMENT`"
 BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 NO_WEBSERVERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_WEBSERVERS`"
-INPARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INPARALLEL`"
+IN_PARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh IN_PARALLEL`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
@@ -102,7 +102,7 @@ then
 	fi
 	# If this isn't a parallelised build, then build each machine type sequentially and in turn with no need to wait
 	# otherwise if it is a parallelised build type then build all the machine types concurrently and wait for them to build
-	if ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "0" ] )
+	if ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${IN_PARALLEL}" = "0" ] )
 	then
 		tally="0"
 		while ( [ "${tally}" -lt "${NO_AUTOSCALERS}" ] )
@@ -110,7 +110,7 @@ then
 			tally="`/usr/bin/expr ${tally} + 1`"
 			${BUILD_HOME}/buildscripts/BuildAutoscaler.sh ${tally}
 		done
-	elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${INPARALLEL}" = "1" ] )
+	elif ( [ "${NO_AUTOSCALERS}" -ne "0" ] && [ "${IN_PARALLEL}" = "1" ] )
 	then
 		tally="0"
 		while ( [ "${NO_AUTOSCALERS}" -le "5" ] && [ "${tally}" -lt "${NO_AUTOSCALERS}" ] )
