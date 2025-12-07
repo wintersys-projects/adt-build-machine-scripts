@@ -283,10 +283,10 @@ then
 	${log_command} "Your value for the variable APPLICATION_LANGUAGE (${APPLICATION_LANGUAGE}) doesn't appear to be valid please review"
 fi
 
-if ( [ "`/bin/grep "^INPARALLEL " ${quick_specification} | /bin/grep -w "${INPARALLEL}"  2>/dev/null `" = "" ] )
+if ( [ "`/bin/grep "^IN_PARALLEL " ${quick_specification} | /bin/grep -w "${IN_PARALLEL}"  2>/dev/null `" = "" ] )
 then
-	${log_command} "Your value for the variable INPARALLEL (${INPARALLEL}) doesn't appear to be valid please review"
-	export INPARALLEL="0"
+	${log_command} "Your value for the variable IN_PARALLEL (${IN_PARALLEL}) doesn't appear to be valid please review"
+	export IN_PARALLEL="0"
 fi
 
 if ( ! [ `/usr/bin/expr match "${MAX_WEBSERVERS}" '^\([0-9]\+\)$'` ] )
