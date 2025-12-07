@@ -140,16 +140,13 @@ then
 
 	if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 	then
-		if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
-		then
-			tally="0"
-			while ( [ "${tally}" -lt "${NO_AUTHENTICATORS}" ] )
-			do
-				tally="`/usr/bin/expr ${tally} + 1`"
-				${BUILD_HOME}/buildscripts/BuildAuthenticator.sh ${tally}
-				/bin/sleep 10
-			done
-		fi		
+		tally="0"
+		while ( [ "${tally}" -lt "${NO_AUTHENTICATORS}" ] )
+		do
+			tally="`/usr/bin/expr ${tally} + 1`"
+			${BUILD_HOME}/buildscripts/BuildAuthenticator.sh ${tally}
+			/bin/sleep 10
+		done		
 	fi
 	
 	if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
@@ -178,19 +175,17 @@ then
 		pids="${pids} $!"
 	fi
 
+
 	if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 	then
-		if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
-		then
-			tally="0"
-			while ( [ "${tally}" -lt "${NO_AUTHENTICATORS}" ] )
-			do
-				tally="`/usr/bin/expr ${tally} + 1`"
-				${BUILD_HOME}/buildscripts/BuildAuthenticator.sh ${tally} &
-				pids="${pids} $!"
-				/bin/sleep 10
-			done
-		fi		
+		tally="0"
+		while ( [ "${tally}" -lt "${NO_AUTHENTICATORS}" ] )
+		do
+			tally="`/usr/bin/expr ${tally} + 1`"
+			${BUILD_HOME}/buildscripts/BuildAuthenticator.sh ${tally} &
+			pids="${pids} $!"
+			/bin/sleep 10
+		done		
 	fi
 
 	if ( [ "${NO_REVERSE_PROXY}" -ne "0" ] )
