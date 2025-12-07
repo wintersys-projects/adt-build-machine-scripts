@@ -747,13 +747,13 @@ Otherwise, set this value to one of "MySQL", "Maria" or "Postgres" when you have
 
 -----
 
-### BYPASS_DB_LAYER
+### DB_INSTALL_MODE
 
-0 : install application as normal
+0 - do not install a VPS database machine at all if you pick this mode then for the current deployment cycle the database machine will be absent from the build chain.  
 
-1 : Don't install the application because you have already got a DBaaS running with the application installed in it from a previous build and so, use that.
+1 - include the database machine type in the build chain and install the application database from scratch for either a VPS hosted database or a DBaaS database depending on how DATABASE_INSTALLATION_TYPE is configured. Whether it is a VPS hosted database or a DBaaS managed database that is used application backups and application installation management will be performed in all cases when this mode is set.  
 
-2 : Completely bypass installing the DB layer. You might want this if you are installing to multiple regions and you don't want a DB layer on your secondary region(s). 
+2 - include a database machine type in the build chain but don't install any application because the application is already installed on a DBaaS machine. Using this mode means that this database machine will manage application backups from your DBaaS so that in a multi-region deployment you will have more than just the primary region making application backups for you.  
 
 -----
 
