@@ -158,7 +158,7 @@ fi
 status ""
 status "Validating authenticator cloud-init script"
 
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 then
 	authenticator_cloud_init_status="`/usr/bin/cloud-init schema --config-file ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml`"
 	status "${authenticator_cloud_init_status}"
