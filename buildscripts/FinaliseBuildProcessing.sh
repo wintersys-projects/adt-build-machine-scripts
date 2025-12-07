@@ -45,7 +45,7 @@ PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 DATABASE_INSTALLATION_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DATABASE_INSTALLATION_TYPE`"
 DEVELOPMENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEVELOPMENT`"
-INPARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INPARALLEL`"
+IN_PARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh IN_PARALLEL`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_LANGUAGE`"
@@ -95,7 +95,7 @@ if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] )
 then 
 	no_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
 
-	if ( [ "${INPARALLEL}" = "1" ] )
+	if ( [ "${IN_PARALLEL}" = "1" ] )
 	then
 		if ( [ "${no_autoscalers}" = "1" ] )
 		then
