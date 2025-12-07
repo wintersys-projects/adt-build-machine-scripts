@@ -456,7 +456,7 @@ ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 ${BUILD_HOME}/providerscripts/dbaas/AdjustDBaaSFirewall.sh
 
 # If we are building an authentication server then that server will require its own SSL certificate, so, generate one here
-if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 then
 	${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh "FILLER" "yes" 
 fi
