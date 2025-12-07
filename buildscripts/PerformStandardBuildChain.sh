@@ -287,16 +287,20 @@ fi
 # Simply report that so far, so good
 if ( [ "${PRODUCTION}" = "1" ] )
 then
+	built_servers=""
 	if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 	then
-		status "Authentication server, Autoscaler, Webserver and Database built correctly....."
-	elif ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "${NO_REVERSE_PROXY}" != "0" ] )
-	then
-		status "Authentication server, Reverse proxy, Autoscaler, Webserver and Database built correctly....."
-	elif ( [ "${NO_REVERSE_PROXY}" != "0" ] )
-	then
-		status "Reverse Proxy, Autoscaler, Webserver and Database built correctly....."
+		built_servers="Authentication Server(s)"		
 	fi
+	if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
+	then
+		built_servers="${built_servers} Reverse Proxy Server(s)"
+	fi
+	if ( [ "${NO_WEBSERVERS}" != "0" ] )
+	then
+		built_servers="${built_servers} Webserver(s)"
+	fi
+	status "${built_servers} and Database built correctly....."
 elif ( [ "${DEVELOPMENT}" = "1" ] )
 then
 	status "Webserver and Database built correctly....."
