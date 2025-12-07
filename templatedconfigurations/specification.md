@@ -428,6 +428,7 @@ These settings must be altered as a pair. When in production, an autoscaler or a
 -----
 
 ### NO_WEBSERVERS
+(I realised that if English is not your first language my naming convention NO_ might be confusing because it looks like no (as in none). So, please note: the abbreviation "no." (from Latin numero) always refers to quantity or indicates "number" or number of so NO_WEBSERVERS expands to "number of webservers")
 
 This will set the number of webservers to deploy by default. If you set this to 3, for example, then 3 webservers will be spun up by default
 
