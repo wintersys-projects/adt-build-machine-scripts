@@ -126,7 +126,7 @@ fi
 if ( [ "${IN_PARALLEL}" = "0" ] && [ "${PRODUCTION}" = "1" ] )
 then
 	tally="0"
-	while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
+	while ( [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
 	do
 		tally="`/usr/bin/expr ${tally} + 1`"
 		${BUILD_HOME}/buildscripts/BuildWebserver.sh ${tally} 
@@ -164,7 +164,7 @@ then
 elif ( [ "${IN_PARALLEL}" = "1" ] && [ "${PRODUCTION}" = "1" ] )
 then
 	tally="0"
-	while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
+	while ( [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
 	do
 		tally="`/usr/bin/expr ${tally} + 1`"
 		${BUILD_HOME}/buildscripts/BuildWebserver.sh ${tally} &
@@ -206,10 +206,10 @@ then
 	fi
 fi
 
-if ( [ "${IN_PARALLEL}" = "1" ]  && [ "${DEVELOPMENT}" = "1" ] )
+if ( [ "${IN_PARALLEL}" = "1" ]  &&[ "${DEVELOPMENT}" = "1" ] )
 then
 	tally="0"
-	while ( [ "${NO_WEBSERVERS}" -le "5" ] && [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
+	while ( [ "${tally}" -lt "${NO_WEBSERVERS}" ] )
 	do
 		tally="`/usr/bin/expr ${tally} + 1`"
 		${BUILD_HOME}/buildscripts/BuildWebserver.sh ${tally} &
