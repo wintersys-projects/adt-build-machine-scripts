@@ -464,6 +464,8 @@ When this is set to "0" any reverse proxies in the build chain will be omitted
 ----------
  
 ### NO_REVERSE_PROXY
+
+(I realised that if English is not your first language my naming convention NO_ might be confusing because it looks like no (as in none). So, please note: the abbreviation "no." (from Latin numero) always refers to quantity or indicates "number" or number of so NO_REVERSE_PROXIES expands to "number of reverse proxies)
  
 This tells the system how many reverse proxy servers to deploy this can be up to 5 servers. So, you set this value to any integer between 1 and 5
 
@@ -809,6 +811,8 @@ Whether to build the machines you are deploying in paralel or not on the build m
 -------------
 
 ### NO_AUTOSCALERS
+
+(I realised that if English is not your first language my naming convention NO_ might be confusing because it looks like no (as in none). So, please note: the abbreviation "no." (from Latin numero) always refers to quantity or indicates "number" or number of so NO_AUTOSCALERS expands to "number of autoscalers")
 
 How many autoscalers to deploy. An Interger value between 0 and 5
 
