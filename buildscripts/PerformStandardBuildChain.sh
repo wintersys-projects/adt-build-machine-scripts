@@ -218,19 +218,17 @@ then
 		pids="${pids} $!"
 	fi
 
-	if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+
+	if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 	then
-		if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
-		then
-			tally="0"
-			while ( [ "${tally}" -lt "${NO_AUTHENTICATORS}" ] )
-			do
-				tally="`/usr/bin/expr ${tally} + 1`"
-				${BUILD_HOME}/buildscripts/BuildAuthenticator.sh ${tally} &
-				pids="${pids} $!"
-				/bin/sleep 10
-			done
-		fi		
+		tally="0"
+		while ( [ "${tally}" -lt "${NO_AUTHENTICATORS}" ] )
+		do
+			tally="`/usr/bin/expr ${tally} + 1`"
+			${BUILD_HOME}/buildscripts/BuildAuthenticator.sh ${tally} &
+			pids="${pids} $!"
+			/bin/sleep 10
+		done		
 	fi
 
 	if ( [ "${NO_REVERSE_PROXY}" -ne "0" ] )
@@ -289,7 +287,7 @@ fi
 # Simply report that so far, so good
 if ( [ "${PRODUCTION}" = "1" ] )
 then
-	if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+	if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 	then
 		status "Authentication server, Autoscaler, Webserver and Database built correctly....."
 	elif ( [ "${AUTHENTICATION_SERVER}" = "1" ] && [ "${NO_REVERSE_PROXY}" != "0" ] )
