@@ -802,7 +802,7 @@ The templating system is set up to use live certificates by default in all cases
 When you are making a "hardcore" build, you need to supply the number of the template you are generating a script for, for example, "1", "2", "3"
 
 -------------
-### INPARALLEL
+### IN_PARALLEL
 
 Whether to build the machines you are deploying in paralel or not on the build machine. If you build them in parallel they will build quicker but it might not be so easy to see what is going on.
 
