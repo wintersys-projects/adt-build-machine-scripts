@@ -144,7 +144,7 @@ then
 	if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
 	then
 		tally="0"
-		while ( [ "${tally}" -lt "${NO_AUTOSCALERS}" ] )
+		while ( [ "${tally}" -lt "${NO_REVERSE_PROXY}" ] )
 		do
 			tally="`/usr/bin/expr ${tally} + 1`"
 			${BUILD_HOME}/buildscripts/BuildReverseProxy.sh ${tally}
@@ -169,8 +169,17 @@ then
 
 	if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
 	then
-		${BUILD_HOME}/buildscripts/BuildAuthenticator.sh &
-		pids="${pids} $!"
+		if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
+		then
+			tally="0"
+			while ( [ "${tally}" -lt "${NO_AUTHENTICATORS}" ] )
+			do
+				tally="`/usr/bin/expr ${tally} + 1`"
+				${BUILD_HOME}/buildscripts/BuildAuthenticator.sh ${tally} &
+				pids="${pids} $!"
+				/bin/sleep 10
+			done
+		fi		
 	fi
 
 	if ( [ "${NO_REVERSE_PROXY}" -ne "0" ] )
