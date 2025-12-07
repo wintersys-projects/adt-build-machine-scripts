@@ -138,7 +138,7 @@ then
 		${BUILD_HOME}/buildscripts/BuildDatabase.sh
 	fi
 
-	if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+	if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 	then
 		if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 		then
@@ -178,7 +178,7 @@ then
 		pids="${pids} $!"
 	fi
 
-	if ( [ "${AUTHENTICATION_SERVER}" = "1" ] )
+	if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 	then
 		if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
 		then
