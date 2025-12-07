@@ -662,9 +662,9 @@ then
 	${log_command} "You have to deploy from a temporal backup if you are building your servers for multiple regions"
 fi
 
-if ( [ "${BYPASS_DB_LAYER}" = "0" ] && [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
+if ( [ "${DB_INSTALL_MODE}" = "1" ] && [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] )
 then
-	${log_command} "Your BYPASS_DB_LAYER setting is set to 0 you probably want it to be set to 1 or 2 when you are in multi region mode and not a primary region"
+	${log_command} "Your DB_INSTALL_MODE setting is set to 1 you almost certainly  want it to be set to 0 or 2 when you are in multi region mode and are not deploying a primary region"
 fi
 
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] && [ "${DBaaS_PUBLIC_ENDPOINT}" = "" ] )
