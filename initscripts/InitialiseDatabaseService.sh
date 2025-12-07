@@ -96,10 +96,10 @@ then
                         if ( [ "${cluster_id}" = "" ] )
                         then
                                 #if the cluster doesn't exist we need to create one, so, we are here
-                                if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
+                                if ( [ "${DB_INSTALL_MODE}" = "0" ] || [ "${DB_INSTALL_MODE}" = "2" ] )
                                 then
-                                        status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
-                                        status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
+                                        status "You must have DB_INSTALL_MODE set to 1 for a newly provisioned database"
+                                        status "Do want me to set DB_INSTALL_MODE to '1' so that the build will continue (Y|y) otherwise I will have to exit"
                                         read response
                                         if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
                                         then
@@ -212,10 +212,10 @@ then
                         if ( [ "${existing_db_name}" = "" ] )
                         then
                                 #If we are here there is no existing database and we need to create one
-                                if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
+                                if ( [ "${DB_INSTALL_MODE}" = "0" ] || [ "${DB_INSTALL_MODE}" = "2" ] )
                                 then
-                                        status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
-                                        status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
+                                        status "You must have DB_INSTALL_MODE set to 1 for a newly provisioned database"
+                                        status "Do want me to set DB_INSTALL_MODE to '1' so that the build will continue (Y|y) otherwise I will have to exit"
                                         read response
                                         if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
                                         then
@@ -336,11 +336,12 @@ then
                                 if ( [ "${database_id}" = "" ] )
                                 then
                                         #there is no existing MySQL database so create one
-                                        if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
+                                        if ( [ "${DB_INSTALL_MODE}" = "0" ] || [ "${DB_INSTALL_MODE}" = "2" ] )
                                         then
-                                                status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
-                                                status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
+                                                status "You must have DB_INSTALL_MODE set to 1 for a newly provisioned database"
+                                                status "Do want me to set DB_INSTALL_MODE to '1' so that the build will continue (Y|y) otherwise I will have to exit"
                                                 read response
+                                                
                                                 if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
                                                 then
                                                         DB_INSTALL_MODE="1"
@@ -395,10 +396,10 @@ then
                                 if ( [ "${database_id}" = "" ] )
                                 then   
                                         #there was no existing database, so, create one
-                                        if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
+                                        if ( [ "${DB_INSTALL_MODE}" = "0" ] || [ "${DB_INSTALL_MODE}" = "2" ] )
                                         then
-                                                status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
-                                                status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
+                                                status "You must have DB_INSTALL_MODE set to 1 for a newly provisioned database"
+                                                status "Do want me to set DB_INSTALL_MODE to '1' so that the build will continue (Y|y) otherwise I will have to exit"
                                                 read response
                                                 if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
                                                 then
