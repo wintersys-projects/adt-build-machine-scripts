@@ -24,8 +24,6 @@
 finished=0 #This will be set to 1 if the build is valid
 counter="0" #This counts how many attempted builds there have been
 
-authenticator_no="${1}"
-
 status () {
 	yellow="`/usr/bin/tput setaf 11`"
 	norm="`/usr/bin/tput sgr0`"
@@ -68,6 +66,8 @@ SUDO="DEBIAN_FRONTEND=noninteractive /bin/echo ${SERVER_USER_PASSWORD} | /usr/bi
 while ( [ "${finished}" != "1" ] && [ "${counter}" -lt "5" ] )
 do
 	counter="`/usr/bin/expr ${counter} + 1`"
+	authenticator_no="${1}"
+
 	status "OK... Building an authentication server. This is the ${counter} attempt of 5"
 
 	#Check if there is an authenticator already running. If there is, then skip building the authenticator
