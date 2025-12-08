@@ -749,19 +749,18 @@ Otherwise, set this value to one of "MySQL", "Maria" or "Postgres" when you have
 
 ### DB_INSTALL_MODE
 
-0 - do not install a VPS database machine at all if you pick this mode then for the current deployment cycle the database machine will be absent from the build chain.  
+0 - Do not install a VPS database machine at all if you pick this mode then for the current deployment cycle the database machine type VPS will be absent from the build chain.  
 
-1 - include the database machine type in the build chain and install the application database from scratch for either a VPS hosted database or a DBaaS database depending on how DATABASE_INSTALLATION_TYPE is configured. Whether it is a VPS hosted database or a DBaaS managed database that is used application backups and application installation management will be performed in all cases when this mode is set.  
+1 - Include the database machine type in the build chain and install the application database from scratch for either a VPS hosted database or a DBaaS database depending on how DATABASE_INSTALLATION_TYPE is configured. Whether it is a VPS hosted database or a DBaaS managed database that is used application backups and application installation management will be performed in all cases when this mode is set.  
 
-2 - include a database machine type in the build chain but don't install any application because the application is already installed on a DBaaS machine. Using this mode means that this database machine will manage application backups from your DBaaS so that in a multi-region deployment you will have more than just the primary region making application backups for you.  
+2 - Include a database machine type in the build chain but don't install any application because the application is already installed on a DBaaS machine. Using this mode means that this database machine will manage application backups from your DBaaS so that in a multi-region deployment you will have more than just the primary region making application backups for you. You will also want this mode if you have deployed a DBaaS database during a previous build cycle of your application and you have taken your VPS machines offline but your application database is still online within your DBaaS. Enabling  this mode means that you can deploy a fresh set of VPS servers whilst reusing the existing application state from the DBaaS.
 
 -----
 
 ### APPLICATION_NAME
 
 This is just a text string descriptor for your application it could be "My Test Blog", "My Social Network", "Nuocial Online Community" and so on
-        
-        
+              
 -----
 
 ### SSL_GENERATION_METHOD
