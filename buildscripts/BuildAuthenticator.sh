@@ -141,15 +141,18 @@ do
 		AUTHIP_PUBLIC=${ip}
 		AUTHIP_PRIVATE=${private_ip}
 
-		#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh authenticatorpublicip/*`" != "" ] )
-		then
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip/*
-		fi
+		if ( [ "${authenticator_no}" = "1" ] )
+		do
+			#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh authenticatorpublicip/*`" != "" ] )
+			then
+				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip/*
+			fi
 
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh authenticatorip/*`" != "" ] )
-		then
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip/*
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh authenticatorip/*`" != "" ] )
+			then
+				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip/*
+			fi
 		fi
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip "no"
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip "no"
