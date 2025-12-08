@@ -143,7 +143,7 @@ then
 		snapshot_id="`/bin/grep database ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
 		status "Deploying database machine from snapshot with ID ${snapshot_id}"	
  	fi
-elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-auth-"`" != "" ] )
 then
 	machine_type="adt-authenticator"
 	if (  [ "${BUILD_FROM_SNAPSHOT}" = "1" ] && [ -f ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ] )
