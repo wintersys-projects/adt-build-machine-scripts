@@ -142,14 +142,16 @@ do
 		status "It looks like the machine has booted OK"
 
 		#We should record the ip addresses of our new autoscaler in the S3 datastore for future reference
-
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh autoscalerpublicips/*`" != "" ] )
+		if ( [ "${autoscaler_no}" = "1" ] )
 		then
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicips/*
-		fi
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh autoscalerips/*`" != "" ] )
-		then
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerips/*
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh autoscalerpublicips/*`" != "" ] )
+			then
+				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicips/*
+			fi
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh autoscalerips/*`" != "" ] )
+			then
+				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerips/*
+			fi
 		fi
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} autoscalerpublicips "no"
 		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} autoscalerips "no"
