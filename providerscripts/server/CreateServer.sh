@@ -89,7 +89,7 @@ then
 			cloud_config="${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/database.yaml"
 		fi           
 	fi
-elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "^auth-"`" != "" ] )
+elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-auth-"`" != "" ] )
 then
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml ] )
 	then
