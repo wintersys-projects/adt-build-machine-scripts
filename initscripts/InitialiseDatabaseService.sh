@@ -496,10 +496,10 @@ then
                         if ( [ "${cluster_id}" = "" ] )
                         then
                                 #There was no existing cluster, so create one
-                                if ( [ "${BYPASS_DB_LAYER}" = "1" ] )
+                                if ( [ "${DB_INSTALL_MODE}" = "0" ] || [ "${DB_INSTALL_MODE}" = "2" ] )
                                 then
-                                        status "You can't have the BYPASS_DB_LAYER set to on for a newly provisioned database"
-                                        status "Do want me to set BYPASS_DB_LAYER to off so that the build will continue (Y|y) otherwise I will have to exit"
+                                        status "You must have DB_INSTALL_MODE set to 1 for a newly provisioned database"
+                                        status "Do want me to set DB_INSTALL_MODE to '1' so that the build will continue (Y|y) otherwise I will have to exit"
                                         response="Y"
                                         if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                                         then
