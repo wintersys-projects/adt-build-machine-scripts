@@ -59,7 +59,7 @@ then
 	${BUILD_HOME}/initscripts/cloud-init/WebserverCloudInit.sh
 fi
 
-if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+if ( [ "${DB_INSTALL_MODE}" != "0" ] )
 then
 	${BUILD_HOME}/initscripts/cloud-init/DatabaseCloudInit.sh
 fi
