@@ -72,7 +72,7 @@ do
 	status "OK... Building an authentication server. This is the ${counter} attempt of 5"
 
 	#Check if there is an reverse proxy already running. If there is, then skip building the reverse proxy
-    if ( [ "${authentication_no}" -le "${NO_AUTHENTICATORS}" ] )
+    if ( [ "${authenticator_no}" -le "${NO_AUTHENTICATORS}" ] )
     then
 		ip=""
 		#Construct a unique name for this authentication server
