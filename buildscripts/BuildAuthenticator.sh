@@ -142,7 +142,7 @@ do
 		AUTHIP_PRIVATE=${private_ip}
 
 		if ( [ "${authenticator_no}" = "1" ] )
-		do
+		then
 			#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
 			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh authenticatorpublicip/*`" != "" ] )
 			then
