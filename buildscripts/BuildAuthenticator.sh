@@ -214,7 +214,13 @@ do
 			#Is added to the DNS provider
 			if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 			then
-				${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary" ${WEBSITE_URL} "yes"
+				if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTH_DNS_PRIMED ] )
+				then
+					/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/AUTH_DNS_PRIMED
+					${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary" ${WEBSITE_URL} "yes"
+				else
+					${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary" ${WEBSITE_URL} "yes"
+				fi
 			fi
 			finished="1"
 		fi
