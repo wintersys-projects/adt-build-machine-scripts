@@ -71,8 +71,10 @@ then
 		if ( [ ! -f /root/UPDATEDSOFTWARE ] )
 		then
 			status "Performing software update....."
+			${BUILD_HOME}/installscripts/RemoveUnattendedUpgrades.sh "ubuntu"  >>${upgrade_log} 2>&1
 			${BUILD_HOME}/installscripts/InitialUpdate.sh "ubuntu"  >>${upgrade_log} 2>&1
 		else
+			${BUILD_HOME}/installscripts/RemoveUnattendedUpgrades.sh "ubuntu"  >>${upgrade_log} 2>&1
 			${BUILD_HOME}/installscripts/UpdateAndUpgrade.sh "ubuntu"  >>${upgrade_log} 2>&1
 		fi
       
