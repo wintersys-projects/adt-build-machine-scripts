@@ -142,16 +142,18 @@ do
                 done
 
                 #Store the public and private ip addresses of the reverse proxy machine in the datastore for access elsewhere
-
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxypublicips/*`" != "" ] )
-                then
+				if ( [ "${reverse_proxy_no}" = "1" ] )
+				then
+                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxypublicips/*`" != "" ] )
+                	then
                         ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicips/*
-                fi
+                	fi
 
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxyips/*`" != "" ] )
-                then
+                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxyips/*`" != "" ] )
+                	then
                         ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyips/*
-                fi
+                	fi
+				fi
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} reverseproxypublicips "no" 
                 ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} reverseproxyips "no"
 
