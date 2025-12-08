@@ -133,7 +133,7 @@ then
 		/bin/sleep 10
 	done
 
-	if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+	if ( [ "${DB_INSTALL_MODE}" != "0" ] )
 	then
 		${BUILD_HOME}/buildscripts/BuildDatabase.sh
 	fi
@@ -169,7 +169,7 @@ then
 		/bin/sleep 10
 	done
 
-	if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+	if ( [ "${DB_INSTALL_MODE}" != "0" ] )
 	then
 		${BUILD_HOME}/buildscripts/BuildDatabase.sh &
 		pids="${pids} $!"
@@ -212,7 +212,7 @@ then
 		/bin/sleep 10
 	done
 
-	if ( [ "${BYPASS_DB_LAYER}" != "2" ] )
+	if ( [ "${DB_INSTALL_MODE}" != "0" ] )
 	then
 		${BUILD_HOME}/buildscripts/BuildDatabase.sh &
 		pids="${pids} $!"
