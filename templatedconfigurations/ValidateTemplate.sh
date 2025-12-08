@@ -127,11 +127,11 @@ S3_ACCESS_KEY="`${BUILD_HOME}/utilities/config/ExtractConfigValue.sh 'S3ACCESSKE
 no_tokens1="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
 no_tokens1="`/usr/bin/expr ${no_tokens} + 1`"
 
-S3_SECRET_KEY="`${BUILD_HOME}/utilities/config/ExtractConfigValue.sh 'S3ACCESSKEY'`"
+S3_SECRET_KEY="`${BUILD_HOME}/utilities/config/ExtractConfigValue.sh 'S3SECRETKEY'`"
 no_tokens2="`/bin/echo "${S3_SECRET_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
 no_tokens2="`/usr/bin/expr ${no_tokens} + 1`"
 
-S3_LOCATION="`${BUILD_HOME}/utilities/config/ExtractConfigValue.sh 'S3ACCESSKEY'`"
+S3_LOCATION="`${BUILD_HOME}/utilities/config/ExtractConfigValue.sh 'S3LOCATION'`"
 no_tokens3="`/bin/echo "${S3_LOCATION}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
 no_tokens3="`/usr/bin/expr ${no_tokens} + 1`"
 
