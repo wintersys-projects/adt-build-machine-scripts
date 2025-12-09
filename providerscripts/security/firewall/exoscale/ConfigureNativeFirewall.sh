@@ -63,11 +63,11 @@ build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 if ( [ -f ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat ] )
 then
-        authenticator_firewall_ports="`/bin/grep "^AUTHENTICATORPORTS" ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        autoscaler_firewall_ports="`/bin/grep "^AUTOSCALERPORTS" ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        reverseproxy_firewall_ports="`/bin/grep "^REVERSEPROXYPORTS" ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        webserver_firewall_ports="`/bin/grep "^WEBSERVERPORTS" ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        database_firewall_ports="`/bin/grep "^DATABASEPORTS" ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        authenticator_firewall_ports="`/bin/grep "^AUTHENTICATORPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        autoscaler_firewall_ports="`/bin/grep "^AUTOSCALERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        reverseproxy_firewall_ports="`/bin/grep "^REVERSEPROXYPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        webserver_firewall_ports="`/bin/grep "^WEBSERVERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        database_firewall_ports="`/bin/grep "^DATABASEPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
 fi
 
 if ( [ "${firewall_name}" = "adt-authenticator" ] )
