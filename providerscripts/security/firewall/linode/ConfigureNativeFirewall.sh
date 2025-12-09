@@ -21,23 +21,23 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-set -x
+#set -x
 
-linode_custom_rules ()
+linode_firewall_rules ()
 {
-        custom_ports="${1}"
-        custom_rules=""
-        for custom_port_token in ${custom_ports}
+        firewall_ports="${1}"
+        firewall_rules=""
+        for firewall_port_token in ${firewall_ports}
         do
-                if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+                if ( [ "`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
                 then
-                        port="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
-                        ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
-                        custom_rules=${custom_rules}',{"addresses":{"ipv4":["'${ip_address}'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${port}'"}'
+                        port="`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+                        ip_address="`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+                        firewall_rules=${firewall_rules}',{"addresses":{"ipv4":["'${ip_address}'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${port}'"}'
                 fi
         done
-        #custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
-        /bin/echo "${custom_rules}"
+        #firewall_rules="`/bin/echo ${firewall_rules} | /bin/sed 's/,$//g'`"
+        /bin/echo "${firewall_rules}"
 }
 
 status () {
@@ -61,13 +61,13 @@ BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHIN
 build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 
-if ( [ -f ${BUILD_HOME}/builddescriptors/customfirewallports.dat ] )
+if ( [ -f ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat ] )
 then
-        authenticator_custom_ports="`/bin/grep "^AUTHENTICATORCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        autoscaler_custom_ports="`/bin/grep "^AUTOSCALERCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        reverseproxy_custom_ports="`/bin/grep "^REVERSEPROXYCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        webserver_custom_ports="`/bin/grep "^WEBSERVERCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        database_custom_ports="`/bin/grep "^DATABASECUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        authenticator_firewall_ports="`/bin/grep "^AUTHENTICATORPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        autoscaler_firewall_ports="`/bin/grep "^AUTOSCALERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        reverseproxy_firewall_ports="`/bin/grep "^REVERSEPROXYPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        webserver_firewall_ports="`/bin/grep "^WEBSERVERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        database_firewall_ports="`/bin/grep "^DATABASEPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
 fi
 
 if ( [ "${firewall_name}" = "adt-authenticator" ] )
@@ -83,31 +83,31 @@ rule_vpc='{"addresses":{"ipv4":["'${VPC_IP_RANGE}'"]},"action":"ACCEPT","protoco
 rule_build_machine='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"'${SSH_PORT}'"}'
 rule_build_machine_ssl='{"addresses":{"ipv4":["'${build_machine_ip}/32'"]},"action":"ACCEPT","protocol":"TCP","ports":"443"}'
 rule_icmp='{"addresses":{"ipv4":["0.0.0.0/0"]},"action":"ACCEPT","protocol":"ICMP"}'
-custom_rules=""
+firewall_rules=""
 
 if ( [ "${firewall_name}" = "adt-authenticator" ] )
 then
-        custom_rules="`linode_custom_rules "${authenticator_custom_ports}"`"
+        firewall_rules="`linode_firewall_rules "${authenticator_firewall_ports}"`"
 fi
 
 if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
 then
-        custom_rules="`linode_custom_rules "${reverseproxy_custom_ports}"`"
+        firewall_rules="`linode_firewall_rules "${reverseproxy_firewall_ports}"`"
 fi
 
 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
 then
-        custom_rules="`linode_custom_rules "${autoscaler_custom_ports}"`"
+        firewall_rules="`linode_firewall_rules "${autoscaler_firewall_ports}"`"
 fi
 
 if ( [ "${firewall_name}" = "adt-webserver" ] )
 then
-        custom_rules="`linode_custom_rules "${webserver_custom_ports}"`"
+        firewall_rules="`linode_firewall_rules "${webserver_firewall_ports}"`"
 fi
 
 if ( [ "${firewall_name}" = "adt-database" ] )
 then
-        custom_rules="`linode_custom_rules "${database_custom_ports}"`"
+        firewall_rules="`linode_firewall_rules "${database_firewall_ports}"`"
 fi
 
 if ( [ "${all_dns_proxy_ips}" = "" ] )
@@ -132,10 +132,10 @@ if ( [ "${firewall_name}" = "adt-autoscaler" ] )
 then
         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
         then
-                ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${custom_rules}
+                ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${firewall_rules}
         elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
         then
-                ruleset=${rule_vpc}','${rule_icmp}${custom_rules}
+                ruleset=${rule_vpc}','${rule_icmp}${firewall_rules}
         fi
 fi
 
@@ -143,19 +143,19 @@ if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver"
 then
         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
         then
-                ruleset=${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}${custom_rules}
+                ruleset=${rule_vpc}','${rule_build_machine}','${rule_build_machine_ssl}','${rule_icmp}','${rule_ssl}${firewall_rules}
         else
-                ruleset=${rule_vpc}','${rule_icmp}','${rule_ssl}${custom_rules}
+                ruleset=${rule_vpc}','${rule_icmp}','${rule_ssl}${firewall_rules}
         fi
 else
         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
         then
                 if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${firewall_name}" = "adt-webserver" ] )
                 then
-                        ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${custom_rules}
+                        ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${firewall_rules}
                 fi
         else
-                ruleset=${rule_vpc}','${rule_icmp}${custom_rules}
+                ruleset=${rule_vpc}','${rule_icmp}${firewall_rules}
         fi
 fi
 
@@ -163,10 +163,10 @@ if ( [ "${firewall_name}" = "adt-database" ] )
 then
         if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
         then
-                ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${custom_rules}
+                ruleset=${rule_vpc}','${rule_build_machine}','${rule_icmp}${firewall_rules}
         elif ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
         then
-                ruleset=${rule_vpc}','${rule_icmp}${custom_rules}
+                ruleset=${rule_vpc}','${rule_icmp}${firewall_rules}
         fi
 fi
 
