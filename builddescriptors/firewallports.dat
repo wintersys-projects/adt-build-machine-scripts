@@ -36,7 +36,7 @@
 # accessible from any ip address on the Internet and you are not using an authentication server
 #############################################################################################################
 AUTHENTICATORPORTS:
-REVERSEPROXYPORTS:443|ipv4|0.0.0.0/0 cloudflare|ipv4|cloudflare
+REVERSEPROXYPORTS:443|ipv4|0.0.0.0/0 
 AUTOSCALERPORTS:
 WEBSERVERPORTS:
 DATABASEPORTS:
