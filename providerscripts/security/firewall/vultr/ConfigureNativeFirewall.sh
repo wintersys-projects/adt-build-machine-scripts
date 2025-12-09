@@ -23,27 +23,27 @@
 #######################################################################################################
 #set -x
 
-vultr_custom_rules ()
+vultr_firewall_rules ()
 {
-	firewall_id="${1}"
-	custom_ports="${2}"
+        firewall_id="${1}"
+        firewall_ports="${2}"
         
-	for custom_port_token in ${custom_ports}
-	do
-		if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
-		then
-			port="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
-			ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
-			/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${port} --size=32 --ip-type=v4 --subnet=${ip_address}                      
-		fi
-	done
+        for firewall_port_token in ${firewall_ports}
+        do
+                if ( [ "`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+                then
+                        port="`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+                        ip_address="`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+                        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${port} --size=32 --ip-type=v4 --subnet=${ip_address}                      
+                fi
+        done
 }
 
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 firewall_name="${1}"
@@ -61,109 +61,109 @@ BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHIN
 build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
 
-if ( [ -f ${BUILD_HOME}/builddescriptors/customfirewallports.dat ] )
+if ( [ -f ${BUILD_HOME}/builddescriptors/firewallfirewallports.dat ] )
 then
-	authenticator_custom_ports="`/bin/grep "^AUTHENTICATORCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-	autoscaler_custom_ports="`/bin/grep "^AUTOSCALERCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-	reverseproxy_custom_ports="`/bin/grep "^REVERSEPROXYCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-	webserver_custom_ports="`/bin/grep "^WEBSERVERCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-	database_custom_ports="`/bin/grep "^DATABASECUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        authenticator_firewall_ports="`/bin/grep "^AUTHENTICATORPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        autoscaler_firewall_ports="`/bin/grep "^AUTOSCALERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        reverseproxy_firewall_ports="`/bin/grep "^REVERSEPROXYPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        webserver_firewall_ports="`/bin/grep "^WEBSERVERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        database_firewall_ports="`/bin/grep "^DATABASEPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
 fi
 
 if ( [ "${firewall_name}" = "adt-authenticator" ] )
 then
-	all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/dns/GetProxyDNSIPs.sh "auth"`"
+        all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/dns/GetProxyDNSIPs.sh "auth"`"
 else
-	all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/dns/GetProxyDNSIPs.sh`"
+        all_dns_proxy_ips="`${BUILD_HOME}/providerscripts/dns/GetProxyDNSIPs.sh`"
 fi
 
 firewall_id="`/usr/bin/vultr firewall group list -o json | /usr/bin/jq -r '.firewall_groups[] | select (.description == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
 
 if ( [ "${firewall_id}" = "" ] )
 then
-	firewall_id="`/usr/bin/vultr firewall group create -o json | /usr/bin/jq -r '.firewall_group.id'`"
-	/usr/bin/vultr firewall group update ${firewall_id} --description "${firewall_name}-${BUILD_IDENTIFIER}"
+        firewall_id="`/usr/bin/vultr firewall group create -o json | /usr/bin/jq -r '.firewall_group.id'`"
+        /usr/bin/vultr firewall group update ${firewall_id} --description "${firewall_name}-${BUILD_IDENTIFIER}"
 else
-	rules="`/usr/bin/vultr firewall rule list ${firewall_id} -o json | /usr/bin/jq -r '.firewall_rules[].id'`"
-	for rule in ${rules}
-	do
-		/usr/bin/vultr firewall rule delete ${firewall_id} ${rule}
-	done
+        rules="`/usr/bin/vultr firewall rule list ${firewall_id} -o json | /usr/bin/jq -r '.firewall_rules[].id'`"
+        for rule in ${rules}
+        do
+                /usr/bin/vultr firewall rule delete ${firewall_id} ${rule}
+        done
 fi
 
 if ( [ "${firewall_name}" = "adt-authenticator" ] )
 then
-	vultr_custom_rules "${firewall_id}" "${authenticator_custom_ports}"
+        vultr_firewall_rules "${firewall_id}" "${authenticator_firewall_ports}"
 fi
 
 if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
 then
-	vultr_custom_rules "${firewall_id}" "${reverseproxy_custom_ports}"
+        vultr_firewall_rules "${firewall_id}" "${reverseproxy_firewall_ports}"
 fi
                 
 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
 then
-	vultr_custom_rules "${firewall_id}" "${autoscaler_custom_ports}"
+        vultr_firewall_rules "${firewall_id}" "${autoscaler_firewall_ports}"
 fi
 
 if ( [ "${firewall_name}" = "adt-webserver" ] )
 then
-	vultr_custom_rules "${firewall_id}" "${webserver_custom_ports}"
+        vultr_firewall_rules "${firewall_id}" "${webserver_firewall_ports}"
 fi
 
 if ( [ "${firewall_name}" = "adt-database" ] )
 then
-	vultr_custom_rules "${firewall_id}" "${database_custom_ports}"
+        vultr_firewall_rules "${firewall_id}" "${database_firewall_ports}"
 fi
 
 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
 then
-	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-	then
-		/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
-	fi
-	/usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+        then
+                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
+        fi
+        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
 fi
 
 if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) ||  [ "${firewall_name}" = "adt-authenticator" ]  ||  [ "${firewall_name}" = "adt-reverseproxy" ] )
-then	
-	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-	then
-		/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
-	fi
-	/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
+then
+        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+        then
+                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
+        fi
+        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
 else
-	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-	then
-		if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${firewall_name}" = "adt-webserver" ] )
-		then
-			/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
-			/usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
-		fi
-	fi
+        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+        then
+                if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${firewall_name}" = "adt-webserver" ] )
+                then
+                        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32                        
+                        /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+                fi
+        fi
 fi
 
 if ( [ "${all_dns_proxy_ips}" != "" ] )
 then
-	if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-authenticator" ] )
-	then
-		/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4  --source=cloudflare --subnet=10.0.0.0/8
-		/usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
-	fi
+        if ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-authenticator" ] )
+        then
+                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4  --source=cloudflare --subnet=10.0.0.0/8
+                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+        fi
 elif ( ( [ "${NO_REVERSE_PROXY}" = "0" ] && [ "${firewall_name}" = "adt-webserver" ] ) || [ "${firewall_name}" = "adt-reverseproxy" ] || [ "${firewall_name}" = "adt-authenticator" ] )
 then
-		/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4 --subnet=0.0.0.0/0
+                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=443 --size=32 --ip-type=v4 --subnet=0.0.0.0/0
 fi
 
 /usr/bin/vultr firewall rule create ${firewall_id} --protocol=icmp --size=32 --ip-type=v4 --subnet=0.0.0.0/0
 
 if ( [ "${firewall_name}" = "adt-database" ] )
 then
-	if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
-	then
-		/usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32
-	fi
-	/usr/bin/vultr firewall rule create ${firewall_id} --protocol icmp --size 32 --ip-type v4 -s 0.0.0.0/0
+        if ( [ "${BUILD_MACHINE_VPC}" = "0" ] )
+        then
+                /usr/bin/vultr firewall rule create ${firewall_id} --protocol=tcp --port=${SSH_PORT} --size=32 --ip-type=v4 --subnet=${build_machine_ip}/32
+        fi
+        /usr/bin/vultr firewall rule create ${firewall_id} --protocol icmp --size 32 --ip-type v4 -s 0.0.0.0/0
 fi
 
 /bin/echo "ADT_FIREWALL_ID:${firewall_id}"
