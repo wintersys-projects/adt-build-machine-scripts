@@ -12,12 +12,11 @@
 # WEBSERVERPORTS:8080|ipv4|81.10.166.111/32 1111|ipv4|0.0.0.0/0
 #
 # as long as you follow this exact format the webserver machine and the firewall of your provider will
-# be automatically configured to reflect this configurations and the ports defined will be opened as defined
-# by default there are no ports configured to be open
+# be automatically configured to reflect this configurations and the ports defined will be open
 ############################################################################################################
 AUTHENTICATORPORTS:
 REVERSEPROXYPORTS:
 AUTOSCALERPORTS:
-WEBSERVERPORTS:
+WEBSERVERPORTS:443|ipv4|0.0.0.0/0
 DATABASEPORTS:
 
