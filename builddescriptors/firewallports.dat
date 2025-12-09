@@ -13,7 +13,7 @@
 #
 # as long as you follow this exact format the webserver machine and the firewall of your provider will
 # be automatically configured to reflect this configurations and the ports defined will be opened as defined
-# by default there are no custom ports configured to be open
+# by default there are no ports configured to be open
 ############################################################################################################
 AUTHENTICATORPORTS:
 REVERSEPROXYPORTS:
