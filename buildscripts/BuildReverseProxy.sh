@@ -215,17 +215,13 @@ do
                         #If we are here then we believe that the build completed correctly so the public IP address for the our reverseproxy machine
                         #Is added to the DNS provider
 
-                        if ( [ "${reverse_proxy_no}" != "1" ] )
-                        then
-				if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_PRIMED ] )
-				then
-					/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_PRIMED
-					${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
-				else
-					${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary"	
-				fi
-                        fi
-
+						if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_PRIMED ] )
+						then
+							/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DNS_PRIMED
+							${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "primary"
+						else
+							${BUILD_HOME}/initscripts/InitialiseDNSRecord.sh ${ip} "secondary"	
+						fi
                         finished="1"
                 fi
 
