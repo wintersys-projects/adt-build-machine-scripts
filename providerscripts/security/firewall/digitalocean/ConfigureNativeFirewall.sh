@@ -23,22 +23,22 @@
 #######################################################################################################
 #set -x
 
-digitalocean_custom_rules ()
+digitalocean_firewall_rules ()
 {
-        custom_ports="${1}"
-        custom_rules=""
-        for custom_port_token in ${custom_ports}
+        firewall_ports="${1}"
+        firewall_rules=""
+        for firewall_port_token in ${firewall_ports}
         do
-                if ( [ "`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
+                if ( [ "`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $2}'`" = "ipv4" ] )
                 then
-                        port="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
-                        ip_address="`/bin/echo ${custom_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
-                        custom_rules=${custom_rules}" protocol:tcp,ports:${port},address:${ip_address}"
+                        port="`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $1}'`"
+                        ip_address="`/bin/echo ${firewall_port_token} | /usr/bin/awk -F'|' '{print $3}'`"
+                        firewall_rules=${firewall_rules}" protocol:tcp,ports:${port},address:${ip_address}"
                
                 fi
         done
-        custom_rules="`/bin/echo ${custom_rules} | /bin/sed 's/,$//g'`"
-        /bin/echo "${custom_rules}"
+        firewall_rules="`/bin/echo ${firewall_rules} | /bin/sed 's/,$//g'`"
+        /bin/echo "${firewall_rules}"
 }
 
 
@@ -62,13 +62,13 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 build_machine_ip="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
 
-if ( [ -f ${BUILD_HOME}/builddescriptors/customfirewallports.dat ] )
+if ( [ -f ${BUILD_HOME}/builddescriptors/firewallports.dat ] )
 then
-        authenticator_custom_ports="`/bin/grep "^AUTHENTICATORCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        autoscaler_custom_ports="`/bin/grep "^AUTOSCALERCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        reverseproxy_custom_ports="`/bin/grep "^REVERSEPROXYCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        webserver_custom_ports="`/bin/grep "^WEBSERVERCUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
-        database_custom_ports="`/bin/grep "^DATABASECUSTOMPORTS" ${BUILD_HOME}/builddescriptors/customfirewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        authenticator_firewall_ports="`/bin/grep "^AUTHENTICATORPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        autoscaler_firewall_ports="`/bin/grep "^AUTOSCALERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        reverseproxy_firewall_ports="`/bin/grep "^REVERSEPROXYPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        webserver_firewall_ports="`/bin/grep "^WEBSERVERPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
+        database_firewall_ports="`/bin/grep "^DATABASEPORTS" ${BUILD_HOME}/builddescriptors/firewallports.dat | /usr/bin/awk -F':' '{print $2}'`"
 fi
 
 if ( [ "${firewall_name}" = "adt-authenticator" ] )
@@ -93,31 +93,31 @@ done
 /usr/local/bin/doctl compute firewall create --name "${firewall_name}-${BUILD_IDENTIFIER}"  --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
 firewall_id="`/usr/local/bin/doctl -o json compute firewall list | /usr/bin/jq -r '.[] | select (.name == "'${firewall_name}'-'${BUILD_IDENTIFIER}'").id'`"
 
-custom_rules=""
+firewall_rules=""
                 
 if ( [ "${firewall_name}" = "adt-authenticator" ] )
 then
-        custom_rules="`digitalocean_custom_rules "${authenticator_custom_ports}"`"
+        firewall_rules="`digitalocean_firewall_rules "${authenticator_firewall_ports}"`"
 fi
 
 if ( [ "${firewall_name}" = "adt-reverseproxy" ] )
 then
-        custom_rules="`digitalocean_custom_rules "${reverseproxy_custom_ports}"`"
+        firewall_rules="`digitalocean_firewall_rules "${reverseproxy_firewall_ports}"`"
 fi
                 
 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
 then
-        custom_rules="`digitalocean_custom_rules "${autoscaler_custom_ports}"`"
+        firewall_rules="`digitalocean_firewall_rules "${autoscaler_firewall_ports}"`"
 fi
 
 if ( [ "${firewall_name}" = "adt-webserver" ] )
 then
-        custom_rules="`digitalocean_custom_rules "${webserver_custom_ports}"`"
+        firewall_rules="`digitalocean_firewall_rules "${webserver_firewall_ports}"`"
 fi
 
 if ( [ "${firewall_name}" = "adt-database" ] )
 then
-        custom_rules="`digitalocean_custom_rules "${database_custom_ports}"`"
+        firewall_rules="`digitalocean_firewall_rules "${database_firewall_ports}"`"
 fi
                 
 if ( [ "${firewall_name}" = "adt-autoscaler" ] )
@@ -205,9 +205,9 @@ then
         rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                
 fi
 
-if ( [ "${custom_rules}" != "" ] )
+if ( [ "${firewall_rules}" != "" ] )
 then
-        rules="${rules} ${custom_rules}"
+        rules="${rules} ${firewall_rules}"
 
         /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
 
