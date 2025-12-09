@@ -48,6 +48,10 @@ write_files:
   owner: root:root
   path: /home/XXXXSERVER_USERXXXX/.ssh/buildstyles.dat.gz
   permissions: '0644'
+- encoding: b64
+  content: XXXXFIREWALL_PORT_SETTINGSXXXX
+  owner: root:root
+  path: /home/XXXXSERVER_USERXXXX/.ssh/firewallports.dat.gz
 - content: /home/XXXXSERVER_USERXXXX
   owner: root:root
   path: /home/homedir.dat
