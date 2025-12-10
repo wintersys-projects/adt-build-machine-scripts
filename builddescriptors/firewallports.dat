@@ -17,11 +17,11 @@
 # CONFIGURATION 1: This is the firewall configuration you use when you want your webservers to be accessible
 # from any IP address on the Internet and is the default configuration for the quick demos
 #############################################################################################################
-#AUTHENTICATORPORTS:
-#REVERSEPROXYPORTS:
-#AUTOSCALERPORTS:
-#WEBSERVERPORTS:443|ipv4|0.0.0.0/0 
-#DATABASEPORTS:
+AUTHENTICATORPORTS:
+REVERSEPROXYPORTS:
+AUTOSCALERPORTS:
+WEBSERVERPORTS:443|ipv4|0.0.0.0/0 
+DATABASEPORTS:
 ############################################################################################################
 # CONFIGURATION 2: This is the firewall configuration you use when you want your webservers to be accessible
 # only from cloudflare ip addresses and you are not using an authentication server
