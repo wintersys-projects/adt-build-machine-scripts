@@ -629,6 +629,19 @@ You can set the cloudhost to Digital Ocean, for example by setting the CLOUDHOST
 
 The number of authenticators you want to deploy.
 
+-------------------------
+
+#### AUTHENTICATOR_TYPE
+
+This will define the authentication process that is used by the authenticator class of machines when deployed
+
+The two classes are 
+
+1 - "firewall" - this means that users will be granted and denied access based on their IP address  
+2 - "basic-auth" - this means that a basic auth dialog box will appear and a user will have to enter their email and password before they can be allowed in to the main site. This should be reasonably secure as it https is used.   
+
+NOTE: these are not final authentication steps a user will still have to authenticate to the actual application but by having these techniques available it can stop bots and so on from probing your webproperty.   
+
 ------------
 
 ### AUTH_SERVER_URL  
