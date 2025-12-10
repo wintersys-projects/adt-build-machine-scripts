@@ -51,9 +51,9 @@ then
 
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml ] )
 	then
-		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' '{$1="";$2="";print $0}' | /bin/sed 's/^  //g' | /bin/sed 's/ /-/g'`"
+		server_name_match="`/bin/grep "^hostname: " ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml | /usr/bin/awk '{print $NF}'`"
 		/bin/sed -i "s/XXXXAUTOSCALER_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
-		/bin/sed -i "s/.*-.*-${server_name_match}/hostname: ${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
+		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/autoscaler.yaml
 		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
@@ -93,9 +93,9 @@ elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-auth-"`" != "" ] )
 then
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml ] )
 	then
-		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' 'NF{NF--};1' | /bin/sed 's/ /-/g'`"
+		server_name_match="`/bin/grep "^hostname: " ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml | /usr/bin/awk '{print $NF}'`"
 		/bin/sed -i "s/XXXXAUTHENTICATOR_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
-		/bin/sed -i "s/.*-.*-${server_name_match}/hostname: ${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
+		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/authenticator.yaml
 
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
@@ -108,9 +108,9 @@ elif ( [ "`/bin/echo ${server_name} | /bin/grep -E "\-rp-"`" != "" ] )
 then
 	if ( [ -f  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml ] )
 	then		
-		server_name_match="`/bin/echo ${server_name} | /usr/bin/awk -F'-' '{$1="";$2="";print $0}' | /bin/sed 's/^  //g' | /bin/sed 's/ /-/g'`"
+		server_name_match="`/bin/grep "^hostname: " ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml | /usr/bin/awk '{print $NF}'`"
 		/bin/sed -i "s/XXXXREVERSEPROXY_HOSTNAMEXXXX/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
-		/bin/sed -i "s/.*-.*-${server_name_match}/hostname: ${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+		/bin/sed -i "s/${server_name_match}/${server_name}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
 		
 		if ( [ "${CLOUDHOST}" = "linode" ] )
 		then
