@@ -427,6 +427,11 @@ then
 	${log_command} "Your value for the variable SSL_LIVE_CERT (${SSL_LIVE_CERT}) doesn't appear to be valid please review"
 fi
 
+if ( [ "`/bin/grep "^AUTHENTICATOR_TYPE " ${quick_specification} | /bin/grep -w "${AUTHENTICATOR_TYPE}"  2>/dev/null `" = "" ] )
+then
+	${log_command} "Your value for the variable AUTHENTICATOR_TYPE (${AUTHENTICATOR_TYPE}) doesn't appear to be valid please review"
+fi
+
 if ( [ "`/bin/grep "^SSLCERTCLIENT:lego" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] && [ "${SSL_GENERATION_SERVICE}" != "LETSENCRYPT" ] )
 then
 	${log_command} "There seems to be a mismatch between your SSL CLIENT software choice in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
