@@ -114,7 +114,7 @@ then
 			/bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 
 			count="0"
-			while ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}`" = "" ] && [ "${count}" -lt "5" ] )
+			while ( [ "`${BUILD_HOME}/providerscripts/datastore/ListDatastore.sh ${auth_bucket}`" = "" ] && [ "${count}" -lt "5" ] )
 			do
 				${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${auth_bucket}
 				count="`/usr/bin/expr ${count} + 1`"
