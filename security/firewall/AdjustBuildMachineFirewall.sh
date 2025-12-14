@@ -208,6 +208,27 @@ then
 		fi
 	fi
 
+	live_ips="`/usr/sbin/iptables --list-rules |  /bin/grep -Eo "[^^][0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}" | /bin/sed 's/ //g' | /usr/bin/sort -u`"
+	authorised_ips="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat`"
+	/usr/bin/sort -u ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat  > /tmp/authorised-ips.dat && /bin/mv /tmp/authorised-ips.dat  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+
+
+	if ( [ "${firewall}" = "ufw" ] )
+	then
+
+	elif ( [ "${firewall}" = "iptables" ] )
+	then
+		for ip in ${live_ips}
+		do
+        	if ( [ "`/bin/echo "${authorised_ips}" | /bin/grep "${ip}"`" = "" ] )
+        	then
+                /usr/sbin/iptables -D INPUT -s ${ip} -p ICMP --icmp-type 8 -j ACCEPT
+                /usr/sbin/iptables -D INPUT  -s ${ip} -m state --state NEW,RELATED,ESTABLISHED,NEW -p tcp --dport ${buildmachine_ssh_port} -j ACCEPT
+                /usr/sbin/iptables -D INPUT  -s ${ip} -p icmp -m state --state RELATED,ESTABLISHED,NEW -m icmp --icmp-type 8 -j ACCEPT
+        	fi	
+		done
+	fi
+
 	if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ] && [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ] && [ "`/usr/bin/diff ${BUILD_HOME}/runtimedata/${CLOUDHOST}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/ips/authorised-ips.dat`" != "" ] )
 	then
 		/bin/cp ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
