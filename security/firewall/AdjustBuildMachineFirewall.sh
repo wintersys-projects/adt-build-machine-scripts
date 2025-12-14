@@ -157,6 +157,8 @@ then
 			firewall="iptables"
 		fi
 
+		#Add any new IP addresses that we need to add in response to a "FIREWALL-EVENT"
+
 		if ( [ "${firewall}" = "ufw" ] )
 		then
 			/usr/bin/yes | /usr/sbin/ufw reset
@@ -207,6 +209,8 @@ then
         	/usr/sbin/ip6tables-save > /etc/iptables/rules.v6
 		fi
 	fi
+
+	#Remove any existing IP addresses that we need to remove in response to a "FIREWALL-EVENT"
 
 	live_ips="`/usr/sbin/iptables --list-rules |  /bin/grep -Eo "[^^][0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}" | /bin/sed 's/ //g' | /usr/bin/sort -u`"
 	authorised_ips="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat`"
