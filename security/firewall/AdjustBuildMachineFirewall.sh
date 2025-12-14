@@ -212,10 +212,16 @@ then
 	authorised_ips="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat`"
 	/usr/bin/sort -u ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat  > /tmp/authorised-ips.dat && /bin/mv /tmp/authorised-ips.dat  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 
-
 	if ( [ "${firewall}" = "ufw" ] )
 	then
-
+		/usr/sbin/ufw status numbered | /bin/grep -Po '\[\K[^]]*' | /bin/sed 's/ //g'
+		for ip in ${live_ips}
+		do
+			if ( [ "`/bin/echo "${authorised_ips}" | /bin/grep "${ip}"`" = "" ] )
+			then
+				/usr/sbin/ufw delete `/usr/sbin/ufw status numbered | /bin/grep ${ip} /bin/grep -Po '\[\K[^]]*' | /bin/sed 's/ //g'`
+			fi
+		done
 	elif ( [ "${firewall}" = "iptables" ] )
 	then
 		for ip in ${live_ips}
