@@ -177,6 +177,8 @@ BUILDCHAINTYPE:standard
 #DATASTORETOOL:s3cmd:source 
 #DATASTORETOOL:s5cmd:source
 DATASTORETOOL:rclone:binary
+#GO:repo
+GO:binary
 MERGEFILESYSTEMSTOOL:mergefs:repo
 PACKAGEMANAGER:apt-get
 FIREWALL:ufw
