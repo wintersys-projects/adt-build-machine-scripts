@@ -111,11 +111,11 @@ runcmd:
   - '/home/XXXXSERVER_USERXXXX/utilities/processing/RunServiceCommand.sh "ssh" restart'
   - '/home/XXXXSERVER_USERXXXX/utilities/config/StoreConfigValue.sh "WEBSERVERCHOICE" "XXXXREVERSEPROXYSERVERXXXX"'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallPackageManager.sh' 
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallEmailUtil.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallFirewall.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallDatastoreTools.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallWebserver.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallReverseProxy.sh &'
-  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallEmailUtil.sh &' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/rp.sh &'
   - '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr "[:upper:]" "[:lower:]" | /bin/egrep -o "(ubuntu|debian)"` &'
 
