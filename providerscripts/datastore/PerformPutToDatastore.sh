@@ -60,12 +60,17 @@ then
         slasher=""
 fi
 
-if ( [ ! -f ${file_to_put} ] )
+#if ( [ ! -f ${file_to_put} ] )
+#then
+#        file_to_put="/tmp/${file_to_put}"
+#        /bin/touch ${file_to_put}
+#fi
+
+if ( [ "`/bin/echo ${file_to_put} | /bin/grep "^/"`" = "" ] && [ ! -f ./${file_to_put} ]  )
 then
         file_to_put="/tmp/${file_to_put}"
         /bin/touch ${file_to_put}
 fi
-
 
 count="0"
 while ( [ "`${datastore_cmd} ${file_to_put} ${bucket_prefix}${place_to_put}${slasher} 2>&1 >/dev/null | /bin/grep -E "(ERROR|NOTICE)"`" != "" ] && [ "${count}" -lt "5" ] )
