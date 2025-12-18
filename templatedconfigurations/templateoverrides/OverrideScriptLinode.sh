@@ -42,17 +42,7 @@ exec 2>>/root/${ERR_FILE}
 /bin/mkdir -p /home/${BUILDMACHINE_USER}/.ssh
 /bin/echo "${SSH}" >> /home/${BUILDMACHINE_USER}/.ssh/authorized_keys
 
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^PasswordAuthentication.*/PasswordAuthentication no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^PermitRootLogin.*/PermitRootLogin no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#PermitRootLogin.*/PermitRootLogin no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^AddressFamily.*/AddressFamily inet/g' {} +
-/usr/bin/find /etc/ssh -name '*' -type f -exec sed -i 's/^#AddressFamily.*/AddressFamily inet/g' {} +
-
+/bin/sed -i -e "s/^PasswordAuthentication.*/PasswordAuthentication no/g" -e "s/^#PasswordAuthentication.*/PasswordAuthentication no/g" -e "s/^PermitRootLogin.*/PermitRootLogin no/g" -e "s/^#PermitRootLogin.*/PermitRootLogin no/g" -e "s/^KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/g" -e "s/^#KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/g" -e "s/^AddressFamily.*/AddressFamily inet/g" -e "s/^#AddressFamily.*/AddressFamily inet/g" -e "s/^#LoginGraceTime/LoginGraceTime/g" -e "s/^#StrictModes/StrictModes/g" -e "s/^#MaxAuthTries/MaxAuthTries/g" -e "s/^#MaxSessions/MaxSessions/g" /etc/ssh/sshd_config
 
 if ( [ "${BUILDMACHINE_SSH_PORT}" = "" ] )
 then
