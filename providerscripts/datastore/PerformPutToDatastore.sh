@@ -70,6 +70,11 @@ if ( [ "`/bin/echo ${file_to_put} | /bin/grep "^/"`" = "" ] && [ ! -f ./${file_t
 then
         file_to_put="/tmp/${file_to_put}"
         /bin/touch ${file_to_put}
+else 
+        if ( [ ! -f ${file_to_put} ] )
+        then
+                exit
+        fi
 fi
 
 count="0"
