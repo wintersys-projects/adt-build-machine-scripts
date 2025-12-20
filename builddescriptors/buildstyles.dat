@@ -77,7 +77,7 @@
 # FIREWALL:ufw|iptables
 # By default there is no rate limiting if you want to set rate limiting for ports open to the Internet such as 443 (possibly) then
 # you can rate limit as follows
-# FIREWALL:ufw:limit
+# FIREWALL:ufw:limit (when limit is set ufw will deny connections if an IP address attempts to initiate six or more connections within thirty seconds)
 # FIREALL:iptables:20:30 (20 represents the limit on the number of connections per minute from a single ip address and 30 represenets the burst rate limit)
 # if you want to use fail2ban you can set this will install fail2ban on all your machines
 # FAIL2BAN:active|inactive
