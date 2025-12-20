@@ -75,6 +75,10 @@
 # PACKAGEMANAGER:apt|apt-get
 # You can choose what style of firewall you would like to have by setting the FIREWALL. You can choose ufw or iptables
 # FIREWALL:ufw|iptables
+# By default there is no rate limiting if you want to set rate limiting for ports open to the Internet such as 443 (possibly) then
+# you can rate limit as follows
+# FIREWALL:ufw:limit
+# FIREALL:iptables:20:30 (20 represents the limit on the number of connections per minute from a single ip address and 30 represenets the burst rate limit)
 # if you want to use fail2ban you can set this will install fail2ban on all your machines
 # FAIL2BAN:active|inactive
 # You can choose which email utility you want to send your system emails using sendemail or ssmtp
