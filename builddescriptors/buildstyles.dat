@@ -184,7 +184,7 @@ DATASTORETOOL:rclone:binary
 GO:binary
 MERGEFILESYSTEMSTOOL:mergefs:repo
 PACKAGEMANAGER:apt-get
-FIREWALL:ufw
+FIREWALL:iptables
 FAIL2BAN:active
 EMAILUTIL:sendemail
 SSLCERTCLIENT:acme
