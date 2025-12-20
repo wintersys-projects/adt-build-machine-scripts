@@ -138,10 +138,10 @@ then
                         /bin/sh ${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
                 fi
                 firewall=""
-                if ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "ufw" ] )
+                if ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $2}'`" = "ufw" ] )
                 then
                         firewall="ufw"
-                elif ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "iptables" ] )
+                elif ( [ "`/bin/grep "^FIREWALL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $2}'`" = "iptables" ] )
                 then
                         firewall="iptables"
                 fi
