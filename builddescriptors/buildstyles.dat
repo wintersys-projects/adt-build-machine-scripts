@@ -191,7 +191,7 @@ BUILDCHAINTYPE:standard
 #DATASTORETOOL:s5cmd:source
 DATASTORETOOL:rclone:binary
 CLOUDCLITOOL:doctl:binary
-CLOUDCLITOOL:linode-cli:snap
+CLOUDCLITOOL:linode-cli:pip
 #GO:repo
 GO:binary
 MERGEFILESYSTEMSTOOL:mergefs:repo
