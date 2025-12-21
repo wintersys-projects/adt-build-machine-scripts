@@ -30,12 +30,19 @@ email="${2}"
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-        /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
+    #    /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
+
+
+        /usr/bin/curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online -m ${email}
+
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-        /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email}
+     #   /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email}
+
+             /usr/bin/curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online -m ${email}
+
 fi
 
 
