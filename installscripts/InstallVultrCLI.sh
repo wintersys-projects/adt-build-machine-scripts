@@ -32,6 +32,7 @@ then
     /bin/mv /usr/bin/vultr-cli /usr/bin/vultr
     /bin/chown root:root /usr/bin/vultr
 
+    ${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
     go install github.com/vultr/vultr-cli/v3@latest
 fi
 
@@ -42,5 +43,6 @@ then
     /bin/mv /usr/bin/vultr-cli /usr/bin/vultr
     /bin/chown root:root /usr/bin/vultr
 
+    ${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
     go install github.com/vultr/vultr-cli/v3@latest
 fi
