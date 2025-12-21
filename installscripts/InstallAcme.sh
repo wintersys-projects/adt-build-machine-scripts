@@ -30,11 +30,14 @@ email="${2}"
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-    #    /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
+if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
+then
 
+    #    /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
+elif
 
         /usr/bin/curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online -m ${email}
-
+fi
 fi
 
 if ( [ "${buildos}" = "debian" ] )
