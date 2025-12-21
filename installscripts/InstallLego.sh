@@ -57,6 +57,7 @@ then
 			eval ${install_command} snapd
 			snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 			${snap} install lego
+			/usr/bin/ln -s /snap/bin/lego /usr/bin/lego
 		fi
 	fi
 
@@ -76,6 +77,7 @@ then
 			eval ${install_command} snapd
 			snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 			${snap} install lego
+			/usr/bin/ln -s /snap/bin/lego /usr/bin/lego
 		fi
 	fi
 fi
