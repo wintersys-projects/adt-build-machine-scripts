@@ -60,6 +60,7 @@ done
 
 if ( [ "${on_laptop}" = "1" ] )
 then
+        /bin/touch ${BUILD_HOME}/runtimedata/BUILDING_ON_LAPTOP
         exit
 fi
 
