@@ -50,6 +50,14 @@ then
 			/bin/rm /usr/bin/lego                                                                                  
 		fi                                                                                                             
 		/usr/bin/wget -c https://github.com/xenolf/lego/releases/download/${version}/lego_${version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin      
+
+
+
+	
+		eval ${install_command} snapd
+		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
+		${snap} install doctl
+	
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
