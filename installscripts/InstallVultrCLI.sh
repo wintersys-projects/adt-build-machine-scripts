@@ -37,6 +37,8 @@ then
     then
         ${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
         /usr/bin/go install github.com/vultr/vultr-cli/v3@latest
+        vultr_bin="`/usr/bin/find / -name "vultr-cli" -print | /bin/grep "bin/vultr-cli"`"
+        /bin/ln -s ${vultr_bin} /usr/bin/vultr
     fi
 fi
 
@@ -52,5 +54,7 @@ then
     then
         ${BUILD_HOME}/installscripts/InstallGo.sh ${buildos}
         /usr/bin/go install github.com/vultr/vultr-cli/v3@latest
+        vultr_bin="`/usr/bin/find / -name "vultr-cli" -print | /bin/grep "bin/vultr-cli"`"
+        /bin/ln -s ${vultr_bin} /usr/bin/vultr
     fi
 fi
