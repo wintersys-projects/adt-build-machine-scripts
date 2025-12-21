@@ -31,6 +31,8 @@ then
     /usr/bin/wget -c https://github.com/vultr/vultr-cli/releases/download/${vultr_cli_version}/vultr-cli_${vultr_cli_version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin
     /bin/mv /usr/bin/vultr-cli /usr/bin/vultr
     /bin/chown root:root /usr/bin/vultr
+
+    go install github.com/vultr/vultr-cli/v3@latest
 fi
 
 if ( [ "${buildos}" = "debian" ] )
@@ -39,4 +41,6 @@ then
     /usr/bin/wget -c https://github.com/vultr/vultr-cli/releases/download/${vultr_cli_version}/vultr-cli_${vultr_cli_version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin
     /bin/mv /usr/bin/vultr-cli /usr/bin/vultr
     /bin/chown root:root /usr/bin/vultr
+
+    go install github.com/vultr/vultr-cli/v3@latest
 fi
