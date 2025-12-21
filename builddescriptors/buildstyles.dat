@@ -89,8 +89,11 @@
 # You can choose which email utility you want to send your system emails using sendemail or ssmtp
 # EMAILUTIL:sendemail|ssmtp
 # You can choose which tool you want to use to generate your ssl certificates
-# SSLCERTCLIENT:lego|acme (note: if you are using letsencrypt you must set this to 'lego' if you are using zerossl you must set this to 'acme'
-# You can install from acme.sh or github.com
+# SSLCERTCLIENT:lego|acme (note: if you are using letsencrypt you must set this to 'lego' if you are using zerossl you must set this to 'acme')
+# For letsencrypt you have to install lego
+# SSLCERTCLIENT:lego:binary
+# SSLCERTCLIENT:lego:snap
+# For zerossl you have to install acme.sh - You can install from acme.sh or github.com
 # SSLCERTCLIENT:acme:acme.sh
 # SSLCERTCLIENT:acme:github.com
 # GITBRANCH:main|dev
@@ -203,4 +206,5 @@ FIREWALL:ufw:limit
 FAIL2BAN:active
 EMAILUTIL:sendemail
 SSLCERTCLIENT:acme:github.com
+#SSLCERTCLIENT:lego:binary
 GITBRANCH:main
