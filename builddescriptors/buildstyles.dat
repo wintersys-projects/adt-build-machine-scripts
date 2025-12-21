@@ -72,6 +72,8 @@
 # You can set how you want to install your cloud cli tool from the different available installation methods
 # CLOUDCLITOOL:doctl:snap
 # CLOUDCLITOOL:doctl:binary
+# CLOUDCLITOOL:linodeclil:snap
+# CLOUDCLITOOL:linodecli:pip
 # You can install the GO language from binary or repo
 # GO:repo
 # GO:binary
