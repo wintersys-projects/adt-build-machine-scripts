@@ -29,33 +29,42 @@ fi
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
-
-
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-
-	if ( [ ! -d /opt/exoscale ] )
-then
-        /bin/mkdir /opt/exoscale
-fi
-
-
-
-cd /opt/exoscale
-
- ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
-
- cd /opt/exoscale/cli
-
-/usr/bin/make build
-
-/bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
-
-
-cd ${BUILD_HOME}
+	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
+	then
+		/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
+	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
+	then
+		BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+		if ( [ ! -d /opt/exoscale ] )
+		then
+        	/bin/mkdir /opt/exoscale
+		fi
+		cd /opt/exoscale
+		${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
+		cd /opt/exoscale/cli
+		/usr/bin/make build
+		/bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
+		cd ${BUILD_HOME}
+	fi
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh > /dev/null
+	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
+	then
+		/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
+	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
+	then
+		BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+		if ( [ ! -d /opt/exoscale ] )
+		then
+        	/bin/mkdir /opt/exoscale
+		fi
+		cd /opt/exoscale
+		${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
+		cd /opt/exoscale/cli
+		/usr/bin/make build
+		/bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
+		cd ${BUILD_HOME}
+	fi
 fi
