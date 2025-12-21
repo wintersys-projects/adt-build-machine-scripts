@@ -25,15 +25,21 @@ then
 	buildos="${1}"
 fi
 
+
+
 if ( [ "${buildos}" = "ubuntu" ] )
 then
 	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
 
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 	if ( [ ! -d /opt/exoscale ] )
 then
         /bin/mkdir /opt/exoscale
 fi
+
+
 
 cd /opt/exoscale
 
