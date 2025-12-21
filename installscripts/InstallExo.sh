@@ -28,6 +28,25 @@ fi
 if ( [ "${buildos}" = "ubuntu" ] )
 then
 	/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
+
+
+	if ( [ ! -d /opt/exoscale ] )
+then
+        /bin/mkdir /opt/exoscale
+fi
+
+cd /opt/exoscale
+
+ ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
+
+ cd /opt/exoscale/cli
+
+/usr/bin/make build
+
+/bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
+
+
+cd ${BUILD_HOME}
 fi
 
 if ( [ "${buildos}" = "debian" ] )
