@@ -70,7 +70,7 @@
 # DATASTORETOOL:s5cmd:source
 # CLOUDCLITOOL:repo|binary
 # You can set how you want to install your cloud cli tool from the different available installation methods
-# CLOUDCLITOOL:doctl:repo
+# CLOUDCLITOOL:doctl:snap
 # CLOUDCLITOOL:doctl:binary
 # You can install the GO language from binary or repo
 # GO:repo
