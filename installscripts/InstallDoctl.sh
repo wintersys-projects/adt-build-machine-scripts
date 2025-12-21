@@ -45,6 +45,9 @@ then
 	snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 	${snap} install doctl
 	/usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
+
+
+	/usr/bin/curl -sL `/usr/bin/curl -s https://api.github.com/repos/digitalocean/doctl/releases/latest | /bin/grep "http.*linux-amd64.tar.gz" | /usr/bin/awk '{print $2}' | /usr/bin/sed 's|[\"\,]*||g'` | /bin/tar xzvf - -C /usr/local/bin
 fi
 
 if ( [ "${buildos}" = "debian" ] )
@@ -53,5 +56,7 @@ then
 	snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 	${snap} install doctl
 	/usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
+
+	/usr/bin/curl -sL `/usr/bin/curl -s https://api.github.com/repos/digitalocean/doctl/releases/latest | /bin/grep "http.*linux-amd64.tar.gz" | /usr/bin/awk '{print $2}' | /usr/bin/sed 's|[\"\,]*||g'` | /bin/tar xzvf - -C /usr/local/bin
 fi
 
