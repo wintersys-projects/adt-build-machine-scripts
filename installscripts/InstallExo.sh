@@ -22,49 +22,61 @@
 
 if ( [ "${1}" != "" ] )
 then
-	buildos="${1}"
+        buildos="${1}"
 fi
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
+apt=""
+if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
+then
+        apt="/usr/bin/apt"
+elif ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt-get" ] )
+then
+        apt="/usr/bin/apt-get"
+fi      
+
+export DEBIAN_FRONTEND=noninteractive 
+install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install "
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
-	then
-		/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
-	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
-	then
-		BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-		if ( [ ! -d /opt/exoscale ] )
-		then
-        	/bin/mkdir /opt/exoscale
-		fi
-		cd /opt/exoscale
-		${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
-		cd /opt/exoscale/cli
-		/usr/bin/make build
-		/bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
-		cd ${BUILD_HOME}
-	fi
+        if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
+        then
+                /usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
+        elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
+        then
+                ${install_command} build-essential
+                if ( [ ! -d /opt/exoscale ] )
+                then
+                        /bin/mkdir /opt/exoscale
+                fi
+                cd /opt/exoscale
+                ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
+                cd /opt/exoscale/cli
+                /usr/bin/make build
+                /bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
+                cd ${BUILD_HOME}
+        fi
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
-	then
-		/usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
-	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
-	then
-		BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-		if ( [ ! -d /opt/exoscale ] )
-		then
-        	/bin/mkdir /opt/exoscale
-		fi
-		cd /opt/exoscale
-		${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
-		cd /opt/exoscale/cli
-		/usr/bin/make build
-		/bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
-		cd ${BUILD_HOME}
-	fi
+        if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
+        then
+                /usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
+        elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
+        then
+                ${install_command} build-essential
+                if ( [ ! -d /opt/exoscale ] )
+                then
+                        /bin/mkdir /opt/exoscale
+                fi
+                cd /opt/exoscale
+                ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
+                cd /opt/exoscale/cli
+                /usr/bin/make build
+                /bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
+                cd ${BUILD_HOME}
+        fi
 fi
