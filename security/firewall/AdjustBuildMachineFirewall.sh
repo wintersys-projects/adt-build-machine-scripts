@@ -41,6 +41,28 @@ ${BUILD_HOME}/providerscripts/server/GetServerName.sh ${ip} "${CLOUDHOST}"
 CLOUDHOST="`/bin/cat ${BUILD_HOME}/runtimedata/BUILD_MACHINE_CLOUDHOST`"
 BUILDMACHINE_USER="`/bin/cat /root/buildmachine_user.dat`"
 
+#If we are running the build from our personal laptop, then, we don't need to set up any firewall rules so we simply exit
+#This isn't a foolproof way for establishing that we are on a laptop if there's additional files or directories in 
+#${BUILD_HOME}/templatedconfigurations/templates that might mess us up and if you are running a build machine on a 3rd
+#party unsupported VPS cloudhost that could cause a problem also because this will think that that machine is a laptop
+#a very simple work around if you are using an unsupported cloudhost to run your build process is to create a file
+#in the ${BUILD_HOME}/templatedconfigurations/templates templates directory for your unsupported cloudhost for example
+#Rackspace or google that will match against the whois query
+cloud_providers="`/bin/ls ${BUILD_HOME}/templatedconfigurations/templates`"
+on_laptop="1"
+for cloud_provider in ${cloud_providers}
+do
+        if ( [ "`/usr/bin/whois ${ip} | /bin/grep ${cloud_provider}`" != "" ] )
+        then
+                on_laptop="0"
+        fi
+done
+
+if ( [ "${on_laptop}" = "1" ] )
+then
+        exit
+fi
+
 
 if ( [ "`/bin/ls /root/FIREWALL-BUCKET:* 2>/dev/null`" = "" ] )
 then
