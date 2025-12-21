@@ -73,6 +73,8 @@
 # CLOUDCLITOOL:doctl:snap
 # CLOUDCLITOOL:doctl:binary
 # CLOUDCLITOOL:linode-cli:pip
+# CLOUDCLITOOL:exo:repo
+# CLOUDCLITOOL:exo:source
 # You can install the GO language from binary or repo
 # GO:repo
 # GO:binary
@@ -197,6 +199,7 @@ BUILDCHAINTYPE:standard
 DATASTORETOOL:rclone:binary
 CLOUDCLITOOL:doctl:binary
 CLOUDCLITOOL:linode-cli:pip
+CLOUDCLITOOL:exo:source
 #GO:repo
 GO:binary
 MERGEFILESYSTEMSTOOL:mergefs:repo
