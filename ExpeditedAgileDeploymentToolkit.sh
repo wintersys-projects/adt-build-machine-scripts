@@ -387,8 +387,6 @@ fi
 
 ${BUILD_HOME}/initscripts/InitialiseUniqueConfigDatastore.sh
 
-
-${BUILD_HOME}/cron/InitialiseCrontabs.sh
 # Make a few pre-flight checks to check that we are good to go
 ${BUILD_HOME}/initscripts/PreFlightChecks.sh 
 
@@ -509,6 +507,27 @@ fi
 
 # Put out any post processing messages to the user
 ${BUILD_HOME}/processingscripts/PostProcessingMessages.sh
+
+
+if ( [ ! -f ${BUILD_HOME}/runtimedata/BUILDING_ON_LAPTOP ] )
+then
+
+	#IMPORTANT:
+	#########################################################################################################################
+	#If we are building on a personal laptop and not a cloudhosted VPS server then we don't mess with the laptop's crontab.
+	#If you want these crontab processes to be active on your laptop you are of course free to set them up but
+	#if you build from your laptop then likelyhood is that it won't be online 24-7 so the cronjobs might not run anyway
+	#this does mean that if you are running your build from your personal laptop and not a cloudhosted VPS server online 24-7
+	#processes such as SSL certificate renewals (which are initiated from the build machine's crontab) and software upgrades
+	#for the build machine will have to be manually taken care of as a maintenance task.
+	#It can be useful to carry a USB stick with MX Linux on it that you can plug in to almost any available machine to run
+	#your build from rather than having a VPS server running in a datacentre but with the provisos that I have just mentioned
+	#Remmeber if you are building from a personal laptop you will have to set BUILD_MACHINE_VPC="0" so that it is clear
+	#that the build machine is not in the same VPC as the server machines are (which has implications for firewalling etc). 
+	#######################################################################################################################
+	
+	${BUILD_HOME}/cron/InitialiseCrontabs.sh
+fi
 
 #We inform the users of their credentials. Sometimes, depending on the application, the user needs to know more or less
 
