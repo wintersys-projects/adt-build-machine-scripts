@@ -41,27 +41,45 @@ install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y inst
 
 if ( [ "${buildos}" = "ubuntu" ] )
 then
-	eval ${install_command} pipx
-	if ( [ -f /usr/local/bin/linode-cli ] )
+	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:snap`" != "" ] )
 	then
-		/usr/bin/pipx upgrade linode-cli 
-	else
-		/usr/bin/pipx install linode-cli 
-  		/usr/bin/pipx ensurepath
-		/usr/bin/ln -s /root/.local/bin/linode-cli /usr/local/bin/linode-cli
+		eval ${install_command} snapd
+		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
+		${snap} install linode-cli
+		/usr/bin/ln -s /snap/bin/linode-cli /usr/local/bin/linode-cli
+	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:pip`" != "" ] )
+	then
+		eval ${install_command} pipx
+		if ( [ -f /usr/local/bin/linode-cli ] )
+		then
+			/usr/bin/pipx upgrade linode-cli 
+		else
+			/usr/bin/pipx install linode-cli 
+  			/usr/bin/pipx ensurepath
+			/usr/bin/ln -s /root/.local/bin/linode-cli /usr/local/bin/linode-cli
+		fi
 	fi
 fi
 
 if ( [ "${buildos}" = "debian" ] )
 then
-	eval ${install_command} pipx
-	if ( [ -f /usr/local/bin/linode-cli ] )
+	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:snap`" != "" ] )
 	then
-		/usr/bin/pipx upgrade linode-cli 
-	else
-		/usr/bin/pipx install linode-cli 
-		/usr/bin/pipx ensurepath
-		/usr/bin/ln -s /root/.local/bin/linode-cli /usr/local/bin/linode-cli
+		eval ${install_command} snapd
+		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
+		${snap} install linode-cli
+		/usr/bin/ln -s /snap/bin/linode-cli /usr/local/bin/linode-cli
+	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:pip`" != "" ] )
+	then
+		eval ${install_command} pipx
+		if ( [ -f /usr/local/bin/linode-cli ] )
+		then
+			/usr/bin/pipx upgrade linode-cli 
+		else
+			/usr/bin/pipx install linode-cli 
+  			/usr/bin/pipx ensurepath
+			/usr/bin/ln -s /root/.local/bin/linode-cli /usr/local/bin/linode-cli
+		fi
 	fi
 fi
 
