@@ -90,6 +90,9 @@
 # EMAILUTIL:sendemail|ssmtp
 # You can choose which tool you want to use to generate your ssl certificates
 # SSLCERTCLIENT:lego|acme (note: if you are using letsencrypt you must set this to 'lego' if you are using zerossl you must set this to 'acme'
+# You can install from acme.sh or github.com
+# SSLCERTCLIENT:acme:acme.sh
+# SSLCERTCLIENT:acme:github.com
 # GITBRANCH:main|dev
 # You can create branches as you need to but currently there is a main branch and a dev branch to work with
 ###############################################################################################################################################
@@ -199,5 +202,5 @@ FIREWALL:ufw:limit
 #FIREWALL:iptables:20:30
 FAIL2BAN:active
 EMAILUTIL:sendemail
-SSLCERTCLIENT:acme
+SSLCERTCLIENT:acme:github.com
 GITBRANCH:main
