@@ -43,32 +43,40 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		eval ${install_command} jq 			
-		version="`/usr/bin/curl -L https://api.github.com/repos/go-acme/lego/releases/latest | /usr/bin/jq -r '.name'`" 
-		if ( [ -f /usr/bin/lego ] )                                                                                    
-		then                                                                                                            
-			/bin/rm /usr/bin/lego                                                                                  
-		fi                                                                                                             
-		/usr/bin/wget -c https://github.com/xenolf/lego/releases/download/${version}/lego_${version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin      
-
-
-
-	
-		eval ${install_command} snapd
-		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
-		${snap} install doctl
-	
+	    if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:lego:binary`" != "" ] )
+        then
+			eval ${install_command} jq 			
+			version="`/usr/bin/curl -L https://api.github.com/repos/go-acme/lego/releases/latest | /usr/bin/jq -r '.name'`" 
+			if ( [ -f /usr/bin/lego ] )                                                                                    
+			then                                                                                                            
+				/bin/rm /usr/bin/lego                                                                                  
+			fi                                                                                                             
+			/usr/bin/wget -c https://github.com/xenolf/lego/releases/download/${version}/lego_${version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin      
+		elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:lego:snap`" != "" ] )
+		then
+			eval ${install_command} snapd
+			snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
+			${snap} install lego
+		fi
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		eval ${install_command} jq 			
-		version="`/usr/bin/curl -L https://api.github.com/repos/go-acme/lego/releases/latest | /usr/bin/jq -r '.name'`" 
-		if ( [ -f /usr/bin/lego ] )                                                                                    
-		then                                                                                                            
-			/bin/rm /usr/bin/lego                                                                                  
-		fi                                                                                                             
-		/usr/bin/wget -c https://github.com/xenolf/lego/releases/download/${version}/lego_${version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin    
+	    if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:lego:binary`" != "" ] )
+        then
+			eval ${install_command} jq 			
+			version="`/usr/bin/curl -L https://api.github.com/repos/go-acme/lego/releases/latest | /usr/bin/jq -r '.name'`" 
+			if ( [ -f /usr/bin/lego ] )                                                                                    
+			then                                                                                                            
+				/bin/rm /usr/bin/lego                                                                                  
+			fi                                                                                                             
+			/usr/bin/wget -c https://github.com/xenolf/lego/releases/download/${version}/lego_${version}_linux_amd64.tar.gz -O- | /usr/bin/tar -xz -C /usr/bin      
+		elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:lego:snap`" != "" ] )
+		then
+			eval ${install_command} snapd
+			snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
+			${snap} install lego
+		fi
 	fi
 fi
 
