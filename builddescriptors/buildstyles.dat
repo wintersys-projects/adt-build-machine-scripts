@@ -188,7 +188,8 @@ DATASTORETOOL:rclone:binary
 GO:binary
 MERGEFILESYSTEMSTOOL:mergefs:repo
 PACKAGEMANAGER:apt-get
-FIREWALL:iptables:20:30
+FIREWALL:ufw:limit
+#FIREWALL:iptables:20:30
 FAIL2BAN:active
 EMAILUTIL:sendemail
 SSLCERTCLIENT:acme
