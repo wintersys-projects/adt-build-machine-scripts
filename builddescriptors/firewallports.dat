@@ -83,11 +83,11 @@
 # CONFIGURATION 8: This is the firewall configuration you use when you are using an authentication server
 # that you using to allow access by basic auth that is accessible from any ip on the internet
 #############################################################################################################
-#AUTHENTICATORPORTS:cloudflare|ipv4|cloudflare  
-#REVERSEPROXYPORTS:443|ipv4|0.0.0.0/0 
-#AUTOSCALERPORTS:
-#WEBSERVERPORTS:
-#DATABASEPORTS:
+AUTHENTICATORPORTS:cloudflare|ipv4|cloudflare  
+REVERSEPROXYPORTS:443|ipv4|0.0.0.0/0 
+AUTOSCALERPORTS:
+WEBSERVERPORTS:
+DATABASEPORTS:
 ############################################################################################################
 # CONFIGURATION 9: This is the firewall configuration you use when you are using an authentication server
 # that you are using to allow access by basic auth through cloudflare
@@ -131,11 +131,11 @@
 # that you using to allow access by basic auth that is accessible from any ip on the Internet when you are not using
 # a reverse proxy and you authentication server is using cloudflare
 #############################################################################################################
-AUTHENTICATORPORTS:cloudflare|ipv4|cloudflare  
-REVERSEPROXYPORTS:
-AUTOSCALERPORTS:
-WEBSERVERPORTS:443|ipv4|0.0.0.0/0 
-DATABASEPORTS:
+#AUTHENTICATORPORTS:cloudflare|ipv4|cloudflare  
+#REVERSEPROXYPORTS:
+#AUTOSCALERPORTS:
+#WEBSERVERPORTS:443|ipv4|0.0.0.0/0 
+#DATABASEPORTS:
 ############################################################################################################
 # CONFIGURATION 14: This is the firewall configuration you use when you are using an authentication server
 # that you are using to allow access by basic auth through cloudflare and you are not using a reverse proxy
