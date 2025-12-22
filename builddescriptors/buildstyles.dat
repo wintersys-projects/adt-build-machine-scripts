@@ -201,8 +201,8 @@ BUILDCHAINTYPE:standard
 #DATASTORETOOL:s5cmd:source
 DATASTORETOOL:rclone:binary
 CLOUDCLITOOL:doctl:binary
-#CLOUDCLITOOL:linode-cli:pip
-CLOUDCLITOOL:linode-cli:snap
+CLOUDCLITOOL:linode-cli:pip
+#CLOUDCLITOOL:linode-cli:snap
 CLOUDCLITOOL:exo:source
 CLOUDCLITOOL:vultr:source
 #GO:repo
