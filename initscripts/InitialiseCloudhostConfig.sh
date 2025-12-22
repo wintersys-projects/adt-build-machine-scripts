@@ -228,6 +228,17 @@ then
 	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}/" ${BUILD_HOME}/.dns-linode-cli
 	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}/" /root/.config/dns-linode-cli
 
+	if ( [ -d /root/snap/linode-cli ] )
+	then
+		if ( [ ! -d /root/snap/linode-cli/current/.config ] )
+		then
+			/bin/mkdir -p /root/snap/linode-cli/current/.config
+		fi
+		
+		/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/linode-cli
+		/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/dns-linode-cli
+	fi
+
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
 	then
 		/usr/local/bin/linode-cli account view >/dev/null 2>/dev/null >&3
