@@ -39,44 +39,47 @@ fi
 export DEBIAN_FRONTEND=noninteractive 
 install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install "
 
-if ( [ "${buildos}" = "ubuntu" ] )
+if ( [ ! -f /usr/bin/exo ] )
 then
-        if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
+        if ( [ "${buildos}" = "ubuntu" ] )
         then
-                /usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
-        elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
-        then
-                ${install_command} build-essential
-                if ( [ ! -d /opt/exoscale ] )
+                if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
                 then
-                        /bin/mkdir /opt/exoscale
+                        /usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
+                elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
+                then
+                        ${install_command} build-essential
+                        if ( [ ! -d /opt/exoscale ] )
+                        then
+                                /bin/mkdir /opt/exoscale
+                        fi
+                        cd /opt/exoscale
+                        ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
+                        cd /opt/exoscale/cli
+                        /usr/bin/make build
+                        /bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
+                        cd ${BUILD_HOME}
                 fi
-                cd /opt/exoscale
-                ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
-                cd /opt/exoscale/cli
-                /usr/bin/make build
-                /bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
-                cd ${BUILD_HOME}
         fi
-fi
 
-if ( [ "${buildos}" = "debian" ] )
-then
-        if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
+        if ( [ "${buildos}" = "debian" ] )
         then
-                /usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
-        elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
-        then
-                ${install_command} build-essential
-                if ( [ ! -d /opt/exoscale ] )
+                if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:repo`" != "" ] )
                 then
-                        /bin/mkdir /opt/exoscale
+                        /usr/bin/curl -fsSL https://raw.githubusercontent.com/exoscale/cli/master/install-latest.sh | /bin/sh >/dev/null
+                elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:exo:source`" != "" ] )
+                then
+                        ${install_command} build-essential
+                        if ( [ ! -d /opt/exoscale ] )
+                        then
+                                /bin/mkdir /opt/exoscale
+                        fi
+                        cd /opt/exoscale
+                        ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
+                        cd /opt/exoscale/cli
+                        /usr/bin/make build
+                        /bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
+                        cd ${BUILD_HOME}
                 fi
-                cd /opt/exoscale
-                ${BUILD_HOME}/providerscripts/git/GitClone.sh "github" "" "exoscale" "cli" ""
-                cd /opt/exoscale/cli
-                /usr/bin/make build
-                /bin/ln -s /opt/exoscale/cli/bin/exo /usr/bin/exo
-                cd ${BUILD_HOME}
         fi
 fi
