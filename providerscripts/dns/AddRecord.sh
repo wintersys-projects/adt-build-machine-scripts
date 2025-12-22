@@ -109,8 +109,15 @@ ip="${5}"
 dns="${7}"
 
 if ( [ "${dns}" = "linode" ] )
-then
-        export LINODE_CLI_CONFIG=/root/.config/dns-linode-cli
+then        
+        linode_config_file="/root/.config/dns-linode-cli"
+        
+        if ( [ -f /root/snap/linode-cli/current/.config/linode-cli ] )
+        then
+             linode_config_file="/root/snap/linode-cli/current/.config/linode-cli"
+        fi
+                        
+        export LINODE_CLI_CONFIG=${linode_config_file}
         domain_id="`/usr/local/bin/linode-cli domains list --no-defaults --json | /usr/bin/jq -r '.[] | select (.domain | contains("'${domain_url}'")).id'`"
         #Make damn sure that the DNS record gets added to the DNS system
         count="0"
