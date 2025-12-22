@@ -146,9 +146,12 @@ then
 	${log_command} "S3_LOCATION ( ${no_tokens3} values configured )  S3_HOST_BASE ( ${no_tokens4} values configured )"
 fi
 
-if ( [ "`/bin/grep "^S3_LOCATION " ${quick_specification} | /bin/grep -w "${S3_LOCATION}" 2>/dev/null `" = "" ] )
+if ( [ "${S3_LOCATION}" != "" ] )
 then
-	${log_command} "Your value for the variable S3_LOCATION (${S3_LOCATION}) doesn't appear to be valid please review"
+        if ( [ "`/bin/grep "^S3_LOCATION " ${quick_specification} | /bin/grep -w "${S3_LOCATION}" 2>/dev/null `" = "" ] )
+        then
+                ${log_command} "Your value for the variable S3_LOCATION (${S3_LOCATION}) doesn't appear to be valid please review"
+        fi
 fi
 
 if ( [ "`/bin/grep "^EMAIL_NOTIFICATION_LEVEL " ${quick_specification} | /bin/grep -w "${EMAIL_NOTIFICATION_LEVEL}"  2>/dev/null `" = "" ] )
