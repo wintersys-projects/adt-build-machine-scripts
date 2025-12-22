@@ -44,6 +44,7 @@ then
 	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:snap`" != "" ] )
 	then
 		eval ${install_command} snapd
+		${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
 		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 		${snap} install linode-cli
 		/usr/bin/ln -s /snap/bin/linode-cli /usr/local/bin/linode-cli
@@ -66,6 +67,7 @@ then
 	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:snap`" != "" ] )
 	then
 		eval ${install_command} snapd
+		${BUILD_HOME}/helperscripts/RunServiceCommand.sh ssh restart
 		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
 		${snap} install linode-cli
 		/usr/bin/ln -s /snap/bin/linode-cli /usr/local/bin/linode-cli
