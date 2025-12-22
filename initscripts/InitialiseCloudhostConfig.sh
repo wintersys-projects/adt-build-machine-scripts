@@ -228,13 +228,8 @@ then
 	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}/" ${BUILD_HOME}/.dns-linode-cli
 	/bin/sed -i "s/^token.*/token = ${DNS_SECURITY_KEY}/" /root/.config/dns-linode-cli
 
-	if ( [ -d /root/snap/linode-cli ] )
+	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:snap`" != "" ] )
 	then
-		if ( [ ! -d /root/snap/linode-cli/current/.config ] )
-		then
-			/bin/mkdir -p /root/snap/linode-cli/current/.config
-		fi
-		
 		/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/linode-cli
 		/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/dns-linode-cli
 	fi
