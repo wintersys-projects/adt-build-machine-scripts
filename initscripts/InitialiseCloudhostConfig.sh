@@ -126,7 +126,7 @@ then
 	if ( [ "${ACCESS_KEY}" != "" ] )
 	then 
 		/bin/sed -i "s/XXXXACCESSKEYXXXX/${ACCESS_KEY}/" ${BUILD_HOME}/.exoscale.toml
-		/bin/echo "${ACCESS_KEY}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ACCESS_KEY
+	#	/bin/echo "${ACCESS_KEY}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ACCESS_KEY
 	else 
 		status "Couldn't find your access key in your template, will have to exit"
 		/bin/touch /tmp/END_IT_ALL
@@ -135,7 +135,7 @@ then
 	if ( [ "${SECRET_KEY}" != "" ] )
 	then
 		/bin/sed -i "s/XXXXSECRETKEYXXXX/${SECRET_KEY}/" ${BUILD_HOME}/.exoscale.toml
-		/bin/echo "${SECRET_KEY}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SECRET_KEY
+	#	/bin/echo "${SECRET_KEY}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/SECRET_KEY
 	else 
 		status "Couldn't find your secret key in your template, will have to exit"
 		/bin/touch /tmp/END_IT_ALL
