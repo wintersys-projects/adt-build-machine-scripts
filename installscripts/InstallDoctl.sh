@@ -39,31 +39,34 @@ fi
 export DEBIAN_FRONTEND=noninteractive 
 install_command="${apt} -o DPkg::Lock::Timeout=-1 -o Dpkg::Use-Pty=0 -qq -y install " 
 
-if ( [ "${buildos}" = "ubuntu" ] )
+if ( [ ! -f /usr/local/bin/doctl ] )
 then
-	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:snap`" != "" ] )
+	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		eval ${install_command} snapd
-		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
-		${snap} install doctl
-		/usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
-	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:binary`" != "" ] )
-	then
-		/usr/bin/curl -sL `/usr/bin/curl -s https://api.github.com/repos/digitalocean/doctl/releases/latest | /bin/grep "http.*linux-amd64.tar.gz" | /usr/bin/awk '{print $2}' | /usr/bin/sed 's|[\"\,]*||g'` | /bin/tar xzvf - -C /usr/local/bin
+		if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:snap`" != "" ] )
+		then
+			eval ${install_command} snapd
+			snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
+			${snap} install doctl
+			/usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
+		elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:binary`" != "" ] )
+		then
+			/usr/bin/curl -sL `/usr/bin/curl -s https://api.github.com/repos/digitalocean/doctl/releases/latest | /bin/grep "http.*linux-amd64.tar.gz" | /usr/bin/awk '{print $2}' | /usr/bin/sed 's|[\"\,]*||g'` | /bin/tar xzvf - -C /usr/local/bin
+		fi
 	fi
-fi
 
-if ( [ "${buildos}" = "debian" ] )
-then
-	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:snap`" != "" ] )
+	if ( [ "${buildos}" = "debian" ] )
 	then
-		eval ${install_command} snapd
-		snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
-		${snap} install doctl
-		/usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
-	elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:binary`" != "" ] )
-	then
-		/usr/bin/curl -sL `/usr/bin/curl -s https://api.github.com/repos/digitalocean/doctl/releases/latest | /bin/grep "http.*linux-amd64.tar.gz" | /usr/bin/awk '{print $2}' | /usr/bin/sed 's|[\"\,]*||g'` | /bin/tar xzvf - -C /usr/local/bin
+		if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:snap`" != "" ] )
+		then
+			eval ${install_command} snapd
+			snap="`/usr/bin/whereis snap | /usr/bin/awk -F':' '{print $NF}' | /usr/bin/awk '{print $1}'`"
+			${snap} install doctl
+			/usr/bin/ln -s /snap/bin/doctl /usr/local/bin/doctl
+		elif ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:doctl:binary`" != "" ] )
+		then
+			/usr/bin/curl -sL `/usr/bin/curl -s https://api.github.com/repos/digitalocean/doctl/releases/latest | /bin/grep "http.*linux-amd64.tar.gz" | /usr/bin/awk '{print $2}' | /usr/bin/sed 's|[\"\,]*||g'` | /bin/tar xzvf - -C /usr/local/bin
+		fi
 	fi
 fi
 
