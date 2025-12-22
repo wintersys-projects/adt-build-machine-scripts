@@ -73,6 +73,7 @@
 # CLOUDCLITOOL:doctl:snap
 # CLOUDCLITOOL:doctl:binary
 # CLOUDCLITOOL:linode-cli:pip
+# CLOUDCLITOOL:linode-cli:snap
 # CLOUDCLITOOL:exo:repo
 # CLOUDCLITOOL:exo:source
 # CLOUDCLITOOL:vultr:binary
@@ -200,7 +201,8 @@ BUILDCHAINTYPE:standard
 #DATASTORETOOL:s5cmd:source
 DATASTORETOOL:rclone:binary
 CLOUDCLITOOL:doctl:binary
-CLOUDCLITOOL:linode-cli:pip
+#CLOUDCLITOOL:linode-cli:pip
+CLOUDCLITOOL:linode-cli:snap
 CLOUDCLITOOL:exo:source
 CLOUDCLITOOL:vultr:source
 #GO:repo
