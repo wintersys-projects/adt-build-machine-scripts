@@ -231,8 +231,14 @@ then
 	if ( [ "`/bin/grep "^CLOUDCLITOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep CLOUDCLITOOL:linode-cli:snap`" != "" ] )
 	then
 		/snap/bin/linode-cli 2>&1 >/dev/null &
-		/bin/cp /root/.config/linode-cli /root/snap/linode-cli/current/.config/linode-cli
-		/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/dns-linode-cli
+		count="0"
+		while ( ( [ ! -f /root/snap/linode-cli/current/.config/linode-cli ] || [ ! -f /root/snap/linode-cli/current/.config/dns-linode-cli ] ) && [ "${count}" -lt "5" ] )
+		do
+			/bin/cp /root/.config/linode-cli /root/snap/linode-cli/current/.config/linode-cli
+			/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/dns-linode-cli
+			count="`/usr/bin/expr ${count} + 1`"
+			/bin/sleep 5
+		done
 	fi
 
 	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" = "0" ] )
