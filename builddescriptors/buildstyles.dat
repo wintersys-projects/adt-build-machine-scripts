@@ -76,7 +76,6 @@
 # CLOUDCLITOOL:linode-cli:snap
 # CLOUDCLITOOL:exo:repo
 # CLOUDCLITOOL:exo:source
-# CLOUDCLITOOL:exo:snap
 # CLOUDCLITOOL:vultr:binary
 # CLOUDCLITOOL:vultr:source
 # You can install the GO language from binary or repo
