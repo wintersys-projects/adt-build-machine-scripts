@@ -234,8 +234,8 @@ then
 		count="0"
 		while ( ( [ ! -f /root/snap/linode-cli/current/.config/linode-cli ] || [ ! -f /root/snap/linode-cli/current/.config/dns-linode-cli ] ) && [ "${count}" -lt "5" ] )
 		do
-			/bin/cp /root/.config/linode-cli /root/snap/linode-cli/current/.config/linode-cli
-			/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/dns-linode-cli
+			/bin/cp /root/.config/linode-cli /root/snap/linode-cli/current/.config/linode-cli  2>&1 >/dev/null
+			/bin/cp /root/.config/dns-linode-cli /root/snap/linode-cli/current/.config/dns-linode-cli  2>&1 >/dev/null
 			count="`/usr/bin/expr ${count} + 1`"
 			/bin/sleep 5
 		done
