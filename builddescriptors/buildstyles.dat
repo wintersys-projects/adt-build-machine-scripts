@@ -203,8 +203,8 @@ DATASTORETOOL:rclone:binary
 CLOUDCLITOOL:doctl:binary
 CLOUDCLITOOL:linode-cli:pip
 #CLOUDCLITOOL:linode-cli:snap
-#CLOUDCLITOOL:exo:repo
-CLOUDCLITOOL:exo:source
+CLOUDCLITOOL:exo:repo
+#CLOUDCLITOOL:exo:source
 #CLOUDCLITOOL:vultr:binary
 CLOUDCLITOOL:vultr:source
 #GO:repo
