@@ -143,6 +143,19 @@ if ( [ "${DNS_CHOICE}" = "vultr" ] )
 then
         #VULTR_API_KEY="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':' '{print $1}'`"
         command="VULTR_API_KEY=${DNS_SECURITY_KEY} VULTR_POLLING_INTERVAL=30 VULTR_PROPAGATION_TIMEOUT=600  LEGO_DISABLE_CNAME_SUPPORT=true /usr/bin/lego --email ${DNS_USERNAME} --dns ${DNS_CHOICE} ${server} --domains ${WEBSITE_URL} --dns-timeout=120 --dns.propagation-wait 60s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --accept-tos run"
+       
+fi
+
+if ( [ "`/usr/bin/stat /usr/bin/lego | /bin/grep "File" | /usr/bin/awk '{print $NF}'`" = "/snap/bin/lego" ] )
+then
+        if ( [ -f /var/snap/lego/common/.lego/certificates/${WEBSITE_URL}.issuer.crt ] )
+        then
+                if ( [ ! -d ${BUILD_HOME}/.lego/certificates ] )
+                then
+                        /bin/mkdir -p ${BUILD_HOME}/.lego/certificates
+                fi
+                /bin/cp /var/snap/lego/common/.lego/certificates/${WEBSITE_URL}.issuer.crt ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt
+        fi
 fi
 
 if ( [ ! -f ${BUILD_HOME}/.lego/certificates/${WEBSITE_URL}.issuer.crt ] )
