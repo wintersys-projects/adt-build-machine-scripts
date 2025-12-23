@@ -57,7 +57,7 @@ fi
 
 if ( [ "${FROM_ADDRESS}" != "" ] && [ "${TO_ADDRESS}" != "" ] && [ "${USERNAME}" != "" ] && [ "${PASSWORD}" != "" ] && [ "${subject}" != "" ] && [ "${message}" != "" ] )
 then
-	if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'EMAILUTIL:sendemail'`" = "1" ] )
+	if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep EMAILUTIL:sendemail`" != "" ] )
 	then
 		if ( [ "${EMAIL_PROVIDER}" = "1" ] )
 		then
@@ -72,7 +72,8 @@ then
 			/usr/bin/sendemail -o tls=no -f ${FROM_ADDRESS} -t ${TO_ADDRESS} -s email-smtp.eu-west-1.amazonaws.com -xu ${USERNAME} -xp ${PASSWORD} -u "${subject} `/bin/date`" -m ${message}
 		fi
 	fi
-	if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'EMAILUTIL:ssmtp'`" = "1" ] )
+
+	if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep EMAILUTIL:ssmtp`" != "" ] )
 	then
 		if ( [ ! -f ${HOME}/runtime/SSMTP_INITIALISED ] )
 		then
@@ -104,5 +105,5 @@ then
 		fi
 	fi
 else
-	/bin/echo "${0} `/bin/date`:Email not sent because of missing parameter(s)"
+	status "`/bin/date`:Email not sent because of missing parameter(s)"
 fi
