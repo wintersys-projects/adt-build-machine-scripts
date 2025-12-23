@@ -27,12 +27,12 @@ fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
-if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
+if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep sendemail`" != "" ] )
 then
-        ${HOME}/installscripts/InstallSendEmail.sh ${BUILDOS}
+        ${BUILD_HOME}/installscripts/InstallSendEmail.sh ${buildos}
 fi
 
-if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
+if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep ssmtp`" != "" ] )
 then
-        ${HOME}/installscripts/InstallSSMTP.sh ${BUILDOS}
+        ${BUILD_HOME/installscripts/InstallSSMTP.sh ${buildos}
 fi
