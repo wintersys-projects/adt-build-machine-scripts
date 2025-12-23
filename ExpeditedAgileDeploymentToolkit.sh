@@ -467,12 +467,15 @@ ${BUILD_HOME}/initscripts/InitialiseNewSSLCertificate.sh
 ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh 
 
 
-status "####FIREWALL NOTICE######"
-status "Your firewalling system is configured as follows:"
-status "/bin/grep -v "^#" ${BUILD_HOME}/builddescriptors/firewallports.dat`"
-status "If this is OK with you, press <enter> otherwise you can modify the file ${BUILD_HOME}/builddescriptors/firewallports.dat"
-status "####FIREWALL NOTICE######"
-read x
+if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+then
+	status "####FIREWALL NOTICE######"
+	status "Your firewalling system is configured as follows:"
+	status "/bin/grep -v "^#" ${BUILD_HOME}/builddescriptors/firewallports.dat`"
+	status "If this is OK with you, press <enter> otherwise you can modify the file ${BUILD_HOME}/builddescriptors/firewallports.dat"
+	status "####FIREWALL NOTICE######"
+	read x
+fi
 
 #Just check that its 'all systems go'
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
