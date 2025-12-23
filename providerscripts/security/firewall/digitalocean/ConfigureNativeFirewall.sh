@@ -208,7 +208,9 @@ fi
 if ( [ "${firewall_rules}" != "" ] )
 then
         rules="${rules} ${firewall_rules}"
-        rules=`/bin/echo ${rules} | /bin/sed 's; ;\n;g'` | /usr/bin/sort -u | /usr/bin/tr -s \\n ' ' | /bin/sed 's/ $//g'`"
+        rules=`/bin/echo ${rules} | /bin/sed 's; ;\n;g' | /usr/bin/sort -u`
+        rules="`/bin/echo ${rules} | /bin/sed -e 's;\n; ;g' -e 's; $;;g'`"
+
 
         /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
 
