@@ -34,18 +34,21 @@ then
 	message="MESSAGE RELATED TO MACHINE WITH IP ADDRESS: ${ip_address}: ${message}"
 fi
 
-FROM_ADDRESS="`${HOME}/utilities/config/ExtractConfigValue.sh 'SYSTEMFROMEMAILADDRESS'`"
-FROM_NAME="`${HOME}/utilities/config/ExtractConfigValue.sh 'WEBSITEDISPLAYNAME | /usr/bin/sed 's/_//g''`"
-TO_ADDRESS="`${HOME}/utilities/config/ExtractConfigValue.sh 'SYSTEMTOEMAILADDRESS'`"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+FROM_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROM_EMAIL_ADDRESS`"
+FROM_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEDISPLAYNAME | /usr/bin/sed 's/_//g'`"
+TO_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROM_TO_ADDRESS`"
+
 
 if ( [ "${to_address}" != "" ] )
 then
 	TO_ADDRESS="${to_address}"
 fi
 
-USERNAME="`${HOME}/utilities/config/ExtractConfigValue.sh 'EMAILUSERNAME'`"
-PASSWORD="`${HOME}/utilities/config/ExtractConfigValue.sh 'EMAILPASSWORD'`"
-EMAIL_PROVIDER="`${HOME}/utilities/config/ExtractConfigValue.sh 'EMAILPROVIDER'`"
+USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILUSERNAME`"
+PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILPASSWORD`"
+EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILPROVIDER`"
+
 
 if ( [ "${level}" != "MANDATORY" ] && [ "`${HOME}/utilities/config/CheckConfigValue.sh EMAILNOTIFICATIONLEVEL:ERROR`" = "1" ] && [ "${level}" != "ERROR" ] )
 then
