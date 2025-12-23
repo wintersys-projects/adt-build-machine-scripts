@@ -22,9 +22,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 subject="$1"
@@ -34,13 +34,14 @@ to_address="$4"
 content_type="$5"
 authentication="${6}"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 if ( ( [ "${level}" = "ERROR" ] || [ "${level}" = "INFO" ] || [ "${level}" = "MANDATORY" ] ) && [ "${authentication}" != "AUTHENTICATION" ] )
 then
-	ip_address="`${HOME}/utilities/processing/GetPublicIP.sh`"
-	message="MESSAGE RELATED TO MACHINE WITH IP ADDRESS: ${ip_address}: ${message}"
+        ip_address="`${BUILD_HOME}/helperscripts/GetBuildMachineIP.sh`"
+        message="MESSAGE RELATED TO MACHINE WITH IP ADDRESS: ${ip_address}: ${message}"
 fi
 
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 FROM_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROM_EMAIL_ADDRESS`"
 FROM_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEDISPLAYNAME | /usr/bin/sed 's/_//g'`"
 TO_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROM_TO_ADDRESS`"
@@ -48,7 +49,7 @@ TO_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROM_TO_ADDR
 
 if ( [ "${to_address}" != "" ] )
 then
-	TO_ADDRESS="${to_address}"
+        TO_ADDRESS="${to_address}"
 fi
 
 USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILUSERNAME`"
@@ -58,58 +59,58 @@ EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILPROVIDER`"
 
 if ( [ "${level}" != "MANDATORY" ] && [ "`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILNOTIFICATIONLEVEL`" = "ERROR" ] && [ "${level}" != "ERROR" ] )
 then
-	exit
+        exit
 fi
 
 if ( [ "${FROM_ADDRESS}" != "" ] && [ "${TO_ADDRESS}" != "" ] && [ "${USERNAME}" != "" ] && [ "${PASSWORD}" != "" ] && [ "${subject}" != "" ] && [ "${message}" != "" ] )
 then
-	if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep EMAILUTIL:sendemail`" != "" ] )
-	then
-		if ( [ "${EMAIL_PROVIDER}" = "1" ] )
-		then
-			/usr/bin/sendemail -o tls=no -f ${FROM_ADDRESS} -t ${TO_ADDRESS} -s smtp-pulse.com:2525 -xu ${USERNAME} -xp ${PASSWORD} -u "${subject} `/bin/date`" -m ${message}
-		fi
-		if ( [ "${EMAIL_PROVIDER}" = "2" ] )
-		then
-			/usr/bin/sendemail -o tls=no -f ${FROM_ADDRESS} -t ${TO_ADDRESS} -s in.mailjet.com:2525 -xu ${USERNAME} -xp ${PASSWORD} -u "${subject} `/bin/date`" -m ${message}    		
-		fi
-		if ( [ "${EMAIL_PROVIDER}" = "3" ] )
-		then
-			/usr/bin/sendemail -o tls=no -f ${FROM_ADDRESS} -t ${TO_ADDRESS} -s email-smtp.eu-west-1.amazonaws.com -xu ${USERNAME} -xp ${PASSWORD} -u "${subject} `/bin/date`" -m ${message}
-		fi
-	fi
+        if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep EMAILUTIL:sendemail`" != "" ] )
+        then
+                if ( [ "${EMAIL_PROVIDER}" = "1" ] )
+                then
+                        /usr/bin/sendemail -o tls=no -f ${FROM_ADDRESS} -t ${TO_ADDRESS} -s smtp-pulse.com:2525 -xu ${USERNAME} -xp ${PASSWORD} -u "${subject} `/bin/date`" -m ${message}
+                fi
+                if ( [ "${EMAIL_PROVIDER}" = "2" ] )
+                then
+                        /usr/bin/sendemail -o tls=no -f ${FROM_ADDRESS} -t ${TO_ADDRESS} -s in.mailjet.com:2525 -xu ${USERNAME} -xp ${PASSWORD} -u "${subject} `/bin/date`" -m ${message}    
+                fi
+                if ( [ "${EMAIL_PROVIDER}" = "3" ] )
+                then
+                        /usr/bin/sendemail -o tls=no -f ${FROM_ADDRESS} -t ${TO_ADDRESS} -s email-smtp.eu-west-1.amazonaws.com -xu ${USERNAME} -xp ${PASSWORD} -u "${subject} `/bin/date`" -m ${message}
+                fi
+        fi
 
-	if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep EMAILUTIL:ssmtp`" != "" ] )
-	then
-		if ( [ ! -f ${HOME}/runtime/SSMTP_INITIALISED ] )
-		then
-			if ( [ "${EMAIL_PROVIDER}" = "1" ] )
-			then
-				/bin/echo "mailhub=smtp-pulse.com:2525" >> /etc/ssmtp/ssmtp.conf
-			fi
-			if ( [ "${EMAIL_PROVIDER}" = "2" ] )
-			then
-				/bin/echo "mailhub=in-v3.mailjet.com:587" >> /etc/ssmtp/ssmtp.conf
-			fi
-			if ( [ "${EMAIL_PROVIDER}" = "3" ] )
-			then
-				/bin/echo "mailhub=email-smtp.eu-west-1.amazonaws.com" >> /etc/ssmtp/ssmtp.conf
-			fi
+        if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep EMAILUTIL:ssmtp`" != "" ] )
+        then
+                if ( [ ! -f ${HOME}/runtime/SSMTP_INITIALISED ] )
+                then
+                        if ( [ "${EMAIL_PROVIDER}" = "1" ] )
+                        then
+                                /bin/echo "mailhub=smtp-pulse.com:2525" >> /etc/ssmtp/ssmtp.conf
+                        fi
+                        if ( [ "${EMAIL_PROVIDER}" = "2" ] )
+                        then
+                                /bin/echo "mailhub=in-v3.mailjet.com:587" >> /etc/ssmtp/ssmtp.conf
+                        fi
+                        if ( [ "${EMAIL_PROVIDER}" = "3" ] )
+                        then
+                                /bin/echo "mailhub=email-smtp.eu-west-1.amazonaws.com" >> /etc/ssmtp/ssmtp.conf
+                        fi
 
-			/bin/echo "AuthUser=${USERNAME}" >> /etc/ssmtp/ssmtp.conf
-			/bin/echo "AuthPass=${PASSWORD}" >> /etc/ssmtp/ssmtp.conf
-			/bin/echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
-			/bin/echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
-			/bin/touch ${HOME}/runtime/SSMTP_INITIALISED
-		fi
+                        /bin/echo "AuthUser=${USERNAME}" >> /etc/ssmtp/ssmtp.conf
+                        /bin/echo "AuthPass=${PASSWORD}" >> /etc/ssmtp/ssmtp.conf
+                        /bin/echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
+                        /bin/echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
+                        /bin/touch ${HOME}/runtime/SSMTP_INITIALISED
+                fi
 
-		if ( [ "${content_type}" = "HTML" ] )
-		then
-			/bin/echo "${message}" | /usr/bin/mail -s "${subject}" -a "From: ${FROM_NAME} <${FROM_ADDRESS}>" "${TO_ADDRESS}" -a 'Content-Type: text/html'
-		else
-			/bin/echo "${message}" | /usr/bin/mail -s "${subject}" -a "From: ${FROM_NAME} <${FROM_ADDRESS}>" "${TO_ADDRESS}"
-		fi
-	fi
+                if ( [ "${content_type}" = "HTML" ] )
+                then
+                        /bin/echo "${message}" | /usr/bin/mail -s "${subject}" -a "From: ${FROM_NAME} <${FROM_ADDRESS}>" "${TO_ADDRESS}" -a 'Content-Type: text/html'
+                else
+                        /bin/echo "${message}" | /usr/bin/mail -s "${subject}" -a "From: ${FROM_NAME} <${FROM_ADDRESS}>" "${TO_ADDRESS}"
+                fi
+        fi
 else
-	status "`/bin/date`:Email not sent because of missing parameter(s)"
+        status "`/bin/date`:Email not sent because of missing parameter(s)"
 fi
