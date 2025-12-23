@@ -42,9 +42,9 @@ then
         message="MESSAGE RELATED TO MACHINE WITH IP ADDRESS: ${ip_address}: ${message}"
 fi
 
-FROM_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROM_EMAIL_ADDRESS`"
-FROM_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITEDISPLAYNAME | /usr/bin/sed 's/_//g'`"
-TO_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROM_TO_ADDRESS`"
+FROM_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_FROMEMAIL_ADDRESS`"
+FROM_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_DISPLAYNAME | /usr/bin/sed 's/_//g'`"
+TO_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_TOEMAIL_ADDRESS`"
 
 
 if ( [ "${to_address}" != "" ] )
@@ -52,12 +52,11 @@ then
         TO_ADDRESS="${to_address}"
 fi
 
-USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILUSERNAME`"
-PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILPASSWORD`"
-EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILPROVIDER`"
+USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_USERNAME`"
+PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_PASSWORD`"
+EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SYSTEM_EMAIL_PROVIDER`"
 
-
-if ( [ "${level}" != "MANDATORY" ] && [ "`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILNOTIFICATIONLEVEL`" = "ERROR" ] && [ "${level}" != "ERROR" ] )
+if ( [ "${level}" != "MANDATORY" ] && [ "`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAIL_NOTIFICATION_LEVEL`" = "ERROR" ] && [ "${level}" != "ERROR" ] )
 then
         exit
 fi
