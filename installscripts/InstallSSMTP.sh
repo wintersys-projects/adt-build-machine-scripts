@@ -25,6 +25,8 @@ then
 	buildos="${1}"
 fi
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 apt=""
 if ( [ "`/bin/grep "^PACKAGEMANAGER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "apt" ] )
 then
