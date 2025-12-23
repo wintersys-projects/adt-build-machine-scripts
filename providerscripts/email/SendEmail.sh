@@ -50,7 +50,7 @@ PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILPASSWORD`"
 EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILPROVIDER`"
 
 
-if ( [ "${level}" != "MANDATORY" ] && [ "`${HOME}/utilities/config/CheckConfigValue.sh EMAILNOTIFICATIONLEVEL:ERROR`" = "1" ] && [ "${level}" != "ERROR" ] )
+if ( [ "${level}" != "MANDATORY" ] && [ "`${BUILD_HOME}/helperscripts/GetVariableValue.sh EMAILNOTIFICATIONLEVEL`" = "ERROR" ] && [ "${level}" != "ERROR" ] )
 then
 	exit
 fi
