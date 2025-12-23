@@ -25,6 +25,8 @@ then
     buildos="${1}"
 fi
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
 if ( [ ! -f /usr/bin/vultr ] )
 then
     if ( [ "${buildos}" = "ubuntu" ] )
