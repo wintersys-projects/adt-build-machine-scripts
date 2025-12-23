@@ -1,11 +1,8 @@
-*/1 * * * * export HOME=/home/XQof0QUuSOuLbdGn6uIX && /home/XQof0QUuSOuLbdGn6uIX/utilities/security/AuditSSHConnections.sh
-
-
 #!/bin/sh
 #################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
-# Description : Initialise Build Machine firewall crontab
+# Description : Initialise audit ssh connections crontab
 ##################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
