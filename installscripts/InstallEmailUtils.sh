@@ -34,5 +34,5 @@ fi
 
 if ( [ "`/bin/grep "^EMAILUTIL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep ssmtp`" != "" ] )
 then
-        ${BUILD_HOME/installscripts/InstallSSMTP.sh ${buildos}
+        ${BUILD_HOME}/installscripts/InstallSSMTP.sh ${buildos}
 fi
