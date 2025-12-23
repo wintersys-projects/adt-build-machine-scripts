@@ -205,24 +205,21 @@ then
         rules="`/bin/echo ${rules} | /usr/bin/tr -s ' '`"                
 fi
 
-if ( [ "${firewall_rules}" != "" ] )
-then
-        rules="${rules} ${firewall_rules}"
-        rules=`/bin/echo ${rules} | /bin/sed 's; ;\n;g' | /usr/bin/sort -u`
-        rules="`/bin/echo ${rules} | /bin/sed -e 's;\n; ;g' -e 's; $;;g'`"
+rules="${rules} ${firewall_rules}"
+rules=`/bin/echo ${rules} | /bin/sed 's; ;\n;g' | /usr/bin/sort -u`
+rules="`/bin/echo ${rules} | /bin/sed -e 's;\n; ;g' -e 's; $;;g'`"
 
+/usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
 
-        /usr/local/bin/doctl compute firewall add-rules ${firewall_id} --inbound-rules "${rules}" --outbound-rules "protocol:tcp,ports:all,protocol:tcp,ports:all,address:0.0.0.0/0 protocol:udp,ports:all,address:0.0.0.0/0 protocol:icmp,address:0.0.0.0/0"
+machine_ids=""
+while ( [ "${machine_ids}" = "" ] )
+do
+        machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_identifier}" ${CLOUDHOST}`"
+        /bin/sleep 5
+done
 
-        machine_ids=""
-        while ( [ "${machine_ids}" = "" ] )
-        do
-                machine_ids="`${BUILD_HOME}/providerscripts/server/ListServerIDs.sh "${machine_identifier}" ${CLOUDHOST}`"
-                /bin/sleep 5
-        done
+for machine_id in ${machine_ids}
+do
+        /usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
+done
 
-        for machine_id in ${machine_ids}
-        do
-                /usr/local/bin/doctl compute firewall add-droplets ${firewall_id} --droplet-ids ${machine_id}                
-        done
-fi
