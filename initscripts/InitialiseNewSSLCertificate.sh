@@ -20,7 +20,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ##################################################################################
 ##################################################################################
-set -x
+#set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -244,8 +244,11 @@ then
                 then
                         ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
                         ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
+                then
+                        ${BUILD_HOME}/providerscripts/email/SendEmail.sh "NEW SSL CERTIFICATE PUT IN DATASTORE" "SSL Certificate not successfully provisioned/generated" "INFO"
                 fi
         else
+                ${BUILD_HOME}/providerscripts/email/SendEmail.sh "SSL CERTIFICATE NOT SUCCESSFULLY GENERATED" "SSL Certificate not successfully provisioned/generated" "INFO"
                 status "SSL Certificate not successfully provisioned/generated"
                 /bin/touch /tmp/END_IT_ALL
         fi
