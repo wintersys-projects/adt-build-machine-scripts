@@ -21,22 +21,22 @@
 ########################################################################################
 #set -x
 
-HOME="`/bin/cat /home/homedir.dat`"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 ssh_client_ips="`/usr/bin/pinky | /usr/bin/awk '{print $NF}' | /usr/bin/tail -n +2`"
 
-if ( [ ! -d ${HOME}/runtime/ssh-audit ] )
+if ( [ ! -d ${BUILD_HOME}/runtimedata/ssh-audit ] )
 then
-        /bin/mkdir -p ${HOME}/runtime/ssh-audit
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/ssh-audit
 fi
 
-/bin/touch ${HOME}/runtime/ssh-audit/audit_trail
+/bin/touch ${BUILD_HOME}/runtime/ssh-audit/audit_trail
 
 for ssh_client_ip in ${ssh_client_ips}
 do
         if ( [ "`/bin/grep ${ssh_client_ip} ${HOME}/runtime/ssh-audit/audit_trail`" = "" ] )
         then
-                /bin/echo "SSH connection first initiated at `/usr/bin/date` from IP address ${ssh_client_ip}" > ${HOME}/runtime/ssh-audit/audit_trail
-                ${HOME}/providerscripts/email/SendEmail.sh "SSH CONNECTION FROM A NEW IP ADDRESS" "There has been a new connection from an unknown IP ${ssh_client_ip} to machine `/usr/bin/hostname`" "ERROR"
+                /bin/echo "SSH connection first initiated at `/usr/bin/date` from IP address ${ssh_client_ip}" > ${BUILD_HOME}/runtimedata/ssh-audit/audit_trail
+                ${BUILD_HOME}/providerscripts/email/SendEmail.sh "SSH CONNECTION FROM A NEW IP ADDRESS" "There has been a new connection from an unknown IP ${ssh_client_ip} to machine `/usr/bin/hostname`" "ERROR"
         fi
 done
