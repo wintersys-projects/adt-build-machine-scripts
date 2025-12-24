@@ -122,15 +122,6 @@ status () {
 	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
-# It is required that this script is only run directly from the directory it is installed in
-if ( [ ! -f ./ExpeditedAgileDeploymentToolkit.sh ] )
-then
-	status "You can only run this script from its own directory"
-	exit
-else
-	BUILD_HOME="`/usr/bin/pwd`"
-fi
-
 # If parametes have been set from the command line then populate the respective variables
 # which means we don't have to obtain them interactively
 # ./ExpeditedAgileDeploymentToolkit.sh <cloudhost> <buildos> <selected template> <build identifier>
