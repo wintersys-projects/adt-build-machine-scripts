@@ -244,7 +244,7 @@ then
                 then
                         ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
                         ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
-                then
+                else
                         ${BUILD_HOME}/providerscripts/email/SendEmail.sh "NEW SSL CERTIFICATE PUT IN DATASTORE" "SSL Certificate not successfully provisioned/generated" "INFO"
                 fi
         else
