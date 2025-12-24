@@ -469,12 +469,15 @@ ${BUILD_HOME}/initscripts/InitialiseCloudInit.sh
 
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-	status "####FIREWALL NOTICE######"
-	status "Your firewalling system is configured as follows:"
-	status "/bin/grep -v "^#" ${BUILD_HOME}/builddescriptors/firewallports.dat`"
-	status "If this is OK with you, press <enter> otherwise you can modify the file ${BUILD_HOME}/builddescriptors/firewallports.dat"
-	status "####FIREWALL NOTICE######"
-	read x
+        status ""
+        status "####FIREWALL ATTENTION NOTICE######"
+        status "Your firewalling system is configured as follows:"
+        status ""
+        status "`/bin/grep -v '^#' ${BUILD_HOME}/builddescriptors/firewallports.dat`"
+        status ""
+        status "If your firewall is not set correctly the connection to your webserver/reverse proxy will timeout"
+        status "If you are sure this configuration is what you want press <enter> otherwise you can modify the file ${BUILD_HOME}/builddescriptors/firewallports.dat"
+        read x
 fi
 
 #Just check that its 'all systems go'
