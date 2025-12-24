@@ -483,7 +483,10 @@ fi
 #Just check that its 'all systems go'
 if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
 then
-	status "Are you happy for the build to proceed? Pressing <enter> now will begin the process of building your server machines"
+	status ""
+	status "#######################################################################################################################"
+	status "Are you happy for the build to proceed? Pressing <enter> now will initiate the process of building your server machines"
+	status "#######################################################################################################################"
 	read x
 fi
 
