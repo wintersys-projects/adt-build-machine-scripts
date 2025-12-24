@@ -84,6 +84,13 @@ end_it_all  &
 trap '/bin/sleep 2; /usr/bin/pwd' EXIT
 trap '/bin/touch /tmp/END_IT_ALL_USER; exit' INT
 
+#Set the hostname of the build machine
+if ( [ "`/usr/bin/hostname`" != "build-machine" ] )
+then
+	/bin/sed 's/^127.0.0.1.*/127.0.0.1       build-machine/' /etc/hosts
+	/usr/bin/hostnamectl set-hostname build-machine
+fi
+
 #Set up the intial logging  output. This is where the logging messages will be stored when they occur before
 #the main logging configuration has been set up. There is an output log for stdout and and error log for stderr
 if ( [ ! -d /root/logs ] )
