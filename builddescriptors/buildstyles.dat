@@ -221,4 +221,4 @@ EMAILUTIL:sendemail
 SSLCERTCLIENT:acme:github.com
 #SSLCERTCLIENT:lego:binary
 GITBRANCH:main
-VIRUSSCANNER:clamav:hourly
+VIRUSSCANNER:clamav:daily
