@@ -32,3 +32,4 @@ ${BUILD_HOME}/cron/InitialiseBuildMachineFirewallCron.sh
 ${BUILD_HOME}/cron/InitialiseUpdateAndUpgradeCron.sh
 ${BUILD_HOME}/cron/InitialiseRenewSSLCertificateCron.sh
 ${BUILD_HOME}/cron/InitialiseAuditSSHConnectionsCron.sh
+${BUILD_HOME}/cron/InitialiseVirusScannerCron.sh
