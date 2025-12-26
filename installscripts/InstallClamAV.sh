@@ -43,27 +43,17 @@ if ( [ "${apt}" != "" ] )
 then
 	if ( [ "${buildos}" = "ubuntu" ] )
 	then
-		if ( [ "`/bin/grep "^FAIL2BAN:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep active`" != "" ] )
+		if ( [ "`/bin/grep "^VIRUSSCANNER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep clamav`" != "" ] )
         then
 			eval ${install_command} fail2ban
-			
-			if ( [ ! -f /etc/fail2ban/jail.d/jail.local ] )
-			then
-				/bin/cp ${BUILD_HOME}/security/firewall/config/fail2ban.conf  /etc/fail2ban/jail.d/jail.local
-			fi
 		fi
 	fi
 
 	if ( [ "${buildos}" = "debian" ] )
 	then
-		if ( [ "`/bin/grep "^FAIL2BAN:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep active`" != "" ] )
+		if ( [ "`/bin/grep "^VIRUSSCANNER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep clamav`" != "" ] )
         then
 			eval ${install_command} fail2ban
-			
-			if ( [ ! -f /etc/fail2ban/jail.d/jail.local ] )
-			then
-				/bin/cp ${BUILD_HOME}/security/firewall/config/fail2ban.conf  /etc/fail2ban/jail.d/jail.local
-			fi
 		fi
 	fi
 fi
