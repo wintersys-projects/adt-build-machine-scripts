@@ -45,7 +45,7 @@ then
 	then
 		if ( [ "`/bin/grep "^VIRUSSCANNER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep clamav`" != "" ] )
         then
-			eval ${install_command} fail2ban
+			eval ${install_command} clamav clamav-daemon clamav-freshclam clamdscan
 		fi
 	fi
 
@@ -53,7 +53,7 @@ then
 	then
 		if ( [ "`/bin/grep "^VIRUSSCANNER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep clamav`" != "" ] )
         then
-			eval ${install_command} fail2ban
+			eval ${install_command} clamav clamav-daemon clamav-freshclam clamdscan
 		fi
 	fi
 fi
