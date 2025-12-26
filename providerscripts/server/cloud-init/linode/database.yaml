@@ -109,6 +109,7 @@ runcmd:
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallGo.sh &' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallDatastoreTools.sh' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallFirewall.sh' 
+  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallVirusScanner.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallDatabase.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/db.sh &'
   - '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr "[:upper:]" "[:lower:]" | /bin/egrep -o "(ubuntu|debian)"` &'
