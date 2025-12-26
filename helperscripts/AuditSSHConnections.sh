@@ -23,6 +23,11 @@
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh INSTALLED_SUCCESSFULLY`" = "" ] )
+then    
+        exit
+fi  
+
 ssh_client_ips="`/usr/bin/pinky | /usr/bin/awk '{print $NF}' | /usr/bin/tail -n +2`"
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/ssh-audit ] )
