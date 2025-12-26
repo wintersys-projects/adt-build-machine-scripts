@@ -539,7 +539,7 @@ then
     #Set the hostname of the build machine
     if ( [ "`/usr/bin/hostname`" != "build-machine" ] )
     then
-	    /bin/sed 's/^127.0.0.1.*/127.0.0.1       build-machine/' /etc/hosts
+		/bin/sed '/^127.0.0.1/a 127.0.0.1          build-machine' /etc/hosts
 	    /usr/bin/hostnamectl set-hostname build-machine
     fi
 
