@@ -103,7 +103,7 @@
 # SSLCERTCLIENT:acme:github.com
 # GITBRANCH:main|dev
 # You can create branches as you need to but currently there is a main branch and a dev branch to work with
-# You can scan for viruses on your servers on a periodic basis VIRUSSCANNER:clamav:daily|weekly|monthly
+# You can scan for viruses on your servers on a periodic basis VIRUSSCANNER:clamav:hourly|daily|weekly|monthly
 # VIRUSSCANNER:clamav:daily
 ###############################################################################################################################################
 # License Agreement:
