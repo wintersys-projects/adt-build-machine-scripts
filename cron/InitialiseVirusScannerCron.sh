@@ -20,7 +20,7 @@
 ####################################################################################
 #set -x
 
-if ( [ "`/usr/bin/crontab -l | /bin/grep 'apt' | /bin/grep 'update' | /bin/grep 'upgrade'`" = "" ] )
+if ( [ "`/usr/bin/crontab -l | /bin/grep 'VirusScan.sh'`" = "" ] )
 then
-        /bin/echo "45 4 * * * /usr/bin/apt -y -qq update && /usr/bin/apt -y -qq upgrade && /usr/sbin/shutdown -r now" >> /var/spool/cron/crontabs/root
+        /bin/echo "@daily /usr/bin/nice -n 15 ${BUILD_HOME}/helperscripts/VirusScan.sh" >> /var/spool/cron/crontabs/root
 fi
