@@ -34,7 +34,7 @@ then
   /bin/mkdir -p ${BUILD_HOME}/runtimedata/virus_report
 fi
 
-/usr/bin/clamscan --max-filesize=2000M --max-scansize=2000M --recursive=yes --infected / > ${BUILD_HOME}/runtimedata/virus_report/latest.log  2>/dev/null
+/usr/bin/clamscan --max-filesize=2000M --max-scansize=2000M --recursive=yes --infected /var /home /tmp  > ${BUILD_HOME}/runtimedata/virus_report/latest.log  2>/dev/null
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/virus_report/latest.log ] || [ "`/usr/bin/find ${BUILD_HOME}/runtimedata/virus_report/virus_report/latest.log -cmin -5`" = "" ] )
 then
