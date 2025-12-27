@@ -102,6 +102,8 @@ then
 		${BUILD_HOME}/installscripts/InstallCron.sh "ubuntu" >>${upgrade_log} 2>&1 
 		status "Installing/Updating Email Utilities"
 		${BUILD_HOME}/installscripts/InstallEmailUtils.sh "ubuntu" >>${upgrade_log} 2>&1 
+		status "Installing/Updating Virus Scanner"
+		${BUILD_HOME}/installscripts/InstallVirusScanner.sh "ubuntu" >>${upgrade_log} 2>&1 
 		/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
 	elif ( [ "`/usr/bin/awk -F= '/^NAME/{print $2}' /etc/os-release | /bin/grep "Debian"`" != "" ] )
 	then     
@@ -136,7 +138,9 @@ then
 		status "Installing/Updating Cron"
 		${BUILD_HOME}/installscripts/InstallCron.sh "debian" >>${upgrade_log} 2>&1 
 		status "Installing/Updating Email Utilities"
-		${BUILD_HOME}/installscripts/InstallEmailUtils.sh "ubuntu" >>${upgrade_log} 2>&1 
+		${BUILD_HOME}/installscripts/InstallEmailUtils.sh "debian" >>${upgrade_log} 2>&1 
+		status "Installing/Updating Virus Scanner"
+		${BUILD_HOME}/installscripts/InstallVirusScanner.sh "debian" >>${upgrade_log} 2>&1 
 		/bin/touch ${BUILD_HOME}/runtimedata/EXUPDATEDSOFTWARE
 	fi
 	/bin/touch /root/UPDATEDSOFTWARE
