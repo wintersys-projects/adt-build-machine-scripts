@@ -24,6 +24,6 @@ BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 if ( [ "`/usr/bin/crontab -l | /bin/grep 'VirusScan.sh'`" = "" ] )
 then
-        /bin/echo "@daily /usr/bin/nice -n 15 ${BUILD_HOME}/helperscripts/VirusScan.sh" >> /var/spool/cron/crontabs/root
+        /bin/echo "@daily /bin/sleep `/usr/bin/shuf -i1-1000 -n1` && /usr/bin/nice -n 15 ${BUILD_HOME}/helperscripts/VirusScan.sh" >> /var/spool/cron/crontabs/root
         /usr/bin/crontab -u root /var/spool/cron/crontabs/root 2>/dev/null
 fi
