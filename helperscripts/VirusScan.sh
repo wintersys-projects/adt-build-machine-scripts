@@ -34,7 +34,10 @@ then
   /bin/mkdir -p ${BUILD_HOME}/runtimedata/virus_report
 fi
 
-/usr/bin/clamscan --max-filesize=2000M --max-scansize=2000M --recursive=yes --infected /var /home /tmp  > ${BUILD_HOME}/runtimedata/virus_report/latest.log  2>/dev/null
+if ( [ "`/bin/grep "^VIRUSSCANNER:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep clamav`" != "" ] )
+then
+  /usr/bin/clamscan --max-filesize=2000M --max-scansize=2000M --recursive=yes --infected /var /home /tmp  > ${BUILD_HOME}/runtimedata/virus_report/latest.log  2>/dev/null
+fi
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/virus_report/latest.log ] || [ "`/usr/bin/find ${BUILD_HOME}/runtimedata/virus_report/virus_report/latest.log -cmin -5`" = "" ] )
 then
