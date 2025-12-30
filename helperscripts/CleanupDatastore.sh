@@ -68,7 +68,7 @@ do
 			${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "${bucket}"
 		else
 			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh "${bucket}" 2>/dev/null
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromConfigDatastore.sh ${bucket}`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh ${bucket}`" != "" ] )
             then
 				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh "${bucket}/*"
 			fi
