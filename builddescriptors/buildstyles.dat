@@ -199,8 +199,8 @@ MARIADB:repo:12.0.2
 MYSQL:repo:9.2.0
 POSTGRES:repo:17
 BUILDCHAINTYPE:standard
-DATASTORETOOL:s3cmd:source 
-#DATASTORETOOL:s5cmd:binary
+#DATASTORETOOL:s3cmd:source 
+DATASTORETOOL:s5cmd:source
 #DATASTORETOOL:rclone:binary
 #CLOUDCLITOOL:doctl:binary
 CLOUDCLITOOL:doctl:snap
