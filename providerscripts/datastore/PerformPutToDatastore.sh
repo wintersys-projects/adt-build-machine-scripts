@@ -28,6 +28,8 @@ count="$4"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 datastore_tool=""
+datastore_cmd=""
+datastore_cmd1=""
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
@@ -56,6 +58,8 @@ elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} copy "
+        now="`/usr/bin/date +'%Y-%m-%dT%H:%M:%S'`"
+        datastore_cmd1="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} --timestamp ${now} touch "
         bucket_prefix="s3:"
         slasher=""
 fi
@@ -91,6 +95,12 @@ do
         /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
         /bin/sleep 5
         count="`/usr/bin/expr ${count} + 1`"
+done
+
+if ( [ "${datastore_cmd1}" != "" ] )
+then
+        placed_file="`/bin/echo ${file_to_put} | /usr/bin/awk -F'/' '{print $NF}'`"
+        ${datastore_cmd1} ${bucket_prefix}${place_to_put}${slasher}/${placed_file}
 done
 
 file="`/bin/echo ${file_to_put} | /usr/bin/awk -F'/' '{print $NF}'`"
