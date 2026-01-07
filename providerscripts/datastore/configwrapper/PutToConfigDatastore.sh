@@ -36,81 +36,99 @@ datastore_tool=""
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
-        datastore_tool="/usr/bin/s3cmd"
+	datastore_tool="/usr/bin/s3cmd"
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
-        datastore_tool="/usr/bin/s5cmd"
+	datastore_tool="/usr/bin/s5cmd"
 elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone`" != "" ] )
 then
-        datastore_tool="/usr/bin/rclone"
+	datastore_tool="/usr/bin/rclone"
 fi
 
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
-        host_base="`/bin/grep ^host_base /root/.s3cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --force --host=https://${host_base} put "
-        bucket_prefix="s3://"
-        slasher="/"
+	host_base="`/bin/grep ^host_base /root/.s3cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+	datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --force --host=https://${host_base} put "
+	bucket_prefix="s3://"
+	slasher="/"
+	destination_file=""
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
-        host_base="`/bin/grep ^host_base /root/.s5cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} cp "
-        bucket_prefix="s3://"
-        slasher="/"
+	host_base="`/bin/grep ^host_base /root/.s5cfg-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+	datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-1 --endpoint-url https://${host_base} cp "
+	bucket_prefix="s3://"
+	slasher=""
+	destination_file="/`/bin/echo ${file_to_put} | /usr/bin/awk -F'/' '{print $NF}'`"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
-        host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} copy "
-        bucket_prefix="s3:"
-        slasher=""
+	host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+	datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} copy "
+	now="`/usr/bin/date +'%Y-%m-%dT%H:%M:%S'`"
+	datastore_cmd1="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} --timestamp ${now} touch "
+	bucket_prefix="s3:"
+	slasher="/"
+	destination_file=""
 fi
 
 if ( [ ! -f ${file_to_put} ] )
 then
-        path_to_file="`/bin/echo ${file_to_put} | sed 's:/[^/]*$::' | /bin/sed 's,^/,,'`"
-        file="`/bin/echo "${file_to_put}" | /bin/grep "/" | /usr/bin/awk -F'/' '{print $NF}'`"
+	path_to_file="`/bin/echo ${file_to_put} | sed 's:/[^/]*$::' | /bin/sed 's,^/,,'`"
+	file="`/bin/echo "${file_to_put}" | /bin/grep "/" | /usr/bin/awk -F'/' '{print $NF}'`"
 
-        if ( [ "`/bin/echo ${file_to_put} | /bin/grep "/"`" = "" ] )
-        then
-                file_to_put="/tmp/${file_to_put}"
-    else
-                file_to_put="/tmp/${path_to_file}/${file}"
-                dir="`/bin/echo ${file_to_put} | /bin/sed 's:/[^/]*$::'`"
-                if ( [ -d ${dir} ] )
-                then
-                        /bin/mv ${dir} ${dir}.$$
-                fi
-                /bin/mkdir -p "${dir}"
-        fi
-        /bin/touch ${file_to_put}
+	if ( [ "`/bin/echo ${file_to_put} | /bin/grep "/"`" = "" ] )
+	then
+		file_to_put="/tmp/${file_to_put}"
+	else
+		file_to_put="/tmp/${path_to_file}/${file}"
+		dir="`/bin/echo ${file_to_put} | /bin/sed 's:/[^/]*$::'`"
+		if ( [ -d ${dir} ] )
+		then
+			/bin/mv ${dir} ${dir}.$$
+		fi
+		/bin/mkdir -p "${dir}"
+	fi
+	/bin/touch ${file_to_put}
 fi
+
 
 if ( [ "${place_to_put}" != "" ] )
 then
-        command="${datastore_cmd} ${file_to_put} ${bucket_prefix}${config_bucket}/${place_to_put}${slasher}"
+	command="${datastore_cmd} ${file_to_put} ${bucket_prefix}${config_bucket}/${place_to_put}${slasher}${destination_file}"
+	if ( [ "${datastore_cmd1}" != "" ] )
+	then
+		command1="${datastore_cmd1} ${bucket_prefix}${config_bucket}/${place_to_put}${slasher}${destination_file}"
+	fi
 else
-        command="${datastore_cmd} ${file_to_put} ${bucket_prefix}${config_bucket}"
+	command="${datastore_cmd} ${file_to_put} ${bucket_prefix}${config_bucket}${destination_file}"
+	if ( [ "${datastore_cmd1}" != "" ] )
+	then
+		command1="${datastore_cmd1} ${bucket_prefix}${config_bucket}${destination_file}"
+	fi
 fi
 
 count="0"
 satisfied="0"
 while ( [ "${count}" -lt "5" ] && [ "${satisfied}" = "0" ] )
 do
-        result="`${command} 2>&1 >/dev/null`"
-        if ( [ "`/bin/echo ${result} | /bin/grep 'ERROR'`" != "" ] )
-        then
-                /bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
-                /bin/sleep 5
-                count="`/usr/bin/expr ${count} + 1`"
-        else
-                satisfied="1"
-        fi
+	result="`${command} 2>&1 >/dev/null`"
+	if ( [ "`/bin/echo ${result} | /bin/grep 'ERROR'`" != "" ] )
+	then
+		/bin/echo "An error has occured `/usr/bin/expr ${count} + 1` times in script ${0}"
+		/bin/sleep 5
+		count="`/usr/bin/expr ${count} + 1`"
+ 	else
+		satisfied="1"
+		if ( [ "${command1}" != "" ] )
+		then
+			eval "${command1}"
+		fi
+	fi
 done
 
 if ( [ "${delete}" = "yes" ] )
 then
-        if ( [ -f ${file_to_put} ] )
-        then
-                /bin/rm ${file_to_put}
-        fi
+	if ( [ -f ${file_to_put} ] )
+	then
+		/bin/rm ${file_to_put}
+	fi
 fi
