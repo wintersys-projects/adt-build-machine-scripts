@@ -63,7 +63,7 @@ then
         now="`/usr/bin/date +'%Y-%m-%dT%H:%M:%S'`"
         datastore_cmd1="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} --timestamp ${now} touch "
         bucket_prefix="s3:"
-        slasher=""
+        slasher="/"
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/datastore_workarea ] )
@@ -89,7 +89,7 @@ done
 if ( [ "${datastore_cmd1}" != "" ] )
 then
         placed_file="`/bin/echo ${file_to_put} | /usr/bin/awk -F'/' '{print $NF}'`"
-        ${datastore_cmd1} ${bucket_prefix}${place_to_put}${slasher}/${placed_file}
+        ${datastore_cmd1} ${bucket_prefix}${place_to_put}${slasher}${placed_file}
 fi
 
 if ( [ "${delete}" = "yes" ] )
