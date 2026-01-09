@@ -260,7 +260,7 @@ then
 
 		for ws_active_ip in ${ws_active_ips}
 		do
-			status "Validating ${APPLICATION} configuration settings on machine with ip address ${ws_active_ips}"
+			status "Validating ${APPLICATION} configuration settings on machine with ip address ${ws_active_ip}"
 			/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/InitialiseConfigurationByApplication.sh" 2>/dev/null
 			application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
 
