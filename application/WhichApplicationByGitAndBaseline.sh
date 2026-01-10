@@ -128,7 +128,7 @@ then
 	fi
 
 	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "" "no"
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 	#################WORDPRESS################
 elif ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "WORDPRESS" ] )
 then
@@ -164,7 +164,7 @@ then
 	fi
 
 	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "" "no"
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 	#################DRUPAL################
 elif ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "DRUPAL" ] )
 then
@@ -200,7 +200,7 @@ then
 	fi
 
 	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "" "no"
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 
 	#################MOODLE################
 elif ( [ "`/bin/cat ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dba.dat`" = "MOODLE" ] )
@@ -237,7 +237,7 @@ then
 	fi
 
 	/bin/cp ${interrogation_home}/${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "" "no"
+	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 fi
 
 /bin/rm -r ${interrogation_home}
