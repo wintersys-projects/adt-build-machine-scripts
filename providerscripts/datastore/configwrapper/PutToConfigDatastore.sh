@@ -25,6 +25,11 @@ file_to_put="$1"
 place_to_put="$2"
 delete="$3"
 
+if ( [ "${place_to_put}" = "root" ] )
+then
+        place_to_put=""
+fi
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
