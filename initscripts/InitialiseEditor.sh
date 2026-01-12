@@ -1,7 +1,8 @@
 if ( [ ! -f /root/.vimrc-adt ] )
 then
         /bin/echo "
-	color elflord
+	    color elflord
+	    set clipboard=unnamedplus
         set mouse=r
         syntax on
         filetype indent on
