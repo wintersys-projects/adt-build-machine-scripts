@@ -27,7 +27,7 @@ DATABASE_INSTALLATION_TYPE Maria MySQL Postgres DBaaS
 PERSIST_ASSETS_TO_DATASTORE 0 1
 BUILD_ARCHIVE_CHOICE virgin baseline hourly daily weekly monthly bimonthly
 APPLICATION_LANGUAGE HTML PHP
-PHP_VERSION 8.0 8.1 8.2 8.3 8.4
+PHP_VERSION 8.0 8.1 8.2 8.3 8.4 8.5
 REGION DIGITALOCEAN nyc1 sfo1 nyc2 ams2 sgp1 lon1 nyc3 ams3 fra1 tor1 sfo2 blr1 sfo3 syd1 atl1
 REGION EXOSCALE ch-gva-2 ch-dk-2 at-vie-1 at-vie-2 de-fra-1 bg-sof-1 de-muc-1 hr-zag-1
 REGION LINODE ap-west ca-central ap-southeast us-iad us-ord fr-par us-sea br-gru nl-ams se-sto es-mad in-maa jp-osa it-mil us-mia id-cgk us-lax gb-lon au-mel in-bom-2 de-fra-2 sg-sin-2 jp-tyo-3 us-central us-west us-southeast us-east eu-west ap-south eu-central ap-northeast
