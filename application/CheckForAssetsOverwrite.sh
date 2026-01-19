@@ -49,7 +49,7 @@ then
         for assettype in `/bin/echo ${DIRECTORIES_TO_MOUNT} | /bin/sed 's/:/ /'`
         do
                 assets_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-assets-${assettype}"
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "${assets_bucket}" | /usr/bin/wc -l`" -gt "0" ] )
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh "${assets_bucket}" | /usr/bin/wc -l`" -gt "0" ] )
                 then
                         status "###################################################################################################################"
                         status "=CRITICAL WARNING    CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING="
@@ -94,9 +94,9 @@ then
                         then
                                 status "Making a safety backup: s3://${assets_bucket}-backup-$$ in your primary datastore from a previous build of this website - ${WEBSITE_URL} , please wait....."
 
-                                ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${assets_bucket}-backup-$$
-                                ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${assets_bucket} ${assets_bucket}-backup-$$
-                                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
+                                ${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh ${assets_bucket}-backup-$$
+                                ${BUILD_HOME}/providerscripts/datastore/dedicated/SyncDatastore.sh ${assets_bucket} ${assets_bucket}-backup-$$
+                                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh ${assets_bucket}
 
                                 status "OK, thanks for waiting. You can find your previously deployed assets in s3://${assets_bucket}-backup-$$ in your primary datastore."
                                 status " please press <enter> to continue"
@@ -114,7 +114,7 @@ then
                                 then
                                         /bin/touch /tmp/END_IT_ALL
                                 fi
-                                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${assets_bucket}
+                                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh ${assets_bucket}
                         fi
                 fi
         done
