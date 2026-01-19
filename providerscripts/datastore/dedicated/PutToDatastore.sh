@@ -19,7 +19,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ######################################################################################
 ######################################################################################
-set -x
+#set -x
 
 file_to_put="${1}"
 datastore_to_put_in="${2}"
@@ -39,6 +39,6 @@ fi
 
 while ( [ "${count}" -le "${no_tokens}" ] )
 do
-        ${BUILD_HOME}/providerscripts/datastore/PerformPutToDatastore.sh ${file_to_put} ${datastore_to_put_in} ${delete} ${count}
+        ${BUILD_HOME}/providerscripts/datastore/dedicated/PerformPutToDatastore.sh ${file_to_put} ${datastore_to_put_in} ${delete} ${count}
         count="`/usr/bin/expr ${count} + 1`"
 done
