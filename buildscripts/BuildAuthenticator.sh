@@ -243,8 +243,8 @@ do
 
 			#Our build failed so we don't want any ip address records stored in the S3 datastore
 			#We should destroy the server also because it's hosed
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh authenticatorpublicip
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh authenticatorip
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the authentication server is destroyed because of a faulty build
