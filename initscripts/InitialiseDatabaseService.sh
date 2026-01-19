@@ -621,7 +621,7 @@ then
         /bin/echo "DB_PORT=${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat
 
         multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
-        ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${multi_region_bucket}
+        ${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh ${multi_region_bucket}
 
         if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
         then
