@@ -59,11 +59,11 @@ do
 
         if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "${bucket}"`" != "" ] )
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh "${bucket}"`" != "" ] )
                 then
-                        ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh "${bucket}/*"
+                        ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh "${bucket}/*"
                 fi
-                ${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "${bucket}"
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteDatastore.sh "${bucket}"
         fi
 done
