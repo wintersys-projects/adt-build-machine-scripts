@@ -251,7 +251,7 @@ fi
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ]  )
 then
         multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
         then
                 status "####################HALT################################"
                 status "You are deploying a primary region, are you sure as I am about to delete existing multi-region"
