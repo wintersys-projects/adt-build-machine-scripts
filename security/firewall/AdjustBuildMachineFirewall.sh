@@ -73,11 +73,11 @@ else
         auth_bucket="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 fi
 
-${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${auth_bucket}"
+${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh "${auth_bucket}"
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
 then
-        ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
+        ${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
 fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ] || [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIME_FIREWALL ] )
@@ -92,14 +92,14 @@ then
                 /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/PRIME_FIREWALL
         fi
 
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT 
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh ${auth_bucket}/FIREWALL-EVENT 
         fi
 
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${auth_bucket}/authorised-ips.dat`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${auth_bucket}/authorised-ips.dat`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat  
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat  
         fi
 
         if ( [ "${laptop_ip}" = "" ] )
@@ -126,7 +126,7 @@ then
                         /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 
                         count="0"
-                        while ( [ "`${BUILD_HOME}/providerscripts/datastore/ListDatastore.sh ${auth_bucket}`" = "" ] && [ "${count}" -lt "5" ] )
+                        while ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListDatastore.sh ${auth_bucket}`" = "" ] && [ "${count}" -lt "5" ] )
                         do
                                 ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${auth_bucket}
                                 count="`/usr/bin/expr ${count} + 1`"
