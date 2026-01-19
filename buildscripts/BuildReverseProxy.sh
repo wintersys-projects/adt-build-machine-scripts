@@ -144,18 +144,18 @@ do
                 #Store the public and private ip addresses of the reverse proxy machine in the datastore for access elsewhere
 				if ( [ "${reverse_proxy_no}" = "1" ] )
 				then
-                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxypublicips/*`" != "" ] )
+                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh reverseproxypublicips/*`" != "" ] )
                 	then
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicips/*
+                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxypublicips/*
                 	fi
 
-                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh reverseproxyips/*`" != "" ] )
+                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh reverseproxyips/*`" != "" ] )
                 	then
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyips/*
+                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxyips/*
                 	fi
 				fi
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} reverseproxypublicips "no" 
-                ${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} reverseproxyips "no"
+                ${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} reverseproxypublicips "no" 
+                ${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} reverseproxyips "no"
 
                 #If the build machine is without our VPC we want the private ip address to connect with if not within the VPC we want
                 #the public address to connect to
@@ -240,8 +240,8 @@ do
 
                         #Our build failed so we don't want any ip address records stored in the S3 datastore
                         #We should destroy the server also because it's hosed
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxypublicips
-                        ${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh reverseproxyips
+                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxypublicips
+                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxyips
                         ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ip} ${CLOUDHOST}
 
                         #Wait until we are sure that the reverse proxy server is destroyed because of a faulty build
