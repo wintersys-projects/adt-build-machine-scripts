@@ -583,9 +583,9 @@ fi
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] ) 
 then
         multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${multi_region_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${multi_region_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat
                 DB_NAME="`/bin/grep DB_NAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat | /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_PASSWORD="`/bin/grep DB_PASSWORD ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat| /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_USERNAME="`/bin/grep DB_USERNAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat | /usr/bin/awk -F'=' '{print $NF}'`"
@@ -623,12 +623,12 @@ then
         multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
         ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${multi_region_bucket}
 
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/credentials.dat
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh ${multi_region_bucket}/credentials.dat
         fi
 
-        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat ${multi_region_bucket}
+        ${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat ${multi_region_bucket}
 fi
 
 #Persist our credentials to the file system to be used at will      
