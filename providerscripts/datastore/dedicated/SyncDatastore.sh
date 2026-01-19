@@ -33,6 +33,6 @@ count="1"
 
 while ( [ "${count}" -le "${no_tokens}" ] )
 do
-        ${BUILD_HOME}/providerscripts/datastore/PerformSyncDatastore.sh ${original_object} ${new_object} ${count}
+        ${BUILD_HOME}/providerscripts/datastore/dedicated/PerformSyncDatastore.sh ${original_object} ${new_object} ${count}
         count="`/usr/bin/expr ${count} + 1`"
 done
