@@ -123,7 +123,7 @@ then
 		/bin/touch /tmp/END_IT_ALL
 	fi
 	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
+	${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 	#################WORDPRESS################
 elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "WORDPRESS" ] )
 then
@@ -156,7 +156,7 @@ then
 		status "Error, cannot find db prefix file"
 	fi
 	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
+	${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 	#################DRUPAL################
 elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "DRUPAL" ] )
 then
@@ -190,7 +190,7 @@ then
 	fi
 
 	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
+	${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 	#################MOODLE################
 elif ( [ "`/bin/cat ${interrogation_home}/dba.dat`" = "MOODLE" ] )
 then
@@ -224,7 +224,7 @@ then
 	fi
 
 	/bin/cp ${interrogation_home}/dbp.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
-	${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
+	${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat "root" "no"
 fi
 
 /bin/rm -r ${interrogation_home}
