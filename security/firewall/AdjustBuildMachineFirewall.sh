@@ -128,7 +128,7 @@ then
                         count="0"
                         while ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListDatastore.sh ${auth_bucket}`" = "" ] && [ "${count}" -lt "5" ] )
                         do
-                                ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${auth_bucket}
+                                ${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh ${auth_bucket}
                                 count="`/usr/bin/expr ${count} + 1`"
                         done
 
@@ -137,7 +137,7 @@ then
                                 /bin/echo "${laptop_ip}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
                         fi
 
-                        ${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${auth_bucket} "no"
+                        ${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${auth_bucket} "no"
                 fi
         fi
 
