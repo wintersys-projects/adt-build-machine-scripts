@@ -93,12 +93,12 @@ do
 	read mode
 done
 
-${BUILD_HOME}/providerscripts/datastore/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
+${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ] )
 then
 	/bin/echo "Couldn't find existing authorised ip addresses"
-	${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh ${IDENTIFIER}
+	${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh ${IDENTIFIER}
 fi
 
 if ( [ "${mode}" = "1" ] )
@@ -110,7 +110,7 @@ fi
 
 /bin/cat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat | /usr/bin/sort | /usr/bin/uniq >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
 /bin/mv ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
-${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}
+${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}
 /bin/touch  ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT
-${BUILD_HOME}/providerscripts/datastore/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ${IDENTIFIER}
+${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ${IDENTIFIER}
 /bin/rm ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT
