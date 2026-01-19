@@ -157,17 +157,17 @@ do
 		#Store our IP addresses in the S3 datastore
 		if ( [ "${webserver_no}" = "1" ] )
 		then
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh webserverpublicips/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh webserverpublicips/*`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips/*
+				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverpublicips/*
 			fi
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh webserverips/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh webserverips/*`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips/*
+				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverips/*
 			fi
 		fi
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} webserverpublicips "no"
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} webserverips "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} webserverpublicips "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} webserverips "no"
 
 		#If the build machine is attached to the VPC we want the private IP address if not we want the public one 
 
@@ -254,8 +254,8 @@ do
 			fi
 
 			#We don't want the IP addresses of a failed build in our S3 datastore
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverpublicips
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh webserverips
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverpublicips
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverips
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the webserver is destroyed because of a faulty build
