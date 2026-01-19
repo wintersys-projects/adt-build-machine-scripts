@@ -146,16 +146,16 @@ do
 		fi
 
 		#Add the IP addresse of the database server to the S3 datastore
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh databasepublicip/*`" != "" ] )
+		if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh databasepublicip/*`" != "" ] )
 		then
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip/*
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databasepublicip/*
 		fi
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh databaseip/*`" != "" ] )
+		if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh databaseip/*`" != "" ] )
 		then
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip/*
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databaseip/*
 		fi
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} databasepublicip "no"
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} databaseip "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} databasepublicip "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} databaseip "no"
 
 		#If the build machine is attached to the VPC we want the private IP address if it isn't we want the public one
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
@@ -248,8 +248,8 @@ do
 			fi
 
 			#We failed so we don't want the IP addresses in our datastore
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databasepublicip
-			${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh databaseip
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databasepublicip
+			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databaseip
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the database server(s) are destroyed because of a faulty build
