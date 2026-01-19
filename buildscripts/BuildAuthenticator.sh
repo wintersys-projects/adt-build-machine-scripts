@@ -144,18 +144,18 @@ do
 		if ( [ "${authenticator_no}" = "1" ] )
 		then
 			#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh authenticatorpublicip/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh authenticatorpublicip/*`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorpublicip/*
+				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh authenticatorpublicip/*
 			fi
 
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh authenticatorip/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh authenticatorip/*`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh authenticatorip/*
+				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh authenticatorip/*
 			fi
 		fi
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} authenticatorpublicip "no"
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} authenticatorip "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} authenticatorpublicip "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} authenticatorip "no"
 
 		#If the build machine is without our VPC we want the private ip address to connect with if not within the VPC we want
 		#the public address to connect to
