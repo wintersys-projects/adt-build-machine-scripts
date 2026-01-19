@@ -144,17 +144,17 @@ do
 		#We should record the ip addresses of our new autoscaler in the S3 datastore for future reference
 		if ( [ "${autoscaler_no}" = "1" ] )
 		then
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh autoscalerpublicips/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh autoscalerpublicips/*`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerpublicips/*
+				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh autoscalerpublicips/*
 			fi
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh autoscalerips/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh autoscalerips/*`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh autoscalerips/*
+				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh autoscalerips/*
 			fi
 		fi
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${ip} autoscalerpublicips "no"
-		${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${private_ip} autoscalerips "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} autoscalerpublicips "no"
+		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} autoscalerips "no"
 
 		#If the build machine is attached to the VPC that the servers are in then we need the private IP address to connect to this autoscaler
 		#with, otherwise we have to use the public IP address
