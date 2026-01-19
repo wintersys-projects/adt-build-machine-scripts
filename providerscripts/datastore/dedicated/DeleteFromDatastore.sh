@@ -38,6 +38,6 @@ fi
 
 while ( [ "${count}" -le "${no_tokens}" ] )
 do
-        ${BUILD_HOME}/providerscripts/datastore/PerformDeleteFromDatastore.sh ${file_to_delete} ${count} ${config}
+        ${BUILD_HOME}/providerscripts/datastore/dedicated/PerformDeleteFromDatastore.sh ${file_to_delete} ${count} ${config}
         count="`/usr/bin/expr ${count} + 1`"
 done
