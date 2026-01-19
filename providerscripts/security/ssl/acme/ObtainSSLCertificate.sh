@@ -121,6 +121,10 @@ then
         fi
 
         ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
+        if ( [ "$?" != "0" ] )
+        then
+                ~/.acme.sh/acme.sh --renew --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
+        fi               
 fi
 
 
@@ -130,7 +134,13 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/digitalocean.sh ~/.acme.sh/dnsapi/dns_dgon.sh
         fi
-        ~/.acme.sh/acme.sh --renew --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
+
+        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
+
+        if ( [ "$?" != "0" ] )
+        then
+                ~/.acme.sh/acme.sh --renew --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
+        fi
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
@@ -139,7 +149,14 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/exoscale.sh ~/.acme.sh/dnsapi/dns_exoscale.sh
         fi
-        ~/.acme.sh/acme.sh --renew --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone 
+        
+        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone 
+        
+        if ( [ "$?" != "0" ] )
+        then
+                ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone 
+        fi
+                
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
@@ -148,7 +165,12 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/linode.sh ~/.acme.sh/dnsapi/dns_linode_v4.sh
         fi
-        ~/.acme.sh/acme.sh --renew --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
+
+        if ( [ "$?" != "0" ] )
+        then
+                ~/.acme.sh/acme.sh --renew --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
+        fi
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
@@ -157,7 +179,13 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/vultr.sh ~/.acme.sh/dnsapi/dns_vultr.sh
         fi
-        ~/.acme.sh/acme.sh --renew --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
+        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
+        
+        if ( [ "$?" != "0" ] )
+        then
+                ~/.acme.sh/acme.sh --renew --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
+        fi
+        
 fi
 
 
