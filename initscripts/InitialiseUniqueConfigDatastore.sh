@@ -35,7 +35,7 @@ website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 identifier="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
 status "Creating a new configuration bucket for build (${BUILD_IDENTIFIER})"
-${BUILD_HOME}/providerscripts/datastore/configwrapper/MountConfigDatastore.sh 
+${BUILD_HOME}/providerscripts/datastore/config/toolkit/MountConfigDatastore.sh 
 
 if ( [ "$?" = "0" ] )
 then
