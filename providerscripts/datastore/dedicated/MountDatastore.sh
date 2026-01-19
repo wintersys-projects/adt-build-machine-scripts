@@ -37,6 +37,6 @@ fi
 
 while ( [ "${count}" -le "${no_tokens}" ] )
 do
-        ${BUILD_HOME}/providerscripts/datastore/PerformDatastoreMount.sh ${datastore_to_mount} ${count}
+        ${BUILD_HOME}/providerscripts/datastore/dedicated/PerformDatastoreMount.sh ${datastore_to_mount} ${count}
         count="`/usr/bin/expr ${count} + 1`"
 done
