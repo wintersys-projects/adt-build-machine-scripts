@@ -82,7 +82,7 @@ read BUILD_IDENTIFIER
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-scaling_profile="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:* STATIC_SCALE:`"
+scaling_profile="`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh STATIC_SCALE:* STATIC_SCALE:`"
 stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
 original_scale_value="0"
 
@@ -145,7 +145,7 @@ do
 done
 
 /bin/echo "Deleting existing Scaling Profile from datastore"
-${BUILD_HOME}/providerscripts/datastore/configwrapper/DeleteFromConfigDatastore.sh STATIC_SCALE: "yes"
+${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh STATIC_SCALE: "yes"
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
 then
@@ -153,15 +153,15 @@ then
 fi
 
 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values}
-${BUILD_HOME}/providerscripts/datastore/configwrapper/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values} "root" "no"
+${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values} "root" "no"
 
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh ${new_scale_values}`" != "" ] )
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh ${new_scale_values}`" != "" ] )
 then
         /bin/echo "New Scaling Profile is present in the datastore : ${new_scale_values}"
 fi
 
-scaling_profile="`${BUILD_HOME}/providerscripts/datastore/configwrapper/ListFromConfigDatastore.sh STATIC_SCALE:*`"
+scaling_profile="`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh STATIC_SCALE:*`"
 stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
 total_number_of_webservers="0"
 
