@@ -238,8 +238,8 @@ then
 
 fi
 
-${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "1$$agile" 3>&1 2>/dev/null
-${BUILD_HOME}/providerscripts/datastore/DeleteDatastore.sh "1$$agile" 3>&1 2>/dev/null
+${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh "1$$agile" 3>&1 2>/dev/null
+${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteDatastore.sh "1$$agile" 3>&1 2>/dev/null
 
 if ( [ "$?" != "0" ] )
 then
@@ -263,20 +263,20 @@ then
                         /bin/touch /tmp/END_IT_ALL
                 fi 
         fi
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${multi_region_bucket}/*
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh ${multi_region_bucket}/*
         else
-                ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${multi_region_bucket}"
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh "${multi_region_bucket}"
         fi
 fi
 
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 then
-        for bucket in `${BUILD_HOME}/providerscripts/datastore/ListDatastore.sh | /bin/grep "${website_bucket}-config" | grep -Eo "${website_bucket}.*(/|$)" | /usr/bin/uniq`
+        for bucket in `${BUILD_HOME}/providerscripts/datastore/dedicated/ListDatastore.sh | /bin/grep "${website_bucket}-config" | grep -Eo "${website_bucket}.*(/|$)" | /usr/bin/uniq`
         do
-                ${BUILD_HOME}/providerscripts/datastore/DeleteFromDatastore.sh ${bucket}/* "yes"
+                ${BUILD_HOME}/providerscripts/datastore/dedicated/DeleteFromDatastore.sh ${bucket}/* "yes"
                 ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteConfigDatastore.sh ${bucket}
         done
 fi
