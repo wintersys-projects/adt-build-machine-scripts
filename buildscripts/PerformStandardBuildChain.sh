@@ -296,6 +296,10 @@ then
 	then
 		built_servers="${built_servers} Reverse Proxy Server(s)"
 	fi
+	if ( [ "${NO_AUTOSCALERS}" != "0" ] )
+	then
+		built_servers="${built_servers} Autoscalers(s)"
+	fi
 	if ( [ "${NO_WEBSERVERS}" != "0" ] )
 	then
 		built_servers="${built_servers} Webserver(s)"
