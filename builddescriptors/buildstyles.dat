@@ -49,7 +49,7 @@
 # DATASTOREMOUNTTOOL:geesefs:binary
 # DATASTOREMOUNTTOOL:geesefs:source
 # There are three different methods for maintaining the state of your configuration system and you can set which one to use as follows:
-#DATASTORECONFIGSTYLE:tools
+#DATASTORECONFIGSTYLE:tool
 #DATASTORECONFIGSTYLE:lightweight
 #DATASTORECONFIGSTYLE:heavyweight
 # If you want to unify different individual mount points as one file system you will need a filesystem merge tool
@@ -198,7 +198,7 @@ DATASTOREMOUNTTOOL:rclone:binary
 #DATASTOREMOUNTTOOL:s3fs:source
 #DATASTOREMOUNTTOOL:goof:binary
 #DATASTOREMOUNTTOOL:geesefs:source
-#DATASTORECONFIGSTYLE:tools
+#DATASTORECONFIGSTYLE:tool
 DATASTORECONFIGSTYLE:lightweight
 #DATASTORECONFIGSTYLE:heavyweight
 #MARIADB:cloud-init
