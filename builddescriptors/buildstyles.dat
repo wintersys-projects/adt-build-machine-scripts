@@ -48,6 +48,10 @@
 # DATASTOREMOUNTTOOL:rclone:source #if you choose this option you will need at least 50GB of disk space for your servers to be able to install properly (a nanode wan't enough, for example, in my testing)
 # DATASTOREMOUNTTOOL:geesefs:binary
 # DATASTOREMOUNTTOOL:geesefs:source
+# There are three different methods for maintaining the state of your configuration system and you can set which one to use as follows:
+#DATASTORECONFIGSTYLE:tools
+#DATASTORECONFIGSTYLE:lightweight
+#DATASTORECONFIGSTYLE:heavyweight
 # If you want to unify different individual mount points as one file system you will need a filesystem merge tool
 # MERGEFILESYSTEMSTOOL:mergefs:repo
 # MERGEFILESYSTEMSTOOL:mergefs:binary
@@ -194,7 +198,7 @@ DATASTOREMOUNTTOOL:rclone:binary
 #DATASTOREMOUNTTOOL:s3fs:source
 #DATASTOREMOUNTTOOL:goof:binary
 #DATASTOREMOUNTTOOL:geesefs:source
-#DATASTORECONFIGSTYLE:toolkit
+#DATASTORECONFIGSTYLE:tools
 DATASTORECONFIGSTYLE:lightweight
 #DATASTORECONFIGSTYLE:heavyweight
 #MARIADB:cloud-init
