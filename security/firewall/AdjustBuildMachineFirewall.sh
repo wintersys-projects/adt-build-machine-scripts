@@ -99,7 +99,8 @@ then
 
         if ( [ "`${BUILD_HOME}/providerscripts/datastore/dedicated/ListFromDatastore.sh ${auth_bucket}/authorised-ips.dat`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat  
+               # ${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat  
+               ${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${auth_bucket}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}
         fi
 
         if ( [ "${laptop_ip}" = "" ] )
