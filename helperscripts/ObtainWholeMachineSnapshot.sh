@@ -242,18 +242,18 @@ fi
 snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
 
-${BUILD_HOME}/providerscripts/datastore/dedicated/MountDatastore.sh ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat ${snap_bucket}
 
 cwd="`/usr/bin/pwd`"
 cd ${BUILD_HOME}/runtimedata/${CLOUDHOST}/test-build/keys
 /bin/tar cvfz keys.tar.gz *BUILD_KEY*
 cd ${cwd}
 
-${BUILD_HOME}/providerscripts/datastore/dedicated/PutToDatastore.sh  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/keys.tar.gz ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys/keys.tar.gz ${snap_bucket}
 
 
 
