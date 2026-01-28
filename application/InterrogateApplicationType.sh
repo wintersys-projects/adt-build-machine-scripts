@@ -98,8 +98,8 @@ then
 
 	datastorebucket="0"
 	datastoredbbucket="0"
-	${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${backuparchive}
-	${BUILD_HOME}/providerscripts/datastore/dedicated/GetFromDatastore.sh ${backupdbarchive}
+	${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh ${backuparchive}
+	${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh ${backupdbarchive}
 	archive="${interrogation_home}/applicationsourcecode.tar.gz"
 	archivedb="${interrogation_home}/${WEBSITE_NAME}-DB-backup.tar.gz"
 
