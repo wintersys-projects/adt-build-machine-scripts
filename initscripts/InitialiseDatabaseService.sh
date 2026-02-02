@@ -204,9 +204,9 @@ then
 
                         if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS ] )
                         then
-                                if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS`" != "" ] )
+                                if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "dbaas" ".DBAAS_CREDENTIALS"`" != "" ] )
                                 then
-                                        ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh ${dbaas_bucket}/.DBAAS_CREDENTIALS ${BUILD_HOME}/runtimedata/${CLOUDHOST}
+                                        ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "dbaas" ".DBAAS_CREDENTIALS" "${BUILD_HOME}/runtimedata/${CLOUDHOST}"
                                 fi
                         fi
                         
