@@ -35,7 +35,6 @@ fi
 
 datastore_cmd=""
 datastore_cmd1=""
-
 datastore_tool=""
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
@@ -78,16 +77,16 @@ then
         placed_file=""
 fi
 
-if ( [ ! -d ${HOME}/runtime/datastore_workarea ] )
+if ( [ ! -d  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/datastore_workarea ] )
 then
-        /bin/mkdir -p ${HOME}/runtime/datastore_workarea
+        /bin/mkdir -p  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/datastore_workarea
 fi
 
 if ( [ ! -f ${file_to_put} ] )
 then
         #if there is no file on the file system we can assume that we are being used as a marker like an IP address, so create out own marker file
-        /bin/touch ${HOME}/runtime/datastore_workarea/${file_to_put}
-        file_to_put=${HOME}/runtime/datastore_workarea/${file_to_put}
+        /bin/touch  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/datastore_workarea/${file_to_put}
+        file_to_put=${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/datastore_workarea/${file_to_put}
 fi
 
 count="0"
