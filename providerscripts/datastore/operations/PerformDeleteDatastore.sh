@@ -20,9 +20,10 @@
 ######################################################################################
 #set -x
 
-file_to_delete="${1}"
+datastore_to_delete="${1}"
 count="${2}"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 datastore_tool=""
 
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
@@ -38,7 +39,7 @@ fi
 
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
-        file_to_delete="`/bin/echo ${file_to_delete} | /bin/sed 's/\*$//g'`"
+        datastore_to_delete="`/bin/echo ${datastore_to_delete} | /bin/sed 's/\*$//g'`"
         host_base="`/bin/grep ^host_base /root/.s3cfg-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
         datastore_cmd="${datastore_tool} --recursive --force  --config=/root/.s3cfg-${count} --host=https://${host_base} del s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
@@ -50,13 +51,13 @@ then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-${count} | /bin/grep "^endpoint" | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
         
         include=""
-        if ( [ "${file_to_delete}" != "" ] )
+        if ( [ "${datastore_to_delete}" != "" ] )
         then
-                include="--include *${file_to_delete}*"
+                include="--include *${datastore_to_delete}*"
         fi
         
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} ${include} delete s3:"
-        file_to_delete=""
+        datastore_to_delete=""
 fi
 
-${datastore_cmd}
+${datastore_cmd}${datastore_to_delete}
