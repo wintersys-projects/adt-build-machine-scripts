@@ -23,9 +23,8 @@
 #set -x
 
 bucket_type="${1}"
-file_to_delete="${2}"
-mode="${3}"
-additional_specifier="${4}"
+mode="${2}"
+additional_specifier="${3}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
