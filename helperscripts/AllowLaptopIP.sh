@@ -27,56 +27,59 @@
 
 if ( [ "`/bin/ls /root/FIREWALL-BUCKET:*  2>/dev/null`" != "" ] )
 then
-	IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
+        IDENTIFIER="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 else
-	/bin/echo "You can't run this script until you have performed at least one deployment of your web property"
-	/bin/echo "When you make your first deployment this will tell me the access and secret keys that I need to access your datastore"
-	/bin/echo "Without access to your datastore, this mecahnism won't work"
-	exit
+        /bin/echo "You can't run this script until you have performed at least one deployment of your web property"
+        /bin/echo "When you make your first deployment this will tell me the access and secret keys that I need to access your datastore"
+        /bin/echo "Without access to your datastore, this mecahnism won't work"
+        exit
 fi
 
 if ( [ ! -f  ./AllowLaptopIP.sh ] )
 then
-	/bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
-	exit
+        /bin/echo "Sorry, this script has to be run from the helperscripts subdirectory"
+        exit
 fi
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-BUILD_IDENTIFIER="`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER`"
+
+/bin/echo "Please enter the name of the build of the server you wish to connect with"
+read BUILD_IDENTIFIER
+/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
 
 /bin/echo "Which datastore provider are you using? 1) Digital Ocean 2) Exoscale 3) Linode 4) Vultr. Please Enter the number for your cloudhost"
 read response
 if ( [ "${response}" = "1" ] )
 then
-	DATASTORE_PROVIDER="digitalocean"
+        DATASTORE_PROVIDER="digitalocean"
 elif ( [ "${response}" = "2" ] )
 then
-	DATASTORE_PROVIDER="exoscale"
+        DATASTORE_PROVIDER="exoscale"
 elif ( [ "${response}" = "3" ] )
 then
-	DATASTORE_PROVIDER="linode"
+        DATASTORE_PROVIDER="linode"
 elif ( [ "${response}" = "4" ] )
 then
-	DATASTORE_PROVIDER="vultr"
+        DATASTORE_PROVIDER="vultr"
 else
-	/bin/echo "Unrecognised  cloudhost. Exiting ...."
-	exit
+        /bin/echo "Unrecognised  cloudhost. Exiting ...."
+        exit
 fi
 
-if ( [ "${CLOUDHOST}" != "`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`" ] )
+if ( [ "${DATASTORE_PROVIDER}" != "`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`" ] )
 then
-	/bin/echo "Your chosen cloudhost provider is different to your active cloudhost provider on this build machine"
-	/bin/echo "Do you want to set your chosen cloudhost to be the active cloudhost provider (Y|y)"
-	read response
-	if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
-	then
-		/bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
-	fi
+        /bin/echo "Your chosen cloudhost provider is different to your active cloudhost provider on this build machine"
+        /bin/echo "Do you want to set your chosen cloudhost to be the active cloudhost provider (Y|y)"
+        read response
+        if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
+        then
+                /bin/echo "${DATASTORE_PROVIDER}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
+        fi
 fi
 
 if ( [ ! -d ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips ] )
 then
-	/bin/mkdir -p ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
+        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
 fi
 
 /bin/echo "Please enter the IP address of your laptop that you are modifying access for. You can find the ip address of your laptop using: www.whatsmyip.com"
@@ -88,29 +91,30 @@ read mode
 
 while ( [ "`/bin/echo "1 2" | /bin/grep ${mode}`" = "" ] )
 do
-	/bin/echo "I don't recognise that input..."
-	/bin/echo "Please enter 1 or 2"
-	read mode
+        /bin/echo "I don't recognise that input..."
+        /bin/echo "Please enter 1 or 2"
+        read mode
 done
 
-${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh ${IDENTIFIER}/authorised-ips.dat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips
+
+${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "auth" "authorised-ips.dat" "${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips" "${IDENTIFIER}"
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ] )
 then
-	/bin/echo "Couldn't find existing authorised ip addresses"
-	${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh ${IDENTIFIER}
+        /bin/echo "Couldn't find existing authorised ip addresses"
+        ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "auth" "local" "${IDENTIFIER}"
 fi
 
 if ( [ "${mode}" = "1" ] )
 then
-	/bin/echo ${ip} >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+        /bin/echo ${ip} >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 else
-	/bin/sed -i "/${ip}/d" ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
+        /bin/sed -i "/${ip}/d" ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
 fi
 
 /bin/cat ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat | /usr/bin/sort | /usr/bin/uniq >> ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$
 /bin/mv ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat.$$ ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat ${IDENTIFIER}
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "auth" "${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/ips/authorised-ips.dat" "root" "local" "no" "${IDENTIFIER}"
 /bin/touch  ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT ${IDENTIFIER}
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "auth" "${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT" "root" "local" "no" "${IDENTIFIER}"
 /bin/rm ${BUILD_HOME}/runtimedata/${DATASTORE_PROVIDER}/${BUILD_IDENTIFIER}/FIREWALL-EVENT
