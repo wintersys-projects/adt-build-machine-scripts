@@ -146,16 +146,16 @@ do
 		fi
 
 		#Add the IP addresse of the database server to the S3 datastore
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh databasepublicip/*`" != "" ] )
+		if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "databasepublicip/*"`" != "" ] )
 		then
-			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databasepublicip/*
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databasepublicip/*"
 		fi
-		if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh databaseip/*`" != "" ] )
+		if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "databaseip/*"`" != "" ] )
 		then
-			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databaseip/*
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databaseip/*"
 		fi
-		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} databasepublicip "no"
-		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} databaseip "no"
+		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${ip}" "databasepublicip" "local" "no"
+		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${private_ip}" "databaseip" "local" "no"
 
 		#If the build machine is attached to the VPC we want the private IP address if it isn't we want the public one
 		if ( [ "${BUILD_MACHINE_VPC}" = "1" ] )
