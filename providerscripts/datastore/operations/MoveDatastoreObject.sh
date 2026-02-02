@@ -68,9 +68,10 @@ then
 elif ( [ "${bucket_type}" = "auth" ] )
 then
         active_bucket="authip-adt-allowed-${additional_specifier}"
-elif ( [ "${bucket_type}" = "auth" ] )
+elif ( [ "${bucket_type}" = "dbaas" ] )
 then
-        active_bucket="authip-adt-allowed-${additional_specifier}"
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+        active_bucket="${active_bucket}-${DNS_CHOICE}-dbaas"
 elif ( [ "${bucket_type}" = "snap" ] )
 then
         active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
