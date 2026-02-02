@@ -24,7 +24,7 @@ original_object="$1"
 new_object="$2"
 count="$3"
 
-HOME="`/bin/cat /home/homedir.dat`"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 datastore_tool=""
 if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTORETOOL:s3cmd'`" = "1" ] )
