@@ -242,11 +242,11 @@ fi
 snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
 
-${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat ${snap_bucket}
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat ${snap_bucket}
+${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "snap" "local"
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "snap" "${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat" "root" "local" "no"
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "snap" "${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat.candidate" "root" "local" "no"
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "snap" "${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/db_credentials.dat" "root" "local" "no"
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "snap" "${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/credentials.dat" "root" "local" "no"
 
 cwd="`/usr/bin/pwd`"
 cd ${BUILD_HOME}/runtimedata/${CLOUDHOST}/test-build/keys
