@@ -233,8 +233,8 @@ then
                 status "SSL Certificates successfully validated"
                 status "Putting SSL Certificates into the datastore"
 
-                ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastore.sh ${ssl_bucket}/fullchain.pem ${ssl_bucket}/fullchain.pem.$$.old
-                ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastore.sh ${ssl_bucket}/privkey.pem ${ssl_bucket}/privkey.pem.$$.old
+                ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh ${ssl_bucket}/fullchain.pem ${ssl_bucket}/fullchain.pem.$$.old
+                ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh ${ssl_bucket}/privkey.pem ${ssl_bucket}/privkey.pem.$$.old
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${ssl_bucket}/fullchain.pem
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${ssl_bucket}/privkey.pem
                 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem ${ssl_bucket} "no"
@@ -242,8 +242,8 @@ then
                 
                 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/fullchain.pem`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh ${ssl_bucket}/privkey.pem`" = "" ] )
                 then
-                        ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastore.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
-                        ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastore.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
+                        ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
+                        ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastoreObject.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
                 else
                         ${BUILD_HOME}/providerscripts/email/SendEmail.sh "NEW SSL CERTIFICATE PUT IN DATASTORE" "SSL Certificate not successfully provisioned/generated" "INFO"
                 fi
