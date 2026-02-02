@@ -242,9 +242,9 @@ then
                                 /bin/echo "DB ADMIN USERNAME: ${admin_username}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
                                 /bin/echo "DB ADMIN PASSWORD: ${admin_password}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
 
-                                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh ${dbaas_bucket}
-                                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS ${dbaas_bucket}
-
+                                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "dbaas" "local"
+                                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "dbaas" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS" "root" "local" "no"
+                
                                 status "Creating  database ${db_name}, with engine: ${database_engine}, in region: ${database_region} and at size: ${database_size} please wait..."
                                 if ( [ "${database_engine}" = "mysql" ] )
                                 then
@@ -582,10 +582,10 @@ fi
 
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "0" ] ) 
 then
-        multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
+        #multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "multi-region" "credentials.dat"`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh ${multi_region_bucket}/credentials.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat
+                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "mutli-region "credentials.dat" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}"
                 DB_NAME="`/bin/grep DB_NAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat | /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_PASSWORD="`/bin/grep DB_PASSWORD ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat| /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_USERNAME="`/bin/grep DB_USERNAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat | /usr/bin/awk -F'=' '{print $NF}'`"
@@ -620,15 +620,15 @@ then
         /bin/echo "DB_USERNAME=${DB_USERNAME}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat
         /bin/echo "DB_PORT=${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat
 
-        multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
-        ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh ${multi_region_bucket}
+       # multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
+        ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "multi-region" "local"
 
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh ${multi_region_bucket}/credentials.dat`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "multi-region" "credentials.dat"`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${multi_region_bucket}/credentials.dat
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "multi-region" "credentials.dat" "local"
         fi
 
-        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat ${multi_region_bucket}
+        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "multi-region" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat" "root" "local" "no"
 fi
 
 #Persist our credentials to the file system to be used at will      
