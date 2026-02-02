@@ -1,4 +1,3 @@
-#!/bin/sh
 #################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
@@ -250,8 +249,8 @@ fi
 
 if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ]  )
 then
-        multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        #       multi_region_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "multi-region"`" != "" ] && [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
         then
                 status "####################HALT################################"
                 status "You are deploying a primary region, are you sure as I am about to delete existing multi-region"
@@ -263,11 +262,11 @@ then
                         /bin/touch /tmp/END_IT_ALL
                 fi 
         fi
-        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh ${multi_region_bucket}`" != "" ] )
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "multi-region"`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${multi_region_bucket}/*
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "multi-region" "root" "local" 
         else
-                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "${multi_region_bucket}"
+                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "multi-region"
         fi
 fi
 
@@ -287,7 +286,7 @@ then
         for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "config-all"`
         do
                 additional_specifier="`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "yes" "local" "${additional_specifier}"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "root" "local" "${additional_specifier}"
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local" "${additional_specifier}"
         done
 fi
