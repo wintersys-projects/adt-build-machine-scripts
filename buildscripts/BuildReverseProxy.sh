@@ -144,18 +144,18 @@ do
                 #Store the public and private ip addresses of the reverse proxy machine in the datastore for access elsewhere
 				if ( [ "${reverse_proxy_no}" = "1" ] )
 				then
-                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh reverseproxypublicips/*`" != "" ] )
+                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "reverseproxypublicips/*"`" != "" ] )
                 	then
-                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxypublicips/*
+                        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxypublicips/*"
                 	fi
 
-                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh reverseproxyips/*`" != "" ] )
+                	if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "reverseproxyips/*"`" != "" ] )
                 	then
-                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxyips/*
+                        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxyips/*"
                 	fi
 				fi
-                ${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} reverseproxypublicips "no" 
-                ${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} reverseproxyips "no"
+                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${ip}" "reverseproxypublicips" "local" "no" 
+                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${private_ip}" "reverseproxyips" "local" "no"
 
                 #If the build machine is without our VPC we want the private ip address to connect with if not within the VPC we want
                 #the public address to connect to
