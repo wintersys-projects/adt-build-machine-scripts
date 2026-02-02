@@ -286,7 +286,8 @@ if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMAR
 then
         for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "config-all"`
         do
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "yes" "`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local" "`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
+                additional_specifier="`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "yes" "local" "${additional_specifier}"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local" "${additional_specifier}"
         done
 fi
