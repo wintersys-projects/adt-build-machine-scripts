@@ -443,7 +443,7 @@ do
 done
 
 #Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
-${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh INSTALLED_SUCCESSFULLY "root" "no"
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "INSTALLED_SUCCESSFULLY" "root" "local" "no"
 status "Build process fully complete"
 
 #Print a final little congratulations message to say the build is good and that the application should now be online
