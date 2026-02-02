@@ -72,12 +72,12 @@ count="1"
 
 if ( [ "${mode}" = "local" ] )
 then
-        ${HOME}/providerscripts/datastore/operations/PerformDatastoreMount.sh ${active_bucket} ${count}
+        ${BUILD_HOME}/providerscripts/datastore/operations/PerformDatastoreMount.sh ${active_bucket} ${count}
 elif ( [ "${mode}" = "distributed" ] )
 then
         while ( [ "${count}" -le "${no_tokens}" ] )
         do
-                ${HOME}/providerscripts/datastore/operations/PerformDatastoreMount.sh ${active_bucket} ${count}
+                ${BUILD_HOME}/providerscripts/datastore/operations/PerformDatastoreMount.sh ${active_bucket} ${count}
                 count="`/usr/bin/expr ${count} + 1`"
         done
 fi
