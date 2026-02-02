@@ -70,6 +70,10 @@ elif ( [ "${bucket_type}" = "dbaas" ] )
 then
         active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
         active_bucket="${active_bucket}-${DNS_CHOICE}-dbaas"
+elif ( [ "${bucket_type}" = "snap" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+        active_bucket="${active_bucket}-${DNS_CHOICE}-snap"
 fi
 
 no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
