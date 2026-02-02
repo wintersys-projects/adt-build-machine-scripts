@@ -27,6 +27,11 @@ file_to_delete="${2}"
 mode="${3}"
 additional_specifier="${4}"
 
+if ( [ "${file_to_delete}" = "root" ] )
+then
+        file_to_delete=""
+fi
+
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
