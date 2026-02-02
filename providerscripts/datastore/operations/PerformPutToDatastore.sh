@@ -26,7 +26,9 @@ place_to_put="$2"
 delete="$3"
 count="$4"
 
-HOME="`/bin/cat /home/homedir.dat`"
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 
 if ( [ "${place_to_put}" = "root" ] )
 then
