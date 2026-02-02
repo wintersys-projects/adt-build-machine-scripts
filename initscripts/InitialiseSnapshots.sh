@@ -50,7 +50,7 @@ then
         fi
 
         /bin/echo "`/bin/grep webserver ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat | /usr/bin/awk -F':' '{print $NF}'`"
-        ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh ${snap_bucket}/keys.tar.gz ${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots
+        ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "snap" "keys.tar.gz" "${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots"
 
         if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/keys ] )
         then
