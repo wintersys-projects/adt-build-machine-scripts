@@ -239,8 +239,8 @@ else
 fi
 
 /bin/echo "Storing snapshot metadata in the datastore"
-snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
+#snap_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+#snap_bucket="${snap_bucket}-${DNS_CHOICE}-snap"
 
 ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "snap" "local"
 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "snap" "${BUILD_HOME}/runtimedata/wholemachinesnapshots/${WEBSITE_URL}/snapshots/snapshot_ids.dat" "root" "local" "no"
