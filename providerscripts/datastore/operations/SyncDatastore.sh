@@ -1,11 +1,11 @@
-#!/bin/sh 
-####################################################################################
+#!/bin/sh
+#####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Perform synchronisation (it has to be within the same region if its an
-# inter region sync) but if its a filesystem sync then the file system can be synced to
-# multiple regions and providers
-#######################################################################################
+# Description: Perform sync witin a bucket in your datastore(s) This can be called in 
+# local or distributed mode. Local mode is when your servers are operating in single
+# region mode and distributed mode is what is used if you are operating in multi-region mode. 
+#####################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
 # The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
@@ -22,17 +22,64 @@
 ######################################################################################
 #set -x
 
-original_object="$1"
-new_object="$2"
+bucket_type="${1}"
+original_object="${2}"
+new_object="${3}"
+mode="${4}"
 
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
+WEBSITE_URL="`${HOME}/utilities/config/ExtractConfigValue.sh 'WEBSITEURL'`"
+DNS_CHOICE="`${HOME}/utilities/config/ExtractConfigValue.sh 'DNSCHOICE'`"
+SSL_GENERATION_SERVICE="`${HOME}/utilities/config/ExtractConfigValue.sh 'SSLGENERATIONSERVICE'`"
+SERVER_USER="`${HOME}/utilities/config/ExtractConfigValue.sh 'SERVERUSER'`"
+TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
+
+if ( [ "${bucket_type}" = "ssl" ] )
+then
+        if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
+        then
+                service_token="lets"
+        elif ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
+        then
+                service_token="zero" 
+        fi
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+        active_bucket="${active_bucket}-${DNS_CHOICE}-${service_token}-ssl"
+elif ( [ "${bucket_type}" = "multi-region" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
+elif ( [ "${bucket_type}" = "webroot-sync" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-webroot-sync-tunnel`/bin/echo ${additional_specifier} | /bin/sed 's:/:-:g'`"
+elif ( [ "${bucket_type}" = "config-sync" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-config-sync-tunnel`/bin/echo ${additional_specifier} | /bin/sed 's:/:-:g'`"
+elif ( [ "${bucket_type}" = "config" ] )
+then
+        active_bucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
+elif ( [ "${bucket_type}" = "asset" ] )
+then
+        active_bucket="`/bin/echo "${WEBSITE_URL}-assets-${additional_specifier}" | /bin/sed -e 's/\./-/g' -e 's;/;-;g' -e 's/--/-/g'`"
+elif ( [ "${bucket_type}" = "backup" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${additional_specifier}"
+fi
+
+
+S3_ACCESS_KEY="`${HOME}/utilities/config/ExtractConfigValue.sh 'S3ACCESSKEY'`"
+
 no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
 no_tokens="`/usr/bin/expr ${no_tokens} + 1`"
+
 count="1"
 
-while ( [ "${count}" -le "${no_tokens}" ] )
-do
-        ${BUILD_HOME}/providerscripts/datastore/operations/PerformSyncDatastore.sh ${original_object} ${new_object} ${count}
-        count="`/usr/bin/expr ${count} + 1`"
-done
+if ( [ "${mode}" = "local" ] )
+then
+        ${HOME}/providerscripts/datastore/operations/PerformSyncDatastore.sh ${active_bucket}/${original_object} ${active_bucket}/${new_object} ${count}
+elif ( [ "${mode}" = "distributed" ] )
+then
+        while ( [ "${count}" -le "${no_tokens}" ] )
+        do
+                ${HOME}/providerscripts/datastore/operations/PerformSyncDatastore.sh ${active_bucket}/${original_object} ${active_bucket}/${new_object} ${count}
+                count="`/usr/bin/expr ${count} + 1`"
+        done
+fi
