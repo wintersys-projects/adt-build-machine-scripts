@@ -271,12 +271,22 @@ then
         fi
 fi
 
+#website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+#if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
+#then
+#        for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh | /bin/grep "${website_bucket}-config" | grep -Eo "${website_bucket}.*(/|$)" | /usr/bin/uniq`
+#        do
+#                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${bucket}/* "yes"
+#                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local"
+#        done
+#fi
+
 website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 then
-        for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh | /bin/grep "${website_bucket}-config" | grep -Eo "${website_bucket}.*(/|$)" | /usr/bin/uniq`
+        for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "config-all"`
         do
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${bucket}/* "yes"
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "yes" "`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local" "`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
         done
 fi
