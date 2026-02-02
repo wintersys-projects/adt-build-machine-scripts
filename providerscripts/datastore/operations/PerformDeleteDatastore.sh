@@ -1,10 +1,9 @@
-#!/bin/sh
-#########################################################################################
+#!/bin/sh 
+####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: Actually delete an (empty) datastore bucket for the current S3 provider and using the
-# tool that is currently configured as active
-##########################################################################################
+# Description: Implement the deletion of a file from a datastore
+#######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
 # The Agile Deployment Toolkit is free software: you can redistribute it and/or modify
@@ -17,15 +16,16 @@
 # GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
-#########################################################################################
-#########################################################################################
+######################################################################################
+######################################################################################
 #set -x
 
-datastore_to_delete="$1"
-count="$2"
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-datastore_tool=""
+file_to_delete="${1}"
+count="${2}"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+
+datastore_tool=""
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
         datastore_tool="/usr/bin/s3cmd"
@@ -39,16 +39,25 @@ fi
 
 if ( [ "${datastore_tool}" = "/usr/bin/s3cmd" ] )
 then
+        file_to_delete="`/bin/echo ${file_to_delete} | /bin/sed 's/\*$//g'`"
         host_base="`/bin/grep ^host_base /root/.s3cfg-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --config=/root/.s3cfg-${count} --host=https://${host_base} rb s3://"
+        datastore_cmd="${datastore_tool} --recursive --force  --config=/root/.s3cfg-${count} --host=https://${host_base} del s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
         host_base="`/bin/grep ^host_base /root/.s5cfg-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
-        datastore_cmd="${datastore_tool} --credentials-file /root/.s5cfg-${count}  --endpoint-url https://${host_base} rb s3://"
+        datastore_cmd="/usr/bin/s5cmd --credentials-file /root/.s5cfg-${count} --endpoint-url https://${host_base} rm s3://"
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
-        host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} purge s3:"
+        host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-${count} | /bin/grep "^endpoint" | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
+        
+        include=""
+        if ( [ "${file_to_delete}" != "" ] )
+        then
+                include="--include *${file_to_delete}*"
+        fi
+        
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} ${include} delete s3:"
+        file_to_delete=""
 fi
 
-${datastore_cmd}${datastore_to_delete}
+${datastore_cmd}${file_to_delete}
