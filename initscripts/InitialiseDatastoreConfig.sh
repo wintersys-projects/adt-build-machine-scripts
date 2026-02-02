@@ -277,6 +277,6 @@ then
         for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh | /bin/grep "${website_bucket}-config" | grep -Eo "${website_bucket}.*(/|$)" | /usr/bin/uniq`
         do
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${bucket}/* "yes"
-                ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteConfigDatastore.sh ${bucket}
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local"
         done
 fi
