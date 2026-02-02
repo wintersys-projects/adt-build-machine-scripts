@@ -242,8 +242,8 @@ then
 
                 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "ssl" "fullchain.pem"`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "ssl" "privkey.pem"`" = "" ] )
                 then
-                        ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
-                        ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastoreObject.sh ${ssl_bucket}/privkey.pem.$$.old ${ssl_bucket}/privkey.pem
+                        ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "privkey.pem.$$.old" "privkey.pem"
+                        ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastoreObject.sh "ssl" "privkey.pem.$$.old" "privkey.pem"
                 else
                         ${BUILD_HOME}/providerscripts/email/SendEmail.sh "NEW SSL CERTIFICATE PUT IN DATASTORE" "SSL Certificate not successfully provisioned/generated" "INFO"
                 fi
