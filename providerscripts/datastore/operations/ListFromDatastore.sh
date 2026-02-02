@@ -25,6 +25,7 @@ bucket_type="${1}"
 file_to_list="${2}"
 additional_specifier="${3}"
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 WEBSITE_URL="`${HOME}/utilities/config/ExtractConfigValue.sh 'WEBSITEURL'`"
 DNS_CHOICE="`${HOME}/utilities/config/ExtractConfigValue.sh 'DNSCHOICE'`"
 SSL_GENERATION_SERVICE="`${HOME}/utilities/config/ExtractConfigValue.sh 'SSLGENERATIONSERVICE'`"
