@@ -52,9 +52,11 @@ fi
 /bin/sed -i '0,/$CFG->dataroot/ s/$CFG->dataroot.*/$CFG->dataroot = "\/var\/www\/html\/moodledata";/' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default 
 
 /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/moodle_config.php
-${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/moodle_config.php "root" "no"
 
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh moodle_config.php`" = "" ] )
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/moodle_config.php" "root" "distributed" "no"
+
+
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "moodle_config.php"`" = "" ] )
 then
         status "Didn't generate the moodle configuration file in the config datastore, this will cause trouble later"
 fi
