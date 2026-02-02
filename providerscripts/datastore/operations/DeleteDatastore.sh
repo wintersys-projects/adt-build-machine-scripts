@@ -68,7 +68,6 @@ then
         active_bucket="authip-adt-allowed-${additional_specifier}"
 fi
 
-
 no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
 no_tokens="`/usr/bin/expr ${no_tokens} + 1`"
 
@@ -76,12 +75,12 @@ count="1"
 
 if ( [ "${mode}" = "local" ] )
 then
-        ${BUILD_HOME}/providerscripts/datastore/operations/PerformDeleteFromDatastore.sh ${active_bucket} ${count}
+        ${BUILD_HOME}/providerscripts/datastore/operations/PerformDeleteDatastore.sh ${active_bucket} ${count}
 elif ( [ "${mode}" = "distributed" ] )
 then
         while ( [ "${count}" -le "${no_tokens}" ] )
         do
-                ${BUILD_HOME}/providerscripts/datastore/operations/PerformDeleteFromDatastore.sh ${active_bucket} ${count}
+                ${BUILD_HOME}/providerscripts/datastore/operations/PerformDeleteDatastore.sh ${active_bucket} ${count}
                 count="`/usr/bin/expr ${count} + 1`"
         done
 fi
