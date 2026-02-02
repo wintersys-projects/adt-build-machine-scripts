@@ -2,9 +2,9 @@
 ####################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: This script will delete a bucket of a specific name. The bucket has to be
-# already empty and it will delete it across multiple regions/providers if configured
-# to replicate to multiple regions
+# Description: Delete a file from a bucket in the datastore. This can be called in 
+# local or distributed mode. Local mode is when your servers are operating in single
+# region mode and distributed mode is what is used if you are operating in multi-region mode. 
 #######################################################################################
 # License Agreement:
 # This file is part of The Agile Deployment Toolkit.
@@ -22,22 +22,64 @@
 ######################################################################################
 #set -x
 
-datastore_to_delete="${1}"
+bucket_type="${1}"
+file_to_delete="${2}"
+mode="${3}"
+additional_specifier="${4}"
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 S3_ACCESS_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_ACCESS_KEY`"
-no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
-no_tokens="`/usr/bin/expr ${no_tokens} + 1`"
-count="1"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
+SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GENERATION_SERVICE`"
+SERVER_USER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SERVER_USER`"
+TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-#Special case of the for the build machine authorisation bucket (want to tie authorisation to the same region as the build machine is running in)
-if ( [ "`/bin/echo ${datastore_to_delete} | /bin/grep 'authip-adt-allowed'`" != "" ] || [ "`/bin/echo ${datastore_to_delete} | /bin/grep '\-config\-'`" != "" ] )
+if ( [ "${bucket_type}" = "ssl" ] )
 then
-        no_tokens="1"
+        if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
+        then
+                service_token="lets"
+        elif ( [ "${SSL_GENERATION_SERVICE}" = "ZEROSSL" ] )
+        then
+                service_token="zero" 
+        fi
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
+        active_bucket="${active_bucket}-${DNS_CHOICE}-${service_token}-ssl"
+elif ( [ "${bucket_type}" = "multi-region" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-multi-region"
+elif ( [ "${bucket_type}" = "webroot-sync" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-webroot-sync-tunnel`/bin/echo ${additional_specifier} | /bin/sed 's:/:-:g'`"
+elif ( [ "${bucket_type}" = "config-sync" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-config-sync-tunnel`/bin/echo ${additional_specifier} | /bin/sed 's:/:-:g'`"
+elif ( [ "${bucket_type}" = "config" ] )
+then
+        active_bucket="`/bin/echo "${WEBSITE_URL}"-config | /bin/sed 's/\./-/g'`-${TOKEN}"
+elif ( [ "${bucket_type}" = "asset" ] )
+then
+        active_bucket="`/bin/echo "${WEBSITE_URL}-assets-${additional_specifier}" | /bin/sed -e 's/\./-/g' -e 's;/;-;g' -e 's/--/-/g'`"
+elif ( [ "${bucket_type}" = "backup" ] )
+then
+        active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${additional_specifier}"
 fi
 
-while ( [ "${count}" -le "${no_tokens}" ] )
-do
-        ${BUILD_HOME}/providerscripts/datastore/operations/PerformDeleteDatastore.sh ${datastore_to_delete} ${count}
-        count="`/usr/bin/expr ${count} + 1`"
-done
+
+no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
+no_tokens="`/usr/bin/expr ${no_tokens} + 1`"
+
+count="1"
+
+if ( [ "${mode}" = "local" ] )
+then
+        ${BUILD_HOME}/providerscripts/datastore/operations/PerformDeleteFromDatastore.sh ${active_bucket} ${count}
+elif ( [ "${mode}" = "distributed" ] )
+then
+        while ( [ "${count}" -le "${no_tokens}" ] )
+        do
+                ${BUILD_HOME}/providerscripts/datastore/operations/PerformDeleteFromDatastore.sh ${active_bucket} ${count}
+                count="`/usr/bin/expr ${count} + 1`"
+        done
+fi
