@@ -585,7 +585,7 @@ then
         #multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
         if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "multi-region" "credentials.dat"`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "multi-region "credentials.dat" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}"
+                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "multi-region" "credentials.dat" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}"
                 DB_NAME="`/bin/grep DB_NAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat | /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_PASSWORD="`/bin/grep DB_PASSWORD ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat| /usr/bin/awk -F'=' '{print $NF}'`"
                 DB_USERNAME="`/bin/grep DB_USERNAME ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat | /usr/bin/awk -F'=' '{print $NF}'`"
