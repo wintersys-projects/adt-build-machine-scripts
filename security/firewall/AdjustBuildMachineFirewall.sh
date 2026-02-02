@@ -75,7 +75,7 @@ else
         additional_specifier="`/bin/ls /root/FIREWALL-BUCKET:* | /usr/bin/awk -F':' '{print $NF}'  2>/dev/null`"
 fi
 
-${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "${auth}" "local" "${additional_specifier}"
+${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "auth" "local" "${additional_specifier}"
 
 if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "auth" "FIREWALL-EVENT" "${additional_specifier}"`" != "" ] )
 then
