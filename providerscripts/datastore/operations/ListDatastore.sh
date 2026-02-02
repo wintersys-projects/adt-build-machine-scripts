@@ -119,7 +119,7 @@ fi
 
 if ( [ "${path}" = "yes" ] )
 then
-        ${datastore_cmd}${file_to_list}  | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
+        ${datastore_cmd}${active_bucket}  | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
 else
-        ${datastore_cmd}${file_to_list} | /usr/bin/awk '{print $NF}'
+        ${datastore_cmd}${active_bucket} | /usr/bin/awk '{print $NF}'
 fi
