@@ -24,15 +24,16 @@ original_object="$1"
 new_object="$2"
 count="$3"
 
-datastore_tool=""
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
-if ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTORETOOL:s3cmd'`" = "1" ] )
+datastore_tool=""
+if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
         datastore_tool="/usr/bin/s3cmd"
-elif ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTORETOOL:s5cmd'`" = "1" ]  )
+elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s5cmd`" != "" ] )
 then
         datastore_tool="/usr/bin/s5cmd"
-elif ( [ "`${HOME}/utilities/config/CheckBuildStyle.sh 'DATASTORETOOL:rclone'`" = "1" ]  )
+elif ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep rclone`" != "" ] )
 then
         datastore_tool="/usr/bin/rclone"
 fi
