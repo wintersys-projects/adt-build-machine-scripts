@@ -76,3 +76,8 @@ fi
 
 /bin/mv ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/drupal_settings.php
 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/drupal_settings.php" "root" "distributed" "no"
+
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "drupal_settings.php"`" = "" ] )
+then
+        status "Didn't generate the joomla configuration file in the config datastore, this will cause trouble later"
+fi
