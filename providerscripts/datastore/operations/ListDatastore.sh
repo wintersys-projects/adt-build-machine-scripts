@@ -2,7 +2,7 @@
 #########################################################################################
 # Author: Peter Winter
 # Date :  9/4/2016
-# Description: List a file from a bucket in the datastore. The file is obtained from the
+# Description: List a bucket in the datastore. The  is obtained from the
 # first s3 bucket in the chain of buckets when replication is being used. In other words
 # the first region listed in S3_HOST_BASE in the template is considered to be the authoritative
 # bucket when listing files
@@ -83,9 +83,9 @@ then
 
         if ( [ "${file_to_list}" = "" ] )
         then
-                datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --recursive --host=https://${host_base} ls"
+                datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --host=https://${host_base} ls"
         else
-                datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --recursive --host=https://${host_base} ls s3://"
+                datastore_cmd="${datastore_tool} --config=/root/.s3cfg-1 --host=https://${host_base} ls s3://"
         fi
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
@@ -102,24 +102,14 @@ then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
 
         include=""
-        if ( [ "${file_to_list}" != "" ] )
+        if ( [ "${active_bucket}" != "" ] )
         then
-                include="--include *${file_to_list}*"
-        fi
-
-        path="no"
-        if ( [ "`/bin/echo ${file_to_list} | /bin/grep '\/'`" != "" ] )
-        then
-                path="yes"
+                include="--include *${active_bucket}*"
         fi
 
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} ${include} lsd s3:"
         file_to_list=""
 fi
 
-if ( [ "${path}" = "yes" ] )
-then
-        ${datastore_cmd}${active_bucket}  | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
-else
-        ${datastore_cmd}${active_bucket} | /usr/bin/awk '{print $NF}'
-fi
+${datastore_cmd}${active_bucket}  | /usr/bin/awk '{print $NF}' | /bin/sed '/^$/d'
+
