@@ -68,7 +68,6 @@ elif ( [ "${bucket_type}" = "auth" ] )
 then
         active_bucket="authip-adt-allowed-${additional_specifier}"
 fi
-fi
 
 
 no_tokens="`/bin/echo "${S3_ACCESS_KEY}" | /usr/bin/fgrep -o '|' | /usr/bin/wc -l`"
