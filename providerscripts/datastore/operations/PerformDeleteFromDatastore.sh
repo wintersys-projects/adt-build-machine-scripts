@@ -23,8 +23,9 @@
 file_to_delete="${1}"
 count="${2}"
 
-datastore_tool=""
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
+datastore_tool=""
 if ( [ "`/bin/grep "^DATASTORETOOL:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep s3cmd`" != "" ] )
 then
         datastore_tool="/usr/bin/s3cmd"
