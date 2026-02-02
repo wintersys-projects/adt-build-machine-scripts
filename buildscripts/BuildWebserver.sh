@@ -157,17 +157,17 @@ do
 		#Store our IP addresses in the S3 datastore
 		if ( [ "${webserver_no}" = "1" ] )
 		then
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh webserverpublicips/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "webserverpublicips/*"`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverpublicips/*
+				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverpublicips/*"
 			fi
-			if ( [ "`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh webserverips/*`" != "" ] )
+			if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "webserverips/*"`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverips/*
+				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverips/*"
 			fi
 		fi
-		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${ip} webserverpublicips "no"
-		${BUILD_HOME}/providerscripts/datastore/config/toolkit/PutToConfigDatastore.sh ${private_ip} webserverips "no"
+		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${ip}" "webserverpublicips" "local" "no"
+		${BUILD_HOME}/providerscripts/datastore/operations/PutToConfigDatastore.sh "config" "${private_ip}" "webserverips" "local" "no"
 
 		#If the build machine is attached to the VPC we want the private IP address if not we want the public one 
 
