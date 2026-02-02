@@ -237,8 +237,8 @@ then
 
 fi
 
-${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "1$$agile" 3>&1 2>/dev/null
-${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "1$$agile" 3>&1 2>/dev/null
+${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "ad-hoc" 3>&1 2>/dev/null
+${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "ad-hoc" 3>&1 2>/dev/null
 
 if ( [ "$?" != "0" ] )
 then
