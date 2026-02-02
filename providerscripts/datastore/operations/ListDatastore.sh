@@ -94,16 +94,9 @@ then
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-1 | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-
-        include=""
-        if ( [ "${active_bucket}" != "" ] )
-        then
-                include="--include *${active_bucket}*"
-        fi
-
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} ${include} lsd s3:"
         file_to_list=""
 fi
 
-${datastore_cmd}  | /bin/grep -wo "${active_bucket}"
+${datastore_cmd}  | /bin/grep -wo "${active_bucket}.*"
 
