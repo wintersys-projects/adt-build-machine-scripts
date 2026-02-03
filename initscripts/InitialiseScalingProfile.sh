@@ -56,7 +56,7 @@ then
 	no_autoscaler="1"
 	while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] )
 	do
-		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "autoscaler-${no_autoscaler}" "local" "no"
+		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "autoscaler-${no_autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${REGION}"
 		no_autoscaler="`/usr/bin/expr ${no_autoscaler} + 1`"
 	done
     ####added
