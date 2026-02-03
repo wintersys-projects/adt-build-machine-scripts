@@ -240,8 +240,8 @@ do
 
                         #Our build failed so we don't want any ip address records stored in the S3 datastore
                         #We should destroy the server also because it's hosed
-                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxypublicips
-                        ${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh reverseproxyips
+						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxypublicips" "root" "local"
+						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxyips" "root" "local"
                         ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ip} ${CLOUDHOST}
 
                         #Wait until we are sure that the reverse proxy server is destroyed because of a faulty build
