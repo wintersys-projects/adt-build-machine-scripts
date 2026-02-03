@@ -18,7 +18,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ######################################################################################
 ######################################################################################
-set -x
+#set -x
 
 file_to_delete="${1}"
 count="${2}"
@@ -61,4 +61,4 @@ then
         file_to_delete=""
 fi
 
-eval ${datastore_cmd}${file_to_delete}
+${datastore_cmd}${file_to_delete}
