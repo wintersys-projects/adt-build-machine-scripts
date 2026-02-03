@@ -31,6 +31,7 @@ PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 DEVELOPMENT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DEVELOPMENT`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
+NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 NO_WEBSERVERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_WEBSERVERS`"
 
@@ -52,9 +53,12 @@ then
 
 	${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "scaling" "local" "scaling-${CLOUDHOST}-${REGION}"
 
-
-
-
+	no_autoscaler="1"
+	while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] )
+	do
+		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "autoscaler-${no_autoscaler}" "local" "no"
+		no_autoscaler="`/usr/bin/expr ${no_autoscaler} + 1`"
+	done
 
 
 
