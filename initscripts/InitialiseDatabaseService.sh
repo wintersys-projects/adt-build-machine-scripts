@@ -242,8 +242,8 @@ then
                                 /bin/echo "DB ADMIN USERNAME: ${admin_username}" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
                                 /bin/echo "DB ADMIN PASSWORD: ${admin_password}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS
 
-                                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "dbaas" "local"
-                                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "dbaas" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS" "root" "local" "no"
+                                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "dbaas" "distributed"
+                                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "dbaas" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/.DBAAS_CREDENTIALS" "root" "distributed" "no"
                 
                                 status "Creating  database ${db_name}, with engine: ${database_engine}, in region: ${database_region} and at size: ${database_size} please wait..."
                                 if ( [ "${database_engine}" = "mysql" ] )
