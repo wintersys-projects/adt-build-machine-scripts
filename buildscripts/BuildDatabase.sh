@@ -248,8 +248,8 @@ do
 			fi
 
 			#We failed so we don't want the IP addresses in our datastore
-			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databasepublicip
-			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh databaseip
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databasepublicip" "root" "local"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databaseip" "root" "local"
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${DBIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the database server(s) are destroyed because of a faulty build
