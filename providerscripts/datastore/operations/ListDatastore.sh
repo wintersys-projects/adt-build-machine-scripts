@@ -106,5 +106,9 @@ then
         file_to_list=""
 fi
 
-${datastore_cmd}  | /bin/grep -wo "${active_bucket}.*"
-
+if ( [ "${bucket_type}" = "all" ] )
+then
+        ${datastore_cmd}
+else
+        ${datastore_cmd}  | /bin/grep -wo "${active_bucket}.*"
+fi
