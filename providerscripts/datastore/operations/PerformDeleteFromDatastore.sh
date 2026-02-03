@@ -18,7 +18,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ######################################################################################
 ######################################################################################
-#set -x
+set -x
 
 file_to_delete="${1}"
 count="${2}"
@@ -49,15 +49,16 @@ then
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-${count} | /bin/grep "^endpoint" | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-        
+
         include=""
         if ( [ "${file_to_delete}" != "" ] )
         then
-                include="--include *${file_to_delete}*"
+                file_to_include="`/bin/echo ${file_to_delete} | /usr/bin/awk -F'/' '{print $NF}'`"
+                include="--include '"*${file_to_include}*"'"
         fi
-        
+
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} ${include} delete s3:"
         file_to_delete=""
 fi
 
-${datastore_cmd}${file_to_delete}
+eval ${datastore_cmd}${file_to_delete}
