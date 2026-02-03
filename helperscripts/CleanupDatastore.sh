@@ -51,7 +51,7 @@ fi
 
 #buckets="`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "" | /usr/bin/awk '{print $NF}' | /bin/sed 's,s3://,,'`"
 
-buckets=`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "config-all"`
+buckets=`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "all"`
 
 
 for bucket in ${buckets}
