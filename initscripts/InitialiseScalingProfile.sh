@@ -50,7 +50,7 @@ then
 	####added
 
 
-	${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "scaling" "local" "${CLOUDHOST}-${REGION}"
+	${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "scaling" "local" "scaling-${CLOUDHOST}-${REGION}"
 
 
 
