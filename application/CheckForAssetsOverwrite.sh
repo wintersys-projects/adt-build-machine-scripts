@@ -48,8 +48,7 @@ then
         status "Checking to see if there are any assets already existing for the ${WEBSITE_URL} build in your datastore..."
         for assettype in `/bin/echo ${DIRECTORIES_TO_MOUNT} | /bin/sed 's/:/ /'`
         do
-                assets_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-assets-${assettype}"
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "${assets_bucket}" | /usr/bin/wc -l`" -gt "0" ] )
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "asset" "root" "${assettype}" | /usr/bin/wc -l`" -gt "0" ] )
                 then
                         status "###################################################################################################################"
                         status "=CRITICAL WARNING    CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING="
@@ -72,50 +71,20 @@ then
                         status "DEPENDING ON THE SIZE OF THE ASSETS IN YOUR DATASTORE THIS COULD TAKE SOME TIME TO COMPLETE"
                         status "###########################################################################################"
                         status "##############################################################################################################################"
-                        status "TYPE 'Y' or 'y' to make a safety backup or 'NO BACKUP' to not make one ('NO BACKUP') IS A DESTRUCTIVE CHOICE THAT CANNOT BE RECOVERED)"
-                        status "If you don't understand what 'NO BACKUP' does, don't type it"
-                        status "Enter your choice now:"
-                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ]  )
+                        status "ONCE YOU HAVE MADE A SAFETY BACKUP (if needed), press <enter>"
+                        read response
+
+                        status "############################################################################################################################"
+                        status "I AM ABOUT TO CAUSE YOU A LOT OF PROBLEMS IF IT'S WRONG. ARE YOU 100% SURE?"
+                        status "Datastore assets bucket `/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-assets-${assettype} is about to be purged/deleted"
+                        status "############################################################################################################################"
+                        status "Again you absolutely sure that you want to proceed, destructive action is ahead type exactly 'YES PROCEED' to continue, otherwise I will exit"
+                        read response
+                        if ( [ "${response}" != "YES PROCEED" ] )
                         then
-                                read input
+                                /bin/touch /tmp/END_IT_ALL
                         fi
-
-                        while ( [ "${input}" != "Y" ] && [ "${input}" != "y" ] && [ "${input}" != "NO BACKUP" ] )
-                        do
-                                status "That is not a valid input, please enter 'Y', 'y', or 'NO BACKUP'"
-                                status "Make sure you understand what 'NO BACKUP' means if you don't understand, don't type 'NO BACKUP'"
-                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" ]  || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
-                                then
-                                        read input
-                                fi
-                        done
-
-                        if ( [ "${input}" = "Y" ] || [ "${input}" = "Y" ] ) 
-                        then
-                                status "Making a safety backup: s3://${assets_bucket}-backup-$$ in your primary datastore from a previous build of this website - ${WEBSITE_URL} , please wait....."
-
-                                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh ${assets_bucket}-backup-$$
-                                ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastore.sh ${assets_bucket} ${assets_bucket}-backup-$$
-                                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${assets_bucket}
-
-                                status "OK, thanks for waiting. You can find your previously deployed assets in s3://${assets_bucket}-backup-$$ in your primary datastore."
-                                status " please press <enter> to continue"
-                                if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ]  || [ "`${BUILD_HOME}/helperscripts/IsParameterBuild.sh`" = "1" ] )
-                                then
-                                        read x
-                                fi
-                        else
-                                status "####################################################################"
-                                status "THIS COULD CAUSE YOU A LOT OF PROBLEMS IF IT'S WRONG. ARE YOU 100% SURE?"
-                                status "###################################################################"
-                                status "Again you absolutely sure that you want to proceed, potentially destructive action type 'YES PROCEED' to continue, otherwise I will exit"
-                                read response
-                                if ( [ "${response}" != "YES PROCEED" ] )
-                                then
-                                        /bin/touch /tmp/END_IT_ALL
-                                fi
-                                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${assets_bucket}
-                        fi
+                        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "asset" "local" "${assettype}"
                 fi
         done
 fi
