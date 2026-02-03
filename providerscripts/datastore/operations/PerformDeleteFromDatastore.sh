@@ -61,4 +61,4 @@ then
         file_to_delete=""
 fi
 
-${datastore_cmd}${file_to_delete}
+eval ${datastore_cmd}${file_to_delete}
