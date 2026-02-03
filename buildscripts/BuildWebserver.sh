@@ -254,8 +254,8 @@ do
 			fi
 
 			#We don't want the IP addresses of a failed build in our S3 datastore
-			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverpublicips
-			${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh webserverips
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverpublicips" "root" "local"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverips" "root" "local"
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the webserver is destroyed because of a faulty build
