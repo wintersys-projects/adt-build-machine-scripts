@@ -80,6 +80,8 @@ elif ( [ "${bucket_type}" = "snap" ] )
 then
         active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
         active_bucket="${active_bucket}-${DNS_CHOICE}-snap"
+else 
+        active_bucket="${bucket_type}"
 fi
 
 
