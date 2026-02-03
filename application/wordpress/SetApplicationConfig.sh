@@ -60,7 +60,7 @@ fi
 
 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wordpress_config.php" "root" "distributed" "no"
 
-if ( [ "`${BUILD_HOME}/providerscripts/operations/toolkit/ListDatastore.sh "config" "wordpress_config.php"`" = "" ] )
+if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "config" "wordpress_config.php"`" = "" ] )
 then
         status "Didn't generate the wordpress configuration file in the config datastore, this will cause trouble later"
 fi
