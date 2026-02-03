@@ -35,7 +35,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 #######################################################################################################
 #######################################################################################################
-set -x
+#set -x
 
 website_url="${1}"
 auth="${2}"
@@ -94,7 +94,12 @@ else
 fi
 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
-~/.acme.sh/acme.sh --remove --domain ${WEBSITE_URL} 
+
+#if ( [ "`/root/.acme.sh/acme.sh --list | /bin/grep ${WEBSITE_URL}`" != "" ] )
+#then
+#       ~/.acme.sh/acme.sh --revoke --domain ${WEBSITE_URL} 
+#       ~/.acme.sh/acme.sh --remove --domain ${WEBSITE_URL} 
+#fi
 
 count="0"
 
@@ -120,10 +125,10 @@ then
                 export CF_Email="${DNS_USERNAME}"
         fi
 
-        ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
+        ~/.acme.sh/acme.sh --renew --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
         if ( [ "$?" != "0" ] )
         then
-                ~/.acme.sh/acme.sh --renew --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
+                ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
         fi               
 fi
 
@@ -135,11 +140,11 @@ then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/digitalocean.sh ~/.acme.sh/dnsapi/dns_dgon.sh
         fi
 
-        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
+        ~/.acme.sh/acme.sh --renew --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
 
         if ( [ "$?" != "0" ] )
         then
-                ~/.acme.sh/acme.sh --renew --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
+                ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
         fi
 fi
 
@@ -149,14 +154,14 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/exoscale.sh ~/.acme.sh/dnsapi/dns_exoscale.sh
         fi
-        
-        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone 
-        
+
+        ~/.acme.sh/acme.sh --renew --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone 
+
         if ( [ "$?" != "0" ] )
         then
                 ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone 
         fi
-                
+
 fi
 
 if ( [ "${DNS_CHOICE}" = "linode" ] )
@@ -165,11 +170,12 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/linode.sh ~/.acme.sh/dnsapi/dns_linode_v4.sh
         fi
-        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
+
+        ~/.acme.sh/acme.sh --renew --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
 
         if ( [ "$?" != "0" ] )
         then
-                ~/.acme.sh/acme.sh --renew --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
+                ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
         fi
 fi
 
@@ -179,13 +185,13 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/vultr.sh ~/.acme.sh/dnsapi/dns_vultr.sh
         fi
-        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
-        
+        ~/.acme.sh/acme.sh --renew --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
+
         if ( [ "$?" != "0" ] )
         then
-                ~/.acme.sh/acme.sh --renew --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
+                ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
         fi
-        
+
 fi
 
 
