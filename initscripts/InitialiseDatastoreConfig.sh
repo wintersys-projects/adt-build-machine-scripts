@@ -264,9 +264,9 @@ then
         fi
         if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "multi-region"`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "multi-region" "root" "local" 
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "multi-region" "root" "distributed" 
         else
-                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "multi-region"
+                ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "multi-region" "distributed"
         fi
 fi
 
