@@ -621,11 +621,11 @@ then
         /bin/echo "DB_PORT=${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat
 
        # multi_region_bucket="`/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-multi-region"
-        ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "multi-region" "local"
+        ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "multi-region" "distributed"
 
         if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "multi-region" "credentials.dat"`" != "" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "multi-region" "credentials.dat" "local"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "multi-region" "credentials.dat" "distributed"
         fi
 
         ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "multi-region" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat" "root" "local" "no"
