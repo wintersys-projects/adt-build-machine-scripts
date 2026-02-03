@@ -49,7 +49,9 @@ else
         exit
 fi
 
-buckets="`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "" | /usr/bin/awk '{print $NF}' | /bin/sed 's,s3://,,'`"
+#buckets="`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "" | /usr/bin/awk '{print $NF}' | /bin/sed 's,s3://,,'`"
+
+buckets=`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "config-all"`
 
 
 for bucket in ${buckets}
@@ -59,11 +61,11 @@ do
 
         if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
         then
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "${bucket}"`" != "" ] )
-                then
-                        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "${bucket}/*"
-                fi
+             #   ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
+             #   if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "${bucket}"`" != "" ] )
+             #   then
+             #           ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "${bucket}/*"
+             #   fi
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "${bucket}"
         fi
 done
