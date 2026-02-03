@@ -21,9 +21,9 @@
 #set -x
 
 status () {
-	/bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
-	script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
-	/bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
+        /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
+        script_name="`/bin/echo ${0} | /usr/bin/awk -F'/' '{print $NF}'`"
+        /bin/echo "${script_name}: ${1}" | /usr/bin/tee -a /dev/fd/4 2>/dev/null
 }
 
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
@@ -37,39 +37,40 @@ NO_WEBSERVERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_WEBSERVERS`"
 
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] )
 then
-	if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
-	then
-		/bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:*
-	fi
+        if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
+        then
+                /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:*
+        fi
 
-	status ""
-	status "#############################################################"
-	status "Setting scaling value for number of webservers to ${NO_WEBSERVERS}"
-	status "#############################################################"
-	status ""
+        status ""
+        status "#############################################################"
+        status "Setting scaling value for number of webservers to ${NO_WEBSERVERS}"
+        status "#############################################################"
+        status ""
 
-	####added
+        ####added
 
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
-	${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "scaling" "local" "scaling-${CLOUDHOST}-${REGION}"
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
+        ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "scaling" "local" "scaling-${CLOUDHOST}-${REGION}"
 
-	no_autoscaler="1"
-	while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] )
-	do
-		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "autoscaler-${no_autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${REGION}"
-		no_autoscaler="`/usr/bin/expr ${no_autoscaler} + 1`"
-	done
-    ####added
+        no_autoscaler="1"
+        while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] )
+        do
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "*autoscaler-${no_autoscaler}*" "local" "scaling-${CLOUDHOST}-${REGION}"
+                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "autoscaler-${no_autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${REGION}"
+                no_autoscaler="`/usr/bin/expr ${no_autoscaler} + 1`"
+        done
+        ####added
 
-	/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
-	${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "root" "local" "no"
+        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
+        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "root" "local" "no"
 
-	if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
-	then
-		status ""
-		status "Press <enter> to accept these values"
-		status ""
-		read x
-	fi
+        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
+        then
+                status ""
+                status "Press <enter> to accept these values"
+                status ""
+                read x
+        fi
 fi
 
