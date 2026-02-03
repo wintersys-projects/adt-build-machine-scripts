@@ -628,7 +628,7 @@ then
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "multi-region" "credentials.dat" "distributed"
         fi
 
-        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "multi-region" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat" "root" "local" "no"
+        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "multi-region" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials.dat" "root" "distributed" "no"
 fi
 
 #Persist our credentials to the file system to be used at will      
