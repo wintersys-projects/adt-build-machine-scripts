@@ -66,6 +66,6 @@ do
              #   then
              #           ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "${bucket}/*"
              #   fi
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "${bucket}"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "${bucket}" "distributed"
         fi
 done
