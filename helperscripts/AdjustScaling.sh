@@ -82,7 +82,7 @@ read BUILD_IDENTIFIER
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
-scaling_profile="`${BUILD_HOME}/providerscripts/datastore/config/toolkit/ListFromConfigDatastore.sh STATIC_SCALE:* STATIC_SCALE:`"
+scaling_profile="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "STATIC_SCALE:"`"
 stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
 original_scale_value="0"
 
@@ -145,29 +145,38 @@ do
 done
 
 /bin/echo "Deleting existing Scaling Profile from datastore"
-${BUILD_HOME}/providerscripts/datastore/config/toolkit/DeleteFromConfigDatastore.sh STATIC_SCALE: "yes"
+
+if ( [ "`/bin/grep "^DATASTORECONFIGSTYLE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $2}'`" = "tool" ] )
+then
+        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "STATIC_SCALE:*" "local"
+else
+        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "STATIC_SCALE:*" "local"
+        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "STATIC_SCALE:${original_scale_value}.delete_me" "root" "local" "yes"
+fi
 
 if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
 then
         /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:*
 fi
 
-/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values}
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/${new_scale_values}" "root" "local" "no"
+${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "STATIC_SCALE:${new_scale_values}" "root" "local" "yes"
 
 if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "${new_scale_values}"`" != "" ] )
 then
         /bin/echo "New Scaling Profile is present in the datastore : ${new_scale_values}"
 fi
 
-scaling_profile="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "STATIC_SCALE:*"`"
-stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
+scaling_profile="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "STATIC_SCALE:" | /bin/grep -v 'delete_me'| /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
 total_number_of_webservers="0"
 
-for value in ${stripped_scaling_profile}
+for value in ${scaling_profile}
 do
         total_number_of_webservers="`/usr/bin/expr ${total_number_of_webservers} + ${value}`"
 done
+
+/bin/echo ""
+/bin/echo "Your number of webservers has been successfully set to: ${total_number_of_webservers}"
+/bin/echo ""
 
 /bin/echo ""
 /bin/echo "Your number of webservers has been successfully set to: ${total_number_of_webservers}"
