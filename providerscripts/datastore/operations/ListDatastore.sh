@@ -108,7 +108,7 @@ fi
 
 if ( [ "${bucket_type}" = "all" ] )
 then
-        ${datastore_cmd}
+        ${datastore_cmd} | /bin/sed 's;s3://;;g'
 else
         ${datastore_cmd}  | /bin/grep -wo "${active_bucket}.*"
 fi
