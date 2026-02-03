@@ -109,11 +109,11 @@ then
 
         if ( [ "${file_to_list}" != "" ] )
         then
-                include="--include *${file_to_list}*"
+                include='--include "*'${file_to_list}*'"'
         fi
 
-        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1  --s3-endpoint ${host_base} ${include} ls s3:${active_bucket}/"
+        datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-1 --s3-endpoint ${host_base} ${include} ls s3:${active_bucket}/"
         file_to_list=""
 fi
 
-${datastore_cmd}${file_to_list}  2>/dev/null | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
+eval ${datastore_cmd}${file_to_list}  2>/dev/null | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
