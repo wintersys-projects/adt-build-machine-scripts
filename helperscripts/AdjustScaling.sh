@@ -77,11 +77,11 @@ then
         /bin/echo "${autoscalers}"
         /bin/echo "Please enter the full name of the autoscaler you want to update the scaling profile for, for example, 'autoscaler-1'"
         read autoscaler
-        if ( [ "`/bin/echo ${autoscaler} | /bin/grep 'autoscaler-[0-9]'`" = "" ] )
-        then
-                /bin/echo "That doesn't seem like a valid value for an autoscaler"
-                exit
-        fi
+        while ( [ "`/bin/echo ${autoscaler} | /bin/grep 'autoscaler-[0-9]'`" = "" ] )
+        do
+                /bin/echo "That doesn't seem like a valid value for an autoscaler, try again"
+                read autoscaler
+        done
         /bin/echo "Please enter the number of webservers you want to update to for ${autoscaler}, for example, '5' if you want your autoscaler to spin up 5 webservers"
         read no_webservers
         /bin/echo "I am updating autoscaler ${autoscaler} to provision ${no_webservers} webservers, is this correct (Y|N)"
