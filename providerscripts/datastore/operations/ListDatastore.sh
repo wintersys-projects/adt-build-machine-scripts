@@ -62,6 +62,9 @@ then
 elif ( [ "${bucket_type}" = "asset" ] )
 then
         active_bucket="`/bin/echo "${WEBSITE_URL}-assets-${additional_specifier}" | /bin/sed -e 's/\./-/g' -e 's;/;-;g' -e 's/--/-/g'`"
+elif ( [ "${bucket_type}" = "scaling" ] )
+then
+        active_bucket="`/bin/echo ${additional_specifier} | /bin/sed 's/\./-/g'`"
 elif ( [ "${bucket_type}" = "backup" ] )
 then
         active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${additional_specifier}"
