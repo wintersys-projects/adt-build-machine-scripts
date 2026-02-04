@@ -58,126 +58,40 @@ else
         exit
 fi
 
-if ( [ "${CLOUDHOST}" != "`/bin/cat ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST`" ] )
+/bin/echo "Please enter the full URL of the website you want to alter the scaling configuration for, for example, www.testwebsite.uk"
+
+read website_url
+
+website_url="`/bin/echo  ${website_url} | /bin/sed 's/\./-/g'`"
+
+regions="`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "scaling" "${website_url}-scaling-${CLOUDHOST}" | /bin/sed "s/.*${CLOUDHOST}//g" | /bin/sed 's/^-//g'`"
+
+if ( [ "${regions}" != "" ] )
 then
-        /bin/echo "Your chosen cloudhost provider is different to your active cloudhost provider on this build machine"
-        /bin/echo "Do you want to set your chosen cloudhost to be the active cloudhost provider (Y|y)"
+        /bin/echo "I have found scaling profiles in the following regions for cloudhost ${CLOUDHOST}:"
+        /bin/echo "${regions}"
+        /bin/echo "Please type the region (exactly) that you want to update"
+        read region
+        autoscalers="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "STATIC_SCALE" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}'`"
+        /bin/echo "I found the following scaling profiles:"
+        /bin/echo "${autoscalers}"
+        /bin/echo "Please enter the full name of the autoscaler you want to update the scaling profile for, for example, 'autoscaler-1'"
+        read autoscaler
+        /bin/echo "Please enter the number of webservers you want to update to for ${autoscaler}, for example, '5' if you want your autoscaler to spin up 5 webservers"
+        read no_webservers
+        /bin/echo "I am updating autoscaler ${autoscaler} to provision ${no_webservers} webservers, is this correct (Y|N)"
         read response
+
         if ( [ "${response}" = "Y" ] || [ "${response}" = "y" ] )
         then
-                /bin/echo "${CLOUDHOST}" > ${BUILD_HOME}/runtimedata/ACTIVE_CLOUDHOST
-        fi
-fi
-
-/bin/echo "What is the build identifier you want to adjust scaling for?"
-/bin/echo "You have these builds to choose from: "
-
-/bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}
-
-/bin/echo "Please enter the name of the build of the server you wish to connect with"
-read BUILD_IDENTIFIER
-
-/bin/echo "${BUILD_IDENTIFIER}" > ${BUILD_HOME}/runtimedata/ACTIVE_BUILD_IDENTIFIER
-
-SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
-TOKEN="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
-
-scaling_profile="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "STATIC_SCALE:"`"
-stripped_scaling_profile="`/bin/echo ${scaling_profile} | /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
-original_scale_value="0"
-
-for value in ${stripped_scaling_profile}
-do
-        original_scale_value="`/usr/bin/expr ${original_scale_value} + ${value}`"
-done
-
-if ( [ "${original_scale_value}" != "" ] )
-then
-        /bin/echo "Scaling value is currently set to ${original_scale_value} webservers"
-fi
-
-/bin/echo "Please enter the number of webservers that you want to scale to"
-read new_scale_value
-
-while ( ! [ "${new_scale_value}" -eq "${new_scale_value}" ] || [ "${new_scale_value}" -lt "2" ] ) 2> /dev/null
-do
-        /bin/echo "Sorry integers 2 or higher only"
-        read new_scale_value
-done
-
-/bin/echo ""
-/bin/echo "Your number of webservers is about to be set to ${new_scale_value}"
-/bin/echo "Enter 'Y' or 'y' to accept, anything else to abort"
-read response
-
-if ( [ "${response}" != "Y" ] && [ "${response}" != "y" ] )
-then
-        exit
-fi
-
-REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
-number_of_autoscalers="`${BUILD_HOME}/providerscripts/server/NumberOfServers.sh "as-${REGION}-${BUILD_IDENTIFIER}" ${CLOUDHOST} 2>/dev/null`"
-
-if ( [ "${number_of_autoscalers}" = "0" ] )
-then
-        /bin/echo "There doesn't seem to be any autoscalers running it's pointless trying to set a scaling value"
-        exit
-fi
-
-number_of_webservers="${new_scale_value}"
-
-/bin/echo "You are running ${number_autoscalers} and you are asking me to build ${new_scale_value} webservers"
-
-base_number_of_webservers="`/usr/bin/expr ${number_of_webservers} / ${number_of_autoscalers}`"
-total_base_number_of_webservers="`/usr/bin/expr ${base_number_of_webservers} \* ${number_of_autoscalers}`"
-additional_number_of_webservers="`/usr/bin/expr ${number_of_webservers} - ${total_base_number_of_webservers}`"
-
-new_scale_values="STATIC_SCALE"
-for autoscaler_no in `printf "%d\n" $(seq 1 ${number_of_autoscalers})`
-do
-        if ( [ "${additional_number_of_webservers}" -gt "0" ] )
-        then
-                new_scale_values="${new_scale_values}:`/usr/bin/expr ${base_number_of_webservers} + 1`"
-                additional_number_of_webservers="`/usr/bin/expr ${additional_number_of_webservers} - 1`"
+                if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler} ] )
+                then
+                        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}
+                fi
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "${autoscaler}/STATIC_SCALE:" "local" "${website_url}-scaling-${CLOUDHOST}-${region}"
+                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/STATIC_SCALE:${no_webservers}
+                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/STATIC_SCALE:${no_webservers}" "${autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${region}"
         else
-                new_scale_values="${new_scale_values}:${base_number_of_webservers}"
+                exit
         fi
-done
-
-/bin/echo "Deleting existing Scaling Profile from datastore"
-
-if ( [ "`/bin/grep "^DATASTORECONFIGSTYLE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $2}'`" = "tool" ] )
-then
-        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "STATIC_SCALE:*" "local"
-else
-        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "STATIC_SCALE:*" "local"
-        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "STATIC_SCALE:${original_scale_value}.delete_me" "root" "local" "yes"
 fi
-
-if ( [ -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:* ] )
-then
-        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:*
-fi
-
-${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "STATIC_SCALE:${new_scale_values}" "root" "local" "yes"
-
-if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "${new_scale_values}"`" != "" ] )
-then
-        /bin/echo "New Scaling Profile is present in the datastore : ${new_scale_values}"
-fi
-
-scaling_profile="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "STATIC_SCALE:" | /bin/grep -v 'delete_me'| /bin/sed 's/.*STATIC_SCALE://g' | /bin/sed 's/:/ /g'`"
-total_number_of_webservers="0"
-
-for value in ${scaling_profile}
-do
-        total_number_of_webservers="`/usr/bin/expr ${total_number_of_webservers} + ${value}`"
-done
-
-/bin/echo ""
-/bin/echo "Your number of webservers has been successfully set to: ${total_number_of_webservers}"
-/bin/echo ""
-
-/bin/echo ""
-/bin/echo "Your number of webservers has been successfully set to: ${total_number_of_webservers}"
-/bin/echo ""
