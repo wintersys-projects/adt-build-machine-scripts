@@ -67,6 +67,9 @@ then
 elif ( [ "${bucket_type}" = "backup" ] )
 then
         active_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-${additional_specifier}"
+elif ( [ "${bucket_type}" = "scaling" ] )
+then
+        active_bucket="`/bin/echo ${additional_specifier} | /bin/sed 's/\./-/g'`"
 elif ( [ "${bucket_type}" = "auth" ] )
 then
         active_bucket="authip-adt-allowed-${additional_specifier}"
@@ -116,4 +119,6 @@ then
         file_to_list=""
 fi
 
-eval ${datastore_cmd}${file_to_list}  2>/dev/null | /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
+eval ${datastore_cmd}${file_to_list}  2>/dev/null 
+
+#| /usr/bin/awk '{print $NF}' | /usr/bin/awk -F'/' '{print $NF}' | /bin/sed '/^$/d'
