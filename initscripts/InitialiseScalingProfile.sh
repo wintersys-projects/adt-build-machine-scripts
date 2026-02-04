@@ -50,20 +50,25 @@ then
 
         ####added
 
-        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
+       # /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
         ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "scaling" "local" "scaling-${CLOUDHOST}-${REGION}"
 
         no_autoscaler="1"
         while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] )
         do
+                if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler} ] )
+                then
+                        /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}
+                fi
+                /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}/STATIC_SCALE:${NO_WEBSERVERS}
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "*autoscaler-${no_autoscaler}*" "local" "scaling-${CLOUDHOST}-${REGION}"
-                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "autoscaler-${no_autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${REGION}"
+                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}/STATIC_SCALE:${NO_WEBSERVERS}" "autoscaler-${no_autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${REGION}"
                 no_autoscaler="`/usr/bin/expr ${no_autoscaler} + 1`"
         done
         ####added
 
-        /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
-        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "root" "local" "no"
+     #   /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}
+     #   ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/STATIC_SCALE:${NO_WEBSERVERS}" "root" "local" "no"
 
         if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
         then
