@@ -49,10 +49,7 @@ else
         exit
 fi
 
-#buckets="`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "" | /usr/bin/awk '{print $NF}' | /bin/sed 's,s3://,,'`"
-
-buckets=`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "all"`
-
+buckets=`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "all" | /usr/bin/awk '{print $NF}' | /bin/sed 's,s3://,,'`
 
 for bucket in ${buckets}
 do
@@ -61,11 +58,6 @@ do
 
         if ( [ "${response}" = "y" ] || [ "${response}" = "Y" ] )
         then
-             #   ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "${bucket}" 2>/dev/null
-             #   if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "${bucket}"`" != "" ] )
-             #   then
-             #           ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "${bucket}/*"
-             #   fi
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "${bucket}" "distributed"
         fi
 done
