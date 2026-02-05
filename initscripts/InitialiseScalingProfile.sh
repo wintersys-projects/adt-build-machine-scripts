@@ -44,9 +44,9 @@ then
 	fi
 
 	status ""
-	status "#############################################################"
-	status "Setting scaling value for number of webservers to ${NO_WEBSERVERS}"
-	status "#############################################################"
+	status "##################################################################################################################"
+	status "Setting scaling value for number of webservers to ${NO_WEBSERVERS} distributed across ${NO_AUTOSCALER} autoscalers"
+	status "##################################################################################################################"
 	status ""
 
 	base_number_of_webservers="`/usr/bin/expr ${NO_WEBSERVERS} / ${NO_AUTOSCALERS}`"
