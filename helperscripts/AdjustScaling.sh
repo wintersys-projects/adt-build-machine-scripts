@@ -96,6 +96,8 @@ then
                 if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler} ] )
                 then
                         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}
+                else
+                        /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/*
                 fi
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "${autoscaler}/STATIC_SCALE:*" "local" "${website_url}-scaling-${CLOUDHOST}-${region}"
                 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/STATIC_SCALE:${no_webservers}
