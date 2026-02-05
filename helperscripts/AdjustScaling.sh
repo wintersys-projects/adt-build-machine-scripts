@@ -27,10 +27,6 @@ then
         exit
 fi
 
-/bin/echo "Remember, scaling takes 5 minutes to come online after the completion of an initial build. If less than 5 minutes has passed, wait a bit, then adjust scaling"
-/bin/echo "Press <enter> to acknowledge"
-read x
-
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 
 if ( [ "`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`" != "1" ] )
