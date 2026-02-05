@@ -53,8 +53,8 @@ then
         include=""
         if ( [ "${file_to_delete}" != "" ] )
         then
-                file_to_include="`/bin/echo ${file_to_delete} | /usr/bin/awk -F'/' '{print $NF}'`"
-                include="--include '"*${file_to_include}*"'"
+             #   file_to_include="`/bin/echo ${file_to_delete} | /usr/bin/awk -F'/' '{print $NF}'`"
+                include="--include '"*${file_to_delete}*"'"
                 include="`/bin/echo ${include} | /bin/sed 's/\*\*/\*/g'`"
         fi
 
