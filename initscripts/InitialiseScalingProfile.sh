@@ -70,7 +70,7 @@ then
 	${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "autoscaler-*/STATIC_SCALE:*" "local" "${WEBSITE_URL}-scaling-${CLOUDHOST}-${REGION}"
 
 	no_autoscaler="1"
-	while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] )
+	while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] && [ "${no_autoscaler}" -le "${NO_WEBSERVERS}" ] )
 	do
 		if ( [ ! -d ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler} ] )
 		then
