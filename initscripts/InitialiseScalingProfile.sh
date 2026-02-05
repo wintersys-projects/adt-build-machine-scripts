@@ -76,9 +76,10 @@ then
 		then
 			/bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}
 		fi
-		/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}/STATIC_SCALE:${NO_WEBSERVERS}
+		scale_value="`/bin/echo ${new_scale_values} | /usr/bin/cut -d' ' -f${no_autoscaler}`"
+		/bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}/STATIC_SCALE:${scale_value}
 		${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "*autoscaler-${no_autoscaler}*" "local" "scaling-${CLOUDHOST}-${REGION}"
-		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}/STATIC_SCALE:`/bin/echo ${new_scale_values} | /usr/bin/cut -d' ' -f${no_autoscaler}`" "autoscaler-${no_autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${REGION}"
+		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/autoscaler-${no_autoscaler}/STATIC_SCALE:${scale_value}" "autoscaler-${no_autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${REGION}"
 		no_autoscaler="`/usr/bin/expr ${no_autoscaler} + 1`"
 	done
 
