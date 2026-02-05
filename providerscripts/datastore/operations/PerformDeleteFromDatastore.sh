@@ -49,11 +49,11 @@ then
 elif ( [ "${datastore_tool}" = "/usr/bin/rclone" ] )
 then
         host_base="`/bin/grep ^endpoint /root/.config/rclone/rclone.conf-${count} | /bin/grep "^endpoint" | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
-
+       
         include=""
         if ( [ "${file_to_delete}" != "" ] )
         then
-             #   file_to_include="`/bin/echo ${file_to_delete} | /usr/bin/awk -F'/' '{print $NF}'`"
+                #               file_to_include="`/bin/echo ${file_to_delete} | /usr/bin/awk -F'/' '{print $NF}'`"
                 include="--include '"*${file_to_delete}*"'"
                 include="`/bin/echo ${include} | /bin/sed 's/\*\*/\*/g'`"
         fi
