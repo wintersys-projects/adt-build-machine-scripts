@@ -49,6 +49,7 @@ PRODUCTION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRODUCTION`"
 BUILDOS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS`"
 BUILDOS_VERSION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILDOS_VERSION`"
 WS_SERVER_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WS_SERVER_TYPE`"
+NO_AUTOSCALER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALER`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 BUILD_FROM_SNAPSHOT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_FROM_SNAPSHOT`"
 INFRASTRUCTURE_REPOSITORY_OWNER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh INFRASTRUCTURE_REPOSITORY_OWNER`"
@@ -78,6 +79,21 @@ do
 	status "OK... Building webserver ${webserver_no}. This is the ${counter} attempt of 5"
 	WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 
+	no_autoscalers="${NO_AUTOSCALERS}"
+	webserver_index="${webserver_no}"
+
+	if ( [ "${webserver_index}" -gt "${no_autoscalers}" ] )
+	then
+        autoscaler_no="`/usr/bin/expr ${webserver_index} - ${no_autoscalers}`"
+        while ( [ "${autoscaler_no}" -gt "${no_autoscalers}" ] )
+        do
+                autoscaler_no="`/usr/bin/expr ${webserver_index} - ${no_autoscalers}`"
+                webserver_index="${autoscaler_no}"
+        done
+	else
+        autoscaler_no="${webserver_index}"
+	fi
+
 
 	#Check if there is a webserver already running. If there is, then skip building the webserver
 	if ( [ "${webserver_no}" -le "${NO_WEBSERVERS}" ] )
@@ -85,7 +101,7 @@ do
 		ip=""
 		#Construct a unique name for this webserver
 		RND="`/bin/echo ${SERVER_USER} | /usr/bin/fold -w 4 | /usr/bin/head -n 1`"
-		webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-1-${RND}-init-${webserver_no}"
+		webserver_name="ws-${REGION}-${BUILD_IDENTIFIER}-${autoscaler_no}-${RND}-init-${webserver_no}"
 
 		status "Initialising a new server machine, please wait......"
 
