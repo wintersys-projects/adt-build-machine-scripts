@@ -94,7 +94,6 @@ do
         autoscaler_no="${webserver_index}"
 	fi
 
-
 	#Check if there is a webserver already running. If there is, then skip building the webserver
 	if ( [ "${webserver_no}" -le "${NO_WEBSERVERS}" ] )
 	then
