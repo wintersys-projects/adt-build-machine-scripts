@@ -70,7 +70,9 @@ then
         /bin/echo "Please type the region (exactly) that you want to update"
         read region
         autoscalers="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "autoscaler*/STATIC_SCALE*" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}' | /bin/sed 's/.*autoscaler/autoscaler/g'`"
-        /bin/echo "There are ${NO_AUTOSCALERS} operational autoscalers with `/bin/echo ${autoscalers} | /usr/bin/wc -w` active scaling profiles as listed below (scaling profile absence means an inactive autoscaler)"
+        no_operational_autoscalers="`/bin/echo ${autoscalers} | /usr/bin/wc -w`"
+        no_inactive_autoscalers="`/usr/bin/expr ${NO_AUTOSCALER} - ${no_operational_autoscalers}`"
+        /bin/echo "There are ${NO_AUTOSCALERS} operational autoscalers with ${no_operational_autoscalers}  inactive autoscalers. The active scaling profiles as listed below"
         /bin/echo "${autoscalers}"
         /bin/echo "Please enter the full name of the autoscaler you want to update the scaling profile for, for example, 'autoscaler-1'"
         read autoscaler
