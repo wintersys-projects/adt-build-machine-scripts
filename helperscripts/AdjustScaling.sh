@@ -72,7 +72,7 @@ then
         /bin/echo "${regions}"
         /bin/echo "Please type the region (exactly) that you want to update"
         read region
-        autoscalers="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "STATIC_SCALE" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}'`"
+        autoscalers="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "autoscaler*/STATIC_SCALE*" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}'`"
         /bin/echo "I found the following scaling profiles:"
         /bin/echo "${autoscalers}"
         /bin/echo "Please enter the full name of the autoscaler you want to update the scaling profile for, for example, 'autoscaler-1'"
@@ -95,7 +95,10 @@ then
                 else
                         /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/*
                 fi
-                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "${autoscaler}/STATIC_SCALE:*" "local" "${website_url}-scaling-${CLOUDHOST}-${region}"
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "autoscaler*/STATIC_SCALE*" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}'`" != "" ] )
+                then
+                        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "${autoscaler}/STATIC_SCALE:*" "local" "${website_url}-scaling-${CLOUDHOST}-${region}"
+                fi
                 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/STATIC_SCALE:${no_webservers}
                 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/STATIC_SCALE:${no_webservers}" "${autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${region}"
         else
