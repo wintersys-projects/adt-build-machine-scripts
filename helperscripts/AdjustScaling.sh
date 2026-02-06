@@ -2,7 +2,7 @@
 ########################################################################################################
 # Author: Peter Winter
 # Date  : 13/01/2022
-# Description : This script will adjust the webserver scaling settings for your autoscaler(s). In other words
+# Description : This script will adjust the webserver scaling settings for your utoscaler(s). In other words
 # if you use this script to set a scaling value of "5" then 5 webservers will be provisioned in short order
 ########################################################################################################
 # License Agreement:
@@ -57,11 +57,15 @@ fi
 /bin/echo "Please enter the name of the build of the server you wish to connect with"
 /bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}
 read BUILD_IDENTIFIER
+
 /bin/echo "Please enter the full URL of the website you want to alter the scaling configuration for, for example, www.testwebsite.uk"
 read website_url
 website_url="`/bin/echo  ${website_url} | /bin/sed 's/\./-/g'`"
+
 NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
+
 regions="`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "scaling" "${website_url}-scaling-${CLOUDHOST}" | /bin/sed "s/.*${CLOUDHOST}//g" | /bin/sed 's/^-//g'`"
+
 
 if ( [ "${regions}" != "" ] )
 then
@@ -71,8 +75,8 @@ then
         read region
         autoscalers="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "autoscaler*/STATIC_SCALE*" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}' | /bin/sed 's/.*autoscaler/autoscaler/g'`"
         no_operational_autoscalers="`/bin/echo ${autoscalers} | /usr/bin/wc -w`"
-        no_inactive_autoscalers="`/usr/bin/expr ${NO_AUTOSCALER} - ${no_operational_autoscalers}`"
-        /bin/echo "There are ${NO_AUTOSCALERS} operational autoscalers with ${no_operational_autoscalers}  inactive autoscalers. The active scaling profiles as listed below"
+        no_inactive_autoscalers="`/usr/bin/expr ${NO_AUTOSCALERS} - ${no_operational_autoscalers}`"
+        /bin/echo "There are ${NO_AUTOSCALERS} autoscalers provisioned ${no_operational_autoscalers} of which is/are operational and  ${no_inactive_autoscalers} of which is/are inactive. The active scaling profiles as listed below"
         /bin/echo "${autoscalers}"
         /bin/echo "Please enter the full name of the autoscaler you want to update the scaling profile for, for example, 'autoscaler-1'"
         read autoscaler
