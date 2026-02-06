@@ -57,13 +57,10 @@ fi
 /bin/echo "Please enter the name of the build of the server you wish to connect with"
 /bin/ls ${BUILD_HOME}/runtimedata/${CLOUDHOST}
 read BUILD_IDENTIFIER
-
 /bin/echo "Please enter the full URL of the website you want to alter the scaling configuration for, for example, www.testwebsite.uk"
-
 read website_url
-
 website_url="`/bin/echo  ${website_url} | /bin/sed 's/\./-/g'`"
-
+NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 regions="`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "scaling" "${website_url}-scaling-${CLOUDHOST}" | /bin/sed "s/.*${CLOUDHOST}//g" | /bin/sed 's/^-//g'`"
 
 if ( [ "${regions}" != "" ] )
@@ -73,7 +70,7 @@ then
         /bin/echo "Please type the region (exactly) that you want to update"
         read region
         autoscalers="`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "autoscaler*/STATIC_SCALE*" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}' | /bin/sed 's/.*autoscaler/autoscaler/g'`"
-        /bin/echo "There are ${NO_AUTOSCALERS} operational autoscalers and there is `/bin/echo ${autoscalers} | /usr/bin/wc -l` active scaling profiles as listed below (scaling profile absence means an inactive autoscaler)"
+        /bin/echo "There are ${NO_AUTOSCALERS} operational autoscalers with `/bin/echo ${autoscalers} | /usr/bin/wc -w` active scaling profiles as listed below (scaling profile absence means an inactive autoscaler)"
         /bin/echo "${autoscalers}"
         /bin/echo "Please enter the full name of the autoscaler you want to update the scaling profile for, for example, 'autoscaler-1'"
         read autoscaler
