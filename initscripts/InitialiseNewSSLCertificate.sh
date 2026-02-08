@@ -234,7 +234,7 @@ then
                 status "Putting SSL Certificates into the datastore"
 
                 ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "fullchain.pem" "fullchain.pem.$$.old" "local"
-                ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "privkey.pem" "/privkey.pem.$$.old" "local"
+                ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "privkey.pem" "privkey.pem.$$.old" "local"
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "ssl" "fullchain.pem" "local"
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "ssl" "privkey.pem" "local"
                 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "ssl" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem" "root" "local" "no"
@@ -242,8 +242,8 @@ then
 
                 if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "ssl" "fullchain.pem"`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "ssl" "privkey.pem"`" = "" ] )
                 then
+                        ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "fullchain.pem.$$.old" "fullchain.pem"
                         ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "privkey.pem.$$.old" "privkey.pem"
-                        ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastoreObject.sh "ssl" "privkey.pem.$$.old" "privkey.pem"
                 else
                         ${BUILD_HOME}/providerscripts/email/SendEmail.sh "NEW SSL CERTIFICATE PUT IN DATASTORE" "SSL Certificate not successfully provisioned/generated" "INFO"
                 fi
