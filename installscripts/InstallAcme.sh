@@ -28,26 +28,31 @@ fi
 BUILD_HOME="`/bin/cat /home/buildhome.dat`"
 email="${2}"
 
-if ( [ "${buildos}" = "ubuntu" ] )
+if ( [ -f ~/.acme.sh/acme.sh ] )
 then
-        if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:acme.sh`" != "" ] )
-        then
-                /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
-        elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:github.com`" != "" ] )
-        then
-                /usr/bin/curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online -m ${email}
-        fi
-fi
+	~/.acme.sh/acme.sh --upgrade 
+else
+	if ( [ "${buildos}" = "ubuntu" ] )
+	then
+		if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:acme.sh`" != "" ] )
+		then
+			/usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
+		elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:github.com`" != "" ] )
+		then
+			/usr/bin/curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online -m ${email}
+		fi
+	fi
 
-if ( [ "${buildos}" = "debian" ] )
-then
-        if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:acme.sh`" != "" ] )
-        then
-                /usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
-        elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:github.com`" != "" ] )
-        then
-                /usr/bin/curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online -m ${email}
-        fi
+	if ( [ "${buildos}" = "debian" ] )
+	then
+		if ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:acme.sh`" != "" ] )
+		then
+			/usr/bin/wget -O -  https://get.acme.sh | /bin/sh -s email=${email} 
+		elif ( [ "`/bin/grep "^SSLCERTCLIENT:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /bin/grep SSLCERTCLIENT:acme:github.com`" != "" ] )
+		then
+			/usr/bin/curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online -m ${email}
+		fi
+	fi
 fi
 
 
