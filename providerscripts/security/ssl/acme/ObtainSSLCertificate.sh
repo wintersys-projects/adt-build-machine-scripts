@@ -75,24 +75,22 @@ fi
 
 if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
 then
-        acme_email_address="${DNS_USERNAME}"
-else
-        acme_email_address="${SYSTEM_FROMEMAIL_ADDRESS}"
+        SYSTEM_FROMEMAIL_ADDRESS="${DNS_USERNAME}"
 fi
 
-#if ( [ -f ~/.acme.sh/acme.sh ] )
-#then
-#        /bin/rm -r ~/.acme.sh
-#fi
+if ( [ -d ~/.acme.sh/${WEBSITE_URL}_ecc ] )
+then
+        /bin/rm -r ~/.acme.sh/${WEBSITE_URL}_ecc
+fi
 
 ${BUILD_HOME}/installscripts/InstallSocat.sh ${BUILDOS}
 ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} #"https://acme-v02.api.letsencrypt.org/directory "
 
-if ( [ "`/bin/grep -r ${acme_email_address} ~/.acme.sh`" = "" ] )
+if ( [ "`/bin/grep -r ${SYSTEM_FROMEMAIL_ADDRESS} ~/.acme.sh`" = "" ] )
 then
-        ~/.acme.sh/acme.sh --register-account -m "${acme_email_address}" 
+        ~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
 else
-        ~/.acme.sh/acme.sh --update-account -m "${acme_email_address}" --force
+        ~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" --force
 fi
 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
@@ -121,11 +119,7 @@ then
                 export CF_Email="${DNS_USERNAME}"
         fi
 
-        ~/.acme.sh/acme.sh --renew --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone --force
-        if ( [ "$?" != "0" ] )
-        then
-                ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone
-        fi               
+        ~/.acme.sh/acme.sh --issue --dns dns_cf -d "${WEBSITE_URL}" --server ${server} --standalone  --force  --always-force-new-domain-key
 fi
 
 
@@ -136,12 +130,7 @@ then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/digitalocean.sh ~/.acme.sh/dnsapi/dns_dgon.sh
         fi
 
-        ~/.acme.sh/acme.sh --renew --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone --force
-
-        if ( [ "$?" != "0" ] )
-        then
-                ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone
-        fi
+        ~/.acme.sh/acme.sh --issue --dns dns_dgon -d "${WEBSITE_URL}" --server ${server} --standalone  --force  --always-force-new-domain-key
 fi
 
 if ( [ "${DNS_CHOICE}" = "exoscale" ] )
@@ -151,12 +140,7 @@ then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/exoscale.sh ~/.acme.sh/dnsapi/dns_exoscale.sh
         fi
 
-        ~/.acme.sh/acme.sh --renew --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone --force
-
-        if ( [ "$?" != "0" ] )
-        then
-                ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone 
-        fi
+        ~/.acme.sh/acme.sh --issue --dns dns_exoscale -d "${WEBSITE_URL}" --server ${server} --standalone  --force  --always-force-new-domain-key
 
 fi
 
@@ -167,12 +151,7 @@ then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/linode.sh ~/.acme.sh/dnsapi/dns_linode_v4.sh
         fi
 
-        ~/.acme.sh/acme.sh --renew --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone --force
-
-        if ( [ "$?" != "0" ] )
-        then
-                ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone
-        fi
+        ~/.acme.sh/acme.sh --issue --dns dns_linode_v4 -d "${WEBSITE_URL}" --server ${server} --standalone --force  --always-force-new-domain-key
 fi
 
 if ( [ "${DNS_CHOICE}" = "vultr" ] )
@@ -181,12 +160,8 @@ then
         then
                 /bin/cp ${BUILD_HOME}/providerscripts/security/ssl/acme/acme-overrides/vultr.sh ~/.acme.sh/dnsapi/dns_vultr.sh
         fi
-        ~/.acme.sh/acme.sh --renew --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone --force
 
-        if ( [ "$?" != "0" ] )
-        then
-                ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
-        fi
+        ~/.acme.sh/acme.sh --issue --dns dns_vultr -d "${WEBSITE_URL}" --server ${server} --standalone
 
 fi
 
