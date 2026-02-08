@@ -86,11 +86,19 @@ fi
 ${BUILD_HOME}/installscripts/InstallSocat.sh ${BUILDOS}
 ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} #"https://acme-v02.api.letsencrypt.org/directory "
 
-if ( [ "`/bin/grep -r ${SYSTEM_FROMEMAIL_ADDRESS} ~/.acme.sh`" = "" ] )
+if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
 then
-        ~/.acme.sh/acme.sh --register-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" 
+        acme_email_address="adt-`/usr/bin/shuf -i1-100000 -n1`@wintersys.uk"
 else
-        ~/.acme.sh/acme.sh --update-account -m "${SYSTEM_FROMEMAIL_ADDRESS}" --force
+        acme_email_address="${SYSTEM_FROMEMAIL_ADDRESS}"
+fi
+
+
+if ( [ "`/bin/grep -r ${acme_email_address} ~/.acme.sh`" = "" ] )
+then
+        ~/.acme.sh/acme.sh --register-account -m "${acme_email_address}" 
+else
+        ~/.acme.sh/acme.sh --update-account -m "${acme_email_address}" --force
 fi
 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
