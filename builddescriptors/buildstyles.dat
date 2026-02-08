@@ -225,7 +225,7 @@ FIREWALL:ufw:limit
 #FIREWALL:iptables:20:30
 FAIL2BAN:active
 EMAILUTIL:sendemail
-SSLCERTCLIENT:acme:github.com
-#SSLCERTCLIENT:lego:binary
+#SSLCERTCLIENT:acme:github.com
+SSLCERTCLIENT:lego:binary
 GITBRANCH:main
 VIRUSSCANNER:clamav:daily
