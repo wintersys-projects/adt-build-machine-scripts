@@ -75,7 +75,9 @@ fi
 
 if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
 then
-        SYSTEM_FROMEMAIL_ADDRESS="${DNS_USERNAME}"
+        acme_email_address="${DNS_USERNAME}"
+else
+        acme_email_address="${SYSTEM_FROMEMAIL_ADDRESS}"
 fi
 
 if ( [ -f ~/.acme.sh/acme.sh ] )
@@ -86,14 +88,6 @@ fi
 ${BUILD_HOME}/installscripts/InstallSocat.sh ${BUILDOS}
 ${BUILD_HOME}/installscripts/InstallAcme.sh ${BUILDOS} ${SYSTEM_FROMEMAIL_ADDRESS} #"https://acme-v02.api.letsencrypt.org/directory "
 
-if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
-then
-        acme_email_address="adt-`/usr/bin/shuf -i1-100000 -n1`@wintersys.uk"
-else
-        acme_email_address="${SYSTEM_FROMEMAIL_ADDRESS}"
-fi
-
-
 if ( [ "`/bin/grep -r ${acme_email_address} ~/.acme.sh`" = "" ] )
 then
         ~/.acme.sh/acme.sh --register-account -m "${acme_email_address}" 
@@ -102,12 +96,6 @@ else
 fi
 
 ~/.acme.sh/acme.sh --set-default-ca --server "${server}"
-
-#if ( [ "`/root/.acme.sh/acme.sh --list | /bin/grep ${WEBSITE_URL}`" != "" ] )
-#then
-#       ~/.acme.sh/acme.sh --revoke --domain ${WEBSITE_URL} 
-#       ~/.acme.sh/acme.sh --remove --domain ${WEBSITE_URL} 
-#fi
 
 count="0"
 
