@@ -240,7 +240,7 @@ then
                 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "ssl" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem" "root" "local" "no"
                 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "ssl" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem" "root" "local" "no"
 
-                if ( [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "ssl" "fullchain.pem"`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/ListFromDatastore.sh "ssl" "privkey.pem"`" = "" ] )
+                if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "ssl" "fullchain.pem"`" = "" ] || [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "ssl" "privkey.pem"`" = "" ] )
                 then
                         ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "fullchain.pem.$$.old" "fullchain.pem"
                         ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "privkey.pem.$$.old" "privkey.pem"
