@@ -58,4 +58,8 @@ then
 fi
 
 ${datastore_cmd}${datastore_to_delete}${wildcard}
-${datastore_cmd1}${datastore_to_delete}
+
+if ( [ "${datastore_cmd1}" = "" ] )
+then
+        ${datastore_cmd1}${datastore_to_delete}
+fi
