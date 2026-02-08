@@ -245,7 +245,7 @@ then
                         ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "fullchain.pem.$$.old" "fullchain.pem"
                         ${BUILD_HOME}/providerscripts/datastore/operations/MoveDatastoreObject.sh "ssl" "privkey.pem.$$.old" "privkey.pem"
                 else
-                        ${BUILD_HOME}/providerscripts/email/SendEmail.sh "NEW SSL CERTIFICATE PUT IN DATASTORE" "SSL Certificate not successfully provisioned/generated" "INFO"
+                        ${BUILD_HOME}/providerscripts/email/SendEmail.sh "NEW SSL CERTIFICATE PUT IN DATASTORE" "SSL Certificate successfully provisioned/generated" "INFO"
                 fi
         else
                 ${BUILD_HOME}/providerscripts/email/SendEmail.sh "SSL CERTIFICATE NOT SUCCESSFULLY GENERATED" "SSL Certificate not successfully provisioned/generated" "INFO"
