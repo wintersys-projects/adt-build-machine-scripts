@@ -79,6 +79,11 @@ do
 	status "OK... Building webserver ${webserver_no}. This is the ${counter} attempt of 5"
 	WEBSITE_IDENTIFIER="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 
+	if ( [ "${NO_AYOSCALERS}" = "" ] )
+	then
+		NO_AUTOSCALERS="0"
+	fi
+
 	no_autoscalers="${NO_AUTOSCALERS}"
 	webserver_index="${webserver_no}"
 
