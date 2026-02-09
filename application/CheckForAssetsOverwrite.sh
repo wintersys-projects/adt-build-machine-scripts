@@ -50,40 +50,43 @@ then
         do
                 if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "asset" "root" "${assettype}" | /usr/bin/wc -l`" -gt "0" ] )
                 then
-                        status "###################################################################################################################"
-                        status "=CRITICAL WARNING    CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING="
-                        status "###################################################################################################################"
-                        status "Hi Mate, there's some assets in your datastore for this website. They are probably from a previous build"
-                        status "You have selected a baseline or a virgin build this means existing assets will be deleted."
-                        status "With this in mind, I will take a safety backup for you of your existing assets. The bucket name of the copy"
-                        status "Will be displayed which you might want to make a note of for future reference should you need to reinstall the previous"
-                        status "version."
-                        status "-------------"
-                        status "IMPORTANT:FYI"
-                        status "-------------"
-                        status "Additional warning, backups of your application sourcode and database stored in your git repository will also be overwritten"
-                        status "During normal operation of this particular deployment. You might want to CHECK IF YOU HAVE SOURCECODE AND DATABASE BACKUPS"
-                        status "From previous builds in your git repository that clash with what you are trying to deploy here"
-                        status "If you are fine with previous builds being overwritten (its a deliberate redeploy of the same application, right on),"
-                        status "But, if not, proceed with caution. Thanks"
-                        status "###########################################################################################"
-                        status "IT IS STRONGLY ADVISED THAT YOU MAKE A SAFETY BACKUP OF THE ASSETS I HAVE DISCOVERED"
-                        status "DEPENDING ON THE SIZE OF THE ASSETS IN YOUR DATASTORE THIS COULD TAKE SOME TIME TO COMPLETE"
-                        status "###########################################################################################"
-                        status "##############################################################################################################################"
-                        status "ONCE YOU HAVE MADE A SAFETY BACKUP (if needed), press <enter>"
-                        read response
-
-                        status "############################################################################################################################"
-                        status "I AM ABOUT TO CAUSE YOU A LOT OF PROBLEMS IF IT'S WRONG. ARE YOU 100% SURE?"
-                        status "Datastore assets bucket `/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-assets-${assettype} is about to be purged/deleted"
-                        status "############################################################################################################################"
-                        status "Again you absolutely sure that you want to proceed, destructive action is ahead type exactly 'YES PROCEED' to continue, otherwise I will exit"
-                        read response
-                        if ( [ "${response}" != "YES PROCEED" ] )
+                        if ( [ "`${BUILD_HOME}/helperscripts/IsHardcoreBuild.sh`" != "1" ] )
                         then
+                        	status "###################################################################################################################"
+                        	status "=CRITICAL WARNING    CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING   CRITICAL WARNING="
+                        	status "###################################################################################################################"
+                        	status "Hi Mate, there's some assets in your datastore for this website. They are probably from a previous build"
+                        	status "You have selected a baseline or a virgin build this means existing assets will be deleted."
+                        	status "With this in mind, I will take a safety backup for you of your existing assets. The bucket name of the copy"
+                        	status "Will be displayed which you might want to make a note of for future reference should you need to reinstall the previous"
+                        	status "version."
+                        	status "-------------"
+                        	status "IMPORTANT:FYI"
+                        	status "-------------"
+                        	status "Additional warning, backups of your application sourcode and database stored in your git repository will also be overwritten"
+                        	status "During normal operation of this particular deployment. You might want to CHECK IF YOU HAVE SOURCECODE AND DATABASE BACKUPS"
+                        	status "From previous builds in your git repository that clash with what you are trying to deploy here"
+                        	status "If you are fine with previous builds being overwritten (its a deliberate redeploy of the same application, right on),"
+                        	status "But, if not, proceed with caution. Thanks"
+                        	status "###########################################################################################"
+                        	status "IT IS STRONGLY ADVISED THAT YOU MAKE A SAFETY BACKUP OF THE ASSETS I HAVE DISCOVERED"
+                        	status "DEPENDING ON THE SIZE OF THE ASSETS IN YOUR DATASTORE THIS COULD TAKE SOME TIME TO COMPLETE"
+                        	status "###########################################################################################"
+                        	status "##############################################################################################################################"
+                        	status "ONCE YOU HAVE MADE A SAFETY BACKUP (if needed), press <enter>"
+                        	read response
+
+                        	status "############################################################################################################################"
+                        	status "I AM ABOUT TO CAUSE YOU A LOT OF PROBLEMS IF IT'S WRONG. ARE YOU 100% SURE?"
+                        	status "Datastore assets bucket `/bin/echo "${WEBSITE_URL}" | /bin/sed 's/\./-/g'`-assets-${assettype} is about to be purged/deleted"
+                        	status "############################################################################################################################"
+                        	status "Again you absolutely sure that you want to proceed, destructive action is ahead type exactly 'YES PROCEED' to continue, otherwise I will exit"
+                        	read response
+                        	if ( [ "${response}" != "YES PROCEED" ] )
+                        	then
                                 /bin/touch /tmp/END_IT_ALL
-                        fi
+                        	fi
+						fi
                         ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "asset" "local" "${assettype}"
                 fi
         done
