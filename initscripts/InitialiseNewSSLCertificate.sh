@@ -154,9 +154,9 @@ then
                         then
                                 if ( [ "`/bin/grep "^SSLCERTCLIENT:" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
                                 then
-                                        /bin/sed -i 's/SSLCERTCLIENT:.*/SSLCERTCLIENT:lego/g' ${BUILD_HOME}/builddescriptors/buildstyles.dat
+                                        /bin/sed -i 's/SSLCERTCLIENT:.*/SSLCERTCLIENT:lego:binary/g' ${BUILD_HOME}/builddescriptors/buildstyles.dat
                                 else
-                                        /bin/echo "SSLCERTCLIENT:lego" >> ${BUILD_HOME}/builddescriptors/buildstyles.dat
+                                        /bin/echo "SSLCERTCLIENT:lego:binary" >> ${BUILD_HOME}/builddescriptors/buildstyles.dat
                                 fi
                         fi
 
@@ -169,9 +169,9 @@ then
                         then
                                 if ( [ "`/bin/grep "^SSLCERTCLIENT:" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
                                 then
-                                        /bin/sed -i 's/SSLCERTCLIENT:.*/SSLCERTCLIENT:acme/g' ${BUILD_HOME}/builddescriptors/buildstyles.dat
+                                        /bin/sed -i 's/SSLCERTCLIENT:.*/SSLCERTCLIENT:acme:github.com/g' ${BUILD_HOME}/builddescriptors/buildstyles.dat
                                 else
-                                        /bin/echo "SSLCERTCLIENT:acme" >> ${BUILD_HOME}/builddescriptors/buildstyles.dat
+                                        /bin/echo "SSLCERTCLIENT:acme:github.com" >> ${BUILD_HOME}/builddescriptors/buildstyles.dat
                                 fi
                         fi
 
