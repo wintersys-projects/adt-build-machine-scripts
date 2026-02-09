@@ -87,16 +87,21 @@ do
 	no_autoscalers="${NO_AUTOSCALERS}"
 	webserver_index="${webserver_no}"
 
-	if ( [ "${webserver_index}" -gt "${no_autoscalers}" ] )
+	if ( [ "${no_autoscalers}" = "0" ] )
 	then
-        autoscaler_no="`/usr/bin/expr ${webserver_index} - ${no_autoscalers}`"
-        while ( [ "${autoscaler_no}" -gt "${no_autoscalers}" ] )
-        do
+		autoscaler_no="0"
+	else
+		if ( [ "${webserver_index}" -gt "${no_autoscalers}" ] )
+		then
+        	autoscaler_no="`/usr/bin/expr ${webserver_index} - ${no_autoscalers}`"
+        	while ( [ "${autoscaler_no}" -gt "${no_autoscalers}" ] )
+        	do
                 autoscaler_no="`/usr/bin/expr ${webserver_index} - ${no_autoscalers}`"
                 webserver_index="${autoscaler_no}"
-        done
-	else
-        autoscaler_no="${webserver_index}"
+        	done
+		else
+        	autoscaler_no="${webserver_index}"
+		fi
 	fi
 
 	#Check if there is a webserver already running. If there is, then skip building the webserver
