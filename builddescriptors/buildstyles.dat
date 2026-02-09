@@ -226,6 +226,6 @@ FIREWALL:ufw:limit
 FAIL2BAN:active
 EMAILUTIL:sendemail
 #SSLCERTCLIENT:acme:github.com
-SSLCERTCLIENT:lego:binary
+SSLCERTCLIENT:lego:snap
 GITBRANCH:main
 VIRUSSCANNER:clamav:daily
