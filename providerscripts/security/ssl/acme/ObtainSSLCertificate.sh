@@ -73,6 +73,11 @@ then
         server="zerossl"
 fi
 
+if ( [ "${SSL_GENERATION_SERVICE}" = "LETSENCRYPT" ] )
+then
+        server="letsencrypt"
+fi
+
 if ( [ "${SYSTEM_FROMEMAIL_ADDRESS}" = "" ] )
 then
         SYSTEM_FROMEMAIL_ADDRESS="${DNS_USERNAME}"
