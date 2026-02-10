@@ -437,7 +437,7 @@ then
 fi
 
 # Store our scaling requirements in the datastore (how many webservers to provision)
-#${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
+${BUILD_HOME}/initscripts/InitialiseScalingProfile.sh
 #Provision any DBaaS database service that the build requires 
 ${BUILD_HOME}/initscripts/InitialiseDatabaseService.sh
 # If there is a DBaaS instance running then we can adjust its firewall by only allowing connections from machines in the same VPC
