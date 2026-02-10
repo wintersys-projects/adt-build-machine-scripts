@@ -34,7 +34,7 @@ REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 #NO_AUTOSCALERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTOSCALERS`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 #NO_WEBSERVERS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_WEBSERVERS`"
-WEBSERVER_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_URL`"
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_URL`"
 
 if ( [ "${PRODUCTION}" = "1" ] && [ "${DEVELOPMENT}" = "0" ] )
 then
