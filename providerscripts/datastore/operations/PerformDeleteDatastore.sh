@@ -42,7 +42,7 @@ then
         host_base="`/bin/grep ^host_base /root/.s3cfg-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`" 
         datastore_cmd="${datastore_tool} --recursive --force  --config=/root/.s3cfg-${count} --host=https://${host_base} del s3://"
         datastore_cmd1="${datastore_tool} --recursive --force  --config=/root/.s3cfg-${count} --host=https://${host_base} rb s3://"
-        wildcard="/*"
+        wildcard=""
 elif ( [ "${datastore_tool}" = "/usr/bin/s5cmd" ] )
 then
         host_base="`/bin/grep ^host_base /root/.s5cfg-${count} | /usr/bin/awk -F'=' '{print  $NF}' | /bin/sed 's/ //g'`"
@@ -59,7 +59,7 @@ fi
 
 ${datastore_cmd}${datastore_to_delete}${wildcard}
 
-if ( [ "${datastore_cmd1}" = "" ] )
+if ( [ "${datastore_cmd1}" != "" ] )
 then
         ${datastore_cmd1}${datastore_to_delete}
 fi
