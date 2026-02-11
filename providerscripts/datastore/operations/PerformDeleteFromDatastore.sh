@@ -62,7 +62,7 @@ then
 
         datastore_cmd="${datastore_tool} --config /root/.config/rclone/rclone.conf-${count} --s3-endpoint ${host_base} ${include} delete s3:"
         file_to_delete=""
-        wildcard="*"
+        wildcard=""
 fi
 
 eval ${datastore_cmd}${file_to_delete}${wildcard}
