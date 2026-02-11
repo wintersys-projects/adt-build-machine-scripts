@@ -67,7 +67,7 @@ then
 #	new_scale_values="`/bin/echo "${new_scale_values}" | /bin/sed 's/:/ /g'`"
 	
 	${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "scaling" "local" "scaling-${CLOUDHOST}-${REGION}"
-	${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "autoscaler-*/STATIC_SCALE:*" "local" "${WEBSITE_URL}-scaling-${CLOUDHOST}-${REGION}"
+	${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "scaling" "autoscaler-*/STATIC_SCALE:" "local" "${WEBSITE_URL}-scaling-${CLOUDHOST}-${REGION}"
 
 #	no_autoscaler="1"
 #	while ( [ "${no_autoscaler}" -le "${NO_AUTOSCALERS}" ] && [ "${no_autoscaler}" -le "${NO_WEBSERVERS}" ] )
