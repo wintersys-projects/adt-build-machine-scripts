@@ -146,12 +146,12 @@ do
 				then
                 	if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "reverseproxypublicips/*"`" != "" ] )
                 	then
-                        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxypublicips/*"
+						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxypublicips" "local"
                 	fi
 
                 	if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "reverseproxyips/*"`" != "" ] )
                 	then
-                        ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxyips/*"
+						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxyips" "local"
                 	fi
 				fi
                 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${ip}" "reverseproxypublicips" "local" "no" 
@@ -240,8 +240,10 @@ do
 
                         #Our build failed so we don't want any ip address records stored in the S3 datastore
                         #We should destroy the server also because it's hosed
-						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxypublicips" "root" "local"
-						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxyips" "root" "local"
+
+						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxypublicips" "local"
+						${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "reverseproxyips" "local"
+
                         ${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${ip} ${CLOUDHOST}
 
                         #Wait until we are sure that the reverse proxy server is destroyed because of a faulty build
