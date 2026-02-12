@@ -146,12 +146,12 @@ do
 			#Store the public and private ip addresses of the authenticator machine in the datastore for access elsewhere
 			if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "authenticatorpublicip/*"`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorpublicip/*"
+				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorpublicip" "local"
 			fi
 
 			if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "authenticatorip/*"`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorip/*"
+				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorip" "local"
 			fi
 		fi
 		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${ip}" "authenticatorpublicip" "local" "no"
@@ -243,8 +243,8 @@ do
 
 			#Our build failed so we don't want any ip address records stored in the S3 datastore
 			#We should destroy the server also because it's hosed
-			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorpublicip" "root" "local"
-			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorip" "root" "local"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorpublicip" "local"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "authenticatorip" "local"
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${AUTHIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the authentication server is destroyed because of a faulty build
