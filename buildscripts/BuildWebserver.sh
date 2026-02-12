@@ -184,11 +184,11 @@ do
 		then
 			if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "webserverpublicips/*"`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverpublicips/*"
+				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverpublicips" "local"
 			fi
 			if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "webserverips/*"`" != "" ] )
 			then
-				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverips/*"
+				${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverips" "local"
 			fi
 		fi
 		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${ip}" "webserverpublicips" "local" "no"
@@ -279,8 +279,9 @@ do
 			fi
 
 			#We don't want the IP addresses of a failed build in our S3 datastore
-			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverpublicips" "root" "local"
-			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverips" "root" "local"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverpublicips" "local"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "webserverips" "local"
+
 			${BUILD_HOME}/providerscripts/server/DestroyServer.sh ${WSIP_PUBLIC} ${CLOUDHOST}
 
 			#Wait until we are sure that the webserver is destroyed because of a faulty build
