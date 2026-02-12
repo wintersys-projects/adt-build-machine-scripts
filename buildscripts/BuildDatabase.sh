@@ -148,11 +148,11 @@ do
 		#Add the IP addresse of the database server to the S3 datastore
 		if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "databasepublicip/*"`" != "" ] )
 		then
-			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databasepublicip/*"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databasepublicip" "local"
 		fi
 		if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "config" "databaseip/*"`" != "" ] )
 		then
-			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databaseip/*"
+			${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "databaseip" "local"
 		fi
 		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${ip}" "databasepublicip" "local" "no"
 		${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${private_ip}" "databaseip" "local" "no"
