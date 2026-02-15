@@ -197,7 +197,7 @@ CONFIGPHPINI:upload_max_filesize=64M:post_max_size=64M:max_input_vars=5000:zlib.
 #DATASTOREMOUNTTOOL:rclone:binary
 #DATASTOREMOUNTTOOL:s3fs:source
 #DATASTOREMOUNTTOOL:goof:binary
-DATASTOREMOUNTTOOL:geesefs:source
+#DATASTOREMOUNTTOOL:geesefs:source
 DATASTORECONFIGSTYLE:tool
 #DATASTORECONFIGSTYLE:lightweight
 #DATASTORECONFIGSTYLE:heavyweight
