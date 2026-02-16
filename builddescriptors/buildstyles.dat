@@ -221,7 +221,7 @@ CLOUDCLITOOL:vultr:source
 GO:binary
 MERGEFILESYSTEMSTOOL:mergefs:repo
 PACKAGEMANAGER:apt-get
-FIREWALL:ufw:limit
+FIREWALL:ufw
 #FIREWALL:iptables:20:30
 FAIL2BAN:active
 EMAILUTIL:sendemail
