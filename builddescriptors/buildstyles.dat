@@ -127,13 +127,13 @@
 #Pick one build style for each component you want to enable installation for. The choice of which to install e.g. NGINX or APACHE is made elsewhere
 #All this does is tell us how to build it not whether to build it
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING CLOUD-INIT#################################################
-NGINX:cloud-init
-NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+#NGINX:cloud-init
+#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
-#NGINX:repo
-#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
-#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+NGINX:repo
+NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
+NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX FROM SOURCE#################################################
 #NGINX:source
