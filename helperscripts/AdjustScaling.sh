@@ -104,7 +104,9 @@ then
                 fi
                 /bin/touch ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/STATIC_SCALE:${no_webservers}
                 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "scaling" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/scaling/${autoscaler}/STATIC_SCALE:${no_webservers}" "${autoscaler}" "local" "no" "scaling-${CLOUDHOST}-${region}"
+                /bin/echo "Number of webservers now set to: `${BUILD_HOME}/providerscripts/datastore/operations/ListFromDatastore.sh "scaling" "autoscaler*/STATIC_SCALE*" "${website_url}-scaling-${CLOUDHOST}-${region}" | /usr/bin/awk '{print $NF}'`"
         else
+                /bin/echo "Aborting the setting of webserver scaling process"
                 exit
         fi
 fi
