@@ -46,7 +46,8 @@ SSL_GENERATION_SERVICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSL_GEN
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 DNS_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DNS_CHOICE`"
-dlatastore_identifier="ssl"
+datastore_identifier="ssl"
+config_datastore_identifier="config"
 
 
 if ( [ "${build_identifier}" != "" ] )
@@ -79,6 +80,7 @@ fi
 if ( [ "${auth}" = "yes" ] )
 then
         datastore_identifier="auth-ssl"
+        config_datastore_identifier="auth-config"
         WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_SERVER_URL`"
         DNS_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_USERNAME`"
         DNS_SECURITY_KEY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTH_DNS_SECURITY_KEY`"
@@ -140,8 +142,8 @@ elif ( [ -s ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS
 then
         ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "${datastore_identifier}" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem" "root" "local" "no" 
         ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "${datastore_identifier}" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem" "root" "local" "no" 
-        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem" "ssl/${WEBSITE_URL}" "local" "no"
-        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem" "ssl/${WEBSITE_URL}" "local" "no"
+        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "${config_datastore_identifier}" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem" "ssl/${WEBSITE_URL}" "local" "no"
+        ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "${config_datastore_identifier}" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem" "ssl/${WEBSITE_URL}" "local" "no"
 fi
 
 if ( [ "${generate_new}" = "1" ] )
@@ -204,10 +206,10 @@ then
                         /bin/rm ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/verify/fullchain.pem 
                 fi
 
-                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem" "ssl/${WEBSITE_URL}" "local" "no"
-                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem" "ssl/${WEBSITE_URL}" "local" "no"
-                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "config" "ssl/${WEBSITE_URL}/privkey.pem" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/verify"
-                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "config" "ssl/${WEBSITE_URL}/fullchain.pem" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/verify"
+                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "${config_datastore_identifier}" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem" "ssl/${WEBSITE_URL}" "local" "no"
+                ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "${config_datastore_identifier}" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/fullchain.pem" "ssl/${WEBSITE_URL}" "local" "no"
+                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "${config_datastore_identifier}" "ssl/${WEBSITE_URL}/privkey.pem" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/verify"
+                ${BUILD_HOME}/providerscripts/datastore/operations/GetFromDatastore.sh "${config_datastore_identifier}" "ssl/${WEBSITE_URL}/fullchain.pem" "${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/verify"
 
                 if ( [ "`/usr/bin/diff ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/verify/privkey.pem ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/ssl/${DNS_CHOICE}/${service_token}/${WEBSITE_URL}/privkey.pem`" != "" ] )
                 then
