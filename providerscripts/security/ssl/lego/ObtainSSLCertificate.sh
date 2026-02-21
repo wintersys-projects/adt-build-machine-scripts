@@ -117,7 +117,13 @@ then
                 ${BUILD_HOME}/providerscripts/dns/CreateZone.sh "${DNS_USERNAME}" "${DNS_SECURITY_KEY}" "${WEBSITE_URL}" "${DNS_CHOICE}"
         fi
 
-        api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
+        if ( [ "`/bin/echo ${DNS_SECURITY_KEY} | /bin/grep ':::'`" != "" ] )
+        then
+                api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
+        else
+                api_token="${DNS_SECURITY_KEY}"
+        fi
+        
         command="CLOUDFLARE_DNS_API_TOKEN="${api_token}" /usr/bin/lego --email ${DNS_USERNAME} --domains ${WEBSITE_URL} --dns ${DNS_CHOICE} ${server} --dns.propagation-wait 60s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
 fi
 
