@@ -119,12 +119,11 @@ then
 
         if ( [ "`/bin/echo ${DNS_SECURITY_KEY} | /bin/grep ':::'`" != "" ] )
         then
-                api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
+                cloudflare_dns_api_token="`/bin/echo ${DNS_SECURITY_KEY} | /usr/bin/awk -F':::' '{print $2}'`"
+                command='CLOUDFLARE_DNS_API_TOKEN="'${cloudflare_dns_api_token}'" /usr/bin/lego --email '${DNS_USERNAME}' --domains '${WEBSITE_URL}' --dns '${DNS_CHOICE} ${server}' --dns.propagation-wait 60s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run'
         else
-                api_token="${DNS_SECURITY_KEY}"
+                command='CF_API_EMAIL="'${DNS_USERNAME}'" CF_API_KEY="'${DNS_SECURITY_KEY}'" /usr/bin/lego --email '${DNS_USERNAME}' --domains '${WEBSITE_URL}' --dns '${DNS_CHOICE}' '${server}' --dns.propagation-wait 60s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run'
         fi
-        
-        command="CLOUDFLARE_DNS_API_TOKEN="${api_token}" /usr/bin/lego --email ${DNS_USERNAME} --domains ${WEBSITE_URL} --dns ${DNS_CHOICE} ${server} --dns.propagation-wait 60s --dns.resolvers '1.1.1.1:53,8.8.8.8:53' --dns-timeout=120 --accept-tos run"
 fi
 
 if ( [ "${DNS_CHOICE}" = "digitalocean" ] )
