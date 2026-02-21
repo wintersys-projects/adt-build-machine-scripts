@@ -1,3 +1,4 @@
+#!/bin/sh
 #################################################################################
 # Author: Peter Winter
 # Date  : 13/07/2016
@@ -19,7 +20,7 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ####################################################################################
 ####################################################################################
-#set -x
+set -x
 
 status () {
         /bin/echo "${1}" | /usr/bin/tee /dev/fd/3 2>/dev/null
@@ -36,6 +37,7 @@ S3_HOST_BASE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh S3_HOST_BASE`"
 WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MULTI_REGION`"
+NO_AUTHENTICATORS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh NO_AUTHENTICATORS`"
 PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`"
 CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
@@ -270,23 +272,20 @@ then
         fi
 fi
 
-#website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
-#if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
-#then
-#        for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh | /bin/grep "${website_bucket}-config" | grep -Eo "${website_bucket}.*(/|$)" | /usr/bin/uniq`
-#        do
-#                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh ${bucket}/* "yes"
-#                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local"
-#        done
-#fi
-
-website_bucket="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`"
 if ( [ "${MULTI_REGION}" = "0" ] || ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" = "1" ] ) )
 then
         for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "config-all"`
         do
                 additional_specifier="`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
-             #   ${BUILD_HOME}/providerscripts/datastore/operations/DeleteFromDatastore.sh "config" "root" "local" "${additional_specifier}"
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local" "${additional_specifier}"
+        done
+fi
+
+if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
+then
+        for bucket in `${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "auth-config"`
+        do
+                additional_specifier="`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "auth-config" "local" "${additional_specifier}"
         done
 fi
