@@ -317,20 +317,14 @@ then
 	${log_command} "Your webserver choice ${REVERSE_PROXY_WEBSERVER}  can't be used as a reverse proxy"
 fi
 
-if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${WEBSERVER_CHOICE}" = "NGINX" ] && [ "`/bin/grep "^NGINX:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] )
+if ( [ "${MOD_SECURITY}" = "1" ] && [ "${WEBSERVER_CHOICE}" = "NGINX" ] && [ "`/bin/grep "^NGINX:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" = "" ] )
 then
-	if ( [ "${MOD_SECURITY}" = "1" ] )
-	then
-		${log_command} "To use NGINX as a reverse proxy with modsecurity enabled NGINX needs to be compiled from source which you can configure in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
-	fi
+	${log_command} "To use NGINX with modsecurity enabled NGINX needs to be compiled from source which you can configure in ${BUILD_HOME}/builddescriptors/buildstyles.dat"
 fi
 
-if ( [ "${NO_REVERSE_PROXY}" != "0" ] && [ "${WEBSERVER_CHOICE}" = "LIGHTTPD" ] )
+if ( [ "${MOD_SECURITY}" = "1" ]  && [ "${WEBSERVER_CHOICE}" = "LIGHTTPD" ] )
 then
-	if ( [ "${MOD_SECURITY}" = "1" ] )
-	then
-		${log_command} "Mod security isn't available for use with the LIGHTY webserver"
-	fi
+	${log_command} "Mod security isn't available for use with the LIGHTY webserver"
 fi
 
 if ( [ "${DEVELOPMENT}" = "1" ] && [ "${DEVELOPMENT}" = "1" ] && [ "${NO_AUTOSCALERS}" != "0" ] )
