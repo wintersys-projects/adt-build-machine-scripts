@@ -105,6 +105,15 @@ then
 	/bin/sed -i 's/XXXXREVERSEPROXYSERVERXXXX/APACHE/g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
 fi
 
+if ( [ "${REVERSE_PROXY_WEBSERVER}" = "LIGHTTPD" ] )
+then
+        if ( [ "`/bin/grep ^LIGHTTPD:cloud-init ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
+        then
+                /bin/sed -i 's/#XXXXLIGHTTPDXXXX//g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+        fi
+        /bin/sed -i 's/XXXXREVERSEPROXYSERVERXXXX/LIGHTTPD/g' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
+fi
+
 
 #Use our source environment to configure each cloud-init script with "live" data
 /bin/sed -i "s/XXXXPHP_MODULESXXXX/${php_modules_list}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/cloud-init/reverseproxy.yaml
