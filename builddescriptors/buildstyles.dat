@@ -177,7 +177,7 @@ LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-f
 #LIGHTTPD:source
 #LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_userdir:mod_status:mod_setenv::mod_redirect:mod_rewrite:mod_authn_file
 #LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
-#LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
+#LIGHTTPD:settings:server.use-ipv6="disable":server.max-fds=2048:server.stat-cache-engine="simple"
 #LIGHTTPD:software-packages:autoconf:automake:libtool:m4:pkg-config:build-essential:libpcre2-dev:zlib1g:zlib1g-dev:libssl-dev:libgnutls28-dev
 ##############################################################LIGHTTPD###########################################################
 ##############################################################PHP###########################################################
