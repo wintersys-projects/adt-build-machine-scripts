@@ -58,7 +58,7 @@ fi
 /bin/sed -i '/$sef_suffix /c\        public $sef_suffix = "0";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$sef_rewrite /c\        public $sef_rewrite = "0";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$gzip /c\        public $gzip = "1";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
-/bin/sed -i '/$force_ssl /c\        public $force_ssl = "0";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+/bin/sed -i '/$force_ssl /c\        public $force_ssl = "2";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$shared_session /c\        public $shared_session = "0";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$tmp_path /c\        public $tmp_path = "/var/www/html/tmp";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
 /bin/sed -i '/$log_path /c\        public $log_path = "/var/www/html/logs";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
