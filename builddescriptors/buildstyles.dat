@@ -128,6 +128,7 @@
 #All this does is tell us how to build it not whether to build it
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING CLOUD-INIT#################################################
 #NGINX:cloud-init
+#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
 #NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
@@ -165,13 +166,13 @@ APACHE:software-packages:pandoc:build-essential:libssl-dev:libexpat-dev:libpcre2
 ##############################################################LIGHTTPD###########################################################
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING CLOUD-INIT#################################################
 #LIGHTTPD:cloud-init
+#LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_userdir:mod_status:mod_setenv::mod_redirect:mod_rewrite:mod_authn_file
 #LIGHTTPD:settings:server.use-ipv6="disable":server.bind="localhost":server.max-fds=2048:server.stat-cache-engine="simple"
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING APT#################################################
 #LIGHTTPD:repo
 #LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_userdir:mod_status:mod_setenv::mod_redirect:mod_rewrite:mod_authn_file
 #LIGHTTPD:settings:server.use-ipv6="disable":server.max-fds=2048:server.stat-cache-engine="simple"
-
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD FROM SOURCE#################################################
 LIGHTTPD:source
