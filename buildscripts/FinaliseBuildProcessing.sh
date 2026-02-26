@@ -421,7 +421,7 @@ then
 			online="yes"
 			for ip_to_check in ${ips_to_check}
 			do
-				while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ip_to_check}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently' 2>/dev/null`" = "" ] )
+				while ( [ "`/usr/bin/curl -s -I --max-time 60 --insecure https://${ip_to_check}:443/${headfile} | /bin/grep -E 'HTTP.*200|HTTP.*301|HTTP.*302|HTTP.*303|200 OK|302 Found|301 Moved Permanently|authenticate: Basic realm' 2>/dev/null`" = "" ] )
 				do
 					#This double checks that the webserver came online correctly whilst we test for the website being online
 					/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ip_to_check} "${SUDO} /home/${SERVER_USER}/providerscripts/webserver/RestartWebserver.sh" 2>/dev/null
