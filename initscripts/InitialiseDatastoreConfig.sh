@@ -279,6 +279,14 @@ then
                 additional_specifier="`/bin/echo ${bucket} | /usr/bin/awk -F'-' '{print $NF}'`"
                 ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "config" "local" "${additional_specifier}"
         done
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "firewall-auth-laptop-ips"`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "firewall-auth-laptop-ips" "distributed"
+        fi
+        if ( [ "`${BUILD_HOME}/providerscripts/datastore/operations/ListDatastore.sh "firewall-auth-laptop-ips"`" != "" ] )
+        then
+                ${BUILD_HOME}/providerscripts/datastore/operations/DeleteDatastore.sh "firewall-auth-laptop-ips" "distributed"
+        fi
 fi
 
 if ( [ "${NO_AUTHENTICATORS}" != "0" ] )
