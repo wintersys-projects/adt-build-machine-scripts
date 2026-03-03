@@ -21,12 +21,25 @@
 #####################################################################################
 #set -x
 
+BUILD_HOME="`/bin/cat /home/buildhome.dat`"
+CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
+BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 
-application/descriptors/joomla.dat
+if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat ] )
+then
+        status "Error, cannot find database prefix file"
+fi
+
+dbprefix="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat`"
+secret="`/usr/bin/openssl rand -base64 32 | /usr/bin/tr -cd 'a-zA-Z0-9' | /usr/bin/cut -b 1-16 | /usr/bin/tr '[:upper:]' '[:lower:]'`"
 
 
-
-${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/
+/bin/sed -i '/$dbprefix /c\        public $dbprefix = "'${dbprefix}'";' ${BUILD_HOME}/application/descriptors/${APPLICATION}.dat
+/bin/sed -i '/$secret /c\        public $secret = "'${secret}'";' ${BUILD_HOME}/application/descriptors/${APPLICATION}.dat
+/bin/sed -i '/$user/c\       public $user = "'${DB_USERNAME}'";' ${BUILD_HOME}/application/descriptors/${APPLICATION}.dat
+/bin/sed -i '/$password/c\   public $password = "'${DB_PASSWORD}'";' ${BUILD_HOME}/application/descriptors/${APPLICATION}.dat
+/bin/sed -i '/$db /c\        public $db = "'${DB_NAME}'";' ${BUILD_HOME}/application/descriptors/${APPLICATION}.dat
 
 
 
