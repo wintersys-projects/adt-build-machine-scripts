@@ -107,6 +107,10 @@ then
 	done
 fi
 
+
+${BUILD_HOME}/application/SetApplicationConfig.sh
+
+
 #the way this works is that installation method for each webserver type is commented out with a placeholder token
 #to enable the installastion of the webserver type that you are installing the blocking placeholder is commented out/removed
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
