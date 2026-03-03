@@ -29,7 +29,7 @@ INDIVIDUAL_SETTING:smtp_secure="tls"
 INDIVIDUAL_SETTING:smtp_port="XXXXSMTP_PORTXXXX"
 INDIVIDUAL_SETTING:smtp_host="XXXXSMTP_HOSTXXXX"
 
-#Hardcoded
+#Hardcoded overrides
 INDIVIDUAL_SETTING:secret="placeholder"
 INDIVIDUAL_SETTING:cachetime=30
 INDIVIDUAL_SETTING:cache_handler="file"
