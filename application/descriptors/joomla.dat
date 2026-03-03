@@ -1,5 +1,5 @@
 APPLICATION_NAME:joomla
-DIRECTORIES_TO_CREATE:logs:tmp:cache
+DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/${version}/Joomla_${version}-Alpha-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Alpha-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Beta-Full_Package.zip
