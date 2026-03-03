@@ -43,9 +43,23 @@ else
         DB_TYPE="mysqli"
 fi
 
-APPLICATION_VERSION=="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'JOOMLA_VERSION'`"
+if ( [ "${SYSTEM_EMAIL_PROVIDER}" = "1" ] )
+then
+        smtp_port="2525"
+        smtp_host="smtp-pulse.com"
+elif ( [ "${SYSTEM_EMAIL_PROVIDER}" = "2" ] )
+then
+        smtp_port="2525"
+        smtp_host="email-smtp.eu-west-1.amazonaws.com"
+elif ( [ "${SYSTEM_EMAIL_PROVIDER}" = "3" ] )
+then
+        smtp_port="587"
+        smtp_host="in.mailjet.com"
+fi
 
-/bin/sed -i "s/XXXXAPPLICATION_VERSIONXXXX/${APPLICATION_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+#APPLICATION_VERSION=="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'JOOMLA_VERSION'`"
+
+#/bin/sed -i "s/XXXXAPPLICATION_VERSIONXXXX/${APPLICATION_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_USERNAMEXXXX/${DB_USERNAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_PASSWORDXXXX/${DB_PASSWORD}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_DATABASEXXXX/${DB_NAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
@@ -53,6 +67,50 @@ APPLICATION_VERSION=="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'JOOMLA_V
 /bin/sed -i "s/XXXXAPPLICATION_DB_HOSTXXXX/${DB_IDENTIFIER}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_DB_PORTXXXX/${DB_PORT}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_DB_TYPEXXXX/${DB_TYPE}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+
+
+/bin/sed -i "s/XXXXMAILERXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXMAIL_FROMXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXREPLY_TOXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXFROM_NAMEXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXREPLY_TO_NAMEXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_AUTHXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_USERXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_PASSXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_SECUREXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_PORTXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_HOSTXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+
+
+
+
+#/bin/sed -i '/$mailer /c\        public $mailer = "smtp";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$mailfrom /c\        public $mailfrom = "'${SYSTEM_FROMEMAIL_ADDRESS}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$replyto /c\        public $replyto = "'${SYSTEM_TOEMAIL_ADDRESS}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$fromname /c\        public $fromname = "'${WEBSITE_DISPLAY_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$replytoname /c\        public $replytoname = "'${WEBSITE_DISPLAY_NAME}' Webmaster";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$smtpauth /c\        public $smtpauth = "1";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$smtpuser /c\        public $smtpuser = "'${SYSTEM_EMAIL_USERNAME}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$smtppass /c\        public $smtppass = "'${SYSTEM_EMAIL_PASSWORD}'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#/bin/sed -i '/$smtpsecure /c\        public $smtpsecure = "'tls'";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+
+#if ( [ "${SYSTEM_EMAIL_PROVIDER}" = "1" ] )
+#then
+#        /bin/sed -i '/$smtpport /c\        public $smtpport = "2525";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#        /bin/sed -i '/$smtphost /c\        public $smtphost = "smtp-pulse.com";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#elif ( [ "${SYSTEM_EMAIL_PROVIDER}" = "2" ] )
+#then
+#        /bin/sed -i '/$smtpport /c\        public $smtpport = "2525";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#        /bin/sed -i '/$smtphost /c\        public $smtphost = "in.mailjet.com";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#elif ( [ "${SYSTEM_EMAIL_PROVIDER}" = "3" ] )
+#then
+#        /bin/sed -i '/$smtpport /c\        public $smtpport = "587";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#        /bin/sed -i '/$smtphost /c\        public $smtphost = "email-smtp.eu-west-1.amazonaws.com";' ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/configuration.php.default
+#fi
+
+
+
+
 
 
  
