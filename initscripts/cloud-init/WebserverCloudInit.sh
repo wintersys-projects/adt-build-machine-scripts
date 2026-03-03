@@ -74,6 +74,10 @@ webserver_configuration_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOS
 build_styles_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/buildstyles.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 firewall_port_settings="`/bin/cat ${BUILD_HOME}/builddescriptors/firewallports.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
 
+${BUILD_HOME}/application/SetApplicationConfig.sh
+application_settings="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat  | /bin/grep -v "^#" | /usr/bin/gzip -f | /usr/bin/base64 | /usr/bin/tr -d '\n'`"
+
+
 from_snapshot=""
 if ( [ "${BUILD_FROM_SNAPSHOT}" = "1" ] )
 then
@@ -106,10 +110,6 @@ then
 		php_modules_list="${php_modules_list} php${PHP_VERSION}-${php_module}"
 	done
 fi
-
-
-${BUILD_HOME}/application/SetApplicationConfig.sh
-
 
 #the way this works is that installation method for each webserver type is commented out with a placeholder token
 #to enable the installastion of the webserver type that you are installing the blocking placeholder is commented out/removed
