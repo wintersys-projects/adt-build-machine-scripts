@@ -41,12 +41,12 @@ then
         smtp_host="smtp-pulse.com"
 elif ( [ "${SYSTEM_EMAIL_PROVIDER}" = "2" ] )
 then
-        smtp_port="2525"
-        smtp_host="email-smtp.eu-west-1.amazonaws.com"
-elif ( [ "${SYSTEM_EMAIL_PROVIDER}" = "3" ] )
-then
         smtp_port="587"
         smtp_host="in.mailjet.com"
+elif ( [ "${SYSTEM_EMAIL_PROVIDER}" = "3" ] )
+then
+        smtp_port="2525"
+        smtp_host="email-smtp.eu-west-1.amazonaws.com"
 fi
 
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS'`"
