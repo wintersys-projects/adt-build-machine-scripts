@@ -57,6 +57,12 @@ then
         smtp_host="in.mailjet.com"
 fi
 
+${SYSTEM_FROMEMAIL_ADDRESS}
+${SYSTEM_TOEMAIL_ADDRESS}
+${WEBSITE_DISPLAY_NAME} Webmaster"
+${SYSTEM_EMAIL_USERNAME}
+${SYSTEM_EMAIL_PASSWORD}
+
 #APPLICATION_VERSION=="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'JOOMLA_VERSION'`"
 
 #/bin/sed -i "s/XXXXAPPLICATION_VERSIONXXXX/${APPLICATION_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
@@ -74,10 +80,10 @@ fi
 /bin/sed -i "s/XXXXREPLY_TOXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXFROM_NAMEXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXREPLY_TO_NAMEXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
-/bin/sed -i "s/XXXXSMTP_AUTHXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_AUTHXXXX/1/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXSMTP_USERXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXSMTP_PASSXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
-/bin/sed -i "s/XXXXSMTP_SECUREXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXSMTP_SECUREXXXX/tls/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXSMTP_PORTXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXSMTP_HOSTXXXX/smtp/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 
