@@ -43,6 +43,8 @@ else
         DB_TYPE="mysqli"
 fi
 
+APPLICATION_VERSION=="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'JOOMLA_VERSION'`"
+
 /bin/sed -i "s/XXXXAPPLICATION_VERSIONXXXX/${APPLICATION_VERSION}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_USERNAMEXXXX/${DB_USERNAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_PASSWORDXXXX/${DB_PASSWORD}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
