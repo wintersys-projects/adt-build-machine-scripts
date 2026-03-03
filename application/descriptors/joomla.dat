@@ -1,6 +1,5 @@
 APPLICATION_NAME:joomla
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
-#SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/${version}/Joomla_${version}-Alpha-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Alpha-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Beta-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Release_Candidate-Full_Package.zip
@@ -8,6 +7,6 @@ SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VE
 APPLICATION_CREDENTIALS:username="XXXXAPPLICATION_USERNAMEXXXX":password="XXXXAPPLICATION_PASSWORDXXXX":database="XXXXAPPLICATION_DATABASEXXXX":db_port="XXXXAPPLICATION_DB_PORTXXXX":host="XXXXAPPLICATION_DB_HOSTXXXX":type="XXXXAPPLICATION_DB_TYPEXXXX"
 INTERACTIVE_APPLICATION_INSTALL="no"
 MAILER_SETTINGS:mailer="XXXXMAILERXXXX":from_email="XXXXMAIL_FROMXXXX":reply_to="XXXXREPLY_TOXXXX":from_name="XXXXFROM_NAMEXXXX":reply_to_name="XXXXREPLY_TO_NAMEXXXX":smtp_auth="1":smtp_username="XXXXSMTP_USERXXXX":smtp_password="XXXXSMTP_PASSXXXX":smtp_secure="tls":smtp_port="XXXXSMTP_PORTXXXX":smtp_host="XXXXSMTP_HOSTXXXX"
-
+INDIVIUDAL_SETTINGS:force_ssl=        public $force_ssl = 1;
 
 
