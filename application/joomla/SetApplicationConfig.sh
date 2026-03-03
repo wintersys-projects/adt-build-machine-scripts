@@ -26,7 +26,7 @@ application/descriptors/joomla.dat
 
 
 
-
+${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/
 
 
 
