@@ -21,11 +21,6 @@
 #####################################################################################
 #set -x
 
-BUILD_HOME="`/bin/cat /home/buildhome.dat`"
-CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
-BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
-APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
-
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat ] )
 then
         status "Error, cannot find database prefix file"
