@@ -442,13 +442,6 @@ do
 	/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY" 2>/dev/null
 done
 
-if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] )
-then
-	status "Your are installing interactively so I will be kind and show you your credentials so that you can complete your installation"
-	status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
-	status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
-fi
 
 #Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "INSTALLED_SUCCESSFULLY" "root" "local" "no"
