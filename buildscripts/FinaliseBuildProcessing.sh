@@ -248,9 +248,7 @@ then
 	done
 fi
 
-#This checks that the user's application's configuration settings has been installed correctly and fully
-#if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
-#then
+#This is where the application is configured either interactively or automatically
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] )
 then
 	status "Your are installing interactively so I will be kind and show you your credentials so that you can complete your installation"
