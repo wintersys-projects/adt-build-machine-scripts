@@ -251,6 +251,13 @@ fi
 #This checks that the user's application's configuration settings has been installed correctly and fully
 #if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
 #then
+if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] )
+then
+	status "Your are installing interactively so I will be kind and show you your credentials so that you can complete your installation"
+	status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}`"
+	status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
+	status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
+else
 	status "Checking that the application configuration for ${APPLICATION} has fully installed...."
 	application_configuration_installed=""
 
@@ -270,7 +277,7 @@ fi
 			fi
 		done
 	done
-#fi
+fi
 
 if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
 then
