@@ -2,8 +2,8 @@ APPLICATION_NAME:joomla
 
 #Application credentials
 APPLICATION_USERNAME:webmaster
-#WARNING: THE FIRST THING YOU MUST DO WHEN YOU ACCESS YOUR JOOMLA APPLICATION IS CHANGE THIS PASSWORD (set it to something to your liking here in the first place as well)
-APPLICATION_PASSWORD:test123
+# Generate a TEMPORARY/INITIAL/INSTALLATION ONLY PASSWORD HASH using https://www.danielmorell.com/tools/joomla/password-generator or an alternative
+APPLICATION_PASSWORD_HASH:$2y$10$88kC6PciCJbrG7sb4SaTa.wG3UKd7o6RIov.q/i0JTI3ESQs74sZW
 APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
 
 #Application Directories structure
