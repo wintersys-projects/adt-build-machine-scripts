@@ -3,7 +3,7 @@ APPLICATION_NAME:joomla
 #Application credentials
 APPLICATION_USERNAME:webmaster
 # Generate a TEMPORARY/INITIAL/INSTALLATION ONLY PASSWORD HASH using https://www.danielmorell.com/tools/joomla/password-generator or an alternative
-APPLICATION_PASSWORD_HASH:$2y$10$88kC6PciCJbrG7sb4SaTa.wG3UKd7o6RIov.q/i0JTI3ESQs74sZW
+APPLICATION_PASSWORD_HASH:$2y$10$G.3qGxEVhRv4745bBjLVvuRMV0vYsS8usUEMGaaTog4uvRJ17Vpa2
 APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
 
 #Application Directories structure
