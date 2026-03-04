@@ -32,6 +32,7 @@ CLOUDHOST="`${BUILD_HOME}/helperscripts/GetVariableValue.sh CLOUDHOST`"
 REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh REGION`"
 ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
+APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_BASELINE_SOURCECODE_REPOSITORY`"
 BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
@@ -73,36 +74,44 @@ then
                 status "OK, I'll be kind and show you one time your ${APPLICATION} database credentials."
                 status "Please make a note of them but remember to keep them safe and secret"
                 status "You can enter them in the GUI system when you install the application"
-                status "#########################################"
+                status "###############################################################################################################################"
 
-                if ( [ "${HARDCORE}" = "1" ] )
+              #  if ( [ "${HARDCORE}" = "1" ] )
+              #  then
+              #          if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+              #          then
+              #                  /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+              #                  /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+              #                  /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+              #                  /bin/echo "The database public IP address is: `${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+              #                  /bin/echo "The database private IP address is: `${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"` (try this one first from your application if it timesout, try the public one)" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+              #                  /bin/echo "The database port is ${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+              #                  /bin/echo "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
+              #                  status "A copy of the credentials for this application deployment can be found by running ${BUILD_HOME}/ApplicationCredentials.sh"
+              #          fi
+              #  else
+              #          if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
+              #          then
+              #                  /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" >&3
+              #                  /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" >&3
+              #                  /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" >&3
+              #          fi
+              #  fi
+
+                if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] )
                 then
-                        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-                        then
-                                /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
-                                /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
-                                /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
-                                /bin/echo "The database public IP address is: `${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
-                                /bin/echo "The database private IP address is: `${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"` (try this one first from your application if it timesout, try the public one)" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
-                                /bin/echo "The database port is ${DB_PORT}" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
-                                /bin/echo "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')" >> ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/application_credentials.dat
-                                status "A copy of the credentials for this application deployment can be found by running ${BUILD_HOME}/ApplicationCredentials.sh"
-                        fi
-                else
-                        if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
-                        then
-                                /bin/echo "Database name: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_NAME'`" >&3
-                                /bin/echo "Database username: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_USERNAME'`" >&3
-                                /bin/echo "Database password: `${BUILD_HOME}/helperscripts/GetVariableValue.sh 'DB_PASSWORD'`" >&3
-                        fi
+	                status "Your are installing interactively so I will be kind and show you your credentials so that you can complete your installation"
+	                status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
+	                status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
+	                status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
                 fi
 
-                status "#########################################"
+                status "########################################################################################################################"
                 status "The database public IP address is: `${BUILD_HOME}/providerscripts/server/GetServerIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"`"
                 status "The database private IP address is: `${BUILD_HOME}/providerscripts/server/GetServerPrivateIPAddresses.sh "db-${REGION}-${BUILD_IDENTIFIER}" "${CLOUDHOST}"` (try this one first from your application if it timesout, try the public one)"
                 status "The database port is ${DB_PORT}"
                 status "You can make up your own database prefix but make sure to include the '_' character at the end of your prefix (for example 'dbprefix_')"
-                status "#########################################"
+                status "#######################################################################################################################"
 
                 #Remind the deployer to add the port number to the hostname in the application when the database port is not the default port
                 if ( [ "${APPLICATION}" = "joomla" ] && [ "${DB_PORT}" != "3306" ] && [ "${DB_PORT}" != "5432" ] )
