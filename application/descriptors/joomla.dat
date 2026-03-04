@@ -1,10 +1,23 @@
 APPLICATION_NAME:joomla
+
+#Application credentials
+APPLICATION_USERNAME:webmaster
+#WARNING: THE FIRST THING YOU MUST DO WHEN YOU ACCESS YOUR JOOMLA APPLICATION IS CHANGE THIS PASSWORD (set it to something to your liking here in the first place as well)
+APPLICATION_PASSWORD:test123
+APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
+
+#Application Directories structure
+
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
+
+#Location of application sourcecode
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Alpha-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Beta-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Release_Candidate-Full_Package.zip
 SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Stable-Full_Package.zip
-INTERACTIVE_APPLICATION_INSTALL="no"
+
+
+#INTERACTIVE_APPLICATION_INSTALL="no"
 
 #Database
 
