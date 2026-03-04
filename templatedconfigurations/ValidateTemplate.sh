@@ -466,7 +466,7 @@ then
 
 	if ! /usr/bin/curl --head --silent --fail https://downloads.joomla.org/cms/joomla${joomla_major_version}/${joomla_version}/Joomla_${joomla_version}-Stable-Full_Package.zip 1>&2 >/dev/null 
 	then
-		${log_command} "I don't seem to be able to find a download link for the joomla version you are wanting to install (${JOOMLA_VERSION})"
+		${log_command} "I don't seem to be able to find a download link for the joomla version you are wanting to install (${joomla_version})"
 	fi
 fi
 
