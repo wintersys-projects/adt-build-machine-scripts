@@ -249,8 +249,8 @@ then
 fi
 
 #This checks that the user's application's configuration settings has been installed correctly and fully
-if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
-then
+#if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] )
+#then
 	status "Checking that the application configuration for ${APPLICATION} has fully installed...."
 	application_configuration_installed=""
 
@@ -270,7 +270,7 @@ then
 			fi
 		done
 	done
-fi
+#fi
 
 if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
 then
