@@ -257,6 +257,7 @@ then
 	status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}`"
 	status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
 	status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
+	status "NOTE: it may take a few more minutes for the website to be available through your browser so you can complete your interactive installation steps"
 else
 	status "Checking that the application configuration for ${APPLICATION} has fully installed...."
 	application_configuration_installed=""
