@@ -34,18 +34,6 @@ This can be set to one of "none", "joomla", "wordpress", "drupal", "moodle"
 
 ---- 
 
-### JOOMLA_VERSION
-
-If you are deploying a virgin joomla installation, you must give the version number of joomla that you are deploying here. In such a template, you will likely want to update this version number to be the latest available.
-
----- 
-
-### DRUPAL_VERSION
-
-If you are deploying a virgin drupal installation, you must give the version number of drupal that you are deploying here. In such a template, you will likely want to update this version number to be the latest available.
-
----- 
-
 ### APPLICATION_BASELINE_SOURCECODE_REPOSITORY
 
 If you are deploying a virgin application, you can set APPLICATION_BASELINE_SOURCECODE_REPOSITORY to   
