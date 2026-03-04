@@ -49,6 +49,7 @@ IN_PARALLEL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh IN_PARALLEL`"
 BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHINE_VPC`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
 APPLICATION_LANGUAGE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_LANGUAGE`"
+APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
@@ -249,14 +250,8 @@ then
 fi
 
 #This is where the application is configured either interactively or automatically
-if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] )
+if ( [ "${BUILD_ARCHIVE_CHOICE}" != "virgin" ] || ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:no" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] ) )
 then
-	status "Your are installing interactively so I will be kind and show you your credentials so that you can complete your installation"
-	status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
-	status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	status "NOTE: it may take a few more minutes for the website to be available through your browser so you can complete your interactive installation steps"
-else
 	status "Checking that the application configuration for ${APPLICATION} has fully installed...."
 	application_configuration_installed=""
 
@@ -447,6 +442,14 @@ for ws_active_ip in ${ws_active_ips}
 do
 	/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /bin/touch /home/${SERVER_USER}/runtime/INSTALLED_SUCCESSFULLY" 2>/dev/null
 done
+
+if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] )
+then
+	status "Your are installing interactively so I will be kind and show you your credentials so that you can complete your installation"
+	status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
+	status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
+	status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
+fi
 
 #Put a marker file in the datastore to say, "right on this is a valid build as far as we know"
 ${BUILD_HOME}/providerscripts/datastore/operations/PutToDatastore.sh "config" "INSTALLED_SUCCESSFULLY" "root" "local" "no"
