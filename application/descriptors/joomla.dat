@@ -11,11 +11,14 @@ APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 
 #Location of application sourcecode
+
+#Sourced from github
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Alpha-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Beta-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Release_Candidate-Full_Package.zip
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Stable-Full_Package.zip
 
+#Sourced from joomla.org
 SOURCECODE_URL:downloads.joomla.org/cms/joomla6/6-0-3/Joomla_6-0-3-Stable-Full_Package.zip
 SOURCECODE_MD5:a3eaae4a62d2313de01d7ff7ba5417e9
 SOURCECODE_SHA1:5ab47253f669a86e8002e524d8218dfbd79bf88e
@@ -54,9 +57,9 @@ INDIVIDUAL_SETTING:secret="placeholder"
 INDIVIDUAL_SETTING:cachetime=30
 INDIVIDUAL_SETTING:cache_handler="file"
 INDIVIDUAL_SETTING:caching=1
-INDIVIDUAL_SETTING:sef=0
-INDIVIDUAL_SETTING:sef_suffix=0
-INDIVIDUAL_SETTING:sef_rewrite=0
+INDIVIDUAL_SETTING:sef=1
+INDIVIDUAL_SETTING:sef_suffix=1
+INDIVIDUAL_SETTING:sef_rewrite=1
 INDIVIDUAL_SETTING:gzip=1
 INDIVIDUAL_SETTING:force_ssl=2
 INDIVIDUAL_SETTING:shared_session=0
