@@ -527,16 +527,17 @@ then
 	fi
 fi
 
-php_version="`/bin/echo ${PHP_VERSION} | /bin/sed 's/\.//g'`"
-if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] && [ "${php_version}" -lt "82" ] )
-then
-	${log_command} "At the time of development, Drupal CMS requires PHP 8.2 or higher. You are trying to install PHP version ${PHP_VERSION}"
-fi
+#replace with new method
+#php_version="`/bin/echo ${PHP_VERSION} | /bin/sed 's/\.//g'`"
+#if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] && [ "${php_version}" -lt "82" ] )
+#then
+#	${log_command} "At the time of development, Drupal CMS requires PHP 8.2 or higher. You are trying to install PHP version ${PHP_VERSION}"
+#fi
 
-if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] && [ "${php_version}" -lt "81" ] )
-then
-	${log_command} "At the time of development, Drupal Opensocial requires PHP 8.1 or higher. You are trying to install PHP version ${PHP_VERSION}"
-fi
+#if ( [ "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" = "DRUPAL:cms" ] && [ "${php_version}" -lt "81" ] )
+#then#
+#	${log_command} "At the time of development, Drupal Opensocial requires PHP 8.1 or higher. You are trying to install PHP version ${PHP_VERSION}"
+#fi
 
 if ( [ "`/bin/echo "${DNS_USERNAME}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] && [ "`/bin/echo "${DNS_USERNAME}" | /bin/grep '^[a-zA-Z0-9]*@[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*$'`" = "" ] )
 then
