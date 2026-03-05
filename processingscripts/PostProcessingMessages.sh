@@ -34,7 +34,7 @@ ALGORITHM="`${BUILD_HOME}/helperscripts/GetVariableValue.sh ALGORITHM`"
 BUILD_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_IDENTIFIER`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_BASELINE_SOURCECODE_REPOSITORY`"
-BASELINE_DB_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BASELINE_DB_REPOSITORY`"
+BUILD_ARCHIVE_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_ARCHIVE_CHOICE`"
 APPLICATION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION`"
 DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
 SSH_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh SSH_PORT`"
@@ -66,7 +66,7 @@ status "########################################################################
 status "`/usr/bin/banner "IMPORTANT"`"
 
 #If this is a virgin build, show the application credentials so that the  application can be installed
-if ( [ "${BASELINE_DB_REPOSITORY}" = "VIRGIN" ] )
+if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
         if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "standard" ] || [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "database" ] )
         then
