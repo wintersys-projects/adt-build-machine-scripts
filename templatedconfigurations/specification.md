@@ -32,22 +32,6 @@ This is a unique string to describe your build. If you have multiple builds that
 
 This can be set to one of "none", "joomla", "wordpress", "drupal", "moodle"
 
----- 
-
-### APPLICATION_BASELINE_SOURCECODE_REPOSITORY
-
-If you are deploying a virgin application, you can set APPLICATION_BASELINE_SOURCECODE_REPOSITORY to   
-
-- "JOOMLA:{latest_version}"  for example "JOOMLA:5.3.0"  
-
-- "WORDPRESS"   
-
-- "DRUPAL:{latest_version}" for example "DRUPAL:11.0.1"
-  
-**NOTE: if you want to install [opensocial](https://www.getopensocial.com/)  or [drupal cms](https://new.drupal.org/drupal-cms) you can set latest_version to "DRUPAL:social" and "DRUPAL:cms" and the system will install opensocial or drupal CMS respectively.**  
-
-- "MOODLE"  
-
 -----
 
 ### S3_ACCESS_KEY 
