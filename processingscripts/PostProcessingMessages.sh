@@ -129,7 +129,7 @@ then
                 fi
 
                 #Suggest the correct URL to complete the installation process for different application types
-                if ( [ "${APPLICATION}" = "joomla" ] )
+                if ( [ "${APPLICATION}" = "joomla" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ]  )
                 then
                         status ""
                         status "##################################################################################################"
@@ -138,14 +138,14 @@ then
                         status ""
                 fi
 
-                if ( [ "${APPLICATION}" = "moodle" ] )
-                then
-                        status ""
-                        status "####################################################################"
-                        status "Moodle should be available at: https://${WEBSITE_URL}"
-                        status "####################################################################"
-                        status ""
-                fi
+       #         if ( [ "${APPLICATION}" = "moodle" ] )
+       #         then
+       #                 status ""
+       #                 status "####################################################################"
+       #                 status "Moodle should be available at: https://${WEBSITE_URL}"
+       #                 status "####################################################################"
+       #                 status ""
+       #         fi
         fi
 fi
 
