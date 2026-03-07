@@ -11,8 +11,8 @@ APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 
 #Application structure rudimentary integrity check
-APPLICATION_INTEGRITY_DIRECTORIES=administrator:api:cache:cli:components:files:includes:language:layouts:libraries:media:modules:plugins:templates
-APPLICATION_INTEGRITY_FILES=index.php
+APPLICATION_INTEGRITY_DIRECTORIES:administrator:api:cache:cli:components:files:includes:language:layouts:libraries:media:modules:plugins:templates
+APPLICATION_INTEGRITY_FILES:index.php
 
 #Location of application sourcecode
 
