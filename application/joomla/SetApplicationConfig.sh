@@ -55,10 +55,10 @@ WEBSITE_DISPLAY_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_
 SYSTEM_EMAIL_USERNAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_EMAIL_USERNAME'`"
 SYSTEM_EMAIL_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_EMAIL_PASSWORD'`"
 
-APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'APPLICATION_BASELINE_SOURCECODE_REPOSITORY'`"
-joomla_version="`/bin/echo "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" | /usr/bin/awk -F':' '{print $NF}'`"
+#APPLICATION_BASELINE_SOURCECODE_REPOSITORY="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'APPLICATION_BASELINE_SOURCECODE_REPOSITORY'`"
+#joomla_version="`/bin/echo "${APPLICATION_BASELINE_SOURCECODE_REPOSITORY}" | /usr/bin/awk -F':' '{print $NF}'`"
 
-/bin/sed -i "s/XXXXAPPLICATION_VERSIONXXXX/${joomla_version}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+#/bin/sed -i "s/XXXXAPPLICATION_VERSIONXXXX/${joomla_version}/g" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_USERNAMEXXXX/${DB_USERNAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_PASSWORDXXXX/${DB_PASSWORD}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_DATABASEXXXX/${DB_NAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
