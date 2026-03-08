@@ -17,4 +17,6 @@ APPLICATION_INTEGRITY_FILES:index.php
 #Location of application sourcecode
 
 #Sourced from github
-#SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Alpha-Full_Package.zip
+#SOURCECODE_URL:https://wordpress.org/wordpress-6.9.1.zip
+
+#SOURCECODE_URL:https://wordpress.org/wordpress-6.9.1.tar.gz
