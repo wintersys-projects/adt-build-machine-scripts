@@ -21,15 +21,9 @@
 #####################################################################################
 #set -x
 
-
-#Make this like joomla
-#APPLICATION_EMAIL_ADDRESS:XXXXWEBSITE_EMAILXXXX
-#WEBSITE_URL:XXXXWEBSITE_URLXXXX
-#WEBSITE_TITLE:XXXXWEBSITE_TITLEXXXX
-
 APPLICATION_EMAIL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_EMAIL`"
-
-
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
+WEBSITE_DISPLAY_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_DISPLAY_NAME`"
 
 if ( [ ! -d  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application ] )
 then
