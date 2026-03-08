@@ -38,6 +38,12 @@ INDIVIDUAL_SETTING:type="XXXXAPPLICATION_DB_TYPEXXXX"
 INDIVIDUAL_SETTING:table_prefix="placeholder"
 INDIVIDUAL_SETTING:salt="placeholder"
 
+
+
+#***********if not in file then add to file on the webserver************
+
+#eg /bin/echo "define( 'DISALLOW_FILE_EDIT', true );" >> /tmp/fullfile
+
 INDIVIDUAL_SETTING:DISALLOW_FILE_EDIT="true"
 INDIVIDUAL_SETTING:WP_CACHE="false"
 INDIVIDUAL_SETTING:CONCATENATE_SCRIPTS="false"
