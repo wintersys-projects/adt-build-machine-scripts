@@ -41,6 +41,7 @@ INDIVIDUAL_SETTING:db="XXXXAPPLICATION_DATABASEXXXX"
 INDIVIDUAL_SETTING:host="placeholder"
 INDIVIDUAL_SETTING:type="XXXXAPPLICATION_DB_TYPEXXXX"
 INDIVIDUAL_SETTING:dbprefix="placeholder"
+INDIVIDUAL_SETTING:secret="placeholder"
 
 
 #Mailer
@@ -57,7 +58,6 @@ INDIVIDUAL_SETTING:smtp_port="XXXXSMTP_PORTXXXX"
 INDIVIDUAL_SETTING:smtp_host="XXXXSMTP_HOSTXXXX"
 
 #Hardcoded overrides (you can override any default setting in the configuration.php file for joomla by setting it here as per the examples)
-INDIVIDUAL_SETTING:secret="placeholder"
 INDIVIDUAL_SETTING:cachetime=30
 INDIVIDUAL_SETTING:cache_handler="file"
 INDIVIDUAL_SETTING:caching=1
