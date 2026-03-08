@@ -21,6 +21,17 @@
 #####################################################################################
 #set -x
 
+
+
+APPLICATION_EMAIL_ADDRESS:XXXXWEBSITE_EMAILXXXX
+WEBSITE_URL:XXXXWEBSITE_URLXXXX
+WEBSITE_TITLE:XXXXWEBSITE_TITLEXXXX
+
+
+
+
+
+
 WEBSERVER_CHOICE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSERVER_CHOICE`"
 
 if ( [ ! -f ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/dbp.dat ] )
