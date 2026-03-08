@@ -6,7 +6,7 @@ APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
 
 #Application Directories structure
 
-DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
+DIRECTORIES_TO_CREATE:logs:tmp:cache
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
