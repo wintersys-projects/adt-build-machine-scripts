@@ -12,7 +12,7 @@ DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
-APPLICATION_INTEGRITY_FILES:index.php
+APPLICATION_INTEGRITY_FILES:index.php:wp-activate.php:wp-blog-header.php:wp-comments-post.php:wp-config-sample.php:wp-cron.php:wp-links-opml.php:wp-load.php:wp-login.php:wp-mail.php:wp-settings.php:wp-signup.php:wp-trackback.php:xmlrpc.php
 
 #Location of application sourcecode
 
