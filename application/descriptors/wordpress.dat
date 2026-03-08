@@ -17,6 +17,10 @@ APPLICATION_INTEGRITY_FILES:index.php
 #Location of application sourcecode
 
 #Sourced from github
-#SOURCECODE_URL:https://wordpress.org/wordpress-6.9.1.zip
+SOURCECODE_URL:https://wordpress.org/wordpress-6.9.1.zip
+SOURCECODE_MD5:8f16132b3a4b0431af6d99913552c0bd
+SOURCECODE_SHA1:affc080e79a4da47a53250a51e417a943fb69366
 
 #SOURCECODE_URL:https://wordpress.org/wordpress-6.9.1.tar.gz
+#SOURCECODE_MD5:dd7e7155d1afef048ef73ab1b0168341
+#SOURCECODE_SHA1:2914d37c00597e6216a88f90e22b1b4c7bbd09e8
