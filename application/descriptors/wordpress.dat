@@ -1,9 +1,4 @@
-# Generate a TEMPORARY/INITIAL/INSTALLATION ONLY PASSWORD HASH using https://codebeautify.org/wordpress-password-hash-generator or an alternative
-APPLICATION_PASSWORD_HASH:$2y$10$kxilbv1kpOnC/hmefkgmaencaEA0cbYn9FrOFnghS.Y5fxSTYDofO
-APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
-
 #Application Directories structure
-
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
 #Application structure rudimentary integrity check
@@ -11,15 +6,13 @@ APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
 APPLICATION_INTEGRITY_FILES:index.php:wp-activate.php:wp-blog-header.php:wp-comments-post.php:wp-config-sample.php:wp-cron.php:wp-links-opml.php:wp-load.php:wp-login.php:wp-mail.php:wp-settings.php:wp-signup.php:wp-trackback.php:xmlrpc.php
 
 #Location of application sourcecode
+SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.zip
+SOURCECODE_MD5:76ab4a9a7b1dea2984eb733d258fbdac
+SOURCECODE_SHA1:bd9d0fcf5866b6486db46950accdfce0db018a48
 
-#Sourced from github
-SOURCECODE_URL:https://wordpress.org/wordpress-6.9.1.zip
-SOURCECODE_MD5:8f16132b3a4b0431af6d99913552c0bd
-SOURCECODE_SHA1:affc080e79a4da47a53250a51e417a943fb69366
-
-#SOURCECODE_URL:https://wordpress.org/wordpress-6.9.1.tar.gz
-#SOURCECODE_MD5:dd7e7155d1afef048ef73ab1b0168341
-#SOURCECODE_SHA1:2914d37c00597e6216a88f90e22b1b4c7bbd09e8
+#SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.tar.gz
+#SOURCECODE_MD5:c3fcbc29bef86628b737b14f42f7ae47
+#SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 
 INDIVIDUAL_SETTING:DB_USER=XXXXAPPLICATION_USERNAMEXXXX
 INDIVIDUAL_SETTING:DB_PASSWORD=XXXXAPPLICATION_PASSWORDXXXX
