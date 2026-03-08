@@ -326,13 +326,14 @@ then
                         vpc_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $11}'`"
                         subnet_id="`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /usr/bin/awk -F':' '{print $12}'`"
 
-                        if ( [ "${MULTI_REGION}" = "1" ] )
+                        if ( [ "${MULTI_REGION}" = "1" ] && [ "${PRIMARY_REGION}" != "1" ] )
                         then
                                 public_access="--private_network.public_access true"
                                 db_scope_prefix="public-"
                         else
                                 public_access="--private_network.public_access false"
-                                db_scope_prefix="private-"
+                                db_scope_prefix=""
+                              #  db_scope_prefix="private-"
                         fi
 
                         if ( [ "${database_type}" = "MySQL" ] )
@@ -390,12 +391,17 @@ then
 
                                 #Take a note of all our database details
                                 export CLUSTER_NAME="`/usr/local/bin/linode-cli databases mysql-list --no-defaults --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .label'`" 
-                                export DB_IDENTIFIER="${db_scope_prefix}`/usr/local/bin/linode-cli databases mysql-list --no-defaults --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
+                                export DB_IDENTIFIER="`/usr/local/bin/linode-cli databases mysql-list --no-defaults --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}') | .hosts.primary'`"
                                 export DB_USERNAME="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --no-defaults --json | /usr/bin/jq -r '.[].username'`"
                                 export DB_PASSWORD="`/usr/local/bin/linode-cli databases mysql-creds-view ${database_id} --no-defaults --json | /usr/bin/jq -r '.[].password'`"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases mysql-list --no-defaults --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
                                 export DB_NAME="${db_name}"
 
+                                if ( [ "${db_scope_prefix}" != "" ] )
+                                then
+                                        DB_IDENTIFIER="`/bin/echo ${DB_IDENTIFIER} | /bin/sed "s/^private-/${db_scope_prefix}"`"
+                                fi
+                                        
                                 #take a certificate copy in case we need it
                                 /bin/echo "`/usr/local/bin/linode-cli databases mysql-ssl-cert ${database_id} --no-defaults --json | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
                         elif ( [ "${database_type}" = "Postgres" ] )
@@ -459,6 +465,11 @@ then
                                 export DB_PASSWORD="`/usr/local/bin/linode-cli databases postgresql-creds-view ${database_id} --no-defaults --json  | /usr/bin/jq -r '.[].password'`"
                                 export DB_PORT="`/usr/local/bin/linode-cli databases postgresql-list --no-defaults --json | /usr/bin/jq -r '.[] | select (.id == '${database_id}').port'`"
                                 export DB_NAME="${db_name}"
+
+                                if ( [ "${db_scope_prefix}" != "" ] )
+                                then
+                                        DB_IDENTIFIER="`/bin/echo ${DB_IDENTIFIER} | /bin/sed "s/^private-/${db_scope_prefix}"`"
+                                fi
 
                                 #grab the cert, why not, we might need it
                                 /bin/echo "`/usr/local/bin/linode-cli databases postgresql-ssl-cert ${database_id} --no-defaults --json | /usr/bin/jq -r '.[].ca_certificate'`" > ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/DBaaS_CERT
