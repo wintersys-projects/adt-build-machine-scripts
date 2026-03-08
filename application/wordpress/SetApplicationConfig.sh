@@ -21,9 +21,6 @@
 #####################################################################################
 #set -x
 
-APPLICATION_EMAIL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh APPLICATION_EMAIL`"
-WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_URL`"
-WEBSITE_DISPLAY_NAME="`${BUILD_HOME}/helperscripts/GetVariableValue.sh WEBSITE_DISPLAY_NAME`"
 
 if ( [ ! -d  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application ] )
 then
@@ -39,10 +36,4 @@ fi
 /bin/sed -i "s/XXXXAPPLICATION_DB_HOSTXXXX/${DB_IDENTIFIER}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_DB_PORTXXXX/${DB_PORT}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_DB_TYPEXXXX/${DB_TYPE}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
-
-
-/bin/sed -i "s/XXXXAPPLICATION_EMAILXXXX/${APPLICATION_EMAIL}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
-/bin/sed -i "s/XXXXWEBSITE_URLXXXX/${WEBSITE_URL}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
-/bin/sed -i "s/XXXXWEBSITE_TITLEXXXX/${WEBSITE_DISPLAY_NAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
-
 
