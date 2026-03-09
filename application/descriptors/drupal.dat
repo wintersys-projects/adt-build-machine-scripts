@@ -1,5 +1,9 @@
-#Application Directories structure
+#Application Type
+APPLICATION_TYPE:drupal
+#APPLICATION_TYPE:social
+#APPLICATION_TYPE:cms
 
+#Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 
 #Application structure rudimentary integrity check
