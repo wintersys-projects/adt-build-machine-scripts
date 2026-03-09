@@ -26,6 +26,15 @@ INDIVIDUAL_SETTING:port=placeholder
 INDIVIDUAL_SETTING:driver=XXXXAPPLICATION_DB_TYPEXXXX
 INDIVIDUAL_SETTING:prefix=placeholder
 
+ADDITIONAL_SETTING:$config["package_manager.settings"]["executables"]["composer"] = "/usr/local/bin/composer";
+ADDITIONAL_SETTING:$config["package_manager.settings"]["executables"]["rsync"] = "/usr/bin/rsync";
+ADDITIONAL_SETTING:$config["system.logging"]["error_level"] = "error";
+ADDITIONAL_SETTING:$settings["trusted_host_patterns"] = [ ".*" ];
+ADDITIONAL_SETTING:$settings["config_sync_directory"] = "/var/www/html/sites/default";
+ADDITIONAL_SETTING:$config["system.performance"]["css"]["preprocess"] = FALSE;
+ADDITIONAL_SETTING:$config["system.performance"]["js"]["preprocess"] = FALSE;
+ADDITIONAL_SETTING:$settings["file_private_path"] = $app_root . "/../private";
+
 
 
 
