@@ -1,7 +1,7 @@
 #Application Type
-APPLICATION_TYPE:drupal
+#APPLICATION_TYPE:drupal
 #APPLICATION_TYPE:social
-#APPLICATION_TYPE:cms
+APPLICATION_TYPE:cms
 
 APPLICATION_USERNAME:webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
 APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the first thing you do once drupal is installed non-interactively)
