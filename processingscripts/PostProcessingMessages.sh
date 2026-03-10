@@ -70,12 +70,6 @@ if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
 then
         if ( [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "standard" ] || [ "`/bin/grep "^BUILDCHAINTYPE:*" ${BUILD_HOME}/builddescriptors/buildstyles.dat | /usr/bin/awk -F':' '{print $NF}'`" = "database" ] )
         then
-                status "###############################################################################################################################"
-                status "OK, I'll be kind and show you one time your ${APPLICATION} database credentials."
-                status "Please make a note of them but remember to keep them safe and secret"
-                status "You can enter them in the GUI system when you install the application"
-                status "###############################################################################################################################"
-
               #  if ( [ "${HARDCORE}" = "1" ] )
               #  then
               #          if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] )
@@ -100,7 +94,12 @@ then
 
                 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:yes" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] )
                 then
-	                status "Your are installing interactively so I will be kind and show you your credentials so that you can complete your installation"
+					status "###############################################################################################################################"
+                	status "OK, your are installing interactively I'll be kind and show you one time your ${APPLICATION} database credentials."
+                	status "Please make a note of them but remember to keep them safe and secret"
+                	status "You can enter them in the GUI system when you install the application"
+                	status "###############################################################################################################################"
+
 	                status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
 	                status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
 	                status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
