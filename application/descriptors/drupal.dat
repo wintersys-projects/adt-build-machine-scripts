@@ -46,6 +46,7 @@ INDIVIDUAL_SETTING:host=placeholder
 INDIVIDUAL_SETTING:port=placeholder
 INDIVIDUAL_SETTING:driver=XXXXAPPLICATION_DB_TYPEXXXX
 INDIVIDUAL_SETTING:prefix=placeholder
+INDIVIDUAL_SETTING:collation=utf8mb4_general_ci
 
 ADDITIONAL_SETTING:$settings['package_manager_composer_path'] = '/usr/local/bin/composer';
 ADDITIONAL_SETTING:$settings['package_manager_rsync_path'] = '/usr/bin/rsync';
