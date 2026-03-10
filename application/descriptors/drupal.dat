@@ -35,8 +35,7 @@ INDIVIDUAL_SETTING:port=placeholder
 INDIVIDUAL_SETTING:driver=XXXXAPPLICATION_DB_TYPEXXXX
 INDIVIDUAL_SETTING:prefix=placeholder
 
-ADDITIONAL_SETTING:$config["package_manager.settings"]["executables"]["composer"] = "/usr/local/bin/composer";
-ADDITIONAL_SETTING:$config["package_manager.settings"]["executables"]["rsync"] = "/usr/bin/rsync";
+ADDITIONAL_SETTING:$settings['package_manager_composer_path'] = '/usr/local/bin/composer';
 ADDITIONAL_SETTING:$config["system.logging"]["error_level"] = "error";
 ADDITIONAL_SETTING:$settings["trusted_host_patterns"] = [ ".*" ];
 ADDITIONAL_SETTING:$settings["config_sync_directory"] = "/var/www/html/sites/default";
