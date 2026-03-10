@@ -1,10 +1,8 @@
-#Application Type (only uncomment one of these three choices others must be commented)
+#Application Type (only uncomment one of these choices others must be commented)
 
 # 1. To install drupal uncomment
 #APPLICATION_TYPE:drupal
-# 2. To install opensocial uncomment
-APPLICATION_TYPE:social
-# 3. To install drupal CMS uncomment
+# 2. To install drupal CMS uncomment
 #APPLICATION_TYPE:cms
 
 APPLICATION_USERNAME:webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
@@ -28,16 +26,6 @@ SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.5.tar.gz
 SOURCECODE_MD5:5c8bc612859d7026178ea5463cc7c889
 SOURCECODE_SHA1:1b0b11114167d52aa01ce512e5508dea74bc9ffd
 SOURCECODE_SHA256:7de44170b531124d54017860aebbc0d471495bbff9cf6b787026c0284e065edc
-
-#SOURCECODE_OPENSOCIAL_URL:ftp.drupal.org/files/projects/social-13.0.0.zip
-#SOURCECODE_OPENSOCIAL_MD5:4b4b95bfedfc4a0e59a44b680f4fbe0f
-#SOURCECODE_OPENSOCIAL_SHA1:f940930f40a8a7e6869c2024f754734d4bfb41df
-#SOURCECODE_OPENSOCIAL_SHA256:abcb80a843b982ed682dcc6f2e19fe64fa2775a487da220bfcffe3f42fb3a704
-
-#SOURCECODE_OPENSOCIAL_URL:ftp.drupal.org/files/projects/social-13.0.0.tar.gz
-#SOURCECODE_OPENSOCIAL_MD5:9c9a338e409d24586547f5cae7adb37e
-#SOURCECODE_OPENSOCIAL_SHA1:e45c218a54c0dc36af3ab0199b0973f3b9e5ad7a
-#SOURCECODE_OPENSOCIAL_SHA256:951f3e48066fe122fe156615636af680dbec9b559d19c7d22121450197553f49
 
 #SOURCECODE_DRUPALCMS_URL:ftp.drupal.org/files/projects/cms-2.0.2.zip
 #SOURCECODE_DRUPALCMS_MD5:ddfa787d5065b4f2244cbd47f95339dd
