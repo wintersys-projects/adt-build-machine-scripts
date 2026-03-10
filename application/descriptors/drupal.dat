@@ -13,12 +13,12 @@ DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 #APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
 #APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
 
-#SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.3.zip
+#SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.5.zip
 #SOURCECODE_MD5:02aaff28a5fd731567061a2562a61130
 #SOURCECODE_SHA1:217fd9a20ebd5fa5a19a6a8d1da1fd23387d891d
 #SOURCECODE_SHA256:f8bc835eca439a1019accc049cd31d5d1b5559ef0ffcffed96a01742c9838d35
 
-SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.3.tar.gz
+SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.5.tar.gz
 SOURCECODE_MD5:c71d4d292832ad20f51382cc43736050
 SOURCECODE_SHA1:4c61cb5e25ef476d804dc02b6fff70446888ea7f
 SOURCECODE_SHA256:bb01dd6c74e43f5e4c750844fb236e579c4e2498d5a889a1979196fe486ed284
