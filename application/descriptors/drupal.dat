@@ -9,6 +9,8 @@ APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files/private
 
+DIRECTORIES_TO_CREATE_ABSOLUTE:/var/www/private/default_images:/var/www/private/default_images
+
 #Application structure rudimentary integrity check
 #APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
 #APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
