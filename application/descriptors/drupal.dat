@@ -3,9 +3,9 @@
 # 1. To install drupal uncomment
 #APPLICATION_TYPE:drupal
 # 2. To install opensocial uncomment
-#APPLICATION_TYPE:social
+APPLICATION_TYPE:social
 # 3. To install drupal CMS uncomment
-APPLICATION_TYPE:cms
+#APPLICATION_TYPE:cms
 
 APPLICATION_USERNAME:webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
 APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the first thing you do once drupal is installed non-interactively)
