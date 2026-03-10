@@ -13,7 +13,7 @@ APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files
 
-DIRECTORIES_TO_CREATE_ABSOLUTE:/var/www/private
+DIRECTORIES_TO_CREATE_ABSOLUTE:/var/www/private:/var/www/tmp
 
 #Application structure rudimentary integrity check
 #APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
