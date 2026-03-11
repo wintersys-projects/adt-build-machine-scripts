@@ -1,8 +1,8 @@
 APPLICATION_USERNAME:webmaster
 APPLICATION_PASSWORD:mnbcxz098321QQQZZZ
 
-DIRECTORIES_TO_CREATE:logs:tmp:cache
-DIRECTORIES_TO_CREATE_ABSOLUTE:/var/www/moodledata
+DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
+DIRECTORIES_TO_CREATE_ABSOLUTE:
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:moodle/admin:moodle/lib:moodle/public
