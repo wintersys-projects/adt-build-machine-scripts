@@ -5,8 +5,10 @@ APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
 
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
+#Application structure rudimentary integrity check
+APPLICATION_INTEGRITY_DIRECTORIES:moodle/admin:moodle/lib:moodle/public
+APPLICATION_INTEGRITY_FILES:index.php
 
-moodle/admin moodle/lib moodle/public
 
 
 SOURCECODE_URL:download.moodle.org/download.php/direct/stable501/moodle-latest-501.tgz
