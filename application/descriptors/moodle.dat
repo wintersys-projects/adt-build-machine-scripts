@@ -1,0 +1,8 @@
+#Application credentials
+APPLICATION_USERNAME:webmaster
+APPLICATION_PASSWORD:mnbcxz098321QQQZZZ
+APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
+
+#Application Directories structure
+
+DIRECTORIES_TO_CREATE:logs:tmp:cache
