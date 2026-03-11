@@ -58,15 +58,15 @@ INDIVIDUAL_SETTING:smtp_host=XXXXSMTP_HOSTXXXX
 
 #Hardcoded overrides (you can override any default setting in the configuration.php file for joomla by setting it here as per the examples)
 INDIVIDUAL_SETTING:cachetime=30
-INDIVIDUAL_SETTING:cache_handler=file
+INDIVIDUAL_SETTING:cache_handler='file'
 INDIVIDUAL_SETTING:caching=1
-INDIVIDUAL_SETTING:cache_path=/var/www/html/cache
+INDIVIDUAL_SETTING:cache_path='/var/www/html/cache'
 INDIVIDUAL_SETTING:sef=1
 INDIVIDUAL_SETTING:sef_suffix=1
 INDIVIDUAL_SETTING:sef_rewrite=1
 INDIVIDUAL_SETTING:gzip=1
 INDIVIDUAL_SETTING:force_ssl=2
 INDIVIDUAL_SETTING:shared_session=0
-INDIVIDUAL_SETTING:tmp_path=/var/www/html/tmp
-INDIVIDUAL_SETTING:log_path=/var/www/html/logs
+INDIVIDUAL_SETTING:tmp_path='/var/www/html/tmp'
+INDIVIDUAL_SETTING:log_path='/var/www/html/logs'
 
