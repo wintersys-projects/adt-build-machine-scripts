@@ -6,3 +6,14 @@ APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
 #Application Directories structure
 
 DIRECTORIES_TO_CREATE:logs:tmp:cache
+
+#Sourced from moodle.org
+#SOURCECODE_URL:download.moodle.org/download.php/stable501/moodle-latest-501.zip
+#SOURCECODE_MD5:c3cd71c4d04f229532420ac11f9dbccb
+#SOURCECODE_SHA256:a6c9c83e976b79a683eed6e83dd296ff96a5332c2980f2f59a74402dd81c771e
+
+SOURCECODE_URL:download.moodle.org/download.php/stable501/moodle-latest-501.tgz
+SOURCECODE_MD5:26296aa35344096491634a0a5f0e30d2
+SOURCECODE_SHA256:7ee76e5aa067b6d79b4d8427e0f9fb3a0ea9a6148a42c8bd336244746264c1b7
+
+INTERACTIVE_APPLICATION_INSTALL:no
