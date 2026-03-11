@@ -7,9 +7,7 @@ DIRECTORIES_TO_CREATE:logs:tmp:cache
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:moodle/admin:moodle/lib:moodle/public
-APPLICATION_INTEGRITY_FILES:index.php
-
-
+APPLICATION_INTEGRITY_FILES:moodle/composer.json:moodle/composer.lock:moodle/config-dist.php:moodle/CONTRIBUTING.md:moodle/COPYING.txt:moodle/githash.php:moodle/Gruntfile.js:moodle/index.php:moodle/INSTALL.txt:moodle/npm-shrinkwrap.json:moodle/package.json:moodle/phpcs.xml.dist:moodle/phpunit.xml.dist:moodle/README.md:moodle/TRADEMARK.txt:moodle/UPGRADING.md
 
 SOURCECODE_URL:download.moodle.org/download.php/direct/stable501/moodle-latest-501.tgz
 SOURCECODE_MD5:26296aa35344096491634a0a5f0e30d2
