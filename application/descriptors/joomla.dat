@@ -1,8 +1,8 @@
 #Application credentials/descriptions
-WEBSITE_NAME="ADT Test Website"
-WEBSITE_USERNAME="webmaster"
-WEBSITE_PASSWORD="mnbcxz098321QQQZZZ"
-WEBSITE_USER_DESCRIPTION="Webmaster ADT Test Website"
+WEBSITE_NAME:ADT Test Website
+WEBSITE_USERNAME:webmaster
+WEBSITE_PASSWORD:mnbcxz098321QQQZZZ
+WEBSITE_USER_DESCRIPTION:Webmaster ADT Test Website
 
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
