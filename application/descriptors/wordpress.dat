@@ -1,3 +1,8 @@
+#Application credentials/descriptions
+WEBSITE_NAME:ADT Test Website
+WEBSITE_USERNAME:webmaster
+WEBSITE_PASSWORD:mnbcxz098321QQQZZZ
+
 #Get specific version of wordpress
 #SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.zip
 #SOURCECODE_MD5:76ab4a9a7b1dea2984eb733d258fbdac
