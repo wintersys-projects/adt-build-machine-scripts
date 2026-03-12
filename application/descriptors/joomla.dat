@@ -48,7 +48,7 @@ INDIVIDUAL_SETTING:smtpuser='XXXXSMTP_USERXXXX'
 INDIVIDUAL_SETTING:smtppass='XXXXSMTP_PASSXXXX'
 INDIVIDUAL_SETTING:smtpsecure='tls'
 INDIVIDUAL_SETTING:smtp_port=XXXXSMTP_PORTXXXX
-INDIVIDUAL_SETTING:smtp_host=XXXXSMTP_HOSTXXXX
+INDIVIDUAL_SETTING:smtphost=XXXXSMTP_HOSTXXXX
 
 #Hardcoded overrides (you can override any default setting in the configuration.php file for joomla by setting it here as per the examples)
 INDIVIDUAL_SETTING:cachetime=30
