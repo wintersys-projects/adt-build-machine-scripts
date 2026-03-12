@@ -12,6 +12,11 @@ SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 #SOURCECODE_MD5:
 #SOURCECODE_SHA1:
 
+#Always gets the latest version but doesn't support checksum verification
+#SOURCECODE_URL:wordpress.org/nightly-builds/wordpress-latest.zip
+#SOURCECODE_MD5:
+#SOURCECODE_SHA1:
+
 #This should always be "no" for wordpress
 INTERACTIVE_APPLICATION_INSTALL:no
 
