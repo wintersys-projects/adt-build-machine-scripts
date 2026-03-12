@@ -1,12 +1,10 @@
-#Application credentials
-APPLICATION_USERNAME:webmaster
-# Generate a TEMPORARY/INITIAL/INSTALLATION ONLY PASSWORD HASH using https://www.danielmorell.com/tools/joomla/password-generator or an alternative
-#APPLICATION_PASSWORD_HASH:$2y$10$kxilbv1kpOnC/hmefkgmaencaEA0cbYn9FrOFnghS.Y5fxSTYDofO
-APPLICATION_PASSWORD:mnbcxz098321QQQZZZ
-APPLICATION_DESCRIPTIVE_USERNAME:The Webmaster account
+#Application credentials/descriptions
+WEBSITE_NAME="ADT Test Website"
+WEBSITE_USERNAME="webmaster"
+WEBSITE_PASSWORD="mnbcxz098321QQQZZZ"
+WEBSITE_USER_DESCRIPTION="Webmaster ADT Test Website"
 
 #Application Directories structure
-
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 
 #Application structure rudimentary integrity check
