@@ -128,7 +128,7 @@ runcmd:
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh'
 #  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallWPCLI.sh &'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallGo.sh &'
-- '/bin/echo "RESUME=none" | /usr/bin/tee /etc/initramfs-tools/conf.d/resume'
+  - '/bin/echo "RESUME=none" | /usr/bin/tee /etc/initramfs-tools/conf.d/resume'
 
 package_upgrade: true
 
