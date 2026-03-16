@@ -71,7 +71,6 @@ write_files:
   append: true
   
 package_update: true
-package_upgrade: true
 
 packages:
   - git
@@ -129,4 +128,8 @@ runcmd:
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh'
 #  - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallWPCLI.sh &'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallGo.sh &'
-  - '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr "[:upper:]" "[:lower:]" | /bin/egrep -o "(ubuntu|debian)"` &'
+- '/bin/echo "RESUME=none" | /usr/bin/tee /etc/initramfs-tools/conf.d/resume'
+
+package_upgrade: true
+
+  #- '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr "[:upper:]" "[:lower:]" | /bin/egrep -o "(ubuntu|debian)"` &'
