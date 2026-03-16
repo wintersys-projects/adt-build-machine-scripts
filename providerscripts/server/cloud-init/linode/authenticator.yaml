@@ -103,7 +103,7 @@ runcmd:
 #XXXXPHPDEBIANXXXX  - '{ /usr/bin/apt-get install phpXXXXPHP_VERSIONXXXX-fpm phpXXXXPHP_VERSIONXXXX XXXXPHP_MODULESXXXX -y -qq ; export HOME=/home/XXXXSERVER_USERXXXX ; /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh ; } &'
 #XXXX1PHPUBUNTUXXXX  - 'LC_ALL=C.UTF-8 /usr/bin/add-apt-repository ppa:ondrej/php && /usr/bin/apt-get -qq -y update'
 #XXXX1PHPUBUNTUXXXX  - '{ /usr/bin/apt-get install phpXXXXPHP_VERSIONXXXX-fpm phpXXXXPHP_VERSIONXXXX XXXXPHP_MODULESXXXX -y -qq ; export HOME=/home/XXXXSERVER_USERXXXX ; /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh ; } &'
-#XXXXPHPUBUNTUXXXX  - 'export HOME=/home/XXXXSERVER_USERXXXX ; /home/XXXXSERVER_USERXXXX/installscripts/InstallPHPBase.sh ; /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh'  
+#XXXXPHPUBUNTUXXXX  - 'export HOME=/home/XXXXSERVER_USERXXXX ; /home/XXXXSERVER_USERXXXX/installscripts/InstallPHPBase.sh ; /bin/sh ${HOME}/installscripts/InstallApplicationLanguage.sh &'  
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallPackageManager.sh' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallEmailUtil.sh' 
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallFirewall.sh'
