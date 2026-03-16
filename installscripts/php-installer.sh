@@ -5,7 +5,7 @@ if [ "$(whoami)" != "root" ]; then
     SUDO=/usr/bin/sudo
 fi
 
-${SUDO} /usr/bin/apt-get install grub-efi-amd64
+${SUDO} /usr/bin/apt-get -y -qq install grub-efi-amd64
 ${SUDO} /usr/bin/apt-get update
 ${SUDO} /usr/bin/apt-get -y install lsb-release ca-certificates curl
 ${SUDO} /usr/bin/curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
