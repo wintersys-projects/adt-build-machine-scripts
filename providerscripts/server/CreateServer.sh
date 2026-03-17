@@ -268,7 +268,12 @@ then
 
 	if ( [ "${ACTIVE_FIREWALL}" = "2" ] || [ "${ACTIVE_FIREWALL}" = "3" ] )
 	then
-		/usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true, "nat_1_1_address": "auto" } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' ${user_data} --disk_encryption "enabled"
+		if ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
+		then
+			/usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true, "nat_1_1_address": "auto" } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' ${user_data} --disk_encryption "enabled"
+		else
+			/usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' ${user_data} --disk_encryption "enabled"
+		fi
 		#/usr/local/bin/linode-cli linodes create  --root_pass "${emergency_password}" --region ${REGION} ${image} --type ${server_size} --label "${server_name}" --no-defaults --interface_generation "linode" --interfaces ' [ { "purpose": "public", "firewall_id": '${firewall_id}', "default_route": { "ipv4": true }, "public": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } } }, { "purpose": "vpc", "firewall_id": '${firewall_id}',  "vpc": { "ipv4": { "addresses": [ { "address": "auto", "primary": true } ] } , "subnet_id": '${subnet_id}' } } ]' ${user_data} --disk_encryption "enabled"
 	else
 		if ( [ "`/bin/echo ${server_name} | /bin/grep -E "^ws-"`" != "" ] )
