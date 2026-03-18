@@ -14,8 +14,8 @@ DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files:moodledata:private
 #DIRECTORIES_TO_CREATE_ABSOLUTE:/var/www/private:/var/www/tmp:/var/www/html/moodledata
 
 #Application structure rudimentary integrity check
-#APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
-#APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
+APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
+APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
 
 #SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.5.zip
 #SOURCECODE_MD5:7f6a30da2e982560d7629ac7934cb1c1
