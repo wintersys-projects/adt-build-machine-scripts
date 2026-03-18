@@ -11,8 +11,6 @@ APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files:moodledata:private
 
-#DIRECTORIES_TO_CREATE_ABSOLUTE:/var/www/private:/var/www/tmp:/var/www/html/moodledata
-
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
 APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
@@ -42,10 +40,6 @@ INTERACTIVE_APPLICATION_INSTALL:no
 MANDATORY_INDIVIDUAL_SETTING:username=XXXXAPPLICATION_USERNAMEXXXX
 MANDATORY_INDIVIDUAL_SETTING:password=XXXXAPPLICATION_PASSWORDXXXX
 MANDATORY_INDIVIDUAL_SETTING:database=XXXXAPPLICATION_DATABASEXXXX
-#INDIVIDUAL_SETTING:host=placeholder
-#INDIVIDUAL_SETTING:port=placeholder
-#INDIVIDUAL_SETTING:driver=XXXXAPPLICATION_DB_TYPEXXXX
-#INDIVIDUAL_SETTING:prefix=placeholder
 MANDATORY_INDIVIDUAL_SETTING:collation=utf8mb4_general_ci
 
 ADDITIONAL_SETTING:$settings['package_manager_composer_path'] = '/usr/local/bin/composer';
