@@ -4,7 +4,6 @@ APPLICATION_FULLNAME:Vanilla Moodle Website
 APPLICATION_SHORTNAME:Vanilla Moodle
 
 DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
-DIRECTORIES_TO_CREATE_ABSOLUTE:
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:admin:lib:public:public/media:public/login
