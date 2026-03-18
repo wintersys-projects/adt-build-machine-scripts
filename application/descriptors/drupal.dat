@@ -8,7 +8,7 @@ APPLICATION_USERNAME:webmaster (set this to something harder to guess or specifi
 APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the first thing you do once drupal is installed non-interactively)
 
 #Application Directories structure
-DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files:moodledata:private
+DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files:private
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
