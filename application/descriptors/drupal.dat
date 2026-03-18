@@ -1,5 +1,4 @@
 #Application Type (only uncomment one of these choices others must be commented)
-
 # 1. To install drupal uncomment
 APPLICATION_TYPE:drupal
 # 2. To install drupal CMS uncomment
