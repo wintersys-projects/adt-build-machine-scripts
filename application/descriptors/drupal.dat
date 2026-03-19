@@ -4,9 +4,11 @@ APPLICATION_TYPE:drupal
 #Uncommented this will install the latest version
 #DRUPAL_VERSION:drupal/recommended-project
 #To install a specific version do this
-DRUPAL_VERSION:drupal/recommended-project:11.3.0
+#DRUPAL_VERSION:drupal/recommended-project:11.3.0
 #To install an alpha or beta or rc
 #DRUPAL_VERSION:drupal/recommended-project:^11@alpha
+DRUPAL_VERSION:drupal/recommended-project:^11@beta
+#DRUPAL_VERSION:drupal/recommended-project:^11@rc
 
 # 2. To install drupal CMS uncomment
 #APPLICATION_TYPE:cms
