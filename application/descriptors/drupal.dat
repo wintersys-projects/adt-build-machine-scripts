@@ -1,7 +1,7 @@
 #Application Type (only uncomment one of these 2)
 
 # 1. To install drupal uncomment and comment drupal cms below
-#APPLICATION_TYPE:drupal
+APPLICATION_TYPE:drupal
 
 #Furthermore tell us what version of drupal you want to install
 #Uncommented, this will install the latest version
@@ -17,14 +17,14 @@ DRUPAL_VERSION:drupal/recommended-project
 
 #2. To install drupal CMS
 # To install drupal CMS uncomment and comment drupal above
-APPLICATION_TYPE:cms
+#APPLICATION_TYPE:cms
 
 #Furthermore tell us what version of drupal cmsyou want to install
 #Uncommented, this will install the latest version
 #CMS_VERSION:drupal/cms
 
 #To install a specific version do this instead
-CMS_VERSION:drupal/cms:2.0.4
+#CMS_VERSION:drupal/cms:2.0.4
 
 #To install an alpha or beta or rc
 #CMS_VERSION:drupal/cms:^2.1@alpha
