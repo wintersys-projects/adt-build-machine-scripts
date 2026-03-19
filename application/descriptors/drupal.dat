@@ -10,7 +10,7 @@ APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files:private
 
-SETTINGS_FILE="/var/www/html/config/settings.php"
+SETTINGS_FILE:/var/www/html/config/settings.php
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
