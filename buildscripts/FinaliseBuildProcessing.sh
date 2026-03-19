@@ -62,6 +62,8 @@ BUILD_MACHINE_VPC="`${BUILD_HOME}/helperscripts/GetVariableValue.sh BUILD_MACHIN
 MULTI_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh MULTI_REGION`"
 PRIMARY_REGION="`${BUILD_HOME}/helperscripts/GetVariableValue.sh PRIMARY_REGION`"
 AUTHENTICATOR_TYPE="`${BUILD_HOME}/helperscripts/GetVariableValue.sh AUTHENTICATOR_TYPE`"
+DB_IDENTIFIER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_IDENTIFIER`"
+DB_PORT="`${BUILD_HOME}/helperscripts/GetVariableValue.sh DB_PORT`"
 
 SERVER_USER="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSER`"
 SERVER_USER_PASSWORD="`/bin/cat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/credentials/SERVERUSERPASSWORD`"
@@ -250,9 +252,10 @@ fi
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:no" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] ) 
 then
-	status "Database credentials as you are in interactive mode:"
+	status "Database credentials as you are in interactive mode enter these through https://${WEBSITE_URL}:"
 	status "`/bin/grep "MANDATORY_INDIVIDUAL_SETTING:" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}' | /bin/sed 's/^MANDATORY_INDIVIDUAL_SETTING://g'`"
-	
+	status "Database address is ${DATABASE_IDENTIFIER}"
+	status "Database port is ${DB_PORT}"
 fi
 
 #This is where the application is configured either interactively or automatically
