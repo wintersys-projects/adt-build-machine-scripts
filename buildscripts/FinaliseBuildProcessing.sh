@@ -252,7 +252,7 @@ fi
 
 if ( [ "${BUILD_ARCHIVE_CHOICE}" = "virgin" ] && [ "`/bin/grep "INTERACTIVE_APPLICATION_INSTALL:no" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`" != "" ] ) 
 then
-	status "Database credentials as you are in interactive mode enter these through https://${WEBSITE_URL}:"
+	status "Database credentials as you are in interactive mode enter these through https://${WEBSITE_URL}"
 	status "`/bin/grep "MANDATORY_INDIVIDUAL_SETTING:" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}' | /bin/sed 's/^MANDATORY_INDIVIDUAL_SETTING://g'`"
 	status "Database address is ${DATABASE_IDENTIFIER}"
 	status "Database port is ${DB_PORT}"
