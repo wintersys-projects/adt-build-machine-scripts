@@ -1,8 +1,17 @@
 #Application Type (only uncomment one of these choices others must be commented)
 # 1. To install drupal uncomment
 APPLICATION_TYPE:drupal
+#Uncommented this will install the latest version
+DRUPAL_VERSION:drupal/recommended-project
+#To install a specific version do this
+#DRUPAL_VERSION:drupal/recommended-project:9.3.12
+#To install an alpha or beta or rc
+#DRUPAL_VERSION:drupal/recommended-project:^11@alpha
+
 # 2. To install drupal CMS uncomment
 #APPLICATION_TYPE:cms
+#Uncommented this will install the latest version
+CMS_VERSION:drupal/cms
 
 APPLICATION_USERNAME:webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
 APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the first thing you do once drupal is installed non-interactively)
