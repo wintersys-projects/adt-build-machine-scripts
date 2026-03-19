@@ -24,12 +24,12 @@ APPLICATION_TYPE:cms
 #CMS_VERSION:drupal/cms
 
 #To install a specific version do this instead
-DRUPAL_VERSION:drupal/cms:2.0.4
+CMS_VERSION:drupal/cms:2.0.4
 
 #To install an alpha or beta or rc
-#DRUPAL_VERSION:drupal/cms:^2.1@alpha
-#DRUPAL_VERSION:drupal/cms:^2.1@beta
-#DRUPAL_VERSION:drupal/cms:^2.1@rc
+#CMS_VERSION:drupal/cms:^2.1@alpha
+#CMS_VERSION:drupal/cms:^2.1@beta
+#CMS_VERSION:drupal/cms:^2.1@rc
 
 
 APPLICATION_USERNAME:webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
