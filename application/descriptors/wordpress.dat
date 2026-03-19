@@ -23,7 +23,7 @@ SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 #SOURCECODE_SHA1:
 
 #Do you want to install interactively?
-INTERACTIVE_APPLICATION_INSTALL:no
+INTERACTIVE_APPLICATION_INSTALL:yes
 
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache
