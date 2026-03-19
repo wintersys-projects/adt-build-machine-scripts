@@ -21,6 +21,7 @@
 #####################################################################################
 #set -x
 
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_URL'`"
 
 if ( [ ! -d  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application ] )
 then
@@ -33,6 +34,9 @@ fi
 /bin/sed -i "s/XXXXAPPLICATION_USERNAMEXXXX/${DB_USERNAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_PASSWORDXXXX/${DB_PASSWORD}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 /bin/sed -i "s/XXXXAPPLICATION_DATABASEXXXX/${DB_NAME}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+/bin/sed -i "s/XXXXWEBSITE_URLXXXX/${WEBSITE_URL}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
+
+
 #/bin/sed -i "s/XXXXAPPLICATION_DB_HOSTXXXX/${DB_IDENTIFIER}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 #/bin/sed -i "s/XXXXAPPLICATION_DB_PORTXXXX/${DB_PORT}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 #/bin/sed -i "s/XXXXAPPLICATION_DB_TYPEXXXX/${DB_TYPE}/" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
