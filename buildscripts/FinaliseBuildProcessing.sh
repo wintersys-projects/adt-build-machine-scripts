@@ -256,6 +256,7 @@ then
 	status "`/bin/grep "MANDATORY_INDIVIDUAL_SETTING:" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}' | /bin/sed 's/^MANDATORY_INDIVIDUAL_SETTING://g'`"
 	status "Database address is ${DB_IDENTIFIER}"
 	status "Database port is ${DB_PORT}"
+	status "You are performing  a virgin interactive installation of ${APPLICATION} this will block/pause until you have installed ${APPLICATION} through your web browser at https://${WEBSITE_URL}"
 fi
 
 #This is where the application is configured either interactively or automatically
@@ -270,7 +271,6 @@ do
 	for ws_active_ip in ${ws_active_ips}
 	do
 		status "Validating ${APPLICATION} configuration settings on machine with ip address ${ws_active_ip}"
-		status "If you are performing  an interactive installation of ${APPLICATION} this will block/pause until you  have installed ${APPLICATION} through your web browser"
 		/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/InitialiseConfigurationByApplication.sh" 2>/dev/null
 		application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
 
