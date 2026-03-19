@@ -10,6 +10,8 @@ APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:sites/default/files:private
 
+SETTINGS_FILE="/var/www/html/config/settings.php"
+
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
 APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
@@ -46,7 +48,8 @@ ADDITIONAL_SETTING:$settings['package_manager_rsync_path'] = '/usr/bin/rsync';
 ADDITIONAL_SETTING:$settings['testing_package_manager'] = TRUE;
 ADDITIONAL_SETTING:$config["system.logging"]["error_level"] = "error";
 ADDITIONAL_SETTING:$settings["trusted_host_patterns"] = [ ".*" ];
-ADDITIONAL_SETTING:$settings["config_sync_directory"] = "/var/www/html/web/sites/default";
+#ADDITIONAL_SETTING:$settings["config_sync_directory"] = "/var/www/html/web/sites/default";
+ADDITIONAL_SETTING:$settings["config_sync_directory"] = "/var/www/html/config";
 ADDITIONAL_SETTING:$config["system.performance"]["css"]["preprocess"] = FALSE;
 ADDITIONAL_SETTING:$config["system.performance"]["js"]["preprocess"] = FALSE;
 #ADDITIONAL_SETTING:$settings["file_private_path"] = $app_root . "/../private";
