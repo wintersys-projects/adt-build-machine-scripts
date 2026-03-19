@@ -100,9 +100,7 @@ then
                 	status "You can enter them in the GUI system when you install the application"
                 	status "###############################################################################################################################"
 
-	                status "`/bin/grep "INDIVIDUAL_SETTING:user=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
-	                status "`/bin/grep "INDIVIDUAL_SETTING:password=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print  $NF}'`"
-	                status "`/bin/grep "INDIVIDUAL_SETTING:db=" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}'`"
+	                status "`/bin/grep "MANDATORY_INDIVIDUAL_SETTING:" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}' | /bin/sed 's/^MANDATORY_INDIVIDUAL_SETTING://g'`"
                 fi
 
                 status "########################################################################################################################"
