@@ -28,11 +28,9 @@ INTERACTIVE_APPLICATION_INSTALL:no
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
-#Webroot directory (advisable to set this with no wordpress identifiable characteristics in other words, NOT "wordpress-abc")
-WEBROOT_DIRECTORY:/var/www/html/webroot-9631aa
+WEBROOT_DIRECTORY:/var/www/html/wordpress
 
-#Config file (name it so that it obfuscates the fact you are running wordpress in other words, not "wp-config.php")
-CONFIG_FILE:/var/www/html/config-9631aa.php
+CONFIG_FILE:/var/www/html/wp-config.php
 
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
