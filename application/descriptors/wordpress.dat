@@ -1,16 +1,31 @@
+##########################################################################################################################################
 # This is an application descriptor for wordpress. Using this technique you can provide customisations to how you install wordpress.
 # Here you will find various details required for the successful installation of wordpress such as where to download the wordpress 
-# sourcecode from the database credentials for your wordpress install and details required by the application itself such as a username
-# and password. Unless you adt-build-machine-scripts repository is private please be aware not to put any sensitive information directly
+# sourcecode from, the database credentials for your wordpress install and details required by the application itself such as a username
+# and password. Unless your adt-build-machine-scripts repository is private please be aware not to put any sensitive information directly
 # in this file, instead, look at how the MANDATORY_INDIVIDUAL_SETTING parameters are used in a way that keeps the senstive details private
-# in all circumstances. You will notice that if you look the WEBSITE_PASSWORD is visible here in plain text but that is only the case because 
-# its presumed that that password is only there for the duration of the install and that the first thing you will do once wordpress is installed 
-# is change the password.
+# in all circumstances using placeholders which can be substituted out. 
+##########################################################################################################################################
 
+#####################################
 #Application credentials/descriptions
+#####################################
+
+#The description of your website as it will appear on your webpage
 WEBSITE_NAME:Vanilla Wordpress Website
-WEBSITE_USERNAME:webmaster
-WEBSITE_PASSWORD:mnbcxz098321QQQZZZ
+
+#You most likely want to set this to something unique because setting it to unique is another thing that a hacker doesn't know where as if it's
+#just webmaster or admin that's easy to guess or assume
+WEBSITE_USERNAME:adt-webmaster
+
+#The initial website password (which you should change as soon as installation is complete) is taken from whatever the first 8 characters of your
+#S3_ACCESS_KEY variable is set to. So, to find the initial password for your application you need to find  your S3_ACCESS_KEY and extract the first
+#8 characters of it s your bootstrap password
+WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
+
+#################################
+# Application sourcecode location
+#################################
 
 #This tells us where to download wordpress from and we need to provide the checksums for the downloaded archive so that it can be checked for 
 #validity. This is a zip based archive
@@ -35,12 +50,20 @@ SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 #SOURCECODE_MD5:
 #SOURCECODE_SHA1:
 
+###########################
+#Interactive install or not
+###########################
+
 #If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
 #In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
 #what they are in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
 #If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
 #without providing any input
 INTERACTIVE_APPLICATION_INSTALL:no
+
+##################################
+#filesystem configuration settings
+##################################
 
 #This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
 #If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
@@ -64,6 +87,9 @@ CONFIG_FILE:/var/www/html/wp-config.php
 APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
 APPLICATION_INTEGRITY_FILES:index.php:wp-activate.php:wp-blog-header.php:wp-comments-post.php:wp-config-sample.php:wp-cron.php:wp-links-opml.php:wp-load.php:wp-login.php:wp-mail.php:wp-settings.php:wp-signup.php:wp-trackback.php:xmlrpc.php
 
+##########################################################################
+# Mandatory credential settings when making a non-interactive installation
+##########################################################################
 #These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
 #wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
 # ${BUILD_HOME}/application/wordpress/SetApplicationConfig.sh
@@ -71,6 +97,10 @@ MANDATORY_INDIVIDUAL_SETTING:DB_USER=XXXXAPPLICATION_USERNAMEXXXX
 MANDATORY_INDIVIDUAL_SETTING:DB_PASSWORD=XXXXAPPLICATION_PASSWORDXXXX
 MANDATORY_INDIVIDUAL_SETTING:DB_NAME=XXXXAPPLICATION_DATABASEXXXX
 
+
+########################################################
+# General individual settings for your wordpress install
+########################################################
 #These settings are general configuration settings for wordpress. You can set various behaviours using these settings. In a live situation you could have
 #a set of configuration files such as /var/www/html/wp-config-live.php or /var/www/html/wp-config-debug.php and you can switch from one configuration
 #to another (if you want to debug for example you can switch to your debug configuration) simply by changing the configuration file which is pointed to
@@ -95,15 +125,4 @@ INDIVIDUAL_SETTING::WP_ALLOW_REPAIR=true
 INDIVIDUAL_SETTING::FORCE_SSL_ADMIN=true
 INDIVIDUAL_SETTING::WP_DEBUG_LOG=/var/www/html/logs/debug.log
 INDIVIDUAL_SETTING::WP_TEMP_DIR=/var/www/html/tmp
-
-
-
-
-
-
-
-
-
-
-
 
