@@ -12,28 +12,34 @@ WEBSITE_NAME:Vanilla Wordpress Website
 WEBSITE_USERNAME:webmaster
 WEBSITE_PASSWORD:mnbcxz098321QQQZZZ
 
-#Get specific version of wordpress
+#This tells us where to download wordpress from and we need to provide the checksums for the downloaded archive so that it can be checked for 
+#validity. This is a zip based archive
 #SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.zip
 #SOURCECODE_MD5:76ab4a9a7b1dea2984eb733d258fbdac
 #SOURCECODE_SHA1:bd9d0fcf5866b6486db46950accdfce0db018a48
 
+#This tells us where to download wordpress from and we need to provide the checksums for the downloaded archive so that it can be checked for 
+#validity. This is a tar based archive
 SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.tar.gz
 SOURCECODE_MD5:c3fcbc29bef86628b737b14f42f7ae47
 SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 
-#Always gets the latest version but doesn't support checksum verification
+#This always gets the latest version of wordpress but doesn't provide for checksum validation not least because the latest version might be different
+#the next time you run this and if your checksums were hardcoded they wouldn't be a match any more
 #SOURCECODE_URL:wordpress.org/latest.zip
 #SOURCECODE_MD5:
 #SOURCECODE_SHA1:
 
-#Always gets the latest version but doesn't support checksum verification
+#This will also get the latest version but of nightly builds rather than live releases
 #SOURCECODE_URL:wordpress.org/nightly-builds/wordpress-latest.zip
 #SOURCECODE_MD5:
 #SOURCECODE_SHA1:
 
 #If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
 #In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
-#what they are in ${BUILD_HOME}/
+#what they are in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
+#If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
+#without providing any input
 INTERACTIVE_APPLICATION_INSTALL:no
 
 #This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
@@ -41,15 +47,26 @@ INTERACTIVE_APPLICATION_INSTALL:no
 #configuring it in the plugin
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
+#This sets the webroot of your application. You can change this according to your taste. Just to make a mental note, I am in no way a wordpress expert
+#I have never even built one serious site using  it and I wanted to be able to put wp-content outside of the webroot (in other words /var/www/html/wp-content
+#rather than (as configured here) /var/www/html/wordpress/wp-content but I had problems with the theming not loading images and so on so if anyone knows
+#how to move the wp-content outside of the webroot successfully if they could give me a shout it can be integrated and that would be win
 WEBROOT_DIRECTORY:/var/www/html/wordpress
 
+#This sets the wordpress config file to be outside of the webroot. I believe that  when it is ourside of the webroot it can be accessed by wordpress but
+#it cannot be accessed directly under any circumstances as long as the webroot of the server is set correctly and so that makes our credentials more secure
+#It is recommended that you also use a plugin to rename the wp-admin URL to something unique as a security measure also
 CONFIG_FILE:/var/www/html/wp-config.php
 
-#Application structure rudimentary integrity check
+#These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
+#download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
+#and make a notification
 APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
 APPLICATION_INTEGRITY_FILES:index.php:wp-activate.php:wp-blog-header.php:wp-comments-post.php:wp-config-sample.php:wp-cron.php:wp-links-opml.php:wp-load.php:wp-login.php:wp-mail.php:wp-settings.php:wp-signup.php:wp-trackback.php:xmlrpc.php
 
-
+#These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
+#wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
+# ${BUILD_HOME}/application/
 MANDATORY_INDIVIDUAL_SETTING:DB_USER=XXXXAPPLICATION_USERNAMEXXXX
 MANDATORY_INDIVIDUAL_SETTING:DB_PASSWORD=XXXXAPPLICATION_PASSWORDXXXX
 MANDATORY_INDIVIDUAL_SETTING:DB_NAME=XXXXAPPLICATION_DATABASEXXXX
