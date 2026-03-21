@@ -73,7 +73,7 @@ INTERACTIVE_APPLICATION_INSTALL:no
 #This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
 #If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
 #configuring it in the plugin
-DIRECTORIES_TO_CREATE:logs:tmp:cache
+DIRECTORIES_TO_CREATE:logs:tmp:cache:uploads
 
 #This sets the webroot of your application. You can change this according to your taste. Just to make a mental note, I am in no way a wordpress expert
 #I have never even built one serious site using  it and I wanted to be able to put wp-content outside of the webroot (in other words /var/www/html/wp-content
