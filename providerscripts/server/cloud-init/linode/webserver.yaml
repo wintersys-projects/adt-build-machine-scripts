@@ -132,4 +132,4 @@ runcmd:
 
 #package_upgrade: true
 
-  #- '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr "[:upper:]" "[:lower:]" | /bin/egrep -o "(ubuntu|debian)"` &'
+  - '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr "[:upper:]" "[:lower:]" | /bin/egrep -o "(ubuntu|debian)"` &'
