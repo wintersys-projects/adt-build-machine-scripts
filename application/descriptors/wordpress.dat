@@ -83,7 +83,9 @@ WEBROOT_DIRECTORY:/var/www/html/wordpress
 
 #This sets the wordpress config file to be outside of the webroot. I believe that  when it is ourside of the webroot it can be accessed by wordpress but
 #it cannot be accessed directly under any circumstances as long as the webroot of the server is set correctly and so that makes our credentials more secure
-#It is recommended that you also use a plugin to rename the wp-admin URL to something unique as a security measure also
+#It is recommended that you also use a plugin to rename the wp-admin URL to something unique as a security measure also.
+#The actual name of the config file must literally contain the word 'config' this is for pattern matching reasons.
+#For example config-a1287.php or x179-config.php but most likely you will just want to call it wp-config.php
 CONFIG_FILE:/var/www/html/wp-config.php
 
 #These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
