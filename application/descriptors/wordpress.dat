@@ -31,7 +31,9 @@ SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 #SOURCECODE_MD5:
 #SOURCECODE_SHA1:
 
-#Do you want to install interactively?
+#If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
+#In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
+#what they are in ${BUILD_HOME}/
 INTERACTIVE_APPLICATION_INSTALL:no
 
 #This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
