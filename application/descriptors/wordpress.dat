@@ -34,7 +34,7 @@ SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 #Do you want to install interactively?
 INTERACTIVE_APPLICATION_INSTALL:no
 
-#Application Directories structure
+#This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
 WEBROOT_DIRECTORY:/var/www/html/wordpress
