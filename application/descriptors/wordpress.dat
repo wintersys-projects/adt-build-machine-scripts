@@ -88,6 +88,10 @@ WEBROOT_DIRECTORY:/var/www/html/wordpress
 #For example config-a1287.php or x179-config.php but most likely you will just want to call it wp-config.php
 CONFIG_FILE:/var/www/html/wp-config.php
 
+
+#If you want your wp-content directory to be outside of the webroot of your website set this to yes, if not set it to no
+WP_CONTENT_OUTSIDE_WEBROOT:yes
+
 #These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
 #download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
 #and make a notification
