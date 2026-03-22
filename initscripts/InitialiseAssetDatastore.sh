@@ -44,7 +44,7 @@ then
                         then
                                 if ( [ ! -z "`/bin/ls ${interrogation_home}/${subdir}`" ] )
                                 then
-                                        ${BUILD_HOME}/providerscripts/datastore/SyncDatastore.sh ${interrogation_home}/${subdir}/ ${asset_datastore}
+                                        ${BUILD_HOME}/providerscripts/datastore/operations/SyncDatastore.sh ${interrogation_home}/${subdir}/ ${asset_datastore}
                                 fi
                         fi
                 fi
