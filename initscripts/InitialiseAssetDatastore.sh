@@ -38,7 +38,7 @@ then
                         directory_to_mount="`/bin/echo ${directory_to_mount} | /usr/bin/tr '[:upper:]' '[:lower:]'`"
                         asset_datastore="`/bin/echo ${WEBSITE_URL} | /bin/sed 's/\./-/g'`-assets-${directory_to_mount}"
 
-                        ${BUILD_HOME}/providerscripts/datastore/MountDatastore.sh "${asset_datastore}"
+                        ${BUILD_HOME}/providerscripts/datastore/operations/MountDatastore.sh "${asset_datastore}"
 
                         if ( [ -f ${interrogation_home}/${subdir} ] )
                         then
