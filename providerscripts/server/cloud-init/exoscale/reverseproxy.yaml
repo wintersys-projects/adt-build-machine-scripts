@@ -75,7 +75,7 @@ write_files:
 
 
 package_update: true
-package_upgrade: true
+#package_upgrade: true
 
 packages:
   - git
