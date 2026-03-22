@@ -73,7 +73,7 @@ write_files:
 package_update: true
 
 packages:
-#XXXX1PHPDEBIANXXXX  - grub-efi-amd64
+#XXXXPHPDEBIANXXXX  - grub-efi-amd64
   - git
   - network-manager 
   - jq
