@@ -15,8 +15,6 @@ ${SUDO} /usr/bin/apt-get update
 #its possible we might fail and die, I have seen it happen due to networking glitches therefore php deserves a second chance just like everyone else
 while ( [ -f /usr/bin/php ] )
 do
-    ${SUDO} /usr/bin/os-prober
-    ${SUDO} /usr/sbin/update-grub
     ${SUDO} /usr/bin/apt-get update
     ${SUDO} /usr/bin/apt-get -y install lsb-release ca-certificates curl
     ${SUDO} /usr/bin/curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
