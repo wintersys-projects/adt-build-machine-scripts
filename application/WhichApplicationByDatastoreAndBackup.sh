@@ -143,13 +143,13 @@ then
 		read x
 	fi
 
-	if ( [ -f ${interrogation_home}/wp-config.php.default ] )
-	then
-		/bin/cp ${interrogation_home}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
-	else
-		status "Couldn't find wordpress default configuration file in baseline webroot"
-		/bin/touch /tmp/END_IT_ALL
-	fi
+#	if ( [ -f ${interrogation_home}/wp-config.php.default ] )
+#	then
+#		/bin/cp ${interrogation_home}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
+#	else
+#		status "Couldn't find wordpress default configuration file in baseline webroot"
+#		/bin/touch /tmp/END_IT_ALL
+#	fi
 
 	if ( [ ! -f ${interrogation_home}/dbp.dat ] )
 	then
