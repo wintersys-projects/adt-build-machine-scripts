@@ -147,7 +147,7 @@ then
 	then
 		/bin/cp ${interrogation_home}/wp-config.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/wp-config.php.default
 	else
-		status "Couldn't find joomla default configuration file in baseline webroot"
+		status "Couldn't find wordpress default configuration file in baseline webroot"
 		/bin/touch /tmp/END_IT_ALL
 	fi
 
