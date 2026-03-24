@@ -28,9 +28,15 @@ WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
 #something else
 WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 
-#################################
-# Application sourcecode location
-#################################
+###############################################
+# wordpress version (version_no|latest|nightly)
+###############################################
+WORDPRESS_VERSION:latest
+
+##################
+# Wordpress locale
+##################
+WORDPRESS_LOCALE:en_GB
 
 #This tells us where to download wordpress from and we need to provide the checksums for the downloaded archive so that it can be checked for 
 #validity. This is a zip based archive
@@ -40,9 +46,9 @@ WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 
 #This tells us where to download wordpress from and we need to provide the checksums for the downloaded archive so that it can be checked for 
 #validity. This is a tar based archive
-SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.tar.gz
-SOURCECODE_MD5:c3fcbc29bef86628b737b14f42f7ae47
-SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
+#SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.tar.gz
+#SOURCECODE_MD5:c3fcbc29bef86628b737b14f42f7ae47
+#SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
 
 #This always gets the latest version of wordpress but doesn't provide for checksum validation not least because the latest version might be different
 #the next time you run this and if your checksums were hardcoded they wouldn't be a match any more
