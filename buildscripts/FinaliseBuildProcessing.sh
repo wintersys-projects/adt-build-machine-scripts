@@ -256,7 +256,7 @@ then
 	status "`/bin/grep "MANDATORY_INDIVIDUAL_SETTING:" ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat | /usr/bin/awk -F':' '{print $NF}' | /bin/sed 's/^MANDATORY_INDIVIDUAL_SETTING://g'`"
 	status "Database address is ${DB_IDENTIFIER}"
 	status "Database port is ${DB_PORT}"
-	status "You are performing  a virgin interactive installation of ${APPLICATION} this will block/pause until you have installed ${APPLICATION} through your web browser at https://${WEBSITE_URL}"
+	status "YOU ARE PERFORMING AN INTERACTIVE INSTALLATION OF ${APPLICATION} THIS WILL BLOCK/PAUSE UNTIL YOU HAVE COMPLETED THE INSTALLATION OF ${APPLICATION} THROUGH YOUR WEB BROWSER AT https://${WEBSITE_URL} USING THE ABOVE CREDENTIALS"
 fi
 
 #This is where the application is configured either interactively or automatically
