@@ -66,7 +66,6 @@ write_files:
   append: true
 
 package_update: true
-#package_upgrade: true
 
 packages:
   - git
@@ -112,4 +111,3 @@ runcmd:
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallDatastoreTools.sh'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/installscripts/InstallReverseProxy.sh &'
   - 'export HOME=/home/XXXXSERVER_USERXXXX && /bin/sh ${HOME}/rp.sh &'
-  - '/home/XXXXSERVER_USERXXXX/installscripts/UpdateAndUpgrade.sh `/bin/cat /etc/issue | /usr/bin/tr "[:upper:]" "[:lower:]" | /bin/egrep -o "(ubuntu|debian)"` &'
