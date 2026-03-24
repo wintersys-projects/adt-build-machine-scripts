@@ -7,15 +7,6 @@ users:
     shell: /bin/bash
     lock_passwd: false
 
-#    ssh_authorized_keys:
-  #    - 'XXXXSSH_PUBLIC_KEYXXXX'
-
-#ssh_keys:
-#  XXXXALGORITHMXXXX_private: |
- #     -----BEGIN OPENSSH PRIVATE KEY-----
-  #    XXXXSSH_PRIVATE_KEYXXXX
-   #   -----END OPENSSH PRIVATE KEY-----
-
 hostname: XXXXAUTOSCALER_HOSTNAMEXXXX
 
 write_files:
