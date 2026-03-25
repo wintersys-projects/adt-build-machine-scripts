@@ -64,6 +64,14 @@ APPLICATION_INTEGRITY_DIRECTORIES:administrator:api:cache:cli:components:files:i
 APPLICATION_INTEGRITY_FILES:index.php
 
 
+#####################################################################################################################################################
+#Interactive install or not
+#If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
+#In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
+#what they are in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
+#If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
+#without providing any input
+#####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:no
 
 #Database
