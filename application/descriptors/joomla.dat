@@ -47,9 +47,12 @@ SOURCECODE_URL:downloads.joomla.org/cms/joomla6/6-0-3/Joomla_6-0-3-Stable-Full_P
 SOURCECODE_MD5:d306e61affe62b37245ffddad1361a4f
 SOURCECODE_SHA1:df41236826fdcaa889c5ee3f9bc35ed94114ee0a
 
-
-
-#Application Directories structure
+####################################################################################################################################
+#filesystem configuration settings
+#This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
+#If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
+#configuring it in the plugin
+####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 
 #Application structure rudimentary integrity check
