@@ -55,7 +55,11 @@ SOURCECODE_SHA1:df41236826fdcaa889c5ee3f9bc35ed94114ee0a
 ####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
 
-#Application structure rudimentary integrity check
+#####################################################################################################################################################
+#These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
+#download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
+#and make a notification
+######################################################################################################################################################
 APPLICATION_INTEGRITY_DIRECTORIES:administrator:api:cache:cli:components:files:includes:language:layouts:libraries:media:modules:plugins:templates
 APPLICATION_INTEGRITY_FILES:index.php
 
