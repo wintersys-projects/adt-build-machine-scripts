@@ -7,9 +7,9 @@
 # in all circumstances using placeholders which can be substituted out. 
 ##########################################################################################################################################
 
-#####################################
-#Application credentials/descriptions
-#####################################
+#################################################################################################################################################
+# Application credentials/descriptions (if you make an interactive installation these settings will be overridden by what you enter interactively)
+#################################################################################################################################################
 
 #The description of your website as it will appear on your webpage
 WEBSITE_NAME:Vanilla Wordpress Website
@@ -28,9 +28,10 @@ WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
 #something else
 WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 
-###############################################
-# wordpress version (version_no|latest|nightly)
-###############################################
+
+###########################################################
+# wordpress version (version_no|latest|nightly) and locale
+###########################################################
 WORDPRESS_VERSION:latest
 #WORDPRESS_VERSION:6.9.0
 
@@ -39,91 +40,73 @@ WORDPRESS_VERSION:latest
 ##################
 WORDPRESS_LOCALE:en_GB
 
-#This tells us where to download wordpress from and we need to provide the checksums for the downloaded archive so that it can be checked for 
-#validity. This is a zip based archive
-#SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.zip
-#SOURCECODE_MD5:76ab4a9a7b1dea2984eb733d258fbdac
-#SOURCECODE_SHA1:bd9d0fcf5866b6486db46950accdfce0db018a48
 
-#This tells us where to download wordpress from and we need to provide the checksums for the downloaded archive so that it can be checked for 
-#validity. This is a tar based archive
-#SOURCECODE_URL:en-gb.wordpress.org/wordpress-6.9.1-en_GB.tar.gz
-#SOURCECODE_MD5:c3fcbc29bef86628b737b14f42f7ae47
-#SOURCECODE_SHA1:a3e6daed16b70738e7974a7c727a31b927b7392e
-
-#This always gets the latest version of wordpress but doesn't provide for checksum validation not least because the latest version might be different
-#the next time you run this and if your checksums were hardcoded they wouldn't be a match any more
-#SOURCECODE_URL:wordpress.org/latest.zip
-#SOURCECODE_MD5:
-#SOURCECODE_SHA1:
-
-#This will also get the latest version but of nightly builds rather than live releases
-#SOURCECODE_URL:wordpress.org/nightly-builds/wordpress-latest.zip
-#SOURCECODE_MD5:
-#SOURCECODE_SHA1:
-
-###########################
+#####################################################################################################################################################
 #Interactive install or not
-###########################
-
 #If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
 #In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
 #what they are in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
 #If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
 #without providing any input
+#####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:yes
 
-##################################
+####################################################################################################################################
 #filesystem configuration settings
-##################################
-
 #This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
 #If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
 #configuring it in the plugin
+####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
+######################################################################################################################################################
 #This sets the webroot of your application. You can change this according to your taste. Just to make a mental note, I am in no way a wordpress expert
 #I have never even built one serious site using  it and I wanted to be able to put wp-content outside of the webroot (in other words /var/www/html/wp-content
 #rather than (as configured here) /var/www/html/wordpress/wp-content but I had problems with the theming not loading images and so on so if anyone knows
 #how to move the wp-content outside of the webroot successfully if they could give me a shout it can be integrated and that would be win
+######################################################################################################################################################
 WEBROOT_DIRECTORY:/var/www/html/wordpress
 
-#This sets the wordpress config file to be outside of the webroot. I believe that  when it is ourside of the webroot it can be accessed by wordpress but
+########################################################################################################################################################
+#This sets the wordpress config file to be outside of the webroot. I believe that  when it is outside of the webroot it can be accessed by wordpress but
 #it cannot be accessed directly under any circumstances as long as the webroot of the server is set correctly and so that makes our credentials more secure
 #It is recommended that you also use a plugin to rename the wp-admin URL to something unique as a security measure also.
 #The actual name of the config file must literally contain the word 'config' this is for pattern matching reasons.
 #For example config-a1287.php or x179-config.php but most likely you will just want to call it wp-config.php
+######################################################################################################################################################
 CONFIG_FILE:/var/www/html/wp-config.php
 
-
+#########################################################################################################################
 #If you want your wp-content directory to be outside of the webroot of your website set this to yes, if not set it to no
+#########################################################################################################################
 WP_CONTENT_OUTSIDE_WEBROOT:yes
 
+#####################################################################################################################################################
 #These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
 #download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
 #and make a notification
+######################################################################################################################################################
 APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
 APPLICATION_INTEGRITY_FILES:index.php:wp-activate.php:wp-blog-header.php:wp-comments-post.php:wp-config-sample.php:wp-cron.php:wp-links-opml.php:wp-load.php:wp-login.php:wp-mail.php:wp-settings.php:wp-signup.php:wp-trackback.php:xmlrpc.php
 
-##########################################################################
+#####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
-##########################################################################
 #These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
 #wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
 # ${BUILD_HOME}/application/wordpress/SetApplicationConfig.sh
+#####################################################################################################################################################
 MANDATORY_INDIVIDUAL_SETTING:DB_USER=XXXXAPPLICATION_USERNAMEXXXX
 MANDATORY_INDIVIDUAL_SETTING:DB_PASSWORD=XXXXAPPLICATION_PASSWORDXXXX
 MANDATORY_INDIVIDUAL_SETTING:DB_NAME=XXXXAPPLICATION_DATABASEXXXX
 
 
-########################################################
+#########################################################################################################################################################
 # General individual settings for your wordpress install
-########################################################
 #These settings are general configuration settings for wordpress. You can set various behaviours using these settings. In a live situation you could have
 #a set of configuration files such as /var/www/html/wp-config-live.php or /var/www/html/wp-config-debug.php and you can switch from one configuration
 #to another (if you want to debug for example you can switch to your debug configuration) simply by changing the configuration file which is pointed to
 #in /var/www/html/wordpress/wp-config.php. Again notice the placeholders that are swapped out as part of the build process
-
+#########################################################################################################################################################
 INDIVIDUAL_SETTING::DISALLOW_FILE_EDIT=false
 INDIVIDUAL_SETTING::CONCATENATE_SCRIPTS=true
 INDIVIDUAL_SETTING::COMPRESS_SCRIPTS=true
