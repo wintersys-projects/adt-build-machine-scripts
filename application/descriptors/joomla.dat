@@ -84,7 +84,13 @@ MANDATORY_INDIVIDUAL_SETTING:user='XXXXAPPLICATION_USERNAMEXXXX'
 MANDATORY_INDIVIDUAL_SETTING:password='XXXXAPPLICATION_PASSWORDXXXX'
 MANDATORY_INDIVIDUAL_SETTING:db='XXXXAPPLICATION_DATABASEXXXX'
 
-#Mailer
+#########################################################################################################################################################
+# General individual settings for your wordpress install
+#These settings are general configuration settings for wordpress. You can set various behaviours using these settings. In a live situation you could have
+#a set of configuration files such as /var/www/html/wp-config-live.php or /var/www/html/wp-config-debug.php and you can switch from one configuration
+#to another (if you want to debug for example you can switch to your debug configuration) simply by changing the configuration file which is pointed to
+#in /var/www/html/wordpress/wp-config.php. Again notice the placeholders that are swapped out as part of the build process
+#########################################################################################################################################################
 INDIVIDUAL_SETTING:mailer='smtp'
 INDIVIDUAL_SETTING:smtpauth=1
 INDIVIDUAL_SETTING:smtpuser='XXXXSMTP_USERXXXX'
