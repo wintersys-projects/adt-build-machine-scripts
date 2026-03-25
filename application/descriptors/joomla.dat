@@ -74,8 +74,12 @@ APPLICATION_INTEGRITY_FILES:index.php
 #####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:no
 
-#Database
-
+#####################################################################################################################################################
+# Mandatory credential settings when making a non-interactive installation
+#These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
+#wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
+# ${BUILD_HOME}/application/wordpress/SetApplicationConfig.sh
+#####################################################################################################################################################
 MANDATORY_INDIVIDUAL_SETTING:user='XXXXAPPLICATION_USERNAMEXXXX'
 MANDATORY_INDIVIDUAL_SETTING:password='XXXXAPPLICATION_PASSWORDXXXX'
 MANDATORY_INDIVIDUAL_SETTING:db='XXXXAPPLICATION_DATABASEXXXX'
