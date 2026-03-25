@@ -28,12 +28,12 @@ fi
 
 /bin/cp ${BUILD_HOME}/application/descriptors/${APPLICATION}.dat ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application/${APPLICATION}.dat
 
-if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep 'Postgres'`" != "" ] ) )
-then
-        DB_TYPE="pgsql"
-else
-        DB_TYPE="mysqli"
-fi
+#if ( [ "${DATABASE_INSTALLATION_TYPE}" = "Postgres" ] || ( [ "${DATABASE_INSTALLATION_TYPE}" = "DBaaS" ] && [ "`/bin/echo ${DATABASE_DBaaS_INSTALLATION_TYPE} | /bin/grep 'Postgres'`" != "" ] ) )
+#then
+#        DB_TYPE="pgsql"
+#else
+#        DB_TYPE="mysqli"
+#fi
 
 SYSTEM_EMAIL_PROVIDER="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_EMAIL_PROVIDER'`"
 SYSTEM_FROMEMAIL_ADDRESS="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'SYSTEM_FROMEMAIL_ADDRESS' | /bin/sed 's/_/ /g'`"
