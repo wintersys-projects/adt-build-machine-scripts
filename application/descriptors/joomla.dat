@@ -67,6 +67,21 @@ APPLICATION_INTEGRITY_DIRECTORIES:administrator:api:cache:cli:components:files:i
 APPLICATION_INTEGRITY_FILES:index.php
 
 
+######################################################################################################################################################
+#This sets the webroot of your application. You can change this according to your taste. 
+######################################################################################################################################################
+WEBROOT_DIRECTORY:/var/www/html/wordpress
+
+########################################################################################################################################################
+#This sets the joomla config file to be outside of the webroot. 
+######################################################################################################################################################
+CONFIG_FILE:/var/www/html/configuration.php
+
+#########################################################################################################################
+#If you want your assets to be outside of the webroot of your website set this to yes, if not set it to no
+#########################################################################################################################
+ASSETS_OUTSIDE_WEBROOT:yes
+
 #####################################################################################################################################################
 #Interactive install or not
 #If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
