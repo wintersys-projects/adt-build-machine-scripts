@@ -49,7 +49,7 @@ WORDPRESS_LOCALE:en_GB
 #If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
 #without providing any input
 #####################################################################################################################################################
-INTERACTIVE_APPLICATION_INSTALL:yes
+INTERACTIVE_APPLICATION_INSTALL:no
 
 ####################################################################################################################################
 #filesystem configuration settings
