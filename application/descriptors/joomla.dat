@@ -1,15 +1,32 @@
-#Application credentials/descriptions
+##########################################################################################################################################
+# This is an application descriptor for joomla. Using this technique you can provide customisations to how you install joomla.
+# Here you will find various details required for the successful installation of joomla ss such as the database credentials for your joomla 
+# install and details required by the application itself such as a username and password. Unless your adt-build-machine-scripts repository 
+# is private please be aware not to put any sensitive information directly in this file, instead, look at how the MANDATORY_INDIVIDUAL_SETTING 
+# parameters are used in a way that keeps the senstive details private in all circumstances using placeholders which can be substituted out. 
+##########################################################################################################################################
+
+#################################################################################################################################################
+# Application credentials/descriptions (if you make an interactive installation these settings will be overridden by what you enter interactively)
+#################################################################################################################################################
+
+#The description of your website as it will appear on your webpage
 WEBSITE_NAME:Vanilla Joomla Website
-WEBSITE_USERNAME:webmaster
-WEBSITE_PASSWORD:mnbcxz098321QQQZZZ
-WEBSITE_USER_DESCRIPTION:Webmaster ADT Test Website
 
-#Application Directories structure
-DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
+#You most likely want to set this to something unique because setting it to unique is another thing that a hacker doesn't know where as if it's
+#just webmaster or admin that's easy to guess or assume
+WEBSITE_USERNAME:adt-webmaster
 
-#Application structure rudimentary integrity check
-APPLICATION_INTEGRITY_DIRECTORIES:administrator:api:cache:cli:components:files:includes:language:layouts:libraries:media:modules:plugins:templates
-APPLICATION_INTEGRITY_FILES:index.php
+#The initial website password (which you should change as soon as installation is complete) is taken from whatever the first 8 characters of your
+#S3_ACCESS_KEY variable is set to. So, to find the initial password for your application you need to find  your S3_ACCESS_KEY and extract the first
+#8 characters of it s your bootstrap password
+WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
+
+#This is taken from the value of "SYSTEM_FROMEMAIL_ADDRESS" and it needs to be a live email. You will also need to make sure that your smtp system is
+#up and running if you want to change this email address because wordpress enforces that you verify your email address before you can change it to
+#something else
+WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
+
 
 #Location of application sourcecode
 
@@ -27,6 +44,16 @@ APPLICATION_INTEGRITY_FILES:index.php
 SOURCECODE_URL:downloads.joomla.org/cms/joomla6/6-0-3/Joomla_6-0-3-Stable-Full_Package.tar.gz
 SOURCECODE_MD5:d306e61affe62b37245ffddad1361a4f
 SOURCECODE_SHA1:df41236826fdcaa889c5ee3f9bc35ed94114ee0a
+
+
+
+#Application Directories structure
+DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
+
+#Application structure rudimentary integrity check
+APPLICATION_INTEGRITY_DIRECTORIES:administrator:api:cache:cli:components:files:includes:language:layouts:libraries:media:modules:plugins:templates
+APPLICATION_INTEGRITY_FILES:index.php
+
 
 INTERACTIVE_APPLICATION_INSTALL:no
 
