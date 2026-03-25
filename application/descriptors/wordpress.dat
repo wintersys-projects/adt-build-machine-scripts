@@ -1,7 +1,7 @@
 ##########################################################################################################################################
 # This is an application descriptor for wordpress. Using this technique you can provide customisations to how you install wordpress.
-# Here you will find various details required for the successful installation of wordpress such as where to download the wordpress 
-# sourcecode from, the database credentials for your wordpress install and details required by the application itself such as a username
+# Here you will find various details required for the successful installation of wordpress such as which version of wordpress to install, 
+# the database credentials for your wordpress install and details required by the application itself such as a username
 # and password. Unless your adt-build-machine-scripts repository is private please be aware not to put any sensitive information directly
 # in this file, instead, look at how the MANDATORY_INDIVIDUAL_SETTING parameters are used in a way that keeps the senstive details private
 # in all circumstances using placeholders which can be substituted out. 
