@@ -56,7 +56,7 @@ SOURCECODE_SHA1:df41236826fdcaa889c5ee3f9bc35ed94114ee0a
 #If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
 #configuring it in the plugin
 ####################################################################################################################################
-DIRECTORIES_TO_CREATE:logs:tmp:cache:administrator/cache
+DIRECTORIES_TO_CREATE:logs:tmp:cache
 
 #####################################################################################################################################################
 #These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
