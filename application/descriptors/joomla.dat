@@ -28,7 +28,9 @@ WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
 WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 
 
-#Location of application sourcecode
+##########################################################################################################################################
+# joomla version and URL to download joomla sourcecode from (uncomment or modify according to which version of joomla you want to install)
+##########################################################################################################################################
 
 #Sourced from github
 #SOURCECODE_URL:github.com/joomla/joomla-cms/releases/download/XXXXAPPLICATION_VERSIONXXXX/Joomla_XXXXAPPLICATION_VERSIONXXXX-Alpha-Full_Package.zip
