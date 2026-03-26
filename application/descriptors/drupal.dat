@@ -1,3 +1,7 @@
+
+APPLICATION_USERNAME:adt-webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
+APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the first thing you do once drupal is installed non-interactively)
+
 #Application Type (only uncomment one of these 2)
 
 # 1. To install drupal uncomment and comment drupal cms below
@@ -31,9 +35,15 @@ DRUPAL_VERSION:drupal/recommended-project
 #CMS_VERSION:drupal/cms:^2.1@beta
 #CMS_VERSION:drupal/cms:^2.1@rc
 
+######################################################################################################################################################
+#This sets the webroot of your application. You can change this according to your taste. 
+######################################################################################################################################################
+WEBROOT_DIRECTORY:/var/www/html/drupal
 
-APPLICATION_USERNAME:webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
-APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the first thing you do once drupal is installed non-interactively)
+########################################################################################################################################################
+#This sets the drupal config file to be outside of the webroot. 
+######################################################################################################################################################
+CONFIG_FILE:/var/www/html/settings.php
 
 #Application Directories structure
 DIRECTORIES_TO_CREATE:logs:tmp:cache:web/sites/default/files:private
@@ -41,26 +51,6 @@ DIRECTORIES_TO_CREATE:logs:tmp:cache:web/sites/default/files:private
 #Application structure rudimentary integrity check
 APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
 APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
-
-#SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.5.zip
-#SOURCECODE_MD5:7f6a30da2e982560d7629ac7934cb1c1
-#SOURCECODE_SHA1:984673ca5a14f50fb3e024fbcef582bd20313634
-#SOURCECODE_SHA256:dcb51a780dc039a9a2c2b89856c49453e9e3554e2f3955c29d5636c992c0c486
-
-SOURCECODE_URL:ftp.drupal.org/files/projects/drupal-11.3.5.tar.gz
-SOURCECODE_MD5:5c8bc612859d7026178ea5463cc7c889
-SOURCECODE_SHA1:1b0b11114167d52aa01ce512e5508dea74bc9ffd
-SOURCECODE_SHA256:7de44170b531124d54017860aebbc0d471495bbff9cf6b787026c0284e065edc
-
-#SOURCECODE_DRUPALCMS_URL:ftp.drupal.org/files/projects/cms-2.0.2.zip
-#SOURCECODE_DRUPALCMS_MD5:ddfa787d5065b4f2244cbd47f95339dd
-#SOURCECODE_DRUPALCMS_SHA1:5672340f3849ec7db3b60d918e5fc66e6643b355
-#SOURCECODE_DRUPALCMS_SHA256:f5c8fc4f6346e0653d4432738b2518c29b30eb288f63f1a472f4d81dd81084c7
-
-#SOURCECODE_DRUPALCMS_URL:ftp.drupal.org/files/projects/cms-2.0.2.tar.gz
-#SOURCECODE_DRUPALCMS_MD5:53a166f37004540635586c9548857379
-#SOURCECODE_DRUPALCMS_SHA1:0801c15c918bf62e396c0107bd80cb946f109c6f
-#SOURCECODE_DRUPALCMS_SHA256:2cc464885ab254e5b533f3b04d5c62b787285a276b6cb08dc837634624130834
 
 INTERACTIVE_APPLICATION_INSTALL:no
 
