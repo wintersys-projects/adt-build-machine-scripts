@@ -21,6 +21,16 @@ SOURCECODE_SHA256:ecdd9a3df3dd66ee165e665e7adba9ee12fff17742707fb93704dd1f1bc6d2
 #SOURCECODE_MD5:dacdda50ebb76cde01a9041fbdfa0b06
 #SOURCECODE_SHA256:0822f4678f596e94ab355eaa7eb36dd274958c6cff7a240ccee7ca9b68e5513a
 
+######################################################################################################################################################
+#This sets the webroot of your application. You can change this according to your taste. 
+######################################################################################################################################################
+WEBROOT_DIRECTORY:/var/www/html/public
+
+########################################################################################################################################################
+#This sets the joomla config file to be outside of the webroot. 
+######################################################################################################################################################
+CONFIG_FILE:/var/www/html/config.php
+
 INTERACTIVE_APPLICATION_INSTALL:no
 
 MANDATORY_INDIVIDUAL_SETTING:dbuser=XXXXAPPLICATION_USERNAMEXXXX
