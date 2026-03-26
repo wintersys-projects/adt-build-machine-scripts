@@ -63,7 +63,7 @@ ASSETS_OUTSIDE_WEBROOT:yes
 #If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
 #configuring it in the plugin
 ####################################################################################################################################
-DIRECTORIES_TO_CREATE:logs:tmp:cache:web/sites/default/files:private
+DIRECTORIES_TO_CREATE:logs:tmp:cache:drupal/sites/default/files:private
 
 #####################################################################################################################################################
 #These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
