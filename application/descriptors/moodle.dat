@@ -26,6 +26,12 @@ WEBSITE_SHORTNAME:Vanilla Moodle
 #something else
 WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 
+####################################################################################################################################
+#filesystem configuration settings
+#This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
+#If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
+#configuring it in the plugin
+####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
 
 #Application structure rudimentary integrity check
