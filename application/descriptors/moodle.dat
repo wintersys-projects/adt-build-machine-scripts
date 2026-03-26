@@ -30,6 +30,21 @@ WEBSITE_SHORTNAME:Vanilla Moodle
 #####################################################################################################################################################
 WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 
+##########################################################################################################################################
+# moodle version and URL to download moodle sourcecode from (uncomment or modify according to which version of moodle you want to install)
+##########################################################################################################################################
+#SOURCECODE_URL:download.moodle.org/download.php/direct/stable501/moodle-latest-501.tgz
+#SOURCECODE_MD5:26296aa35344096491634a0a5f0e30d2
+#SOURCECODE_SHA256:7ee76e5aa067b6d79b4d8427e0f9fb3a0ea9a6148a42c8bd336244746264c1b7
+
+SOURCECODE_URL:download.moodle.org/download.php/direct/stable501/moodle-5.1.3.tgz
+SOURCECODE_MD5:0caf15f53024c3bae4818c4b81fbc4fb
+SOURCECODE_SHA256:ecdd9a3df3dd66ee165e665e7adba9ee12fff17742707fb93704dd1f1bc6d2a9
+
+#SOURCECODE_URL:https://download.moodle.org/download.php/direct/stable501/moodle-5.1.3.zip
+#SOURCECODE_MD5:dacdda50ebb76cde01a9041fbdfa0b06
+#SOURCECODE_SHA256:0822f4678f596e94ab355eaa7eb36dd274958c6cff7a240ccee7ca9b68e5513a
+
 ####################################################################################################################################
 #filesystem configuration settings
 #This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
@@ -46,17 +61,6 @@ DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
 APPLICATION_INTEGRITY_DIRECTORIES:admin:lib:public:public/media:public/login
 APPLICATION_INTEGRITY_FILES:composer.json:composer.lock:config-dist.php:CONTRIBUTING.md:COPYING.txt:githash.php:Gruntfile.js:index.php:INSTALL.txt:npm-shrinkwrap.json:package.json:phpcs.xml.dist:phpunit.xml.dist:README.md:TRADEMARK.txt:UPGRADING.md
 
-#SOURCECODE_URL:download.moodle.org/download.php/direct/stable501/moodle-latest-501.tgz
-#SOURCECODE_MD5:26296aa35344096491634a0a5f0e30d2
-#SOURCECODE_SHA256:7ee76e5aa067b6d79b4d8427e0f9fb3a0ea9a6148a42c8bd336244746264c1b7
-
-SOURCECODE_URL:download.moodle.org/download.php/direct/stable501/moodle-5.1.3.tgz
-SOURCECODE_MD5:0caf15f53024c3bae4818c4b81fbc4fb
-SOURCECODE_SHA256:ecdd9a3df3dd66ee165e665e7adba9ee12fff17742707fb93704dd1f1bc6d2a9
-
-#SOURCECODE_URL:https://download.moodle.org/download.php/direct/stable501/moodle-5.1.3.zip
-#SOURCECODE_MD5:dacdda50ebb76cde01a9041fbdfa0b06
-#SOURCECODE_SHA256:0822f4678f596e94ab355eaa7eb36dd274958c6cff7a240ccee7ca9b68e5513a
 
 ######################################################################################################################################################
 #This sets the webroot of your application. You can change this according to your taste. 
