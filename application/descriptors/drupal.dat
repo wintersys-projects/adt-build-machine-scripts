@@ -1,8 +1,14 @@
+##########################################################################################################################################
+# This is an application descriptor for drupal. Using this technique you can provide customisations to how you install drupal.
+# Here you will find various details required for the successful installation of drupal such as the database credentials for your drupal
+# install and details required by the application itself such as a username and password. Unless your adt-build-machine-scripts repository 
+# is private please be aware not to put any sensitive information directly in this file, instead, look at how the MANDATORY_INDIVIDUAL_SETTING 
+# parameters are used in a way that keeps the senstive details private in all circumstances using placeholders which can be substituted out. 
+##########################################################################################################################################
 
-#APPLICATION_USERNAME:adt-webmaster (set this to something harder to guess or specific to your site in this file or directly in the database)
-#APPLICATION_PASSWORD:mnbcxz098321QQQZZZ (change this using the GUI system as the first thing you do once drupal is installed non-interactively)
-
-
+#################################################################################################################################################
+# Application credentials/descriptions (if you make an interactive installation these settings will be overridden by what you enter interactively)
+#################################################################################################################################################
 #You most likely want to set this to something unique because setting it to unique is another thing that a hacker doesn't know where as if it's
 #just webmaster or admin that's easy to guess or assume
 WEBSITE_USERNAME:adt-webmaster
@@ -12,35 +18,25 @@ WEBSITE_USERNAME:adt-webmaster
 #12 characters of it s your bootstrap password
 WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
 
-#Application Type (only uncomment one of these 2)
-
+###################################################################
+#Application Type (only uncomment one of these 2 depending on whether you want to install "drupal" or "drupal cms")
+###################################################################
 # 1. To install drupal uncomment and comment drupal cms below
 APPLICATION_TYPE:drupal
 
-#Furthermore tell us what version of drupal you want to install
-#Uncommented, this will install the latest version
+#(pick which version of drupal you want to install by uncommenting one of these)
 DRUPAL_VERSION:drupal/recommended-project
-
-#To install a specific version do this instead
 #DRUPAL_VERSION:drupal/recommended-project:11.3.0
-
-#To install an alpha or beta or rc
 #DRUPAL_VERSION:drupal/recommended-project:^11@alpha
 #DRUPAL_VERSION:drupal/recommended-project:^11@beta
 #DRUPAL_VERSION:drupal/recommended-project:^11@rc
 
 #2. To install drupal CMS
-# To install drupal CMS uncomment and comment drupal above
 #APPLICATION_TYPE:cms
 
-#Furthermore tell us what version of drupal cmsyou want to install
-#Uncommented, this will install the latest version
+#(pick which version of drupal cms you want to install by uncommenting one of these)
 #CMS_VERSION:drupal/cms
-
-#To install a specific version do this instead
 #CMS_VERSION:drupal/cms:2.0.4
-
-#To install an alpha or beta or rc
 #CMS_VERSION:drupal/cms:^2.1@alpha
 #CMS_VERSION:drupal/cms:^2.1@beta
 #CMS_VERSION:drupal/cms:^2.1@rc
@@ -55,20 +51,53 @@ WEBROOT_DIRECTORY:/var/www/html/drupal
 ######################################################################################################################################################
 CONFIG_FILE:/var/www/html/settings.php
 
-#Application Directories structure
+#########################################################################################################################
+#If you want your assets to be outside of the webroot of your website set this to yes, if not set it to no
+#########################################################################################################################
+ASSETS_OUTSIDE_WEBROOT:yes
+
+####################################################################################################################################
+#filesystem configuration settings
+#This will create a logging directory a temporary directory and a caching directory outside of the weboot for increased security
+#If you install a filesystem cache plugin at any point then you can use this caching directory to store your cached files/assets by 
+#configuring it in the plugin
+####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache:web/sites/default/files:private
 
-#Application structure rudimentary integrity check
+#####################################################################################################################################################
+#These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
+#download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
+#and make a notification
+######################################################################################################################################################
 APPLICATION_INTEGRITY_DIRECTORIES:core:modules:profiles:recipes:sites:themes:vendor
 APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
 
+
+#####################################################################################################################################################
+#Interactive install or not
+#If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
+#In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
+#what they are in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
+#If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
+#without providing any input
+#####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:no
 
+
+#####################################################################################################################################################
+# Mandatory credential settings when making a non-interactive installation
+#These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
+#wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
+# ${BUILD_HOME}/application/wordpress/SetApplicationConfig.sh
+#####################################################################################################################################################
 MANDATORY_INDIVIDUAL_SETTING:username=XXXXAPPLICATION_USERNAMEXXXX
 MANDATORY_INDIVIDUAL_SETTING:password=XXXXAPPLICATION_PASSWORDXXXX
 MANDATORY_INDIVIDUAL_SETTING:database=XXXXAPPLICATION_DATABASEXXXX
 MANDATORY_INDIVIDUAL_SETTING:collation=utf8mb4_general_ci
 
+#########################################################################################################################################################
+# General additional settings for your drupal install
+#########################################################################################################################################################
 ADDITIONAL_SETTING:$settings['package_manager_composer_path'] = '/usr/local/bin/composer';
 ADDITIONAL_SETTING:$settings['package_manager_rsync_path'] = '/usr/bin/rsync';
 ADDITIONAL_SETTING:$settings['testing_package_manager'] = TRUE;
