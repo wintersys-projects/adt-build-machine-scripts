@@ -75,7 +75,7 @@ CONFIG_FILE:/var/www/html/config.php
 #If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
 #In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
 #what they are in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
-#If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
+#If this is set to "no" then the installtion should complete without pausing and you will be able to access your moodle application straight away
 #without providing any input
 #####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:no
@@ -83,8 +83,8 @@ INTERACTIVE_APPLICATION_INSTALL:no
 #####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
 #These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
-#wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
-# ${BUILD_HOME}/application/wordpress/SetApplicationConfig.sh
+#moodle non-interactively. Notice that placeholders are used and are populated privately with live data in the script
+# ${BUILD_HOME}/application/moodle/SetApplicationConfig.sh
 #####################################################################################################################################################
 MANDATORY_INDIVIDUAL_SETTING:dbuser=XXXXAPPLICATION_USERNAMEXXXX
 MANDATORY_INDIVIDUAL_SETTING:dbpass=XXXXAPPLICATION_PASSWORDXXXX
