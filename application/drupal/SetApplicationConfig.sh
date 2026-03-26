@@ -21,6 +21,9 @@
 #####################################################################################
 #set -x
 
+WEBSITE_URL="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'WEBSITE_URL'`"
+WEBSITE_PASSWORD="`${BUILD_HOME}/helperscripts/GetVariableValue.sh 'S3_ACCESS_KEY' | /usr/bin/head -c 12`" 
+
 if ( [ ! -d  ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application ] )
 then
         /bin/mkdir -p ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/application
