@@ -21,6 +21,11 @@ WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
 WEBSITE_FULLNAME:Vanilla Moodle Website
 WEBSITE_SHORTNAME:Vanilla Moodle
 
+#This is taken from the value of "SYSTEM_FROMEMAIL_ADDRESS" and it needs to be a live email. You will also need to make sure that your smtp system is
+#up and running if you want to change this email address because wordpress enforces that you verify your email address before you can change it to
+#something else
+WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
+
 DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
 
 #Application structure rudimentary integrity check
