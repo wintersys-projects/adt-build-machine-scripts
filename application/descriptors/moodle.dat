@@ -34,7 +34,11 @@ WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 ####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
 
-#Application structure rudimentary integrity check
+#####################################################################################################################################################
+#These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
+#download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
+#and make a notification
+######################################################################################################################################################
 APPLICATION_INTEGRITY_DIRECTORIES:admin:lib:public:public/media:public/login
 APPLICATION_INTEGRITY_FILES:composer.json:composer.lock:config-dist.php:CONTRIBUTING.md:COPYING.txt:githash.php:Gruntfile.js:index.php:INSTALL.txt:npm-shrinkwrap.json:package.json:phpcs.xml.dist:phpunit.xml.dist:README.md:TRADEMARK.txt:UPGRADING.md
 
