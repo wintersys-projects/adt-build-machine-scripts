@@ -175,9 +175,9 @@ then
 		read x
 	fi
 
-	if ( [ -f ${interrogation_home}/sites/default/settings.php.default ] )
+	if ( [ -f ${interrogation_home}/settings.php.default ] )
 	then
-		/bin/cp ${interrogation_home}/sites/default/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
+		/bin/cp ${interrogation_home}/settings.php.default ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/settings.php.default
 	else
 		status "Couldn't find drupal default configuration file in backup webroot"
 		/bin/touch /tmp/END_IT_ALL
