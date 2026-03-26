@@ -25,9 +25,9 @@ WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
 #A decription of the website user account
 WEBSITE_USER_DESCRIPTION:ADT Test User Account
 
-#This is taken from the value of "SYSTEM_FROMEMAIL_ADDRESS" and it needs to be a live email. You will also need to make sure that your smtp system is
-#up and running if you want to change this email address because wordpress enforces that you verify your email address before you can change it to
-#something else
+############################################################################################
+#This is taken from the value of "SYSTEM_FROMEMAIL_ADDRESS" and it needs to be a live email. 
+############################################################################################
 WEBMASTER_EMAIL:XXXXWEBMASTER_EMAILXXXX
 
 
@@ -59,8 +59,8 @@ SOURCECODE_SHA1:df41236826fdcaa889c5ee3f9bc35ed94114ee0a
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
 #####################################################################################################################################################
-#These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
-#download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
+#These settings pick various directories and files which should be present in a joomla installation. What that means is that if there is a partial
+#download or extraction of joomla and some files are missing by using these files to check the intergrity of the installtion we can detect this
 #and make a notification
 ######################################################################################################################################################
 APPLICATION_INTEGRITY_DIRECTORIES:administrator:api:cache:cli:components:files:includes:language:layouts:libraries:media:modules:plugins:templates
@@ -87,7 +87,7 @@ ASSETS_OUTSIDE_WEBROOT:yes
 #If this is set to "yes" then during installation the build will pause until you navigate to your website and enter database credentials and so on.
 #In interactive mode, the database credentials, database identifier and port are displayed as part of the build logging output and you can find out
 #what they are in ${BUILD_HOME}/runtimedata/${CLOUDHOST}/${BUILD_IDENTIFIER}/logs
-#If this is set to "no" then the installtion should complete without pausing and you will be able to access your wordpress application straight away
+#If this is set to "no" then the installtion should complete without pausing and you will be able to access your joomla application straight away
 #without providing any input
 #####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:no
@@ -95,8 +95,8 @@ INTERACTIVE_APPLICATION_INSTALL:no
 #####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
 #These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
-#wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
-# ${BUILD_HOME}/application/wordpress/SetApplicationConfig.sh
+#joomla non-interactively. Notice that placeholders are used and are populated privately with live data in the script
+# ${BUILD_HOME}/application/joomla/SetApplicationConfig.sh
 #####################################################################################################################################################
 MANDATORY_INDIVIDUAL_SETTING:user='XXXXAPPLICATION_USERNAMEXXXX'
 MANDATORY_INDIVIDUAL_SETTING:password='XXXXAPPLICATION_PASSWORDXXXX'
