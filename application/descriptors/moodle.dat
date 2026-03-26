@@ -13,9 +13,11 @@
 #just webmaster or admin that's easy to guess or assume
 WEBSITE_USERNAME:adt-webmaster
 
+##################################################################################################################################################
 #The initial website password (which you should change as soon as installation is complete) is taken from whatever the first 12 characters of your
 #S3_ACCESS_KEY variable is set to. So, to find the initial password for your application you need to find  your S3_ACCESS_KEY and extract the first
 #12 characters of it s your bootstrap password
+##################################################################################################################################################
 WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
 
 WEBSITE_FULLNAME:Vanilla Moodle Website
@@ -74,6 +76,12 @@ CONFIG_FILE:/var/www/html/config.php
 #####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:no
 
+#####################################################################################################################################################
+# Mandatory credential settings when making a non-interactive installation
+#These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
+#wordpress non-interactively. Notice that placeholders are used and are populated privately with live data in the script
+# ${BUILD_HOME}/application/wordpress/SetApplicationConfig.sh
+#####################################################################################################################################################
 MANDATORY_INDIVIDUAL_SETTING:dbuser=XXXXAPPLICATION_USERNAMEXXXX
 MANDATORY_INDIVIDUAL_SETTING:dbpass=XXXXAPPLICATION_PASSWORDXXXX
 MANDATORY_INDIVIDUAL_SETTING:dbname=XXXXAPPLICATION_DATABASEXXXX
