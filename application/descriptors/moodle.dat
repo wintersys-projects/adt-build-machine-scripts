@@ -1,7 +1,25 @@
-APPLICATION_USERNAME:webmaster
-APPLICATION_PASSWORD:mnbcxz098321QQQZZZ
-APPLICATION_FULLNAME:Vanilla Moodle Website
-APPLICATION_SHORTNAME:Vanilla Moodle
+##########################################################################################################################################
+# This is an application descriptor for drupal. Using this technique you can provide customisations to how you install drupal.
+# Here you will find various details required for the successful installation of drupal such as the database credentials for your drupal
+# install and details required by the application itself such as a username and password. Unless your adt-build-machine-scripts repository 
+# is private please be aware not to put any sensitive information directly in this file, instead, look at how the MANDATORY_INDIVIDUAL_SETTING 
+# parameters are used in a way that keeps the senstive details private in all circumstances using placeholders which can be substituted out. 
+##########################################################################################################################################
+
+#################################################################################################################################################
+# Application credentials/descriptions (if you make an interactive installation these settings will be overridden by what you enter interactively)
+#################################################################################################################################################
+#You most likely want to set this to something unique because setting it to unique is another thing that a hacker doesn't know where as if it's
+#just webmaster or admin that's easy to guess or assume
+WEBSITE_USERNAME:adt-webmaster
+
+#The initial website password (which you should change as soon as installation is complete) is taken from whatever the first 12 characters of your
+#S3_ACCESS_KEY variable is set to. So, to find the initial password for your application you need to find  your S3_ACCESS_KEY and extract the first
+#12 characters of it s your bootstrap password
+WEBSITE_PASSWORD:XXXXWEBSITE_PASSWORDXXXX
+
+WEBSITE_FULLNAME:Vanilla Moodle Website
+WEBSITE_SHORTNAME:Vanilla Moodle
 
 DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
 
