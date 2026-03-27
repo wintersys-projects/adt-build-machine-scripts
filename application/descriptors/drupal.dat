@@ -65,6 +65,11 @@ ASSETS_OUTSIDE_WEBROOT:yes
 ####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache:drupal/sites/default/files:private
 
+####################################################################################################################################
+#This tells the system which files to exclude when a backup or baseline is made
+####################################################################################################################################
+EXCLUDE_FROM_BACKUP:logs:tmp:cache:settings.php
+
 #####################################################################################################################################################
 #These settings pick various directories and files which should be present in a wordpress installation. What that means is that if there is a partial
 #download or extraction of wordpress and some files are missing by using these files to check the intergrity of the installtion we can detect this
