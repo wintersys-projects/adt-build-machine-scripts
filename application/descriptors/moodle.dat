@@ -51,6 +51,11 @@ SOURCECODE_SHA256:ecdd9a3df3dd66ee165e665e7adba9ee12fff17742707fb93704dd1f1bc6d2
 ####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache:moodledata
 
+####################################################################################################################################
+#This tells the system which files or directories to exclude when a backup or baseline is made
+####################################################################################################################################
+EXCLUDE_FROM_BACKUP:logs:tmp:cache:config.php
+
 #####################################################################################################################################################
 #These settings pick various directories and files which should be present in a moodle installation. What that means is that if there is a partial
 #download or extraction of moodle and some files are missing by using these files to check the intergrity of the installtion we can detect this
