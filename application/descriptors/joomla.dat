@@ -58,6 +58,11 @@ SOURCECODE_SHA1:df41236826fdcaa889c5ee3f9bc35ed94114ee0a
 ####################################################################################################################################
 DIRECTORIES_TO_CREATE:logs:tmp:cache
 
+####################################################################################################################################
+#This tells the system which files or directories to exclude when a backup or baseline is made
+####################################################################################################################################
+EXCLUDE_FROM_BACKUP:logs:tmp:cache:settings.php
+
 #####################################################################################################################################################
 #These settings pick various directories and files which should be present in a joomla installation. What that means is that if there is a partial
 #download or extraction of joomla and some files are missing by using these files to check the intergrity of the installtion we can detect this
