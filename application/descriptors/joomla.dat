@@ -61,7 +61,7 @@ DIRECTORIES_TO_CREATE:logs:tmp:cache
 ####################################################################################################################################
 #This tells the system which files or directories to exclude when a backup or baseline is made
 ####################################################################################################################################
-EXCLUDE_FROM_BACKUP:logs:tmp:cache:settings.php
+EXCLUDE_FROM_BACKUP:logs:tmp:cache:configuration.php
 
 #####################################################################################################################################################
 #These settings pick various directories and files which should be present in a joomla installation. What that means is that if there is a partial
