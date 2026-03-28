@@ -97,6 +97,11 @@ ASSETS_OUTSIDE_WEBROOT:yes
 #####################################################################################################################################################
 INTERACTIVE_APPLICATION_INSTALL:no
 
+###########################################################################################
+#Here you can list PHP modules that are required by joomla and the system will install them 
+###########################################################################################
+PHP_MODULES:simplexml dom gd intl zip mysqli pgsql mbstring curl soap
+
 #####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
 #These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
