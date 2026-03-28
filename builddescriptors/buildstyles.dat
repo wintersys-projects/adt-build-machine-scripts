@@ -187,7 +187,8 @@ LIGHTTPD:settings:server.use-ipv6="disable":server.max-fds=2048:server.stat-cach
 #PHP config 2
 #PHP:cli:fpm:gmp:xmlrpc:soap:dev:mysqli:phpdbg:mbstring:gd:imap:pgsql:pspell:tidy:intl:curl:zip:xml:imagick:ssh2:apcu
 #PHP joomla 5 (zlib and json are enabled by default in php>8.0)
-PHP:cli:fpm:simplexml:dom:gd:intl:zip:mysqli:pgsql:mbstring:curl:soap
+#####################last live one####PHP:cli:fpm:simplexml:dom:gd:intl:zip:mysqli:pgsql:mbstring:curl:soap
+PHP:cli:fpm
 #PHP:cli:fpm:simplexml:dom:gd:intl:zip:mysqli:mbstring:curl:soap
 #PHP:cli:fpm:simplexml:dom:gd:intl:zip:mysqli:curl
 #PHP Wordpress (zlib mysqli and json are enabled by default in php>8.0)
