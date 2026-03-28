@@ -90,6 +90,12 @@ APPLICATION_INTEGRITY_FILES:autoload.php:index.php:update.php
 INTERACTIVE_APPLICATION_INSTALL:no
 
 
+###########################################################################################
+#Here you can list PHP modules that are required by drupal and the system will install them 
+###########################################################################################
+PHP_MODULES:date dom filter gd hash json mysqli pcrem pdo pgsql session simplexml SPL tokenizer xml zlib 
+
+
 #####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
 #These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
