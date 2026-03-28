@@ -94,6 +94,11 @@ WP_CONTENT_OUTSIDE_WEBROOT:yes
 APPLICATION_INTEGRITY_DIRECTORIES:wp-admin:wp-content:wp-includes
 APPLICATION_INTEGRITY_FILES:index.php:wp-activate.php:wp-blog-header.php:wp-comments-post.php:wp-config-sample.php:wp-cron.php:wp-links-opml.php:wp-load.php:wp-login.php:wp-mail.php:wp-settings.php:wp-signup.php:wp-trackback.php:xmlrpc.php
 
+###########################################################################################
+#Here you can list PHP modules that are required by moodle and the system will install them 
+###########################################################################################
+PHP_MODULES:json mysqli curl dom exif fileinfo hash imagick igbinary intl mbstring openssl pdo_mysql xml zip
+
 #####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
 #These are mandatory database settings that are absolutely required for there to be any chance of your application coming online if you are installing
