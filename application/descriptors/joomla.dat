@@ -100,7 +100,7 @@ INTERACTIVE_APPLICATION_INSTALL:no
 ###########################################################################################
 #Here you can list PHP modules that are required by joomla and the system will install them 
 ###########################################################################################
-PHP_MODULES:simplexml dom gd intl zip mysqli pgsql mbstring curl soap
+APPLICATION_PHP_MODULES:simplexml dom gd intl zip mysqli pgsql mbstring curl soap
 
 #####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
