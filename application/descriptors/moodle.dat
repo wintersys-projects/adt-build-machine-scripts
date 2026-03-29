@@ -79,7 +79,7 @@ CONFIG_FILE:/var/www/html/config.php
 ###########################################################################################
 #Here you can list PHP modules that are required by moodle and the system will install them 
 ###########################################################################################
-PHP_MODULES:ctype curl dom gd iconv intl mbstring mysqli openssl pcre pgsql simplexml xml xmlreader zip zlib
+APPLICATION_PHP_MODULES:ctype curl dom gd iconv intl mbstring mysqli openssl pcre pgsql simplexml xml xmlreader zip zlib
 
 #####################################################################################################################################################
 #Interactive install or not
