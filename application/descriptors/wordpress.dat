@@ -97,7 +97,7 @@ APPLICATION_INTEGRITY_FILES:index.php:wp-activate.php:wp-blog-header.php:wp-comm
 ###########################################################################################
 #Here you can list PHP modules that are required by moodle and the system will install them 
 ###########################################################################################
-PHP_MODULES:json mysqli curl dom exif fileinfo hash imagick igbinary intl mbstring openssl pdo_mysql xml zip
+APPLICATION_PHP_MODULES:json mysqli curl dom exif fileinfo hash imagick igbinary intl mbstring openssl pdo_mysql xml zip
 
 #####################################################################################################################################################
 # Mandatory credential settings when making a non-interactive installation
