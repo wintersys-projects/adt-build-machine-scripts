@@ -93,7 +93,7 @@ INTERACTIVE_APPLICATION_INSTALL:no
 ###########################################################################################
 #Here you can list PHP modules that are required by drupal and the system will install them 
 ###########################################################################################
-PHP_MODULES:date dom filter gd hash json mysqli pcrem pdo pgsql session simplexml SPL tokenizer xml zlib 
+APPLICATION_PHP_MODULES:date dom filter gd hash json mysqli pcrem pdo pgsql session simplexml SPL tokenizer xml zlib 
 
 
 #####################################################################################################################################################
