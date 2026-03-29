@@ -202,15 +202,7 @@ then
 	fi
 fi
 
-#This enables the application to have any post processing done that it needs. You can place post-processing for your application on the webserver machine type
-status "Performing any post processing that is needed for your application...please wait, depending on your application's requirements"
-for ws_active_ip in ${ws_active_ips}
-do
-	/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/home/${SERVER_USER}/application/processing/PerformPostProcessingByApplication.sh ${SERVER_USER}" 3>&1 2>/dev/null
-done
-
 #We are satisfied that all is well so far so lets do a finally battery of tests to be as sure as we can be that we are on our feet
-
 if ( [ "`/bin/grep "^${WEBSERVER_CHOICE}:source" ${BUILD_HOME}/builddescriptors/buildstyles.dat`" != "" ] )
 then
 	status ""
