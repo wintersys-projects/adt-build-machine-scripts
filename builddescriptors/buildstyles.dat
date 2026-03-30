@@ -11,6 +11,8 @@
 # The set of possible configurations you could have are as follows:
 # If you are building for NGINX (your template webserver is set to NGINX) you can select one of:
 # NGINX:source   (uses default hardcoded settings)
+# NGINX:sourcecode-url:<url> (url for the version of nginx you want to download)  - You can set this to "latest" if you want to get the latest version of NGINX
+# NGINX:sourcecode-asc-url:<url> (checksum url for the nginx version you are downloading) - not needed if sourcode-url:latest is set in the above entry
 # NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
 # NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
 # NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
