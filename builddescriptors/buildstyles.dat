@@ -24,7 +24,7 @@
 # NGINX:settings:<list of settings>
 # To build nginx from source configure these fields
 # NGINX:source   (uses default hardcoded settings)
-# NGINX:release-branch (github release branch}
+# NGINX:release-branch (github release branch https://github.com/nginx/nginx)
 # NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
 # NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
 # NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
