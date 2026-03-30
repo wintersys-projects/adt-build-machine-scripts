@@ -10,25 +10,31 @@
 ##############################################################################################
 # The set of possible configurations you could have are as follows:
 # If you are building for NGINX (your template webserver is set to NGINX) you can select one of:
+# To perform a repository install configure
+# NGINX:repo
+# To build nginx from source configure these fields
 # NGINX:source   (uses default hardcoded settings)
-# NGINX:sourcecode-url:<url> (url for the version of nginx you want to download)  - You can set this to "latest" if you want to get the latest version of NGINX
-# NGINX:sourcecode-asc-url:<url> (checksum url for the nginx version you are downloading) - not needed if sourcode-url:latest is set in the above entry
+# NGINX:sourcecode-url:<url> (url for the version of nginx you want to install)  - You can set this to "latest" if you want to get the latest version of NGINX
+# NGINX:sourcecode-asc-url:<url> (checksum url for the nginx version you are installing) - not needed if sourcode-url:latest is set in the above entry
 # NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
 # NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
 # NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
-# NGINX:repo
 # If you are building for APACHE (your templates webserver is set to APACHE) you can select one of:
+# To built apache from the repos set:
+# APACHE:repo
+# To build apache from source set:
 # APACHE:source   (uses default hardcoded settings)
 # APACHE:modules-list:<module1>:<module2>:....<modulen>
 # APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building apache from source)
 # APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
-# APACHE:repo
 # If you are building for lighttpd (your template webserver is set to LIGHTTPD) you can select one of:
+# To build lighttpd from repos set:
+# LIGHTTPD:repo
+# to build lighttpd from source, set:
 # LIGHTTPD:source   (uses default hardcoded settings)
 # LIGHTTPD:modules-list:<module1>:<module2>:....<modulen>
 # LIGHTTPD:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building lighttpd from source)
 # LIGHTTPD:software-packages:<software-package1>:<software-package2>:.....<modulen>
-# LIGHTTPD:repo
 # You can define what extensions PHP will be built with by modifying the line starting PHP: as shown below
 # PHP:<extension1>:<extension2>|port
 # You can override settings in the www.conf file of the php-fpm pool mechanism and also the php.ini file of your php-fpm configuration
