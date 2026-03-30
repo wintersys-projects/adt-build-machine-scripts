@@ -9,16 +9,6 @@
 # Date 07/06/2016
 ##############################################################################################
 # The set of possible configurations you could have are as follows:
-# If you are building for NGINX (your template webserver is set to NGINX) you can select one of:
-# To perform a repository install configure
-# NGINX:repo
-# To build nginx from source configure these fields
-# NGINX:source   (uses default hardcoded settings)
-# NGINX:sourcecode-url:<url> (url for the version of nginx you want to install)  - You can set this to "latest" if you want to get the latest version of NGINX
-# NGINX:sourcecode-asc-url:<url> (checksum url for the nginx version you are installing) - not needed if sourcode-url:latest is set in the above entry
-# NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
-# NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
-# NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # If you are building for APACHE (your templates webserver is set to APACHE) you can select one of:
 # To built apache from the repos set:
 # APACHE:repo
@@ -27,6 +17,18 @@
 # APACHE:modules-list:<module1>:<module2>:....<modulen>
 # APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building apache from source)
 # APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
+# If you are building for NGINX (your template webserver is set to NGINX) you can select one of:
+# To perform a repository install configure
+# NGINX:repo
+# NGINX:modules-list:<list of modules>
+# NGINX:settings:<list of settings>
+# To build nginx from source configure these fields
+# NGINX:source   (uses default hardcoded settings)
+# NGINX:sourcecode-url:<url> (url for the version of nginx you want to install)  - You can set this to "latest" if you want to get the latest version of NGINX
+# NGINX:sourcecode-asc-url:<url> (checksum url for the nginx version you are installing) - not needed if sourcode-url:latest is set in the above entry
+# NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
+# NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
+# NGINX:software-packages:<software-package1>:<software-package2>:.....<modulen>
 # If you are building for lighttpd (your template webserver is set to LIGHTTPD) you can select one of:
 # To build lighttpd from repos set:
 # LIGHTTPD:repo
@@ -132,28 +134,8 @@
 # along with The Agile Deployment Toolkit.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################################
 ###############################################################################################
-#Pick one build style for each component you want to enable installation for. The choice of which to install e.g. NGINX or APACHE is made elsewhere
+#Pick one build style for each component you want to enable installation for. The choice of which to install e.g. NGINX or APACHE is made in the template
 #All this does is tell us how to build it not whether to build it
-#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING CLOUD-INIT#################################################
-#NGINX:cloud-init
-#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
-#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
-
-#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
-NGINX:repo
-NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
-NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
-
-#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX FROM SOURCE#################################################
-#NGINX:source
-#NGINX:sourcecode-url:nginx.org/download/nginx-1.28.3.tar.gz
-#NGINX:sourcecode-asc-url:nginx.org/download/nginx-1.28.3.tar.gz.asc
-#NGINX:static-modules-list:select:poll:http_v2:http_ssl:http_v2:http_realip:http_addition:http_sub:http_dav:http_flv:http_mp4:http_gunzip:http_gzip_static:http_auth_request:http_random_index:http_secure_link:http_degradation:http_slice:http_stub_status:stream_ssl_preread:mail_ssl:stream_ssl:stream_realip:http_realip
-#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
-#NGINX:software-packages:build-essential:libpcre2-dev:libssl-dev:zlib1g-dev:libgd-dev:gnupg
-
-##############################################################NGINX###########################################################
-
 ##############################################################APACHE###########################################################
 #####UNCOMMENT AND MODIFY THESE TO INSTALL APACHE USING CLOUD-INIT#################################################
 #APACHE:cloud-init
@@ -172,6 +154,28 @@ APACHE:static-modules-list:mpm_event
 APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
 APACHE:software-packages:pandoc:build-essential:libssl-dev:libexpat-dev:libpcre2-dev:libapr1-dev:libaprutil1-dev:libnghttp2-dev:lua5.4:libjansson-dev:libcurl4-gnutls-dev:zlib1g-dev
 ##############################################################APACHE###########################################################
+
+##############################################################NGINX###########################################################
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING CLOUD-INIT#################################################
+#NGINX:cloud-init
+#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
+#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX USING APT#################################################
+#NGINX:repo
+#NGINX:modules-list:mpm_event:ssl:rewrite:expires:headers:proxyproxy_http:remoteip:proxy_fcgi
+#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+
+#####UNCOMMENT AND MODIFY THESE TO INSTALL NGINX FROM SOURCE#################################################
+#NGINX:source
+#NGINX:sourcecode-url:nginx.org/download/nginx-1.28.3.tar.gz
+#NGINX:sourcecode-asc-url:nginx.org/download/nginx-1.28.3.tar.gz.asc
+#NGINX:static-modules-list:select:poll:http_v2:http_ssl:http_v2:http_realip:http_addition:http_sub:http_dav:http_flv:http_mp4:http_gunzip:http_gzip_static:http_auth_request:http_random_index:http_secure_link:http_degradation:http_slice:http_stub_status:stream_ssl_preread:mail_ssl:stream_ssl:stream_realip:http_realip
+#NGINX:settings:client_body_timeout=15:client_header_timeout=20:keepalive_timeout=10:keepalive_requests=100:reset_timedout_connection=on
+#NGINX:software-packages:build-essential:libpcre2-dev:libssl-dev:zlib1g-dev:libgd-dev:gnupg
+
+##############################################################NGINX###########################################################
 
 ##############################################################LIGHTTPD###########################################################
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD USING CLOUD-INIT#################################################
