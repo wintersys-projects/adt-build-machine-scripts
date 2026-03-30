@@ -256,17 +256,27 @@ fi
 status "Checking that the application configuration for ${APPLICATION} has fully installed...."
 application_configuration_installed=""
 
-   
-for ws_active_ip in ${ws_active_ips}
+status "Initialising ${APPLICATION} configuration settings on machine with ip address ${ws_active_ip}"
+failure_status="0"
+while ( [ "${application_configuration_installed}" = "" ] )
 do
-	status "Initialising ${APPLICATION} configuration settings on machine with ip address ${ws_active_ip}"
-	/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/InitialiseConfigurationByApplication.sh" 2>/dev/null
-	application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
+        /bin/sleep 1     
+        for ws_active_ip in ${ws_active_ips}
+        do
+                /usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/InitialiseConfigurationByApplication.sh" 2>/dev/null
+                application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
 
-	if ( [ "${application_configuration_installed}" = "" ] )
-	then
-		status "${APPLICATION} failed to intialise, please investigate"
-	fi
+                if ( [ "${application_configuration_installed}" = "" ] )
+                then
+					if ( [ "${failure_status}" != "1" ] )
+					then
+						status "Failed to initialise application configuration. I will keep retrying in the background, but, you should go and investigate on your webserver(s)"
+						status "The relevant script to investigate is: /home/${SERVER_USER}/application/configuration/InitialiseConfigurationByApplication.sh"
+                    fi
+					application_configuration_installed=""
+					failure_status="1"
+                fi
+        done
 done
 
 if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
