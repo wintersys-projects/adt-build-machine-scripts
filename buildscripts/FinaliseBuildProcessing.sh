@@ -256,21 +256,17 @@ fi
 status "Checking that the application configuration for ${APPLICATION} has fully installed...."
 application_configuration_installed=""
 
-while ( [ "${application_configuration_installed}" = "" ] )
+   
+for ws_active_ip in ${ws_active_ips}
 do
-	/bin/sleep 1     
+	status "Initialising ${APPLICATION} configuration settings on machine with ip address ${ws_active_ip}"
+	/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/InitialiseConfigurationByApplication.sh" 2>/dev/null
+	application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
 
-	for ws_active_ip in ${ws_active_ips}
-	do
-		status "Initialising ${APPLICATION} configuration settings on machine with ip address ${ws_active_ip}"
-		/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "${SUDO} /home/${SERVER_USER}/application/configuration/InitialiseConfigurationByApplication.sh" 2>/dev/null
-		application_configuration_installed="`/usr/bin/ssh -q -p ${SSH_PORT} -i ${BUILD_KEY} ${OPTIONS_WS} ${SERVER_USER}@${ws_active_ip} "/usr/bin/test -f /home/${SERVER_USER}/runtime/INITIAL_CONFIG_SET && /bin/echo 'INITIAL_CONFIG_SET'"`" >&3
-
-		if ( [ "${application_configuration_installed}" = "" ] )
-		then
-			application_configuration_installed=""
-		fi
-	done
+	if ( [ "${application_configuration_installed}" = "" ] )
+	then
+		status "${APPLICATION} failed to intialise, please investigate"
+	fi
 done
 
 if ( [ "${NO_REVERSE_PROXY}" != "0" ] )
