@@ -153,8 +153,7 @@ APACHE:release-branch:2.4.66
 APACHE:modules-list:ssl:rewrite:alias:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi:socache_shmcb:log_config:log_debug:logio:dir:unixd:authn_core:authn_file:authz_user:authz_core:http2:slotmem_shm:cache:deflate:mime:filter
 APACHE:static-modules-list:mpm_event
 APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
-APACHE:software-packages:autoconf:libtool-bin
-#build-essential:libssl-dev:libexpat-dev:libpcre2-dev:libapr1-dev:libaprutil1-dev:libnghttp2-dev:lua5.4:libjansson-dev:libcurl4-gnutls-dev:zlib1g-dev
+APACHE:software-packages:build-essential:libapr1-dev:libaprutil1-dev:libpcre3-dev:zlib1g-dev:libssl-dev:libnghttp2-dev:autoconf:libtool-bin
 ##############################################################APACHE###########################################################
 
 ##############################################################NGINX###########################################################
