@@ -14,6 +14,7 @@
 # APACHE:repo
 # To build apache from source set:
 # APACHE:source   (uses default hardcoded settings)
+# APACHE:release-branch (github release branch https://github.com/apache/httpd)
 # APACHE:modules-list:<module1>:<module2>:....<modulen>
 # APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building apache from source)
 # APACHE:software-packages:<software-package1>:<software-package2>:.....<modulen>
@@ -148,6 +149,7 @@
 
 ######UNCOMMENT AND MODIFY THESE TO INSTALL APACHE FROM SOURCE#####################################################
 APACHE:source
+NGINX:release-branch:2.4.66
 APACHE:modules-list:ssl:rewrite:alias:expires:headers:proxy:proxy_http:remoteip:proxy_fcgi:socache_shmcb:log_config:log_debug:logio:dir:unixd:authn_core:authn_file:authz_user:authz_core:http2:slotmem_shm:cache:deflate:mime:filter
 APACHE:static-modules-list:mpm_event
 APACHE:settings:StartServers=4:MinSpareServers=20:MaxSpareServers=40:MaxRequestWorkers=200:MaxConnectionsPerChild=4500
