@@ -13,7 +13,7 @@
 # To built apache from the repos set:
 # APACHE:repo
 # To build apache from source set:
-# APACHE:source   (uses default hardcoded settings)
+# APACHE:source  
 # APACHE:release-branch (github release branch https://github.com/apache/httpd)
 # APACHE:modules-list:<module1>:<module2>:....<modulen>
 # APACHE:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building apache from source)
@@ -24,7 +24,7 @@
 # NGINX:modules-list:<list of modules>
 # NGINX:settings:<list of settings>
 # To build nginx from source configure these fields
-# NGINX:source   (uses default hardcoded settings)
+# NGINX:source  
 # NGINX:release-branch (github release branch https://github.com/nginx/nginx)
 # NGINX:modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx using apt)
 # NGINX:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building nginx from source)
@@ -33,7 +33,8 @@
 # To build lighttpd from repos set:
 # LIGHTTPD:repo
 # to build lighttpd from source, set:
-# LIGHTTPD:source   (uses default hardcoded settings)
+# LIGHTTPD:source  
+# LIGHTTPD:release-branch (github release branch https:/github.com/lighttpd/lighttpd1.4)
 # LIGHTTPD:modules-list:<module1>:<module2>:....<modulen>
 # LIGHTTPD:static-modules-list:<module1>:<module2>:....<modulen> (only applies when building lighttpd from source)
 # LIGHTTPD:software-packages:<software-package1>:<software-package2>:.....<modulen>
