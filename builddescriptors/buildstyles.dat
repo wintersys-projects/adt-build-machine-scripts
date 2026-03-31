@@ -192,8 +192,8 @@ NGINX:software-packages:build-essential:libpcre2-dev:libssl-dev:zlib1g-dev:libgd
 
 #####UNCOMMENT AND MODIFY THESE TO INSTALL LIGHTTPD FROM SOURCE#################################################
 LIGHTTPD:source
-#LIGHTTPD:release-branch:latest
-LIGHTTPD:release-branch:lighttpd-1.4.82
+LIGHTTPD:release-branch:latest
+#LIGHTTPD:release-branch:lighttpd-1.4.82
 LIGHTTPD:modules-list:mod_indexfile:mod_access:mod_accesslog:mod_alias:mod_auth:mod_deflate:mod_openssl:mod_dirlisting:mod_proxy:mod_fastcgi:mod_staticfile:mod_expire:mod_userdir:mod_status:mod_setenv::mod_redirect:mod_rewrite:mod_authn_file
 LIGHTTPD:static-modules-list:zlib:libxml:openssl:gnutls
 LIGHTTPD:settings:server.use-ipv6="disable":server.max-fds=2048:server.stat-cache-engine="simple"
